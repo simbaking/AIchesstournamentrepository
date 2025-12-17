@@ -71,8 +71,8 @@ public class ServerRestarter {
 
     private static void startServer() throws IOException {
         System.out.println("Starting Node.js server...");
-        // Use bash -l -c to run node so it loads the user's PATH (e.g. nvm, homebrew)
-        ProcessBuilder pb = new ProcessBuilder("bash", "-l", "-c", "node web/server.js");
+        // Use zsh -l -c to run node so it loads the user's PATH (common on macOS)
+        ProcessBuilder pb = new ProcessBuilder("zsh", "-l", "-c", "node web/server.js");
         pb.directory(new File(".")); // Run from current directory
         pb.redirectErrorStream(true); // Merge stderr into stdout
         
