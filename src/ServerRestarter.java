@@ -72,13 +72,29 @@ public class ServerRestarter {
     private static void startServer() throws IOException {
         System.out.println("Starting Node.js server...");
         
+        System.out.println("Current Working Directory: " + System.getProperty("user.dir"));
+        
         String nodePath = "node";
-        File localNode = new File("node_runtime/node-v18.16.0-darwin-x64/bin/node");
-        if (localNode.exists()) {
-             System.out.println("Using local node runtime: " + localNode.getAbsolutePath());
-             nodePath = localNode.getAbsolutePath();
-        } else {
-             System.out.println("Using system node (path might be improved if not found)");
+        // Potential paths to check
+        String[] possiblePaths = {
+            "node_runtime/node-v18.16.0-darwin-x64/bin/node", // Relative from root
+            "/Users/chang/Anitgravity/chess/node_runtime/node-v18.16.0-darwin-x64/bin/node", // Absolute
+            "../node_runtime/node-v18.16.0-darwin-x64/bin/node" // Relative if running from src
+        };
+
+        boolean found = false;
+        for (String path : possiblePaths) {
+            File f = new File(path);
+            if (f.exists()) {
+                System.out.println("Found node at: " + f.getAbsolutePath());
+                nodePath = f.getAbsolutePath();
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+             System.out.println("Could not find local node in standard locations. Using system 'node'.");
         }
 
         ProcessBuilder pb = new ProcessBuilder(nodePath, "web/server.js");
