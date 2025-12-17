@@ -1,0 +1,367 @@
+:root {
+    /* 60% Orange - Primary & Backgrounds */
+    --primary: #f97316;
+    --primary-dark: #ea580c;
+    --bg: #2c1003;
+    --bg-card: #431407;
+    --bg-card-hover: #5f1c09;
+    --border: #f97316;
+
+    /* 25% Gold - Secondary & Highlights */
+    --secondary: #eab308;
+    --secondary-dark: #ca8a04;
+    --gold: #ffd700;
+    --gold-dark: #b8860b;
+    --warning: #eab308;
+    --warning-dark: #ca8a04;
+
+    /* 15% Blue - Accents */
+    --accent: #3b82f6;
+    --accent-dark: #2563eb;
+    --info: #3b82f6;
+
+    /* Status Colors */
+    --success: #22c55e;
+    --success-dark: #16a34a;
+    --danger: #ef4444;
+
+    /* Text */
+    --text: #fff7ed;
+    --text-muted: #fdba74;
+    --shadow: rgba(0, 0, 0, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    /* 60% orange, 25% blue, 15% gold */
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary) 60%, var(--accent) 60%, var(--accent) 85%, var(--gold) 85%, var(--gold) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+/* Lion logo */
+.logo {
+    width: 80px;
+    height: auto;
+    display: block;
+    margin: 0 auto 1rem;
+    filter: drop-shadow(0 0 5px var(--gold));
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.status-badge.running {
+    background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
+    border-color: var(--success);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Responsive breakpoints for better layout */
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    min-width: 0;
+
+    /* Offer form adjustments */
+    #offer-time-control,
+    #offer-increment {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px var(--shadow);
+        border-color: var(--primary);
+    }
+
+    /* Offer form styling */
+    .offer-form {
+        display: grid;
+        grid-template-columns: 2fr 80px;
+        gap: 10px;
+        margin-bottom: 10px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .offer-form select,
+    .offer-form input {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+
+    /* Ensure offer increment input fits within card */
+    .offer-form input#offer-increment {
+        width: 100%;
+        max-width: 80px;
+        box-sizing: border-box;
+        padding: 0.5rem;
+    }
+
+    .leaderboard-card {
+        grid-column: 1 / -1;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: var(--text);
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    input,
+    select {
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        border: 2px solid var(--border);
+        background: #2a1205;
+        color: var(--text);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    /* Ensure offer increment input fits within card */
+    /* Specific styling for the increment input to prevent overflow */
+    .offer-form input#offer-increment {
+        width: auto;
+        max-width: 80px;
+        box-sizing: border-box;
+        padding: 0.5rem;
+    }
+
+
+    input:focus,
+    select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        border: none;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px var(--shadow);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: white;
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
+        color: white;
+    }
+
+    .btn-warning {
+        background: linear-gradient(135deg, var(--warning) 0%, var(--warning-dark) 100%);
+        color: white;
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, var(--danger) 0%, #b91c1c 100%);
+        color: white;
+    }
+
+    .timer {
+        margin-top: 1rem;
+        font-size: 2rem;
+        font-weight: 700;
+        text-align: center;
+        color: var(--gold);
+        font-variant-numeric: tabular-nums;
+    }
+
+    #leaderboard {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .player-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 0.5rem;
+        border: 2px solid var(--border);
+        transition: all 0.3s ease;
+    }
+
+    .player-item:hover {
+        border-color: var(--primary);
+        transform: translateX(4px);
+    }
+
+    .player-item.highlight-me {
+        background: rgba(249, 115, 22, 0.2);
+        /* Primary color with opacity */
+        border-color: var(--primary);
+        box-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
+    }
+
+    .player-rank {
+        font-size: 1.5rem;
+        font-weight: 800;
+        width: 3rem;
+        text-align: center;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--gold) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .player-name {
+        flex: 1;
+        font-weight: 600;
+        font-size: 1.125rem;
+    }
+
+    .player-score {
+        font-weight: 700;
+        color: var(--gold);
+        font-size: 1.125rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        color: var(--text-muted);
+        padding: 2rem;
+        font-style: italic;
+    }
+
+    .message {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        max-width: 400px;
+        opacity: 0;
+        transform: translateY(1rem);
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    .message.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .message.success {
+        background: var(--success);
+        color: white;
+    }
+
+    .message.error {
+        background: var(--danger);
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 2rem;
+        }
+
+        .grid {
+            grid-template-columns: 1fr;
+        }
+    }

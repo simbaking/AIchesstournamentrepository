@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <link rel="stylesheet" href="game.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>♟️ Chess Game</h1>
+            <img src="assets/lion.png" class="logo" alt="Lion logo" />
+            <a href="index.html" class="back-link">← Back to Tournament</a>
+        </header>
+
+        <div class="game-layout">
+            <aside class="game-info">
+                <div class="info-card">
+                    <h2>Players</h2>
+                    <div class="game-info">
+                        <div class="player black-player">
+                            <div class="player-details">
+                                <span id="black-player-name">Player 2</span>
+                                <span class="timer-display"><strong>Black:</strong> <span
+                                        id="black-timer">10:00</span></span>
+                            </div>
+                            <div id="black-captured" class="captured-pieces"></div>
+                        </div>
+
+                        <div class="game-status">
+                            <div id="turn-indicator">White's Turn</div>
+                            <div id="material-advantage" class="material-advantage"></div>
+                            <div id="game-timer" style="display: none;">00:00</div> <!-- Hidden global timer -->
+                        </div>
+
+                        <div class="player white-player">
+                            <div class="player-details">
+                                <span id="white-player-name">Player 1</span>
+                                <span class="timer-display"><strong>White:</strong> <span
+                                        id="white-timer">10:00</span></span>
+                            </div>
+                            <div id="white-captured" class="captured-pieces"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h2>Tournament Time</h2>
+                    <div id="tournament-timer" class="game-timer">--:--</div>
+                </div>
+
+                <div id="draw-offer-card" class="info-card"
+                    style="display: none; background-color: var(--warning); color: white;">
+                    <h2>Draw Offered!</h2>
+                    <p id="draw-offer-text"></p>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                        <button id="accept-draw-btn" class="btn btn-primary">Accept</button>
+                        <button id="decline-draw-btn" class="btn btn-danger">Decline</button>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h2>Actions</h2>
+                    <button id="resign-btn" class="btn btn-danger">Resign</button>
+                    <button id="draw-btn" class="btn btn-warning">Offer Draw</button>
+                    <button id="flip-btn" class="btn btn-secondary"
+                        style="margin-top: 0.5rem; background: var(--secondary); color: white;">Flip Board</button>
+                </div>
+
+                <div id="game-over-card" class="info-card game-over-card" style="display: none;">
+                    <h2>Game Over!</h2>
+                    <div id="game-result"></div>
+                    <button id="return-btn" class="btn btn-primary">Return to Tournament</button>
+                </div>
+            </aside>
+
+            <main class="board-container">
+                <div id="chessboard" class="chessboard"></div>
+            </main>
+        </div>
+
+        <div id="message" class="message"></div>
+    </div>
+
+    <div id="promotion-dialog" class="modal">
+        <div class="modal-content">
+            <h3>Choose Promotion Piece</h3>
+            <div class="promotion-choices">
+                <button class="promo-btn" data-piece="queen">♕ Queen</button>
+                <button class="promo-btn" data-piece="rook">♖ Rook</button>
+                <button class="promo-btn" data-piece="bishop">♗ Bishop</button>
+                <button class="promo-btn" data-piece="knight">♘ Knight</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>
