@@ -69,10 +69,18 @@ public class ServerRestarter {
         }
     }
 
-    private static void startServer() throws IOException {
         System.out.println("Starting Node.js server...");
-        // Use zsh -l -c to run node so it loads the user's PATH (common on macOS)
-        ProcessBuilder pb = new ProcessBuilder("zsh", "-l", "-c", "node web/server.js");
+        
+        String nodePath = "node";
+        File localNode = new File("node_runtime/node-v18.16.0-darwin-x64/bin/node");
+        if (localNode.exists()) {
+             System.out.println("Using local node runtime: " + localNode.getAbsolutePath());
+             nodePath = localNode.getAbsolutePath();
+        } else {
+             System.out.println("Using system node (path might be improved if not found)");
+        }
+
+        ProcessBuilder pb = new ProcessBuilder(nodePath, "web/server.js");
         pb.directory(new File(".")); // Run from current directory
         pb.redirectErrorStream(true); // Merge stderr into stdout
         
