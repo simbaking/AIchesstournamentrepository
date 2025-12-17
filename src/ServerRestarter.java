@@ -69,6 +69,7 @@ public class ServerRestarter {
         }
     }
 
+    private static void startServer() throws IOException {
         System.out.println("Starting Node.js server...");
         
         String nodePath = "node";
