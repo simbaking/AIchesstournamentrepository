@@ -96,6 +96,56 @@ public class ServerRestarter {
         if (!found) {
              System.out.println("Could not find local node in standard locations. Using system 'node'.");
         }
+        
+        // ---------------------------------------------------------
+        // Dependency Check: Ensure express is installed
+        // ---------------------------------------------------------
+        File nodeModules = new File("web/node_modules");
+        if (!nodeModules.exists()) {
+            System.out.println("MISSING DEPENDENCIES: web/node_modules not found.");
+            System.out.println("Attempting to run 'npm install'...");
+            
+            String npmPath = "npm";
+            // If we found a specific node binary, try to find npm next to it
+            if (found) {
+                File nodeBinDir = new File(nodePath).getParentFile();
+                File localNpm = new File(nodeBinDir, "npm");
+                if (localNpm.exists()) {
+                    npmPath = localNpm.getAbsolutePath();
+                    System.out.println("Found local npm at: " + npmPath);
+                }
+            }
+            
+            try {
+                ProcessBuilder npmPb = new ProcessBuilder(npmPath, "install");
+                npmPb.directory(new File("web")); // Run inside web dir
+                npmPb.redirectErrorStream(true);
+                
+                // Add the directory containing 'node' to the PATH for this process,
+                // so 'npm' can find 'node' even if it's not in the system global PATH.
+                if (found) {
+                     String nodeBin = new File(nodePath).getParent();
+                     String currentPath = npmPb.environment().getOrDefault("PATH", "");
+                     npmPb.environment().put("PATH", nodeBin + File.pathSeparator + currentPath);
+                }
+
+                Process npmProcess = npmPb.start();
+                
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(npmProcess.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println("[NPM] " + line);
+                    }
+                }
+                npmProcess.waitFor();
+                System.out.println("Dependencies installed.");
+                
+            } catch (Exception e) {
+                System.err.println("FAILED TO INSTALL DEPENDENCIES: " + e.getMessage());
+                System.err.println("Please run 'npm install' manually in the web/ directory.");
+            }
+        }
+        // ---------------------------------------------------------
 
         ProcessBuilder pb = new ProcessBuilder(nodePath, "web/server.js");
         pb.directory(new File(".")); // Run from current directory
