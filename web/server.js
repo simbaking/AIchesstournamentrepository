@@ -42,8 +42,8 @@ const tournamentAI = new TournamentAI(tournament);
 const HUMAN_PRIORITY_DELAY = 10000; // 10 seconds
 
 // Helper to create and start a game
-function createGame(player1Name, player2Name, timeControlMinutes, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random') {
-    console.log(`Creating game between ${player1Name} and ${player2Name}`);
+function createGame(player1Name, player2Name, timeControlMinutes, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random', cooldownSeconds = 10) {
+    console.log(`Creating game between ${player1Name} and ${player2Name}, variant: ${variant}, cooldown: ${cooldownSeconds}s`);
 
     const p1 = tournament.getPlayerByName(player1Name);
     const p2 = tournament.getPlayerByName(player2Name);
@@ -92,7 +92,7 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
         }
     };
 
-    const game = new ChessGame(player1Name, player2Name, gameId, timeControlMinutes, handleGameEnd, incrementSeconds, timeStages, variant, startPos);
+    const game = new ChessGame(player1Name, player2Name, gameId, timeControlMinutes, handleGameEnd, incrementSeconds, timeStages, variant, startPos, cooldownSeconds);
 
     if (p1.isComputerPlayer()) {
         game.setPlayerType('white', 'computer', p1.getLevel());
@@ -106,10 +106,12 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
     p1.setBusy(true);
     p2.setBusy(true);
 
-    // If White is a computer, we must call startGame() to trigger the first move
-    // This applies to both Computer vs Computer and Computer vs Human (where Computer is White)
-    if (p1.isComputerPlayer()) {
-        console.log(`Starting game with Computer as White: ${gameId}`);
+    // Start the game for computer players
+    // For standard chess: only if White is computer (to trigger first move)
+    // For Kung Fu: always if ANY player is computer (continuous loops)
+    const hasComputer = p1.isComputerPlayer() || p2.isComputerPlayer();
+    if (hasComputer && (variant === 'kungfu' || p1.isComputerPlayer())) {
+        console.log(`Starting game ${gameId} (variant: ${variant}, computers: W=${p1.isComputerPlayer()}, B=${p2.isComputerPlayer()})`);
         game.startGame();
     }
 
@@ -164,10 +166,24 @@ app.post('/api/reset', (req, res) => {
 
 // Start tournament
 app.post('/api/start', (req, res) => {
-    const { durationMinutes } = req.body;
-    console.log(`Start tournament request: ${durationMinutes} minutes`);
+    const { durationMinutes, allowVariants, hours, minutes, duration } = req.body; // allowVariants is now extracted
 
-    if (!durationMinutes || durationMinutes <= 0) {
+    // Normalize duration logic (handle hours/minutes/duration fields)
+    let durationMs = 0;
+    if (durationMinutes) {
+        durationMs = durationMinutes * 60 * 1000;
+        console.log(`Start tournament request: ${durationMinutes} minutes`);
+    } else if (duration) {
+        durationMs = duration * 1000; // Assume seconds if just "duration"
+        console.log(`Start tournament request: ${duration} seconds`);
+    } else if (hours !== undefined || minutes !== undefined) {
+        const h = parseInt(hours || 0);
+        const m = parseInt(minutes || 0);
+        durationMs = (h * 3600 + m * 60) * 1000;
+        console.log(`Start tournament request: ${h}h ${m}m`);
+    }
+
+    if (durationMs <= 0) {
         return res.status(400).json({ error: 'Valid duration required' });
     }
 
@@ -175,8 +191,9 @@ app.post('/api/start', (req, res) => {
         return res.status(400).json({ error: 'Need at least 2 players' });
     }
 
-    const durationMs = durationMinutes * 60 * 1000;
-    tournament.startTournament(durationMs);
+    // Pass allowVariants (default true if undefined)
+    const variantsAllowed = allowVariants !== undefined ? allowVariants : true;
+    tournament.startTournament(durationMs, variantsAllowed);
 
     // Start tournament monitor to end games when tournament expires
     if (tournamentMonitorInterval) clearInterval(tournamentMonitorInterval);
@@ -333,7 +350,7 @@ app.post('/api/start', (req, res) => {
                         if (evalResult.shouldAccept) {
                             console.log(`Auto-accept: ${bot.getName()} accepting offer from ${offer.player} (Reason: ${evalResult.reason})`);
 
-                            createGame(offer.player, bot.getName(), offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos);
+                            createGame(offer.player, bot.getName(), offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
                             gameOffers.splice(i, 1);
 
                             // Remove other offers from these players
@@ -406,7 +423,7 @@ app.post('/api/result', (req, res) => {
 // Create a game offer
 // Create a new game offer
 app.post('/api/offers/create', (req, res) => {
-    const { player1, timeControl, increment, targets, variant, startPos } = req.body;
+    const { player1, timeControl, increment, targets, variant, startPos, cooldown } = req.body;
 
     console.log(`[OFFER_CREATE] Received: player1=${player1}, variant=${variant}, startPos=${startPos}`);
 
@@ -423,6 +440,11 @@ app.post('/api/offers/create', (req, res) => {
         return res.status(400).json({ error: 'Player is currently in a game' });
     }
 
+    // enforce variant restrictions
+    if (!tournament.allowVariants && variant && variant !== 'standard') {
+        return res.status(400).json({ error: 'Variants are disabled in this tournament' });
+    }
+
     // config parse
     const config = parseTimeControl(timeControl, increment);
 
@@ -435,7 +457,8 @@ app.post('/api/offers/create', (req, res) => {
         targets: targets || ['Any'],
         timestamp: Date.now(),
         variant: variant || 'standard',
-        startPos: startPos || 'random'
+        startPos: startPos || 'random',
+        cooldown: cooldown || 10
     };
 
     gameOffers.push(offer);
@@ -480,7 +503,7 @@ app.post('/api/offers/accept', (req, res) => {
     const p2Name = isRandom ? player2 : offer.player;
 
     console.log(`Creating game: ${p1Name} (White) vs ${p2Name} (Black)`);
-    const result = createGame(p1Name, p2Name, offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos);
+    const result = createGame(p1Name, p2Name, offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
 
     // Remove offer
     gameOffers.splice(offerIndex, 1);

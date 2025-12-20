@@ -247,15 +247,18 @@ class Board {
 
 // Chess game manager
 class ChessGame {
-    constructor(player1Name, player2Name, gameId, timeControlMinutes = 10, onGameOver = null, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random') {
+    constructor(player1Name, player2Name, gameId, timeControlMinutes = 10, onGameOver = null, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random', cooldownSeconds = 10) {
         this.gameId = gameId;
         this.player1 = player1Name; // White
         this.player2 = player2Name; // Black
         this.variant = variant;
-        this.startPosId = null;
+        this.startPosId = null; // Stores the specific 960 ID
+        this.startPos = startPos; // Store original argument
+        this.cooldowns = new Map(); // Kung Fu Chess cooldowns: "x,y" -> timestamp
+        this.cooldownMs = cooldownSeconds * 1000; // Configurable cooldown duration
         this.board = new Board();
 
-        console.log(`[ChessGame] Constructor called with variant: "${variant}", startPos: "${startPos}"`);
+        console.log(`[ChessGame] Constructor called with variant: "${variant}", startPos: "${startPos}", cooldown: ${cooldownSeconds}s`);
 
         if (this.variant === 'freestyle') {
             console.log('[ChessGame] Freestyle mode detected, generating 960 position...');
@@ -469,8 +472,20 @@ class ChessGame {
     }
 
     startGame() {
-        console.log(`startGame called. White: ${this.whitePlayerType}, Black: ${this.blackPlayerType}`);
-        // If white is a computer, trigger the first move
+        console.log(`startGame called. White: ${this.whitePlayerType}, Black: ${this.blackPlayerType}, Variant: ${this.variant}`);
+
+        // Kung Fu Chess: Start continuous move loops for computer players
+        if (this.variant === 'kungfu') {
+            if (this.whitePlayerType === 'computer' && this.computerPlayers.white) {
+                this.startKungFuComputerLoop('white');
+            }
+            if (this.blackPlayerType === 'computer' && this.computerPlayers.black) {
+                this.startKungFuComputerLoop('black');
+            }
+            return;
+        }
+
+        // Standard chess: If white is a computer, trigger the first move
         if (this.whitePlayerType === 'computer' && this.computerPlayers.white) {
             const fen = this.board.toFEN(true);
             const computer = this.computerPlayers.white;
@@ -521,6 +536,76 @@ class ChessGame {
         } else {
             console.log('White is not computer or computer player instance missing.');
         }
+    }
+
+    // Kung Fu Chess: Continuous computer move loop
+    startKungFuComputerLoop(color) {
+        const isWhite = color === 'white';
+        const computer = isWhite ? this.computerPlayers.white : this.computerPlayers.black;
+        const playerName = isWhite ? this.player1 : this.player2;
+
+        if (!computer) return;
+
+        console.log(`[KungFu] Starting computer loop for ${color}`);
+
+        const makeNextMove = () => {
+            if (this.isGameOver) {
+                console.log(`[KungFu] Game over, stopping ${color} loop`);
+                return;
+            }
+
+            // Get current board FEN for analysis
+            const fen = this.board.toFEN(isWhite);
+            const skillLevel = computer.level;
+
+            // Quick analysis for Kung Fu (faster thinking)
+            const thinkTime = Math.max(100, 500 - (skillLevel * 20)); // 100-500ms based on skill
+
+            computer.getBestMove(fen, (result) => {
+                if (this.isGameOver) return;
+
+                const bestMove = result.move;
+                if (!bestMove) {
+                    // No move found, retry after delay
+                    setTimeout(makeNextMove, 500);
+                    return;
+                }
+
+                const fromFile = bestMove.charCodeAt(0) - 97;
+                const fromRank = 8 - parseInt(bestMove[1]);
+                const toFile = bestMove.charCodeAt(2) - 97;
+                const toRank = 8 - parseInt(bestMove[3]);
+
+                // Check if this piece is on cooldown
+                const key = `${fromFile},${fromRank}`;
+                const cooldown = this.cooldowns.get(key);
+                if (cooldown && Date.now() < cooldown) {
+                    // Piece on cooldown, try again after remaining cooldown
+                    const waitTime = cooldown - Date.now() + 50;
+                    console.log(`[KungFu] ${color} piece on cooldown, waiting ${waitTime}ms`);
+                    setTimeout(makeNextMove, Math.min(waitTime, 1000));
+                    return;
+                }
+
+                // Make the move
+                const moveResult = this.makeMove(fromFile, fromRank, toFile, toRank, playerName);
+
+                if (moveResult.success) {
+                    console.log(`[KungFu] ${color} moved ${bestMove}`);
+                    // Schedule next move after cooldown + small thinking delay
+                    const nextDelay = this.cooldownMs + thinkTime + Math.random() * 200;
+                    setTimeout(makeNextMove, nextDelay);
+                } else {
+                    // Move failed (piece might not belong to us or invalid), retry
+                    console.log(`[KungFu] ${color} move failed: ${moveResult.error}, retrying...`);
+                    setTimeout(makeNextMove, 300);
+                }
+            }, thinkTime);
+        };
+
+        // Start the loop with initial delay
+        const initialDelay = isWhite ? 500 : 800; // Stagger start times
+        setTimeout(makeNextMove, initialDelay);
     }
 
     // Check if a move is a castling attempt
@@ -673,6 +758,75 @@ class ChessGame {
         }
     }
 
+    makeMove(fromFile, fromRank, toFile, toRank, player, promotionPiece = 'queen') {
+        if (this.isGameOver) return { success: false, error: 'Game is over' };
+
+        // 1. Basic Turn Validation (Skipped for Kung Fu)
+        const isWhite = player === this.player1;
+        // if (this.variant !== 'kungfu' && isWhite !== this.isWhiteTurn) {
+        //    return { success: false, error: 'Not your turn' };
+        // }
+
+        const piece = this.board.getPiece(fromFile, fromRank);
+        if (!piece) return { success: false, error: 'No piece at source' };
+
+        // Ownership check for the piece
+
+        if (piece.isWhite !== isWhite) {
+            return { success: false, error: 'Cannot move opponent piece' };
+        }
+
+        // 2. Cooldown Check (Kung Fu Only)
+        if (this.variant === 'kungfu') {
+            const key = `${fromFile},${fromRank}`;
+            const cooldown = this.cooldowns.get(key);
+            if (cooldown && Date.now() < cooldown) {
+                return { success: false, error: 'Piece is on cooldown' };
+            }
+        }
+
+        // 3. Move Legality
+        if (!piece.isValidMove(this.board, fromFile, fromRank, toFile, toRank)) {
+            // Check En Passant and Castling
+            if (!this.isEnPassantMove(fromFile, fromRank, toFile, toRank) &&
+                !this.isCastlingMove(fromFile, fromRank, toFile, toRank)) {
+                return { success: false, error: 'Invalid move' };
+            }
+        }
+
+        // Standard chess: Ensure move doesn't leave king in check
+        if (this.variant !== 'kungfu' && !this.isMoveLegal(fromFile, fromRank, toFile, toRank)) {
+            return { success: false, error: 'Move puts/leaves king in check' };
+        }
+
+        // 4. Execute Move
+        const targetPiece = this.board.getPiece(toFile, toRank);
+
+        // Handle King Capture (Kung Fu Win Condition)
+        if (this.variant === 'kungfu' && targetPiece && targetPiece.type === 'king') {
+            this.board.movePiece(fromFile, fromRank, toFile, toRank);
+            this.isGameOver = true;
+            this.winner = isWhite ? this.player1 : this.player2;
+            this.onGameOver({ winner: this.winner, reason: 'king_capture' });
+            return { success: true, isGameOver: true, winner: this.winner };
+        }
+
+        // Standard execution
+        const moveResult = this.executeMove(fromFile, fromRank, toFile, toRank, promotionPiece);
+
+        // 5. Post-Move Updates
+        if (this.variant === 'kungfu') {
+            const destKey = `${toFile},${toRank}`;
+            this.cooldowns.set(destKey, Date.now() + this.cooldownMs);
+        } else {
+            this.isWhiteTurn = !this.isWhiteTurn;
+            this.updateGameState();
+        }
+
+        this.lastMoveTime = Date.now();
+        return { success: true };
+    }
+
     getKingFile(isWhite, rank) {
         for (let i = 0; i < 8; i++) {
             const p = this.board.getPiece(i, rank);
@@ -774,68 +928,24 @@ class ChessGame {
         return this.isWhiteTurn ? this.player1 : this.player2;
     }
 
-    makeMove(startX, startY, endX, endY, playerName, promotionPiece = 'queen') {
-        if (this.isGameOver) {
-            return { success: false, message: 'Game is over' };
-        }
-
-        // Allow computer to move regardless of playerName check if it's computer's turn
-        const isComputerTurn = (this.isWhiteTurn && this.whitePlayerType === 'computer') ||
-            (!this.isWhiteTurn && this.blackPlayerType === 'computer');
-
-        if (!isComputerTurn && playerName !== this.getCurrentPlayer()) {
-            return { success: false, message: 'Not your turn' };
-        }
-
-        // Check for timeout before processing move
-        const now = Date.now();
-        const timeSpent = now - this.lastMoveTime;
-
-        if (this.isWhiteTurn) {
-            this.whiteTimeRemaining -= timeSpent;
-            if (this.whiteTimeRemaining <= 0) {
-                this.isGameOver = true;
-                this.winner = this.player2; // Black wins on time
-                if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'timeout' });
-                return { success: true, gameOver: true, winner: this.winner, reason: 'timeout' };
-            }
-        } else {
-            this.blackTimeRemaining -= timeSpent;
-            if (this.blackTimeRemaining <= 0) {
-                this.isGameOver = true;
-                this.winner = this.player1; // White wins on time
-                if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'timeout' });
-                return { success: true, gameOver: true, winner: this.winner, reason: 'timeout' };
-            }
-        }
-
+    executeMove(startX, startY, endX, endY, promotionPiece = 'queen') {
         const piece = this.board.getPiece(startX, startY);
-        if (!piece) {
-            return { success: false, message: 'No piece at start position' };
-        }
+        // Helper variables for castling logic
+        const isKingside = endX > startX;
+        let destKingX = endX;
+        let rank = startY;
+        let rookStartX, destRookX;
 
-        if (piece.isWhite !== this.isWhiteTurn) {
-            return { success: false, message: 'Wrong color piece' };
-        }
-
-        // Check if this is a castling move
+        // Check if this is a castling move (for execution purposes)
         if (this.isCastlingMove(startX, startY, endX, endY)) {
-            const isKingside = endX > startX;
-            if (!this.canCastle(piece.isWhite, isKingside)) {
-                return { success: false, message: 'Castling not allowed' };
-            }
-
-            // Execute castling
-            const rank = piece.isWhite ? 7 : 0;
-            const destKingX = isKingside ? 6 : 2;
-            const destRookX = isKingside ? 5 : 3;
-
-            let rookStartX = isKingside ? 7 : 0;
-
-            // In Freestyle, find the actual rook
+            // Determine Castling Coordinates
             if (this.variant === 'freestyle') {
                 const files = piece.isWhite ? this.whiteRookFiles : this.blackRookFiles;
                 rookStartX = isKingside ? files.ks : files.qs;
+                destRookX = isKingside ? 5 : 3; // F or D file
+            } else {
+                rookStartX = isKingside ? 7 : 0;
+                destRookX = isKingside ? 5 : 3;
             }
 
             // Move king
@@ -1014,6 +1124,12 @@ class ChessGame {
             }
         }
 
+        // Kung Fu: No turn toggling, no checkmate/stalemate (win by king capture)
+        if (this.variant === 'kungfu') {
+            this.lastMoveTime = Date.now();
+            return { success: true, gameOver: false };
+        }
+
         this.isWhiteTurn = !this.isWhiteTurn;
         this.lastMoveTime = Date.now(); // Reset timer for next player
 
@@ -1129,9 +1245,10 @@ class ChessGame {
                             const fromRank = 8 - parseInt(bestMove[1]);
                             const toFile = bestMove.charCodeAt(2) - 97;
                             const toRank = 8 - parseInt(bestMove[3]);
+                            const promotionPiece = bestMove.length === 5 ? bestMove[4] : 'queen'; // Default to queen if not specified
 
                             const computerName = this.isWhiteTurn ? this.player1 : this.player2;
-                            const moveResult = this.makeMove(fromFile, fromRank, toFile, toRank, computerName);
+                            const moveResult = this.makeMove(fromFile, fromRank, toFile, toRank, computerName, promotionPiece);
 
                             if (!moveResult.success) {
                                 console.error(`[COMPUTER] Invalid move ${bestMove}: ${moveResult.message}. Retrying...`);
@@ -1329,7 +1446,9 @@ class ChessGame {
             capturedByWhite: this.capturedByWhite,
             capturedByBlack: this.capturedByBlack,
             variant: this.variant,
-            startPosId: this.startPosId
+            startPosId: this.startPosId,
+            cooldowns: Object.fromEntries(this.cooldowns),
+            cooldownMs: this.cooldownMs
         };
     }
 

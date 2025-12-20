@@ -6,6 +6,7 @@ class Tournament {
         this.isRunning = false;
         this.startTime = null;
         this.durationLimit = 0;
+        this.allowVariants = true;
     }
 
     registerPlayer(name, isComputer = false, level = null) {
@@ -16,11 +17,12 @@ class Tournament {
         return this.players;
     }
 
-    startTournament(durationMillis) {
+    startTournament(durationMillis, allowVariants = true) {
         this.startTime = Date.now();
         this.durationLimit = durationMillis;
+        this.allowVariants = allowVariants;
         this.isRunning = true;
-        console.log(`Tournament started! Duration: ${durationMillis}ms`);
+        console.log(`Tournament started! Duration: ${durationMillis}ms, Allow Variants: ${allowVariants}`);
     }
 
     checkIsRunning() {
@@ -195,6 +197,7 @@ class Tournament {
         this.isRunning = false;
         this.startTime = null;
         this.durationLimit = 0;
+        this.allowVariants = true;
         console.log('Tournament state reset.');
     }
 }

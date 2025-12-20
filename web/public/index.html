@@ -49,6 +49,10 @@
                         <input type="number" id="duration-minutes" placeholder="Minutes" min="0" max="59" value="5"
                             required>
                     </div>
+                    <div style="margin: 10px 0; display: flex; align-items: center;">
+                        <input type="checkbox" id="allow-variants" checked style="width: auto; margin-right: 5px;">
+                        <label for="allow-variants">Allow Variants (Chess 960, etc.)</label>
+                    </div>
                     <button type="submit" class="btn btn-success">Start Tournament</button>
                 </form>
                 <div id="timer" class="timer"></div>
@@ -95,9 +99,12 @@
                         <select id="offer-variant" style="width: auto;">
                             <option value="standard" selected>Standard Chess</option>
                             <option value="freestyle">Freestyle (Chess 960)</option>
+                            <option value="kungfu">Kung Fu (Real-time)</option>
                         </select>
                         <input type="text" id="offer-start-pos" placeholder="Pos ID (0-959) or Random"
                             style="display:none;">
+                        <input type="number" id="offer-cooldown" placeholder="Cooldown (sec)" min="1" max="60"
+                            value="10" style="display:none; width: 120px;">
                     </div>
                     <div style="margin-top: 10px;">
                         <label for="offer-targets" style="display: block; margin-bottom: 5px;">Target Players (Hold

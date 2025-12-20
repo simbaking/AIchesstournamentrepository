@@ -448,18 +448,24 @@ if (startForm) {
         console.log(`Duration: ${hours}h ${minutes}m = ${durationMinutes} total minutes`);
 
         if (durationMinutes <= 0) {
-            showMessage('Duration must be greater than 0', 'error');
+            showMessage('Please enter a valid duration', 'error');
             return;
         }
 
+        const allowVariants = document.getElementById('allow-variants').checked;
+
         try {
-            console.log('Sending start tournament request...');
+            console.log(`Sending start request: ${durationMinutes} minutes, allowVariants: ${allowVariants}`);
             const response = await fetch(`${API_URL}/api/start`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ durationMinutes })
+                body: JSON.stringify({
+                    durationMinutes,
+                    hours,
+                    minutes,
+                    allowVariants // Send the checkbox state
+                })
             });
-
             const data = await response.json();
             console.log('Start tournament response:', data);
 
@@ -478,16 +484,33 @@ if (startForm) {
     console.error('Start form not found!');
 }
 
-// Toggle Freestyle position ID input visibility
+// Toggle Freestyle position ID input and Kung Fu cooldown input visibility
 const offerVariantSelect = document.getElementById('offer-variant');
 const offerStartPosInput = document.getElementById('offer-start-pos');
+const offerCooldownInput = document.getElementById('offer-cooldown');
+const offerTimeControl = document.getElementById('offer-time-control');
+const offerIncrement = document.getElementById('offer-increment');
 
-if (offerVariantSelect && offerStartPosInput) {
+if (offerVariantSelect) {
     offerVariantSelect.addEventListener('change', (e) => {
-        if (e.target.value === 'freestyle') {
-            offerStartPosInput.style.display = 'block';
-        } else {
-            offerStartPosInput.style.display = 'none';
+        const isKungFu = e.target.value === 'kungfu';
+
+        // Show start position for freestyle
+        if (offerStartPosInput) {
+            offerStartPosInput.style.display = e.target.value === 'freestyle' ? 'block' : 'none';
+        }
+        // Show cooldown for kungfu
+        if (offerCooldownInput) {
+            offerCooldownInput.style.display = isKungFu ? 'block' : 'none';
+        }
+        // Grey out time controls for kungfu (not used)
+        if (offerTimeControl) {
+            offerTimeControl.disabled = isKungFu;
+            offerTimeControl.style.opacity = isKungFu ? '0.5' : '1';
+        }
+        if (offerIncrement) {
+            offerIncrement.disabled = isKungFu;
+            offerIncrement.style.opacity = isKungFu ? '0.5' : '1';
         }
     });
 }
@@ -500,15 +523,21 @@ createOfferForm.addEventListener('submit', async (e) => {
     const increment = document.getElementById('offer-increment').value;
     const variantSelect = document.getElementById('offer-variant');
     const startPosInput = document.getElementById('offer-start-pos');
+    const cooldownInput = document.getElementById('offer-cooldown');
 
     const variant = variantSelect ? variantSelect.value : 'standard';
     let startPos = 'random';
+    let cooldown = 10; // Default 10 seconds
 
     if (variant === 'freestyle' && startPosInput) {
         const val = startPosInput.value.trim();
         if (val && val.toLowerCase() !== 'random') {
             startPos = val;
         }
+    }
+
+    if (variant === 'kungfu' && cooldownInput) {
+        cooldown = parseInt(cooldownInput.value) || 10;
     }
 
     // Get selected targets
@@ -535,7 +564,8 @@ createOfferForm.addEventListener('submit', async (e) => {
                 increment,
                 targets,
                 variant,
-                startPos
+                startPos,
+                cooldown
             })
         });
 

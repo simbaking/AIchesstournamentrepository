@@ -99,6 +99,14 @@ async function updateGameState() {
             hasAutoFlipped = true;
         }
 
+        // Adjust polling for Kung Fu Chess
+        if (gameState.variant === 'kungfu' && (!window.fastPollingEnabled)) {
+            console.log('Kung Fu Chess detected: Switching to fast polling (100ms)');
+            clearInterval(updateInterval);
+            updateInterval = setInterval(updateGameState, 100);
+            window.fastPollingEnabled = true;
+        }
+
         renderGame();
         startClientTimer();
 
@@ -117,21 +125,35 @@ function renderGame() {
     whitePlayerName.textContent = gameState.player1 + (gameState.player1Elo ? ` (${gameState.player1Elo})` : '');
     blackPlayerName.textContent = gameState.player2 + (gameState.player2Elo ? ` (${gameState.player2Elo})` : '');
 
-    // Update turn indicator
-    const isMyTurn = gameState.currentPlayer === currentPlayerName;
-    turnIndicator.textContent = `${gameState.currentPlayer}'s Turn`;
+    // Kung Fu Chess: Hide timers and update turn indicator
+    const isKungFu = gameState.variant === 'kungfu';
 
-    // Highlight active player
-    document.querySelectorAll('.player').forEach(p => p.classList.remove('active'));
-    if (gameState.isWhiteTurn) {
-        document.querySelector('.white-player').classList.add('active');
+    if (isKungFu) {
+        // Hide timer displays for Kung Fu
+        document.querySelectorAll('.timer-display').forEach(el => el.style.display = 'none');
+        turnIndicator.textContent = '⚡ Kung Fu Chess - Move Anytime!';
     } else {
-        document.querySelector('.black-player').classList.add('active');
+        // Show timers for other variants
+        document.querySelectorAll('.timer-display').forEach(el => el.style.display = '');
+        // Update turn indicator
+        turnIndicator.textContent = `${gameState.currentPlayer}'s Turn`;
     }
 
-    // Update timers
-    updateTimerDisplay(whiteTimer, gameState.whiteTimeRemaining);
-    updateTimerDisplay(blackTimer, gameState.blackTimeRemaining);
+    // Highlight active player (not for Kung Fu since both can move)
+    document.querySelectorAll('.player').forEach(p => p.classList.remove('active'));
+    if (!isKungFu) {
+        if (gameState.isWhiteTurn) {
+            document.querySelector('.white-player').classList.add('active');
+        } else {
+            document.querySelector('.black-player').classList.add('active');
+        }
+    }
+
+    // Update timers (skip for Kung Fu)
+    if (!isKungFu) {
+        updateTimerDisplay(whiteTimer, gameState.whiteTimeRemaining);
+        updateTimerDisplay(blackTimer, gameState.blackTimeRemaining);
+    }
 
     // Render board
     renderBoard();
@@ -233,10 +255,33 @@ function renderBoard() {
                 }
             }
 
+            // Cooldown visualization with progress bar
+            if (gameState.cooldowns) {
+                const key = `${x},${y}`;
+                const cooldownEnd = gameState.cooldowns[key];
+                if (cooldownEnd > Date.now()) {
+                    square.classList.add('cooldown');
+
+                    // Calculate progress percentage
+                    const remainingMs = cooldownEnd - Date.now();
+                    const totalMs = gameState.cooldownMs || 10000;
+                    const progressPercent = Math.min(100, (remainingMs / totalMs) * 100);
+
+                    // Create progress overlay (fills from bottom, shrinks as cooldown completes)
+                    const progressEl = document.createElement('div');
+                    progressEl.className = 'cooldown-progress';
+                    progressEl.style.height = `${progressPercent}%`;
+                    square.appendChild(progressEl);
+                }
+            }
+
             square.addEventListener('click', () => handleSquareClick(x, y));
 
             // Drag and Drop
             square.addEventListener('dragover', handleDragOver);
+            square.addEventListener('dragenter', handleDragEnter);
+            square.addEventListener('dragleave', handleDragLeave);
+            square.addEventListener('dragend', handleDragEnd);
             square.addEventListener('drop', (e) => handleDrop(e, x, y));
 
             chessboard.appendChild(square);
@@ -245,98 +290,91 @@ function renderBoard() {
 }
 
 // Handle square click
+// Handle square click
 async function handleSquareClick(x, y) {
-    console.log(`Square clicked: (${x}, ${y})`);
-    console.log(`Game state:`, {
-        isGameOver: gameState.isGameOver,
-        currentPlayer: gameState.currentPlayer,
-        currentPlayerName: currentPlayerName,
-        isWhiteTurn: gameState.isWhiteTurn
-    });
-
     if (gameState.isGameOver) return;
 
-    // Check if the current player is a computer - if so, don't allow human interaction
-    const currentPlayerType = gameState.isWhiteTurn ? gameState.whitePlayerType : gameState.blackPlayerType;
-    if (currentPlayerType === 'computer') {
-        console.log('Computer is thinking, please wait...');
-        showMessage('Computer is thinking...', 'info');
-        return;
-    }
-
-    // Case-insensitive check for player name
-    if (gameState.currentPlayer.toLowerCase() !== currentPlayerName.toLowerCase()) {
-        console.log(`Not your turn! Current: ${gameState.currentPlayer}, You: ${currentPlayerName}`);
-        showMessage(`It is ${gameState.currentPlayer}'s turn`, 'warning');
-        return;
-    }
-
     const piece = gameState.board[x][y];
-    console.log(`Piece at (${x}, (${y}):`, piece);
+    const isMyTurn = (gameState.currentPlayer.toLowerCase() === currentPlayerName.toLowerCase());
 
+    // Turn Check (Standard Only)
+    // In Kung Fu, we don't enforce turns, but we might want to check for "Game Not Started" or similar?
+    // For now, only block if Standard and Not My Turn.
+    if (gameState.variant !== 'kungfu') {
+        // Computer check
+        const currentPlayerType = gameState.isWhiteTurn ? gameState.whitePlayerType : gameState.blackPlayerType;
+        if (currentPlayerType === 'computer') {
+            showMessage('Computer is thinking...', 'info');
+            return;
+        }
+
+        if (!isMyTurn) {
+            showMessage(`It is ${gameState.currentPlayer}'s turn`, 'warning');
+            return;
+        }
+    }
+
+    // Determine my color (assuming P1 = White)
+    const amIWhite = (gameState.player1 === currentPlayerName);
+
+    // If no piece selected yet: SELECT
     if (selectedSquare === null) {
-        // Select a piece
-        if (!piece) {
-            console.log('No piece at this square');
+        if (!piece) return;
+
+        // Verify Ownership
+        if (piece.isWhite !== amIWhite) {
+            // Cannot select opponent's piece
             return;
         }
 
-        const isWhitePiece = piece.isWhite;
-        const isWhiteTurn = gameState.isWhiteTurn;
-
-        if (isWhitePiece !== isWhiteTurn) {
-            console.log(`Wrong color! Piece is ${isWhitePiece ? 'white' : 'black'}, turn is ${isWhiteTurn ? 'white' : 'black'}`);
-            showMessage('Wrong color piece!', 'error');
-            return;
+        // Kung Fu Cooldown Check
+        if (gameState.variant === 'kungfu' && gameState.cooldowns) {
+            const key = `${x},${y}`;
+            if (gameState.cooldowns[key] > Date.now()) {
+                showMessage('Piece is recharging!', 'warning');
+                return;
+            }
         }
 
+        // Select it
         selectedSquare = { x, y };
         console.log(`Selected square: (${x}, ${y})`);
         highlightSquare(x, y);
         fetchValidMoves(x, y);
-    } else {
-        // If clicking the same square, deselect
+        return;
+    }
+
+    // If piece already selected: MOVE or DESELECT
+    else {
+        // 1. Clicked same square: Deselect
         if (selectedSquare.x === x && selectedSquare.y === y) {
             clearSelection();
             return;
         }
 
-        // If clicking another own piece, switch selection
-        if (piece && piece.isWhite === gameState.isWhiteTurn) {
+        // 2. Clicked my own piece: Switch selection
+        if (piece && piece.isWhite === amIWhite) {
             selectedSquare = { x, y };
             highlightSquare(x, y);
             fetchValidMoves(x, y);
             return;
         }
 
-        // Make a move
+        // 3. Clicked empty or opponent: Attempt Move
         console.log(`Attempting move from (${selectedSquare.x}, ${selectedSquare.y}) to (${x}, ${y})`);
 
         // Check for promotion
         const movingPiece = gameState.board[selectedSquare.x][selectedSquare.y];
-        const isPawn = movingPiece && movingPiece.type === 'pawn';
-        // Check if moving to last rank (0 for white, 7 for black)
-        // Note: y coordinate is 0-indexed from top (0) to bottom (7)
-        // But in our coordinate system, rank 0 is bottom (White start) and rank 7 is top (Black start)?
-        // Wait, let's check Board setup.
-        // Board.js: this.grid[x][y]
-        // White pawns at y=1, move to y=2, ..., y=7?
-        // Let's check Board.setupBoard in ChessGame.js (via view_file if needed, or assume standard)
-        // Standard: White at rows 0,1. Black at 6,7.
-        // So White pawns move y+1. Promotion at y=7.
-        // Black pawns move y-1. Promotion at y=0.
-        // Let's verify this assumption.
-        // In SimpleEngine.js: 
-        // const correctRank = piece.isWhite ? 3 : 4; (for en passant, rank 5/4)
-        // If White pawns start at 1 and move to 3 (2 squares), then correctRank for en passant capture is 3?
-        // Wait, if White pawns move "up" (increasing y), then rank 4 is en passant rank.
-        // Let's check Board.setupBoard.
+        if (!movingPiece) { clearSelection(); return; }
 
-        // Assuming standard internal representation:
-        // White pieces at y=0,1. Black at y=7,6.
-        // So White promotes at y=7. Black promotes at y=0.
-
-        const isPromotion = isPawn && ((movingPiece.isWhite && y === 7) || (!movingPiece.isWhite && y === 0));
+        const isPawn = movingPiece.type === 'pawn';
+        // White(starts low y=6) moves UP to 0. Promote at 0.
+        // Black(starts high y=1) moves DOWN to 7. Promote at 7.
+        // Wait! Black y=1 starts at top (Rank 7)? 
+        // If y=0 is Rank 8 (Top), then Black starts at 1. Moves to 7 (Bottom).
+        // White starts at 6. Moves to 0 (Top).
+        // So: White promotes at 0. Black promotes at 7.
+        const isPromotion = isPawn && ((movingPiece.isWhite && y === 0) || (!movingPiece.isWhite && y === 7));
 
         if (isPromotion) {
             pendingMove = { startX: selectedSquare.x, startY: selectedSquare.y, endX: x, endY: y };
@@ -349,6 +387,7 @@ async function handleSquareClick(x, y) {
         clearSelection();
     }
 }
+
 
 // Fetch valid moves
 async function fetchValidMoves(x, y) {
@@ -405,25 +444,43 @@ function handleDragStart(e, x, y) {
         return;
     }
 
-    // Check if current player is a computer
-    const currentPlayerType = gameState.isWhiteTurn ? gameState.whitePlayerType : gameState.blackPlayerType;
-    if (currentPlayerType === 'computer') {
-        e.preventDefault();
-        return;
-    }
-
     const piece = gameState.board[x][y];
-
-    // Case-insensitive check
-    if (!piece || gameState.currentPlayer.toLowerCase() !== currentPlayerName.toLowerCase()) {
+    if (!piece) {
         e.preventDefault();
         return;
     }
 
-    // Check if the piece belongs to the current player
-    if (piece.isWhite !== gameState.isWhiteTurn) {
+    // Determine if I am White
+    const amIWhite = (gameState.player1 === currentPlayerName);
+
+    // Check piece ownership - can only drag my own pieces
+    if (piece.isWhite !== amIWhite) {
         e.preventDefault();
         return;
+    }
+
+    // Kung Fu: Check cooldown instead of turn
+    if (gameState.variant === 'kungfu') {
+        if (gameState.cooldowns) {
+            const key = `${x},${y}`;
+            if (gameState.cooldowns[key] > Date.now()) {
+                e.preventDefault();
+                return; // Piece on cooldown
+            }
+        }
+    } else {
+        // Standard: Check if current player is a computer
+        const currentPlayerType = gameState.isWhiteTurn ? gameState.whitePlayerType : gameState.blackPlayerType;
+        if (currentPlayerType === 'computer') {
+            e.preventDefault();
+            return;
+        }
+
+        // Standard: Check if it's my turn
+        if (gameState.currentPlayer.toLowerCase() !== currentPlayerName.toLowerCase()) {
+            e.preventDefault();
+            return;
+        }
     }
 
     e.dataTransfer.setData('text/plain', JSON.stringify({ x, y }));
@@ -438,16 +495,44 @@ function handleDragOver(e) {
     e.dataTransfer.dropEffect = 'move';
 }
 
+function handleDragEnter(e) {
+    e.preventDefault();
+    const square = e.target.closest('.square');
+    if (square) {
+        square.classList.add('drag-over');
+    }
+}
+
+function handleDragLeave(e) {
+    const square = e.target.closest('.square');
+    if (square) {
+        square.classList.remove('drag-over');
+    }
+}
+
+function handleDragEnd(e) {
+    // Clean up all drag states
+    document.querySelectorAll('.square').forEach(sq => {
+        sq.classList.remove('dragging', 'drag-over');
+    });
+}
+
 async function handleDrop(e, x, y) {
     e.preventDefault();
+
+    // Clean up drag states
+    document.querySelectorAll('.square').forEach(sq => {
+        sq.classList.remove('dragging', 'drag-over');
+    });
+
     const data = e.dataTransfer.getData('text/plain');
     if (!data) return;
 
     const start = JSON.parse(data);
     if (start.x === x && start.y === y) return;
 
-    await makeMove(start.x, start.y, x, y);
     clearSelection();
+    await makeMove(start.x, start.y, x, y);
 }
 
 // Make a move
