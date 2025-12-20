@@ -71,6 +71,16 @@ async function updateGameState() {
 
         gameState = await response.json();
 
+        // Debug: Log variant and board setup
+        console.log('[GAME] Variant:', gameState.variant, 'StartPosId:', gameState.startPosId);
+        if (gameState.board && gameState.board[0] && gameState.board[0][7]) {
+            const whiteRank = [];
+            for (let x = 0; x < 8; x++) {
+                whiteRank.push(gameState.board[x][7]?.type || 'empty');
+            }
+            console.log('[GAME] White back rank (y=7):', whiteRank.join(', '));
+        }
+
         // Track move count to detect new moves
         const previousMoveCount = window.lastMoveCount || 0;
         const currentMoveCount = gameState.moveHistory ? gameState.moveHistory.length : 0;

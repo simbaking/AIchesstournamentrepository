@@ -69,28 +69,7 @@
             <select id="game-player2" style="display:none;">
                 <option value="">Select Player 2 (Black)</option>
             </select>
-            <!--
-            <section class="card">
-                <h2>Start Chess Game</h2>
-                <form id="game-form">
-                    <select id="time-control" required>
-                        <option value="1">1 Minute (Bullet)</option>
-                        <option value="2">2 Minutes</option>
-                        <option value="3">3 Minutes</option>
-                        <option value="5">5 Minutes (Blitz)</option>
-                        <option value="10" selected>10 Minutes (Rapid)</option>
-                        <option value="15">15 Minutes</option>
-                        <option value="30">30 Minutes</option>
-                        <option value="45">45 Minutes</option>
-                        <option value="60">60 Minutes</option>
-                        <option value="90">90 Minutes</option>
-                    </select>
-                    <input type="number" id="increment" placeholder="Increment (seconds)" min="0" value="0"
-                        style="margin-top: 10px;">
-                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Start Game</button>
-                </form>
-            </section>
-            -->
+            <!-- Start Direct Game Section Removed -->
 
             <!-- Create Game Offer Section -->
             <section class="card">
@@ -112,6 +91,13 @@
                             <option value="uscf">USCF (90/40, 30+30)</option>
                         </select>
                         <input type="number" id="offer-increment" placeholder="Inc (s)" min="0" value="0">
+
+                        <select id="offer-variant" style="width: auto;">
+                            <option value="standard" selected>Standard Chess</option>
+                            <option value="freestyle">Freestyle (Chess 960)</option>
+                        </select>
+                        <input type="text" id="offer-start-pos" placeholder="Pos ID (0-959) or Random"
+                            style="display:none;">
                     </div>
                     <div style="margin-top: 10px;">
                         <label for="offer-targets" style="display: block; margin-bottom: 5px;">Target Players (Hold

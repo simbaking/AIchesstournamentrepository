@@ -318,7 +318,7 @@ window.acceptOffer = async (offerId) => {
         const response = await fetch(`${API_URL}/api/offers/accept`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ offerId, playerName })
+            body: JSON.stringify({ offerId, player2: playerName })
         });
 
         const data = await response.json();
@@ -478,12 +478,38 @@ if (startForm) {
     console.error('Start form not found!');
 }
 
+// Toggle Freestyle position ID input visibility
+const offerVariantSelect = document.getElementById('offer-variant');
+const offerStartPosInput = document.getElementById('offer-start-pos');
+
+if (offerVariantSelect && offerStartPosInput) {
+    offerVariantSelect.addEventListener('change', (e) => {
+        if (e.target.value === 'freestyle') {
+            offerStartPosInput.style.display = 'block';
+        } else {
+            offerStartPosInput.style.display = 'none';
+        }
+    });
+}
+
 // Create Game Offer
 createOfferForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const playerName = myPlayerName; // Use local player name
+    const player1 = myPlayerName; // Use local player name
     const timeControl = document.getElementById('offer-time-control').value;
     const increment = document.getElementById('offer-increment').value;
+    const variantSelect = document.getElementById('offer-variant');
+    const startPosInput = document.getElementById('offer-start-pos');
+
+    const variant = variantSelect ? variantSelect.value : 'standard';
+    let startPos = 'random';
+
+    if (variant === 'freestyle' && startPosInput) {
+        const val = startPosInput.value.trim();
+        if (val && val.toLowerCase() !== 'random') {
+            startPos = val;
+        }
+    }
 
     // Get selected targets
     const selectedOptions = Array.from(offerTargetsSelect.selectedOptions);
@@ -494,7 +520,7 @@ createOfferForm.addEventListener('submit', async (e) => {
         targets = ['Any'];
     }
 
-    if (!playerName) {
+    if (!player1) {
         showMessage('Please register first', 'error');
         return;
     }
@@ -503,7 +529,14 @@ createOfferForm.addEventListener('submit', async (e) => {
         const response = await fetch(`${API_URL}/api/offers/create`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ playerName, timeControl, increment, targets })
+            body: JSON.stringify({
+                player1,
+                timeControl,
+                increment,
+                targets,
+                variant,
+                startPos
+            })
         });
 
         const data = await response.json();
@@ -529,13 +562,13 @@ createOfferForm.addEventListener('submit', async (e) => {
 if (gameForm) {
     gameForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const player1 = gamePlayer1Select.value;
-        const player2 = gamePlayer2Select.value;
-
+        const player1Name = document.getElementById('player1-name').value;
+        const player2Name = document.getElementById('player2-name').value;
         const timeControl = document.getElementById('time-control').value;
         const increment = document.getElementById('increment').value;
+        const isFreestyle = document.getElementById('freestyle-mode').checked;
 
-        if (player1 === player2) {
+        if (player1Name === player2Name) {
             showMessage('Players must be different', 'error');
             return;
         }
@@ -543,15 +576,23 @@ if (gameForm) {
         try {
             const response = await fetch(`${API_URL}/api/game/start`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ player1, player2, timeControl, increment })
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    player1: player1Name,
+                    player2: player2Name,
+                    timeControl: parseInt(timeControl),
+                    increment: parseInt(increment),
+                    variant: isFreestyle ? 'freestyle' : 'standard'
+                })
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                window.open(`game.html?gameId=${data.gameId}&player=${player1}`, '_blank');
-                const p2Link = `game.html?gameId=${data.gameId}&player=${player2}`;
+                window.open(`game.html?gameId=${data.gameId}&player=${player1Name}`, '_blank');
+                const p2Link = `game.html?gameId=${data.gameId}&player=${player2Name}`;
                 showMessage(`Game started! Player 1 tab opened. <a href="${p2Link}" target="_blank">Open Player 2 View</a>`, 'success');
             } else {
                 showMessage(data.error, 'error');

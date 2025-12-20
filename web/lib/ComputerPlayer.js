@@ -26,6 +26,7 @@ class ComputerPlayer {
         this.lastHeartbeat = Date.now();
         this.isTerminating = false;
         this.simpleEngine = null;
+        this.chess960Mode = false;  // Chess960 (Freestyle) mode flag
 
         // Use SimpleEngine for level -1 and 0
         if (level <= 0) {
@@ -202,6 +203,17 @@ class ComputerPlayer {
     setSkillLevel(level) {
         const skill = Math.max(0, Math.min(20, level));
         this.sendCommand(`setoption name Skill Level value ${skill}`);
+    }
+
+    /**
+     * Enable or disable Chess960 (Fischer Random) mode
+     * Must be called before sending position commands
+     */
+    setChess960Mode(enabled) {
+        this.chess960Mode = enabled;
+        const value = enabled ? 'true' : 'false';
+        console.log(`[COMPUTER] Setting UCI_Chess960 to ${value}`);
+        this.sendCommand(`setoption name UCI_Chess960 value ${value}`);
     }
 
     /**

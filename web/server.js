@@ -10,7 +10,17 @@ const PORT = 3000;
 
 // Middleware
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Static files with cache-busting headers (prevents browser caching issues)
+app.use(express.static(path.join(__dirname, 'public'), {
+    etag: false,
+    maxAge: 0,
+    setHeaders: (res, filePath) => {
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
+    }
+}));
 
 // Global tournament instance
 const tournament = new Tournament();
@@ -32,7 +42,7 @@ const tournamentAI = new TournamentAI(tournament);
 const HUMAN_PRIORITY_DELAY = 10000; // 10 seconds
 
 // Helper to create and start a game
-function createGame(player1Name, player2Name, timeControlMinutes, incrementSeconds = 0, timeStages = []) {
+function createGame(player1Name, player2Name, timeControlMinutes, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random') {
     console.log(`Creating game between ${player1Name} and ${player2Name}`);
 
     const p1 = tournament.getPlayerByName(player1Name);
@@ -82,7 +92,7 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
         }
     };
 
-    const game = new ChessGame(player1Name, player2Name, gameId, timeControlMinutes, handleGameEnd, incrementSeconds, timeStages);
+    const game = new ChessGame(player1Name, player2Name, gameId, timeControlMinutes, handleGameEnd, incrementSeconds, timeStages, variant, startPos);
 
     if (p1.isComputerPlayer()) {
         game.setPlayerType('white', 'computer', p1.getLevel());
@@ -323,7 +333,7 @@ app.post('/api/start', (req, res) => {
                         if (evalResult.shouldAccept) {
                             console.log(`Auto-accept: ${bot.getName()} accepting offer from ${offer.player} (Reason: ${evalResult.reason})`);
 
-                            createGame(offer.player, bot.getName(), offer.timeControl, offer.increment, offer.timeStages);
+                            createGame(offer.player, bot.getName(), offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos);
                             gameOffers.splice(i, 1);
 
                             // Remove other offers from these players
@@ -394,14 +404,17 @@ app.post('/api/result', (req, res) => {
 // Game Offer Routes
 
 // Create a game offer
+// Create a new game offer
 app.post('/api/offers/create', (req, res) => {
-    const { playerName, timeControl, increment, targets } = req.body;
+    const { player1, timeControl, increment, targets, variant, startPos } = req.body;
 
-    if (!playerName || !timeControl) {
+    console.log(`[OFFER_CREATE] Received: player1=${player1}, variant=${variant}, startPos=${startPos}`);
+
+    if (!player1 || !timeControl) {
         return res.status(400).json({ error: 'Player name and time control required' });
     }
 
-    const player = tournament.getPlayerByName(playerName);
+    const player = tournament.getPlayerByName(player1);
     if (!player) {
         return res.status(400).json({ error: 'Player not found' });
     }
@@ -410,48 +423,47 @@ app.post('/api/offers/create', (req, res) => {
         return res.status(400).json({ error: 'Player is currently in a game' });
     }
 
-    // Create offer (Auto-accept is now handled by background loop with delay)
+    // config parse
     const config = parseTimeControl(timeControl, increment);
 
     const offer = {
         id: offerIdCounter++,
-        player: playerName,
+        player: player1,
         timeControl: config.minutes,
         increment: config.increment,
         timeStages: config.stages,
-        originalInput: timeControl, // Store for UI/Debugging
-        targets: targets || [], // Array of allowed player names. Empty = Any
-        timestamp: Date.now()
+        targets: targets || ['Any'],
+        timestamp: Date.now(),
+        variant: variant || 'standard',
+        startPos: startPos || 'random'
     };
 
     gameOffers.push(offer);
-    res.json({ success: true, gameStarted: false, offerId: offer.id, message: 'Offer created' });
+    res.json({ success: true, gameStarted: false, offerId: offer.id, message: 'Offer created', offer: offer });
 });
 
 // Accept a game offer
 app.post('/api/offers/accept', (req, res) => {
-    const { offerId, playerName } = req.body;
+    const { offerId, player2 } = req.body; // Renamed playerName to player2
 
-    const offerIndex = gameOffers.findIndex(o => o.id === parseInt(offerId));
+    const offerIndex = gameOffers.findIndex(o => o.id === parseInt(offerId)); // Used gameOffers and parseInt to match existing structure
     if (offerIndex === -1) {
         return res.status(404).json({ error: 'Offer not found' });
     }
 
     const offer = gameOffers[offerIndex];
 
-    if (offer.player === playerName) {
+    if (offer.player === player2) { // Used offer.player to match existing structure
         return res.status(400).json({ error: 'Cannot accept your own offer' });
     }
 
-    // Validate targets
-    if (offer.targets && offer.targets.length > 0 && !offer.targets.includes('Any')) {
-        if (!offer.targets.includes(playerName)) {
-            return res.status(403).json({ error: 'You are not targeted for this offer' });
-        }
+    // Check if player2 is allowed
+    if (!offer.targets.includes('Any') && !offer.targets.includes(player2)) {
+        return res.status(403).json({ error: 'You are not eligible to accept this offer' });
     }
 
-    const creator = tournament.getPlayerByName(offer.player);
-    const acceptor = tournament.getPlayerByName(playerName);
+    const creator = tournament.getPlayerByName(offer.player); // Used offer.player
+    const acceptor = tournament.getPlayerByName(player2); // Used player2
 
     if (!creator || !acceptor) {
         return res.status(400).json({ error: 'Player not found' });
@@ -464,17 +476,17 @@ app.post('/api/offers/accept', (req, res) => {
     // Start game with random colors
     // 50% chance for offer creator to be White (Player 1)
     const isRandom = Math.random() < 0.5;
-    const p1Name = isRandom ? offer.player : playerName;
-    const p2Name = isRandom ? playerName : offer.player;
+    const p1Name = isRandom ? offer.player : player2;
+    const p2Name = isRandom ? player2 : offer.player;
 
     console.log(`Creating game: ${p1Name} (White) vs ${p2Name} (Black)`);
-    const result = createGame(p1Name, p2Name, offer.timeControl, offer.increment, offer.timeStages);
+    const result = createGame(p1Name, p2Name, offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos);
 
     // Remove offer
     gameOffers.splice(offerIndex, 1);
 
     // Remove other offers from these players
-    gameOffers = gameOffers.filter(o => o.player !== offer.player && o.player !== playerName);
+    gameOffers = gameOffers.filter(o => o.player !== offer.player && o.player !== player2);
 
     res.json({ success: true, gameId: result.gameId, message: 'Game started' });
 });
@@ -483,17 +495,6 @@ app.post('/api/offers/accept', (req, res) => {
 
 // Start a new game
 app.post('/api/game/start', (req, res) => {
-    const { player1, player2, timeControl, increment } = req.body;
-
-    const config = parseTimeControl(timeControl, increment);
-    // config has { minutes, increment, stages }
-
-    const result = createGame(player1, player2, config.minutes, config.increment, config.stages);
-
-    if (!result.success) {
-        return res.status(400).json({ error: result.error });
-    }
-
     res.json(result);
 });
 
