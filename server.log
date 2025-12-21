@@ -1,0 +1,1096 @@
+Chess Tournament Server running on http://localhost:3000
+Register request: testuser, isComputer: false, level: null
+Player registered: testuser
+Register request: bot1, isComputer: true, level: 10
+Player registered: bot1
+Start tournament request: 65 minutes
+Tournament started! Duration: 3900000ms, Allow Variants: true
+Auto-offer: bot1 offering 5m+10s (Targeting: testuser)
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 64.7m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 64.5m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 63.7m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 63.5m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 63.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 63.0m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 62.7m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 62.5m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 62.3m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 62.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 61.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 61.1m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 60.3m, ActiveGames: 0, Offers: 1
+[OFFER_CREATE] Received: player1=testuser, variant=kungfu, startPos=random
+[Matchmaking] 0 idle computers, 2 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 60.2m, ActiveGames: 0, Offers: 2
+[MONITOR] Running: true, Remaining: 60.2m, ActiveGames: 0, Offers: 2
+[Matchmaking] 0 idle computers, 2 active offers, 2 available players
+[Matchmaking] 0 idle computers, 2 active offers, 2 available players
+Auto-accept: bot1 accepting offer from testuser (Reason: Good value: 181564 pts/min, 100% win / 0% draw)
+Creating game between testuser and bot1
+[ChessGame] Constructor called with variant: "kungfu", startPos: "random"
+[ChessGame] Standard mode, using setupBoard()
+[COMPUTER] Initializing Stockfish level 10
+[SF_WORKER] Starting...
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Stockfish ready
+[SF_WORKER] Stockfish loaded
+[SF_WORKER] Ready
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 59.9m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 59.7m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 59.6m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 59.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 59.2m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 59.1m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 58.9m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 58.6m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 58.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 58.1m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 58.1m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 58.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 57.6m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 57.2m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 57.1m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 56.6m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 56.4m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 56.3m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 56.1m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 55.6m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 55.0m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 55.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 54.6m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 54.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 54.3m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 54.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 53.9m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 53.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 53.2m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 53.0m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 53.0m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 53.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 52.9m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 52.9m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 52.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 51.6m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 51.6m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 51.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 51.1m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 51.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 50.4m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 50.1m, ActiveGames: 1, Offers: 0
+Game game_1 ended. Winner: bot1, Reason: timeout
+testuser ELO: 400 → 400 (+0)
+bot1 wins! Gets 1536434 ms (3× duration × 0.76 rank × 1.12 opponent × 1.00 duration = ×0.85)
+[GAME] Terminating Black Computer
+[Matchmaking] 1 idle computers, 0 active offers, 2 available players
+[Matchmaking] 1 idle computers, 0 active offers, 2 available players
+Auto-offer: bot1 offering 5m+10s (Targeting: testuser)
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 49.7m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 49.4m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 49.1m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 48.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 47.9m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 47.8m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 47.7m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 47.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 47.2m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 47.0m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 46.8m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 46.6m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[OFFER_CREATE] Received: player1=testuser, variant=kungfu, startPos=random
+[MONITOR] Running: true, Remaining: 46.3m, ActiveGames: 0, Offers: 2
+[Matchmaking] 0 idle computers, 2 active offers, 2 available players
+[Matchmaking] 0 idle computers, 2 active offers, 2 available players
+[Matchmaking] 0 idle computers, 2 active offers, 2 available players
+Auto-accept: bot1 accepting offer from testuser (Reason: Good value: 181564 pts/min, 100% win / 0% draw)
+Creating game between testuser and bot1
+[ChessGame] Constructor called with variant: "kungfu", startPos: "random"
+[ChessGame] Standard mode, using setupBoard()
+[COMPUTER] Initializing Stockfish level 10
+[SF_WORKER] Starting...
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Stockfish ready
+[SF_WORKER] Stockfish loaded
+[SF_WORKER] Ready
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 45.9m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 45.8m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 45.4m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 45.3m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 44.8m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 44.7m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 44.6m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 44.2m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 44.1m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 44.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 43.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 43.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 43.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 42.9m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 42.8m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 42.7m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 42.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 41.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 41.3m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 41.3m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 41.2m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 40.6m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 40.2m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 39.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 38.4m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 37.3m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 37.1m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 36.9m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 36.5m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 36.5m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 36.3m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 36.2m, ActiveGames: 1, Offers: 0
+Game game_2 ended. Winner: bot1, Reason: timeout
+testuser ELO: 400 → 400 (+0)
+bot1 wins! Gets 1537387 ms (3× duration × 0.76 rank × 1.12 opponent × 1.00 duration = ×0.85)
+[GAME] Terminating Black Computer
+Auto-offer: bot1 offering 3m+5s (Targeting: testuser)
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 36.0m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 35.8m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 35.4m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 35.1m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 35.1m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 34.6m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 34.5m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 34.3m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 34.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 33.9m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 33.6m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 32.4m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 32.4m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+Creating game: testuser (White) vs bot1 (Black)
+Creating game between testuser and bot1
+[ChessGame] Constructor called with variant: "standard", startPos: "random"
+[ChessGame] Standard mode, using setupBoard()
+[COMPUTER] Initializing Stockfish level 10
+[SF_WORKER] Starting...
+[COMPUTER] Stockfish ready
+[SF_WORKER] Stockfish loaded
+[SF_WORKER] Ready
+[MONITOR] Running: true, Remaining: 32.1m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 31.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 30.9m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 30.6m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 30.1m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 30.1m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 30.1m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 29.6m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+Game game_3 ended. Winner: bot1, Reason: timeout
+testuser ELO: 400 → 400 (+0)
+bot1 wins! Gets 460248 ms (3× duration × 0.76 rank × 1.12 opponent × 1.00 duration = ×0.85)
+[GAME] Terminating Black Computer
+[MONITOR] Running: true, Remaining: 29.2m, ActiveGames: 0, Offers: 0
+Auto-offer: bot1 offering 3m+5s (Targeting: testuser)
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 29.0m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+Creating game: bot1 (White) vs testuser (Black)
+Creating game between bot1 and testuser
+[ChessGame] Constructor called with variant: "standard", startPos: "random"
+[ChessGame] Standard mode, using setupBoard()
+[COMPUTER] Initializing Stockfish level 10
+Starting game with Computer as White: game_4
+startGame called. White: computer, Black: human
+Scheduling computer move. Delay: 1438, Budget: 5400, Level: 10
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[SF_WORKER] Starting...
+Timeout fired. Calling getBestMove...
+[COMPUTER] Not ready, using SimpleEngine fallback
+Computer found best move: g2g4, evaluation: 0
+[DEBUG_MAKE_MOVE] Player: bot1, P1: bot1, isWhite: true, Piece: pawn, PieceIsWhite: true, Coords: 6,6
+Error in getMinimaxMove: TypeError: this.isMoveLegal is not a function
+    at ChessGame.makeMove (/Users/chang/Anitgravity/chess/web/lib/ChessGame.js:716:48)
+    at /Users/chang/Anitgravity/chess/web/lib/ChessGame.js:520:26
+    at SimpleEngine.getMinimaxMove (/Users/chang/Anitgravity/chess/web/lib/SimpleEngine.js:326:17)
+    at ComputerPlayer.getBestMove (/Users/chang/Anitgravity/chess/web/lib/ComputerPlayer.js:240:20)
+    at Timeout._onTimeout (/Users/chang/Anitgravity/chess/web/lib/ChessGame.js:493:26)
+    at listOnTimeout (node:internal/timers:569:17)
+    at process.processTimers (node:internal/timers:512:7)
+Computer found best move: null, evaluation: 0
+Computer failed to find a move!
+[MONITOR] Running: true, Remaining: 28.7m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[SF_WORKER] Stockfish loaded
+[SF_WORKER] Ready
+[COMPUTER] Stockfish ready
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 27.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 27.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 26.9m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 26.8m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[OFFER_CREATE] Received: player1=testuser, variant=standard, startPos=random
+[MONITOR] Running: true, Remaining: 26.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 26.3m, ActiveGames: 1, Offers: 0
+Tournament state reset.
+Tournament reset via API
+Register request: testuser, isComputer: false, level: null
+Player registered: testuser
+[OFFER_CREATE] Received: player1=testuser, variant=standard, startPos=random
+Register request: testuser2, isComputer: true, level: 10
+Player registered: testuser2
+Start tournament request: 5 minutes
+Tournament started! Duration: 300000ms, Allow Variants: true
+Auto-accept: testuser2 accepting offer from testuser (Reason: Good value: 181564 pts/min, 100% win / 0% draw)
+Creating game between testuser and testuser2
+[ChessGame] Constructor called with variant: "standard", startPos: "random"
+[ChessGame] Standard mode, using setupBoard()
+[COMPUTER] Initializing Stockfish level 10
+[SF_WORKER] Starting...
+[COMPUTER] Stockfish ready
+[SF_WORKER] Stockfish loaded
+[SF_WORKER] Ready
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 4.6m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 4.4m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 4.2m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 4.1m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 3.7m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 3.6m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 3.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 3.5m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 3.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 2.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 2.4m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 2.3m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 2.1m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 1.9m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 1.8m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 0.8m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 0.3m, ActiveGames: 1, Offers: 0
+[MONITOR] Running: true, Remaining: 0.2m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+Tournament time expired!
+Tournament ended. Terminating all active games...
+Ending game game_5: testuser (600000ms) vs testuser2 (600000ms). Winner: Draw
+Game game_5 ended. Winner: null, Reason: tournament_timeout
+testuser ELO: 400 → 480 (+80)
+Draw! testuser gets 264040 ms (×0.88 rank ×1.00 duration)
+testuser2 gets 228035 ms (×0.76 rank ×1.00 duration)
+[GAME] Terminating Black Computer
+Register request: testplayer1, isComputer: false, level: null
+Tournament state reset.
+Tournament reset via API
+Register request: testplayer1, isComputer: false, level: null
+Player registered: testplayer1
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Register request: testplayer1, isComputer: false, level: null
+Player registered: testplayer1
+Tournament state reset.
+Tournament reset via API
+Register request: testplayer1, isComputer: false, level: null
+Player registered: testplayer1
+Tournament state reset.
+Tournament reset via API
+Register request: testplayer1, isComputer: false, level: null
+Player registered: testplayer1
+[OFFER_CREATE] Received: player1=testplayer1, variant=standard, startPos=random
+Tournament state reset.
+Tournament reset via API
+Register request: testplayer2, isComputer: false, level: null
+Player registered: testplayer2
+Tournament state reset.
+Tournament reset via API
+Register request: testplayer2, isComputer: false, level: null
+Player registered: testplayer2
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Start tournament request: 5 minutes
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Register request: testplayer2, isComputer: false, level: null
+Player registered: testplayer2
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Register request: testplayer2, isComputer: false, level: null
+Player registered: testplayer2
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Tournament state reset.
+Tournament reset via API
+Register request: P1, isComputer: false, level: undefined
+Player registered: P1
+Register request: P2, isComputer: true, level: 0
+Player registered: P2
+Start tournament request: 60 minutes
+Tournament started! Duration: 3600000ms, Allow Variants: true
+[OFFER_CREATE] Received: player1=P1, variant=kungfu, startPos=default
+Creating game: P1 (White) vs P2 (Black)
+Creating game between P1 and P2
+[ChessGame] Constructor called with variant: "kungfu", startPos: "default"
+[ChessGame] Standard mode, using setupBoard()
+Move request for game game_6: 4,6 -> 4,4 by P1 (promo: undefined)
+[DEBUG_MAKE_MOVE] Player: P1, P1: P1, isWhite: true, Piece: pawn, PieceIsWhite: true, Coords: 4,6
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 823ms
+Move result: { success: true }
+Move request for game game_6: 4,1 -> 4,3 by P2 (promo: undefined)
+[DEBUG_MAKE_MOVE] Player: P2, P1: P1, isWhite: false, Piece: pawn, PieceIsWhite: false, Coords: 4,1
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+Move result: { success: true }
+[DEBUG_MAKE_MOVE] Player: P1, P1: P1, isWhite: true, Piece: pawn, PieceIsWhite: false, Coords: 5,1
+[COMPUTER] Invalid move f7f5: undefined. Retrying...
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 59.7m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 59.2m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 59.1m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 59.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 59.0m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 58.8m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 58.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+Tournament state reset.
+Tournament reset via API
+Register request: hwan, isComputer: false, level: null
+Player registered: hwan
+Register request: cpu1, isComputer: true, level: 1
+Player registered: cpu1
+Start tournament request: 5 minutes
+Tournament started! Duration: 300000ms, Allow Variants: true
+[Matchmaking] 1 idle computers, 0 active offers, 2 available players
+Auto-offer: cpu1 offering 1m+0s (Targeting: hwan)
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[OFFER_CREATE] Received: player1=hwan, variant=kungfu, startPos=random
+[Matchmaking] 0 idle computers, 2 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 4.7m, ActiveGames: 0, Offers: 2
+[Matchmaking] 0 idle computers, 2 active offers, 2 available players
+Auto-accept: cpu1 accepting offer from hwan (Reason: Good value: 163651 pts/min, 91% win / 0% draw)
+Creating game between hwan and cpu1
+[ChessGame] Constructor called with variant: "kungfu", startPos: "random"
+[ChessGame] Standard mode, using setupBoard()
+[COMPUTER] Initializing Stockfish level 1
+[SF_WORKER] Starting...
+[COMPUTER] Stockfish ready
+[SF_WORKER] Stockfish loaded
+[SF_WORKER] Ready
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+Move request for game game_7: 4,6 -> 4,4 by hwan (promo: queen)
+[DEBUG_MAKE_MOVE] Player: hwan, P1: hwan, isWhite: true, Piece: pawn, PieceIsWhite: true, Coords: 4,6
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 1041ms
+Move result: { success: true }
+[COMPUTER] Level 1, remaining: 60000ms, consistency: 240ms
+[COMPUTER] Bestmove: e7e6, eval: 15, took: 1548ms
+[COMPUTER] Bestmove: e7e5, eval: -26, took: 278ms
+[COMPUTER] Bestmove: d7d5, eval: -36, took: 270ms
+[COMPUTER] Bestmove: d7d5, eval: -25, took: 250ms
+[COMPUTER] Consistent move 'd7d5' after 2346ms. Waiting 5865ms before returning move
+[MONITOR] Running: true, Remaining: 4.5m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[DEBUG_MAKE_MOVE] Player: cpu1, P1: hwan, isWhite: false, Piece: pawn, PieceIsWhite: false, Coords: 3,1
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+Move request for game game_7: 2,6 -> 2,5 by hwan (promo: queen)
+[DEBUG_MAKE_MOVE] Player: hwan, P1: hwan, isWhite: true, Piece: pawn, PieceIsWhite: true, Coords: 2,6
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 1017ms
+Move result: { success: true }
+[COMPUTER] Level 1, remaining: 60000ms, consistency: 240ms
+[COMPUTER] Bestmove: b8c6, eval: 188, took: 360ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Bestmove: c7c5, eval: 163, took: 266ms
+[COMPUTER] Bestmove: d5e4, eval: 135, took: 270ms
+[COMPUTER] Bestmove: e7e5, eval: 150, took: 290ms
+[COMPUTER] Bestmove: e7e5, eval: 118, took: 253ms
+[COMPUTER] Consistent move 'e7e5' after 1439ms. Waiting 3597ms before returning move
+[DEBUG_MAKE_MOVE] Player: cpu1, P1: hwan, isWhite: false, Piece: pawn, PieceIsWhite: false, Coords: 4,1
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 4.2m, ActiveGames: 1, Offers: 0
+Move request for game game_7: 6,6 -> 6,4 by hwan (promo: queen)
+[DEBUG_MAKE_MOVE] Player: hwan, P1: hwan, isWhite: true, Piece: pawn, PieceIsWhite: true, Coords: 6,6
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 936ms
+Move result: { success: true }
+[MONITOR] Running: true, Remaining: 4.2m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Level 1, remaining: 60000ms, consistency: 240ms
+[COMPUTER] Bestmove: d5d4, eval: 227, took: 280ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Bestmove: b8c6, eval: 233, took: 257ms
+[COMPUTER] Bestmove: h7h6, eval: 248, took: 263ms
+[COMPUTER] Bestmove: d5e4, eval: 224, took: 251ms
+[COMPUTER] Bestmove: d5e4, eval: 222, took: 255ms
+[COMPUTER] Consistent move 'd5e4' after 1306ms. Waiting 3265ms before returning move
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+black offered a draw
+[DEBUG_MAKE_MOVE] Player: cpu1, P1: hwan, isWhite: false, Piece: pawn, PieceIsWhite: false, Coords: 3,3
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+Move request for game game_7: 2,5 -> 2,4 by hwan (promo: queen)
+[DEBUG_MAKE_MOVE] Player: hwan, P1: hwan, isWhite: true, Piece: pawn, PieceIsWhite: true, Coords: 2,5
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 814ms
+Move result: { success: true }
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Level 1, remaining: 60000ms, consistency: 240ms
+[COMPUTER] Bestmove: d8h4, eval: 419, took: 250ms
+[COMPUTER] Bestmove: h7h5, eval: 466, took: 257ms
+[COMPUTER] Bestmove: h7h5, eval: 507, took: 246ms
+[COMPUTER] Consistent move 'h7h5' after 753ms. Waiting 1882ms before returning move
+black resigned. Winner: hwan
+Game game_7 ended. Winner: hwan, Reason: resignation
+hwan ELO: 400 → 419 (+19)
+hwan wins! Gets 126775 ms (3× duration × 0.88 rank × 1.24 opponent × 1.00 duration = ×1.09)
+[GAME] Terminating Black Computer
+[GAME] Terminating Black Computer
+Auto-offer: cpu1 offering 1m+0s (Targeting: hwan)
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 3.9m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 3.4m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 3.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 2.9m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 2.0m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 1.1m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 0.7m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 0.7m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+Tournament time expired!
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1

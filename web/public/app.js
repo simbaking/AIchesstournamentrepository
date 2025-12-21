@@ -87,6 +87,15 @@ function showMessage(text, type = 'success') {
     }, 5000);
 }
 
+// Toggle variant selection panel based on Allow Variants checkbox
+const allowVariantsCheckbox = document.getElementById('allow-variants');
+const variantSelectionPanel = document.getElementById('variant-selection');
+if (allowVariantsCheckbox && variantSelectionPanel) {
+    allowVariantsCheckbox.addEventListener('change', () => {
+        variantSelectionPanel.style.display = allowVariantsCheckbox.checked ? 'block' : 'none';
+    });
+}
+
 // Format time
 function formatTime(totalMs) {
     const hours = Math.floor(totalMs / 3600000);
@@ -263,6 +272,9 @@ function updateOpenOffers(offers) {
 
         const playerDisplay = formatPlayerName(offer.player);
 
+        // Variant badge
+        const variantBadge = getVariantBadge(offer.variant);
+
         // Determine if we can accept
         let actionHtml = '';
         if (!myPlayerName) {
@@ -289,6 +301,7 @@ function updateOpenOffers(offers) {
                 <div style="flex: 1;">
                     <strong>${playerDisplay}</strong> wants to play 
                     <span class="score">${timeText}</span>
+                    ${variantBadge}
                     <br><small style="color: var(--text-muted);">Target: ${targetText}</small>
                 </div>
                 <div style="display: flex; gap: 5px; align-items: center;">
@@ -297,6 +310,22 @@ function updateOpenOffers(offers) {
             </div>
         `;
     }).join('');
+}
+
+// Get variant badge HTML
+function getVariantBadge(variant) {
+    if (!variant || variant === 'standard') {
+        return '';
+    }
+
+    const badges = {
+        'freestyle': { text: '♟️ 960', color: '#3b82f6' },
+        'kungfu': { text: '⚡ Kung Fu', color: '#ff4500' },
+        'crazyhouse': { text: '🏠 Crazy', color: '#9333ea' }
+    };
+
+    const badge = badges[variant] || { text: variant, color: '#666' };
+    return `<span class="variant-badge" style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: ${badge.color}; color: white; margin-left: 5px;">${badge.text}</span>`;
 }
 
 // Accept offer handler (global scope for onclick)
@@ -366,12 +395,16 @@ async function updateActiveGames() {
                 const p1Class = game.currentPlayer === game.player1 && !game.isGameOver ? 'style="font-weight: bold; color: var(--primary);"' : '';
                 const p2Class = game.currentPlayer === game.player2 && !game.isGameOver ? 'style="font-weight: bold; color: var(--primary);"' : '';
 
+                // Variant badge for active games
+                const variantBadge = getVariantBadge(game.variant);
+
                 return `
                     <div class="player-item" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
                         <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
                             <span>
                                 ${statusIcon} <span ${p1Class}>${p1Display}</span> vs <span ${p2Class}>${p2Display}</span> 
                                 <small style="color: var(--text-muted); margin-left: 0.5rem;">${timeControlText}</small>
+                                ${variantBadge}
                             </span>
                             <span class="score">
                                 <a href="game.html?gameId=${game.gameId}&player=${game.player1}" target="_blank" style="color: var(--accent); text-decoration: none;">
@@ -454,8 +487,22 @@ if (startForm) {
 
         const allowVariants = document.getElementById('allow-variants').checked;
 
+        // Collect specific allowed variants
+        const allowedVariants = ['standard']; // Standard is always allowed
+        if (allowVariants) {
+            if (document.getElementById('allow-freestyle')?.checked) {
+                allowedVariants.push('freestyle');
+            }
+            if (document.getElementById('allow-kungfu')?.checked) {
+                allowedVariants.push('kungfu');
+            }
+            if (document.getElementById('allow-crazyhouse')?.checked) {
+                allowedVariants.push('crazyhouse');
+            }
+        }
+
         try {
-            console.log(`Sending start request: ${durationMinutes} minutes, allowVariants: ${allowVariants}`);
+            console.log(`Sending start request: ${durationMinutes} minutes, allowedVariants: ${allowedVariants}`);
             const response = await fetch(`${API_URL}/api/start`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -463,7 +510,8 @@ if (startForm) {
                     durationMinutes,
                     hours,
                     minutes,
-                    allowVariants // Send the checkbox state
+                    allowVariants,
+                    allowedVariants // Send specific allowed variants
                 })
             });
             const data = await response.json();

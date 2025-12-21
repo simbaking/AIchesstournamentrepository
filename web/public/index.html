@@ -51,7 +51,23 @@
                     </div>
                     <div style="margin: 10px 0; display: flex; align-items: center;">
                         <input type="checkbox" id="allow-variants" checked style="width: auto; margin-right: 5px;">
-                        <label for="allow-variants">Allow Variants (Chess 960, etc.)</label>
+                        <label for="allow-variants">Allow Variants</label>
+                    </div>
+                    <div id="variant-selection"
+                        style="margin-left: 20px; margin-bottom: 10px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                        <div style="margin-bottom: 5px; display: flex; align-items: center;">
+                            <input type="checkbox" id="allow-freestyle" checked style="width: auto; margin-right: 5px;">
+                            <label for="allow-freestyle">♟️ Freestyle (Chess 960)</label>
+                        </div>
+                        <div style="margin-bottom: 5px; display: flex; align-items: center;">
+                            <input type="checkbox" id="allow-kungfu" checked style="width: auto; margin-right: 5px;">
+                            <label for="allow-kungfu">⚡ Kung Fu Chess (Real-time)</label>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox" id="allow-crazyhouse" checked
+                                style="width: auto; margin-right: 5px;">
+                            <label for="allow-crazyhouse">🏠 Crazyhouse (Drops)</label>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-success">Start Tournament</button>
                 </form>
@@ -100,6 +116,7 @@
                             <option value="standard" selected>Standard Chess</option>
                             <option value="freestyle">Freestyle (Chess 960)</option>
                             <option value="kungfu">Kung Fu (Real-time)</option>
+                            <option value="crazyhouse">Crazyhouse (Drops)</option>
                         </select>
                         <input type="text" id="offer-start-pos" placeholder="Pos ID (0-959) or Random"
                             style="display:none;">

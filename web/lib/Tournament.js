@@ -7,6 +7,7 @@ class Tournament {
         this.startTime = null;
         this.durationLimit = 0;
         this.allowVariants = true;
+        this.allowedVariants = ['standard', 'freestyle', 'kungfu']; // Specific allowed variants
     }
 
     registerPlayer(name, isComputer = false, level = null) {
@@ -17,12 +18,13 @@ class Tournament {
         return this.players;
     }
 
-    startTournament(durationMillis, allowVariants = true) {
+    startTournament(durationMillis, allowVariants = true, allowedVariants = ['standard', 'freestyle', 'kungfu']) {
         this.startTime = Date.now();
         this.durationLimit = durationMillis;
         this.allowVariants = allowVariants;
+        this.allowedVariants = allowedVariants;
         this.isRunning = true;
-        console.log(`Tournament started! Duration: ${durationMillis}ms, Allow Variants: ${allowVariants}`);
+        console.log(`Tournament started! Duration: ${durationMillis}ms, Allow Variants: ${allowVariants}, Allowed: ${allowedVariants.join(', ')}`);
     }
 
     checkIsRunning() {
@@ -108,13 +110,32 @@ class Tournament {
     }
 
     /**
+     * Get variant multiplier - bonus for playing non-standard variants
+     * Formula: Y = 1 + ((4 * x^2) / 125) where x is duration in hours
+     * Capped at 2.5 hours (max multiplier ~1.2)
+     * Standard games return 1.0 (no bonus)
+     * Variants (freestyle, kungfu, future variants) get the calculated bonus
+     */
+    getVariantMultiplier(durationMs, variant) {
+        // Standard games get no bonus
+        if (!variant || variant === 'standard') {
+            return 1.0;
+        }
+
+        // All non-standard variants get the same multiplier
+        const durationHours = Math.min(durationMs / 3600000, 2.5); // Cap at 2.5 hours
+        return 1 + ((4 * Math.pow(durationHours, 2)) / 125);
+    }
+
+    /**
      * Record game result with ELO adjustments and score multipliers
      * @param {string} player1Name - First player name
      * @param {string} player2Name - Second player name
      * @param {string|null} winnerName - Winner name, or null for draw
      * @param {number} duration - Game duration in milliseconds
+     * @param {string} variant - Game variant (standard, freestyle, kungfu, etc.)
      */
-    recordGameResult(player1Name, player2Name, winnerName, duration) {
+    recordGameResult(player1Name, player2Name, winnerName, duration, variant = 'standard') {
         const p1 = this.getPlayerByName(player1Name);
         const p2 = this.getPlayerByName(player2Name);
 
@@ -127,6 +148,7 @@ class Tournament {
 
         // 1. Calculate Score Multipliers (BEFORE ELO updates)
         const durationMult = this.getDurationMultiplier(duration);
+        const variantMult = this.getVariantMultiplier(duration, variant);
         let p1Points = 0;
         let p2Points = 0;
         let p1Log = '';
@@ -136,27 +158,27 @@ class Tournament {
             const p1RankMult = this.getRankMultiplier(p1);
             const p2RankMult = this.getRankMultiplier(p2);
 
-            p1Points = Math.round(duration * p1RankMult * durationMult);
-            p2Points = Math.round(duration * p2RankMult * durationMult);
+            p1Points = Math.round(duration * p1RankMult * durationMult * variantMult);
+            p2Points = Math.round(duration * p2RankMult * durationMult * variantMult);
 
-            p1Log = `Draw! ${p1.getName()} gets ${p1Points} ms (×${p1RankMult} rank ×${durationMult.toFixed(2)} duration)`;
-            p2Log = `${p2.getName()} gets ${p2Points} ms (×${p2RankMult} rank ×${durationMult.toFixed(2)} duration)`;
+            p1Log = `Draw! ${p1.getName()} gets ${p1Points} ms (×${p1RankMult} rank ×${durationMult.toFixed(2)} duration ×${variantMult.toFixed(2)} variant)`;
+            p2Log = `${p2.getName()} gets ${p2Points} ms (×${p2RankMult} rank ×${durationMult.toFixed(2)} duration ×${variantMult.toFixed(2)} variant)`;
         } else {
             const winner = this.getPlayerByName(winnerName);
             const loser = winner === p1 ? p2 : p1;
 
             const rankMult = this.getRankMultiplier(winner);
             const opponentMult = this.getOpponentMultiplier(loser);
-            const totalMult = rankMult * opponentMult * durationMult;
+            const totalMult = rankMult * opponentMult * durationMult * variantMult;
 
             const points = Math.round(duration * 3 * totalMult);
 
             if (winner === p1) {
                 p1Points = points;
-                p1Log = `${winner.getName()} wins! Gets ${points} ms (3× duration × ${rankMult.toFixed(2)} rank × ${opponentMult.toFixed(2)} opponent × ${durationMult.toFixed(2)} duration = ×${totalMult.toFixed(2)})`;
+                p1Log = `${winner.getName()} wins! Gets ${points} ms (3× × ${rankMult.toFixed(2)} rank × ${opponentMult.toFixed(2)} opp × ${durationMult.toFixed(2)} dur × ${variantMult.toFixed(2)} var = ×${totalMult.toFixed(2)})`;
             } else {
                 p2Points = points;
-                p2Log = `${winner.getName()} wins! Gets ${points} ms (3× duration × ${rankMult.toFixed(2)} rank × ${opponentMult.toFixed(2)} opponent × ${durationMult.toFixed(2)} duration = ×${totalMult.toFixed(2)})`;
+                p2Log = `${winner.getName()} wins! Gets ${points} ms (3× × ${rankMult.toFixed(2)} rank × ${opponentMult.toFixed(2)} opp × ${durationMult.toFixed(2)} dur × ${variantMult.toFixed(2)} var = ×${totalMult.toFixed(2)})`;
             }
         }
 
@@ -198,6 +220,7 @@ class Tournament {
         this.startTime = null;
         this.durationLimit = 0;
         this.allowVariants = true;
+        this.allowedVariants = ['standard', 'freestyle', 'kungfu'];
         console.log('Tournament state reset.');
     }
 }

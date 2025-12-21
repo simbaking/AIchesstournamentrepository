@@ -184,6 +184,7 @@ class Board {
         if (piece.type === 'pawn') {
             if ((piece.isWhite && endY === 0) || (!piece.isWhite && endY === 7)) {
                 piece.type = promotionPiece;
+                piece.wasPromoted = true; // Track for Crazyhouse (reverts to pawn when captured)
             }
         }
 
@@ -321,6 +322,10 @@ class ChessGame {
         // Captured pieces tracking
         this.capturedByWhite = []; // Pieces captured by white
         this.capturedByBlack = []; // Pieces captured by black
+
+        // Crazyhouse reserves (pocket) - pieces that can be dropped
+        this.whiteReserve = []; // Pieces white can drop (captured from black)
+        this.blackReserve = []; // Pieces black can drop (captured from white)
     }
 
     findInitialRookPositions() {
@@ -763,9 +768,9 @@ class ChessGame {
 
         // 1. Basic Turn Validation (Skipped for Kung Fu)
         const isWhite = player === this.player1;
-        // if (this.variant !== 'kungfu' && isWhite !== this.isWhiteTurn) {
-        //    return { success: false, error: 'Not your turn' };
-        // }
+        if (this.variant !== 'kungfu' && isWhite !== this.isWhiteTurn) {
+            return { success: false, error: 'Not your turn' };
+        }
 
         const piece = this.board.getPiece(fromFile, fromRank);
         if (!piece) return { success: false, error: 'No piece at source' };
@@ -794,10 +799,7 @@ class ChessGame {
             }
         }
 
-        // Standard chess: Ensure move doesn't leave king in check
-        if (this.variant !== 'kungfu' && !this.isMoveLegal(fromFile, fromRank, toFile, toRank)) {
-            return { success: false, error: 'Move puts/leaves king in check' };
-        }
+        // Note: King-in-check validation is handled inside executeMove()
 
         // 4. Execute Move
         const targetPiece = this.board.getPiece(toFile, toRank);
@@ -814,17 +816,131 @@ class ChessGame {
         // Standard execution
         const moveResult = this.executeMove(fromFile, fromRank, toFile, toRank, promotionPiece);
 
+        // Check if executeMove failed (e.g., move leaves king in check)
+        if (!moveResult.success) {
+            return moveResult;
+        }
+
         // 5. Post-Move Updates
         if (this.variant === 'kungfu') {
             const destKey = `${toFile},${toRank}`;
             this.cooldowns.set(destKey, Date.now() + this.cooldownMs);
-        } else {
-            this.isWhiteTurn = !this.isWhiteTurn;
-            this.updateGameState();
         }
+        // Note: Turn toggle is handled in executeMove(), not here
 
         this.lastMoveTime = Date.now();
-        return { success: true };
+        return moveResult;  // Return the actual result from executeMove
+    }
+
+    /**
+     * Crazyhouse: Drop a piece from reserve onto the board
+     * @param {string} pieceType - The type of piece to drop (pawn, knight, bishop, rook, queen)
+     * @param {number} x - Target x coordinate (file)
+     * @param {number} y - Target y coordinate (rank)
+     * @param {string} playerName - The player making the drop
+     * @returns {object} Result with success flag and message
+     */
+    dropPiece(pieceType, x, y, playerName) {
+        // Only allowed in Crazyhouse
+        if (this.variant !== 'crazyhouse') {
+            return { success: false, message: 'Drop moves only allowed in Crazyhouse' };
+        }
+
+        if (this.isGameOver) {
+            return { success: false, message: 'Game is over' };
+        }
+
+        // Determine if player is white or black
+        const isWhite = playerName === this.player1;
+        const isBlack = playerName === this.player2;
+
+        if (!isWhite && !isBlack) {
+            return { success: false, message: 'Unknown player' };
+        }
+
+        // Check if it's the player's turn
+        if ((isWhite && !this.isWhiteTurn) || (isBlack && this.isWhiteTurn)) {
+            return { success: false, message: 'Not your turn' };
+        }
+
+        // Get the appropriate reserve
+        const reserve = isWhite ? this.whiteReserve : this.blackReserve;
+
+        // Check if piece exists in reserve
+        const pieceIndex = reserve.indexOf(pieceType);
+        if (pieceIndex === -1) {
+            return { success: false, message: `No ${pieceType} in reserve` };
+        }
+
+        // Check if target square is empty
+        if (this.board.getPiece(x, y) !== null) {
+            return { success: false, message: 'Target square is not empty' };
+        }
+
+        // Pawn restrictions: can't drop on 1st or 8th rank
+        if (pieceType === 'pawn') {
+            if (y === 0 || y === 7) {
+                return { success: false, message: 'Pawns cannot be dropped on the first or eighth rank' };
+            }
+        }
+
+        // Remove from reserve
+        reserve.splice(pieceIndex, 1);
+
+        // Place piece on board
+        const newPiece = new Piece(isWhite, pieceType);
+        this.board.setPiece(x, y, newPiece);
+
+        // Check if this leaves own king in check (shouldn't happen but validate)
+        if (this.isKingInCheck(isWhite)) {
+            // Undo drop
+            this.board.setPiece(x, y, null);
+            reserve.push(pieceType);
+            return { success: false, message: 'Drop would leave king in check' };
+        }
+
+        // Record the drop move
+        const dropNotation = `${pieceType.charAt(0).toUpperCase()}@${String.fromCharCode(97 + x)}${8 - y}`;
+        this.moveHistory.push({
+            drop: true,
+            pieceType,
+            x,
+            y,
+            player: playerName,
+            notation: dropNotation
+        });
+
+        // Toggle turn
+        this.isWhiteTurn = !this.isWhiteTurn;
+        this.lastMoveTime = Date.now();
+
+        // Check for checkmate or stalemate
+        const nextPlayerIsWhite = this.isWhiteTurn;
+
+        if (this.isCheckmate(nextPlayerIsWhite)) {
+            this.isGameOver = true;
+            this.winner = nextPlayerIsWhite ? this.player2 : this.player1;
+            console.log(`Checkmate by drop! ${this.winner} wins!`);
+            if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'checkmate' });
+            this.cleanup();
+            return { success: true, gameOver: true, winner: this.winner, reason: 'checkmate' };
+        }
+
+        if (this.isStalemate(nextPlayerIsWhite)) {
+            this.isGameOver = true;
+            this.winner = null;
+            console.log('Stalemate after drop! Game is a draw.');
+            if (this.onGameOver) this.onGameOver({ winner: null, reason: 'stalemate' });
+            this.cleanup();
+            return { success: true, gameOver: true, winner: null, reason: 'stalemate' };
+        }
+
+        // Schedule computer move if next player is computer
+        if (!this.isGameOver) {
+            this.scheduleComputerMove();
+        }
+
+        return { success: true, gameOver: false };
     }
 
     getKingFile(isWhite, rank) {
@@ -1029,8 +1145,16 @@ class ChessGame {
                 if (capturedPawnForEnPassant) {
                     if (piece.isWhite) {
                         this.capturedByWhite.push({ type: 'pawn', isWhite: false });
+                        // Crazyhouse: Add pawn to white's reserve (can drop it)
+                        if (this.variant === 'crazyhouse') {
+                            this.whiteReserve.push('pawn');
+                        }
                     } else {
                         this.capturedByBlack.push({ type: 'pawn', isWhite: true });
+                        // Crazyhouse: Add pawn to black's reserve (can drop it)
+                        if (this.variant === 'crazyhouse') {
+                            this.blackReserve.push('pawn');
+                        }
                     }
                 }
 
@@ -1064,8 +1188,19 @@ class ChessGame {
                 if (capturedPiece) {
                     if (piece.isWhite) {
                         this.capturedByWhite.push({ type: capturedPiece.type, isWhite: false });
+                        // Crazyhouse: Add to reserve (promoted pieces revert to pawns)
+                        if (this.variant === 'crazyhouse') {
+                            // If it was a promoted piece, it becomes a pawn
+                            const reserveType = capturedPiece.wasPromoted ? 'pawn' : capturedPiece.type;
+                            this.whiteReserve.push(reserveType);
+                        }
                     } else {
                         this.capturedByBlack.push({ type: capturedPiece.type, isWhite: true });
+                        // Crazyhouse: Add to reserve (promoted pieces revert to pawns)
+                        if (this.variant === 'crazyhouse') {
+                            const reserveType = capturedPiece.wasPromoted ? 'pawn' : capturedPiece.type;
+                            this.blackReserve.push(reserveType);
+                        }
                     }
                 }
 
@@ -1213,6 +1348,39 @@ class ChessGame {
                 const currentTimeRemaining = this.isWhiteTurn ? this.whiteTimeRemaining : this.blackTimeRemaining;
 
                 try {
+                    // For level -1, use the game's getLegalMoves directly instead of SimpleEngine
+                    // This ensures consistent move validation with the actual game state
+                    if (computer.level === -1) {
+                        const legalMoves = this.getLegalMoves();
+                        console.log(`[COMPUTER] Level -1: Using game's getLegalMoves, found ${legalMoves.length} moves`);
+
+                        if (legalMoves.length === 0) {
+                            console.error('[COMPUTER] Level -1: No legal moves found');
+                            this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
+                            return;
+                        }
+
+                        // Pick a random move
+                        const randomMove = legalMoves[Math.floor(Math.random() * legalMoves.length)];
+                        const bestMove = randomMove.move;
+                        console.log(`[COMPUTER] Level -1: Selected random move ${bestMove}`);
+
+                        const fromFile = bestMove.charCodeAt(0) - 97;
+                        const fromRank = 8 - parseInt(bestMove[1]);
+                        const toFile = bestMove.charCodeAt(2) - 97;
+                        const toRank = 8 - parseInt(bestMove[3]);
+
+                        const computerName = this.isWhiteTurn ? this.player1 : this.player2;
+                        const moveResult = this.makeMove(fromFile, fromRank, toFile, toRank, computerName);
+
+                        if (!moveResult.success) {
+                            console.error(`[COMPUTER] Level -1: Move ${bestMove} failed unexpectedly: ${moveResult.message}`);
+                            this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
+                        }
+                        return;
+                    }
+
+                    // For other levels, use the standard computer.getBestMove flow
                     computer.getBestMove(fen, (result) => {
                         if (this.isGameOver) return;
 
@@ -1233,10 +1401,9 @@ class ChessGame {
                             }
 
                             if (!bestMove) {
-                                console.error('[COMPUTER] Failed to find a move!');
-                                // Retry immediately if no move found?
-                                if (retryCount < 5) this.scheduleComputerMove(100, retryCount + 1);
-                                else this.resign(isComputerWhite ? 'white' : 'black');
+                                console.error('[COMPUTER] Failed to find a move! Retrying...');
+                                // Keep retrying with increasing delay
+                                this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
                                 return;
                             }
 
@@ -1252,12 +1419,8 @@ class ChessGame {
 
                             if (!moveResult.success) {
                                 console.error(`[COMPUTER] Invalid move ${bestMove}: ${moveResult.message}. Retrying...`);
-                                if (retryCount < 5) {
-                                    this.scheduleComputerMove(100, retryCount + 1);
-                                } else {
-                                    console.error('[COMPUTER] Max retries reached. Resigning.');
-                                    this.resign(isComputerWhite ? 'white' : 'black');
-                                }
+                                // Keep retrying with increasing delay
+                                this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
                             }
                         } catch (innerError) {
                             console.error('[COMPUTER] Error in getBestMove callback:', innerError);
@@ -1268,6 +1431,57 @@ class ChessGame {
                 }
             }, finalDelay);
         }
+    }
+
+    /**
+     * Get all legal moves for the current player.
+     * Returns array of { from: 'e2', to: 'e4' } style moves.
+     * This uses the actual game state for correct move validation.
+     */
+    getLegalMoves() {
+        const moves = [];
+        const isWhite = this.isWhiteTurn;
+
+        // Find all pieces of current player
+        for (let startY = 0; startY < 8; startY++) {
+            for (let startX = 0; startX < 8; startX++) {
+                const piece = this.board.getPiece(startX, startY);
+                if (!piece || piece.isWhite !== isWhite) continue;
+
+                // Try all possible destinations
+                for (let endY = 0; endY < 8; endY++) {
+                    for (let endX = 0; endX < 8; endX++) {
+                        if (startX === endX && startY === endY) continue; // Can't move to same square
+                        if (!piece.isValidMove(this.board, startX, startY, endX, endY)) continue;
+
+                        // Test if move leaves king in check by simulating
+                        const destPiece = this.board.getPiece(endX, endY);
+                        let leavesInCheck = true;
+
+                        try {
+                            // Temporarily make the move
+                            this.board.grid[endX][endY] = piece;
+                            this.board.grid[startX][startY] = null;
+
+                            // Check if king is still in check
+                            leavesInCheck = this.isKingInCheck(isWhite);
+                        } finally {
+                            // ALWAYS restore the board state
+                            this.board.grid[startX][startY] = piece;
+                            this.board.grid[endX][endY] = destPiece;
+                        }
+
+                        if (!leavesInCheck) {
+                            const from = String.fromCharCode(97 + startX) + (8 - startY);
+                            const to = String.fromCharCode(97 + endX) + (8 - endY);
+                            moves.push({ from, to, move: from + to });
+                        }
+                    }
+                }
+            }
+        }
+
+        return moves;
     }
 
     // Check if a king of the given color is in check
@@ -1448,7 +1662,10 @@ class ChessGame {
             variant: this.variant,
             startPosId: this.startPosId,
             cooldowns: Object.fromEntries(this.cooldowns),
-            cooldownMs: this.cooldownMs
+            cooldownMs: this.cooldownMs,
+            // Crazyhouse reserves
+            whiteReserve: this.whiteReserve,
+            blackReserve: this.blackReserve
         };
     }
 

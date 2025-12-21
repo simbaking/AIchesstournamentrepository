@@ -8,12 +8,12 @@ const { Board, Piece } = require('./ChessGame');
 class SimpleEngine {
     constructor() {
         this.pieceValues = {
-            'p': 100,  // Pawn
-            'n': 320,  // Knight
-            'b': 330,  // Bishop
-            'r': 500,  // Rook
-            'q': 900,  // Queen
-            'k': 20000 // King
+            'pawn': 100,
+            'knight': 320,
+            'bishop': 330,
+            'rook': 500,
+            'queen': 900,
+            'king': 20000
         };
     }
 
@@ -260,14 +260,21 @@ class SimpleEngine {
             const { board, isWhiteTurn } = this.parseFEN(fen);
             const moves = this.getLegalMovesForBoard(board, isWhiteTurn);
 
+            // Debug logging
+            const inCheck = this.isKingInCheck(board, isWhiteTurn);
+            console.log(`[SimpleEngine] getRandomMove: ${isWhiteTurn ? 'White' : 'Black'} to move, inCheck=${inCheck}, legalMoves=${moves.length}`);
+
             if (moves.length === 0) {
-                callback({ move: null, evaluation: 0 });
+                // No legal moves - this is checkmate or stalemate
+                console.log(`[SimpleEngine] No legal moves found - ${inCheck ? 'CHECKMATE' : 'STALEMATE'}`);
+                callback({ move: null, evaluation: inCheck ? -10000 : 0 });
                 return;
             }
 
             const randomMove = moves[Math.floor(Math.random() * moves.length)];
             const from = String.fromCharCode(97 + randomMove.startX) + (8 - randomMove.startY);
             const to = String.fromCharCode(97 + randomMove.endX) + (8 - randomMove.endY);
+            console.log(`[SimpleEngine] Random move selected: ${from}${to}`);
             callback({ move: from + to, evaluation: 0 });
         } catch (error) {
             console.error('Error in getRandomMove:', error);

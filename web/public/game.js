@@ -36,6 +36,22 @@ let isFlipped = false;
 let hasAutoFlipped = false;
 let pendingMove = null;
 
+// Get variant badge HTML
+function getVariantBadge(variant) {
+    if (!variant || variant === 'standard') {
+        return '';
+    }
+
+    const badges = {
+        'freestyle': { text: '♟️ 960', color: '#3b82f6' },
+        'kungfu': { text: '⚡ Kung Fu', color: '#ff4500' },
+        'crazyhouse': { text: '🏠 Crazy', color: '#9333ea' }
+    };
+
+    const badge = badges[variant] || { text: variant, color: '#666' };
+    return `<span class="variant-badge" style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: ${badge.color}; color: white; margin-left: 5px;">${badge.text}</span>`;
+}
+
 // Promotion dialog handling
 const promotionDialog = document.getElementById('promotion-dialog');
 document.querySelectorAll('.promo-btn').forEach(btn => {
@@ -125,6 +141,12 @@ function renderGame() {
     whitePlayerName.textContent = gameState.player1 + (gameState.player1Elo ? ` (${gameState.player1Elo})` : '');
     blackPlayerName.textContent = gameState.player2 + (gameState.player2Elo ? ` (${gameState.player2Elo})` : '');
 
+    // Update variant badge
+    const variantBadgeEl = document.getElementById('game-variant-badge');
+    if (variantBadgeEl) {
+        variantBadgeEl.innerHTML = getVariantBadge(gameState.variant);
+    }
+
     // Kung Fu Chess: Hide timers and update turn indicator
     const isKungFu = gameState.variant === 'kungfu';
 
@@ -160,6 +182,9 @@ function renderGame() {
 
     // Render captured pieces and material advantage
     renderMaterial();
+
+    // Render Crazyhouse pockets
+    renderPockets();
 
     // Check if game is over
     if (gameState.isGameOver) {
@@ -293,6 +318,23 @@ function renderBoard() {
 // Handle square click
 async function handleSquareClick(x, y) {
     if (gameState.isGameOver) return;
+
+    // Crazyhouse: If a pocket piece is selected, drop it
+    if (selectedDropPiece && gameState.variant === 'crazyhouse') {
+        const piece = gameState.board[x][y];
+        if (!piece) {
+            // Empty square - drop the piece
+            await dropPiece(x, y);
+            selectedDropPiece = null;
+            renderPockets();
+            return;
+        } else {
+            // Square has a piece - cancel drop mode
+            selectedDropPiece = null;
+            renderPockets();
+            // Continue to normal click handling
+        }
+    }
 
     const piece = gameState.board[x][y];
     const isMyTurn = (gameState.currentPlayer.toLowerCase() === currentPlayerName.toLowerCase());
@@ -879,5 +921,100 @@ function renderMaterial() {
         materialAdvDiv.innerHTML = `<span style="color: var(--accent);">Black +${Math.abs(advantage)}</span>`;
     } else {
         materialAdvDiv.innerHTML = '<span style="color: var(--text-muted);">Equal</span>';
+    }
+}
+
+// Crazyhouse: Selected piece from pocket for dropping
+let selectedDropPiece = null;
+
+// Render Crazyhouse pocket pieces
+function renderPockets() {
+    const isCrazyhouse = gameState.variant === 'crazyhouse';
+    const whitePocketDiv = document.getElementById('white-pocket');
+    const blackPocketDiv = document.getElementById('black-pocket');
+    const whitePiecesSpan = document.getElementById('white-pocket-pieces');
+    const blackPiecesSpan = document.getElementById('black-pocket-pieces');
+
+    if (!isCrazyhouse || !whitePocketDiv || !blackPocketDiv) {
+        if (whitePocketDiv) whitePocketDiv.style.display = 'none';
+        if (blackPocketDiv) blackPocketDiv.style.display = 'none';
+        return;
+    }
+
+    // Show pocket areas
+    whitePocketDiv.style.display = 'flex';
+    blackPocketDiv.style.display = 'flex';
+
+    // Render white's pocket pieces
+    const whiteReserve = gameState.whiteReserve || [];
+    whitePiecesSpan.innerHTML = whiteReserve.length === 0
+        ? '<span style="color: var(--text-muted);">empty</span>'
+        : whiteReserve.map((type, idx) =>
+            `<span class="pocket-piece ${selectedDropPiece?.color === 'white' && selectedDropPiece?.type === type ? 'selected' : ''}" 
+                   data-type="${type}" data-color="white" 
+                   onclick="selectDropPiece('${type}', 'white')">${PIECE_SYMBOLS[type] || type}</span>`
+        ).join('');
+
+    // Render black's pocket pieces
+    const blackReserve = gameState.blackReserve || [];
+    blackPiecesSpan.innerHTML = blackReserve.length === 0
+        ? '<span style="color: var(--text-muted);">empty</span>'
+        : blackReserve.map((type, idx) =>
+            `<span class="pocket-piece ${selectedDropPiece?.color === 'black' && selectedDropPiece?.type === type ? 'selected' : ''}" 
+                   data-type="${type}" data-color="black" 
+                   onclick="selectDropPiece('${type}', 'black')">${PIECE_SYMBOLS[type] || type}</span>`
+        ).join('');
+}
+
+// Select a piece from pocket for dropping
+function selectDropPiece(type, color) {
+    const isMyPiece = (color === 'white' && currentPlayerName === gameState.player1) ||
+        (color === 'black' && currentPlayerName === gameState.player2);
+    const isMyTurn = gameState.currentPlayer === currentPlayerName;
+
+    if (!isMyPiece) {
+        console.log('Not your piece to drop');
+        return;
+    }
+    if (!isMyTurn) {
+        console.log('Not your turn');
+        return;
+    }
+
+    // Toggle selection
+    if (selectedDropPiece?.type === type && selectedDropPiece?.color === color) {
+        selectedDropPiece = null;
+        selectedSquare = null;
+    } else {
+        selectedDropPiece = { type, color };
+        selectedSquare = null; // Clear any board selection
+    }
+
+    renderPockets();
+    renderBoard(); // Re-render to show drop targets
+}
+
+// Drop a piece from pocket onto the board
+async function dropPiece(x, y) {
+    if (!selectedDropPiece) return;
+
+    const response = await fetch(`/api/game/${gameId}/drop`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            pieceType: selectedDropPiece.type,
+            x,
+            y,
+            player: currentPlayerName
+        })
+    });
+
+    const result = await response.json();
+    if (result.success) {
+        selectedDropPiece = null;
+        fetchGameState();
+    } else {
+        console.error('Drop failed:', result.message);
+        alert(result.message || 'Drop failed');
     }
 }

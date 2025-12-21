@@ -62,7 +62,7 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
             if (p1 && p2) {
                 const duration = game.getDuration();
                 // Use Tournament's recordGameResult for ELO and score multipliers
-                tournament.recordGameResult(player1Name, player2Name, result.winner, duration);
+                tournament.recordGameResult(player1Name, player2Name, result.winner, duration, game.variant);
             }
         } catch (e) {
             console.error(`Error recording game result for game ${gameId}:`, e);
@@ -166,7 +166,7 @@ app.post('/api/reset', (req, res) => {
 
 // Start tournament
 app.post('/api/start', (req, res) => {
-    const { durationMinutes, allowVariants, hours, minutes, duration } = req.body; // allowVariants is now extracted
+    const { durationMinutes, allowVariants, allowedVariants, hours, minutes, duration } = req.body;
 
     // Normalize duration logic (handle hours/minutes/duration fields)
     let durationMs = 0;
@@ -191,9 +191,10 @@ app.post('/api/start', (req, res) => {
         return res.status(400).json({ error: 'Need at least 2 players' });
     }
 
-    // Pass allowVariants (default true if undefined)
+    // Pass allowVariants and specific allowedVariants
     const variantsAllowed = allowVariants !== undefined ? allowVariants : true;
-    tournament.startTournament(durationMs, variantsAllowed);
+    const specificVariants = allowedVariants || ['standard', 'freestyle', 'kungfu'];
+    tournament.startTournament(durationMs, variantsAllowed, specificVariants);
 
     // Start tournament monitor to end games when tournament expires
     if (tournamentMonitorInterval) clearInterval(tournamentMonitorInterval);
@@ -397,7 +398,7 @@ app.get('/api/status', (req, res) => {
 
 // Record game result
 app.post('/api/result', (req, res) => {
-    const { player1, player2, winner, duration } = req.body;
+    const { player1, player2, winner, duration, variant } = req.body;
 
     if (!player1 || !player2) {
         return res.status(400).json({ error: 'Both players required' });
@@ -413,7 +414,7 @@ app.post('/api/result', (req, res) => {
     const gameDuration = duration || 60000; // Default 1 minute
 
     // Use Tournament's recordGameResult for ELO and score multipliers
-    tournament.recordGameResult(player1, player2, winner || null, gameDuration);
+    tournament.recordGameResult(player1, player2, winner || null, gameDuration, variant || 'standard');
 
     res.json({ success: true, message: 'Result recorded' });
 });
@@ -440,9 +441,10 @@ app.post('/api/offers/create', (req, res) => {
         return res.status(400).json({ error: 'Player is currently in a game' });
     }
 
-    // enforce variant restrictions
-    if (!tournament.allowVariants && variant && variant !== 'standard') {
-        return res.status(400).json({ error: 'Variants are disabled in this tournament' });
+    // enforce variant restrictions - check against specific allowed variants
+    const requestedVariant = variant || 'standard';
+    if (!tournament.allowedVariants.includes(requestedVariant)) {
+        return res.status(400).json({ error: `${requestedVariant} variant is not allowed in this tournament` });
     }
 
     // config parse
@@ -573,6 +575,24 @@ app.post('/api/game/:gameId/move', (req, res) => {
     res.json(result);
 });
 
+// Crazyhouse: Drop a piece from reserve
+app.post('/api/game/:gameId/drop', (req, res) => {
+    const { gameId } = req.params;
+    const { pieceType, x, y, player } = req.body;
+
+    console.log(`Drop request for game ${gameId}: ${pieceType} @ ${x},${y} by ${player}`);
+
+    const game = activeGames.get(gameId);
+    if (!game) {
+        return res.status(404).json({ error: 'Game not found' });
+    }
+
+    const result = game.dropPiece(pieceType, x, y, player);
+    console.log(`Drop result:`, result);
+
+    res.json(result);
+});
+
 // Get valid moves for a piece
 app.get('/api/game/:gameId/moves', (req, res) => {
     const { gameId } = req.params;
@@ -611,7 +631,8 @@ app.post('/api/game/:gameId/resign', (req, res) => {
 
     // Record result
     const duration = game.getDuration();
-    tournament.recordGameResult(game.player1, game.player2, game.winner, duration);
+    // Use Tournament's recordGameResult for ELO and score multipliers
+    tournament.recordGameResult(game.player1, game.player2, game.winner, duration, game.variant);
 
     activeGames.delete(gameId);
 
@@ -656,7 +677,7 @@ app.post('/api/game/:gameId/accept-draw', (req, res) => {
 
     // Record result (draw)
     const duration = game.getDuration();
-    tournament.recordGameResult(game.player1, game.player2, null, duration);
+    tournament.recordGameResult(game.player1, game.player2, null, duration, game.variant);
 
     activeGames.delete(gameId);
 
@@ -694,7 +715,8 @@ app.get('/api/games', (req, res) => {
             currentPlayer: state.currentPlayer,
             timeControl: state.timeControl,
             increment: state.increment,
-            duration: state.duration
+            duration: state.duration,
+            variant: state.variant
         };
     });
     res.json({ games });
