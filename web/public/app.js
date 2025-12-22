@@ -24,6 +24,8 @@ const messageDiv = document.getElementById('message');
 
 let statusInterval = null;
 let currentPlayers = [];
+let wasTournamentRunning = false; // Track tournament state for end detection
+let celebrationShown = false; // Prevent multiple celebrations
 
 // Local Storage Key
 const STORAGE_KEY = 'chess_tournament_player_name';
@@ -167,10 +169,20 @@ async function updateStatus() {
             statusBadge.textContent = 'Running';
             statusBadge.classList.add('running');
             timerDisplay.textContent = formatTime(data.remainingTime);
+            wasTournamentRunning = true;
+            celebrationShown = false; // Reset celebration flag when tournament starts
         } else {
             statusBadge.textContent = 'Not Started';
             statusBadge.classList.remove('running');
             timerDisplay.textContent = '';
+
+            // Detect tournament end transition
+            if (wasTournamentRunning && !celebrationShown && data.players.length >= 2) {
+                console.log('[Tournament End] Showing celebration!');
+                celebrationShown = true;
+                wasTournamentRunning = false;
+                showCelebration(data.players);
+            }
         }
 
         // Update leaderboard
@@ -782,6 +794,137 @@ if (clearScoresBtn) {
         } catch (error) {
             console.error('Error clearing scores:', error);
             showMessage('Error clearing scores', 'error');
+        }
+    });
+}
+
+// ==================== Tournament End Celebration ====================
+
+// DOM elements for celebration
+const celebrationModal = document.getElementById('celebration-modal');
+const celebrationResults = document.getElementById('celebration-results');
+const celebrationClose = document.getElementById('celebration-close');
+const confettiContainer = document.getElementById('confetti-container');
+
+// Show celebration modal with results
+function showCelebration(players) {
+    if (!celebrationModal || !celebrationResults) {
+        console.error('Celebration modal elements not found');
+        return;
+    }
+
+    // Sort players by score
+    const sortedPlayers = [...players].sort((a, b) => b.score - a.score);
+
+    if (sortedPlayers.length < 2) {
+        console.log('Not enough players for celebration');
+        return;
+    }
+
+    // Build result cards HTML
+    let resultsHtml = '';
+
+    // Top 3 players
+    const medals = ['🥇', '🥈', '🥉'];
+    const positions = ['1st Place - Champion!', '2nd Place - Runner Up', '3rd Place - Bronze'];
+    const classes = ['gold', 'silver', 'bronze'];
+
+    for (let i = 0; i < Math.min(3, sortedPlayers.length); i++) {
+        const player = sortedPlayers[i];
+        const playerType = player.isComputer ? '🤖' : '👤';
+        resultsHtml += `
+            <div class="result-card ${classes[i]}">
+                <span class="result-medal">${medals[i]}</span>
+                <div class="result-info">
+                    <div class="result-name">${playerType} ${formatPlayerName(player.name)}</div>
+                    <div class="result-position">${positions[i]}</div>
+                </div>
+                <span class="result-score">${formatScore(player.score)}</span>
+            </div>
+        `;
+    }
+
+    // Last place player (only if more than 3 players)
+    if (sortedPlayers.length > 3) {
+        const lastPlayer = sortedPlayers[sortedPlayers.length - 1];
+        const playerType = lastPlayer.isComputer ? '🤖' : '👤';
+        resultsHtml += `
+            <div class="result-card last-place">
+                <span class="result-medal">😢</span>
+                <div class="result-info">
+                    <div class="result-name">${playerType} ${formatPlayerName(lastPlayer.name)}</div>
+                    <div class="result-position">Last Place - Better luck next time!</div>
+                </div>
+                <span class="result-score">${formatScore(lastPlayer.score)}</span>
+            </div>
+        `;
+    }
+
+    celebrationResults.innerHTML = resultsHtml;
+
+    // Show modal
+    celebrationModal.style.display = 'flex';
+    setTimeout(() => {
+        celebrationModal.classList.add('show');
+    }, 10);
+
+    // Create confetti
+    createConfetti();
+
+    // Auto-close after 15 seconds
+    setTimeout(() => {
+        closeCelebration();
+    }, 15000);
+}
+
+// Create confetti particles
+function createConfetti() {
+    if (!confettiContainer) return;
+
+    confettiContainer.innerHTML = '';
+
+    const colors = ['gold', 'orange', 'blue', 'green', 'pink', 'purple'];
+    const shapes = ['square', 'circle', 'rect'];
+    const particleCount = 100;
+
+    for (let i = 0; i < particleCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = `confetti ${colors[Math.floor(Math.random() * colors.length)]} ${shapes[Math.floor(Math.random() * shapes.length)]}`;
+
+        // Random position and animation delay
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        confetti.style.animationDuration = `${3 + Math.random() * 2}s`;
+
+        confettiContainer.appendChild(confetti);
+    }
+
+    // Clear confetti after animation
+    setTimeout(() => {
+        confettiContainer.innerHTML = '';
+    }, 6000);
+}
+
+// Close celebration modal
+function closeCelebration() {
+    if (!celebrationModal) return;
+
+    celebrationModal.classList.remove('show');
+    setTimeout(() => {
+        celebrationModal.style.display = 'none';
+    }, 500);
+}
+
+// Close button handler
+if (celebrationClose) {
+    celebrationClose.addEventListener('click', closeCelebration);
+}
+
+// Also close on backdrop click
+if (celebrationModal) {
+    celebrationModal.addEventListener('click', (e) => {
+        if (e.target === celebrationModal) {
+            closeCelebration();
         }
     });
 }

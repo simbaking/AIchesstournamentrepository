@@ -1355,25 +1355,33 @@ class ChessGame {
                 const currentTimeRemaining = this.isWhiteTurn ? this.whiteTimeRemaining : this.blackTimeRemaining;
 
                 try {
-                    // For level -1, use the game's getLegalMoves directly instead of SimpleEngine
+                    // For level -1 and 0, use the game's getLegalMoves directly instead of SimpleEngine
                     // This ensures consistent move validation with the actual game state
                     // EXCEPTION: Crazyhouse needs to use getCrazyhouseMove for drops!
-                    const isCrazyhouseLevelMinus1 = computer.level === -1 && this.variant === 'crazyhouse';
+                    const isLowLevel = computer.level === -1 || computer.level === 0;
+                    const isCrazyhouseLowLevel = isLowLevel && this.variant === 'crazyhouse';
 
-                    if (computer.level === -1 && !isCrazyhouseLevelMinus1) {
+                    if (isLowLevel && !isCrazyhouseLowLevel) {
                         const legalMoves = this.getLegalMoves();
-                        console.log(`[COMPUTER] Level -1: Using game's getLegalMoves, found ${legalMoves.length} moves`);
+                        console.log(`[COMPUTER] Level ${computer.level}: Using game's getLegalMoves, found ${legalMoves.length} moves`);
 
                         if (legalMoves.length === 0) {
-                            console.error('[COMPUTER] Level -1: No legal moves found');
+                            console.error(`[COMPUTER] Level ${computer.level}: No legal moves found`);
                             this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
                             return;
                         }
 
-                        // Pick a random move
-                        const randomMove = legalMoves[Math.floor(Math.random() * legalMoves.length)];
-                        const bestMove = randomMove.move;
-                        console.log(`[COMPUTER] Level -1: Selected random move ${bestMove}`);
+                        // Pick a move: Level -1 = random, Level 0 = first (simple choice)
+                        let selectedMove;
+                        if (computer.level === -1) {
+                            selectedMove = legalMoves[Math.floor(Math.random() * legalMoves.length)];
+                        } else {
+                            // Level 0: shuffle then pick first for slight randomness
+                            const shuffled = legalMoves.sort(() => Math.random() - 0.5);
+                            selectedMove = shuffled[0];
+                        }
+                        const bestMove = selectedMove.move;
+                        console.log(`[COMPUTER] Level ${computer.level}: Selected move ${bestMove}`);
 
                         const fromFile = bestMove.charCodeAt(0) - 97;
                         const fromRank = 8 - parseInt(bestMove[1]);
@@ -1384,7 +1392,7 @@ class ChessGame {
                         const moveResult = this.makeMove(fromFile, fromRank, toFile, toRank, computerName);
 
                         if (!moveResult.success) {
-                            console.error(`[COMPUTER] Level -1: Move ${bestMove} failed unexpectedly: ${moveResult.message}`);
+                            console.error(`[COMPUTER] Level ${computer.level}: Move ${bestMove} failed unexpectedly: ${moveResult.message}`);
                             this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
                         }
                         return;
