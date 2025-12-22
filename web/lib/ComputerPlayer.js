@@ -221,9 +221,10 @@ class ComputerPlayer {
      * - Think for 1/250th of remaining time until consistent move
      * - Wait thinking_time × 2.5 before returning
      */
-    getBestMove(fen, callback, remainingTimeMs = 60000) {
-        // Use SimpleEngine for level -1 and 0
-        if (this.simpleEngine) {
+    getBestMove(fen, callback, remainingTimeMs = 60000, variant = 'standard') {
+        // Use SimpleEngine only for level -1 and 0 (or if forced)
+        // Fix: Don't let SimpleEngine block Stockfish for higher levels just because it exists
+        if (this.simpleEngine && (this.level <= 0)) {
             if (this.level === -1) {
                 this.simpleEngine.getRandomMove(fen, callback);
             } else {
@@ -241,9 +242,12 @@ class ComputerPlayer {
             return;
         }
 
-        // Calculate thinking time: 1/250th of remaining time
-        // Minimum 100ms, maximum 10000ms
-        const consistencyTime = Math.max(100, Math.min(10000, Math.floor(remainingTimeMs / 250)));
+        // Calculate thinking time
+        // Standard: 1/250th of remaining time
+        // Kung Fu: 1/1000th (4x faster sampling) to handle real-time pressure
+        const divisor = (variant === 'kungfu') ? 1000 : 250;
+        const consistencyTime = Math.max(50, Math.min(10000, Math.floor(remainingTimeMs / divisor)));
+
         // Store for later use in consistency loop
         this.currentConsistencyTime = consistencyTime;
         // Reset consistency tracking state
@@ -259,6 +263,27 @@ class ComputerPlayer {
         // Send position and start search
         this.sendCommand(`position fen ${fen}`);
         this.sendCommand(`go movetime ${consistencyTime}`);
+    }
+
+    /**
+     * Crazyhouse: Get best move including drops
+     * Uses SimpleEngine which understands drops
+     * @param {string} fen - Board FEN
+     * @param {Array} reserve - Current player's reserve pieces
+     * @param {Function} callback - Callback with result
+     * @param {number} remainingTimeMs - Optional remaining time
+     */
+    getCrazyhouseMove(fen, reserve, callback, remainingTimeMs = 60000) {
+        // Always use SimpleEngine for Crazyhouse (Stockfish doesn't support drops)
+        if (!this.simpleEngine) {
+            const SimpleEngine = require('./SimpleEngine');
+            this.simpleEngine = new SimpleEngine();
+        }
+
+        console.log(`[COMPUTER] Crazyhouse move request, level ${this.level}, reserve: [${(reserve || []).join(', ')}]`);
+
+        // Use SimpleEngine's Crazyhouse-aware move selection
+        this.simpleEngine.getCrazyhouseMove(fen, reserve || [], callback, this.level);
     }
 
     quit() {

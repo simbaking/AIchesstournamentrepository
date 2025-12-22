@@ -536,7 +536,7 @@ class ChessGame {
                     const toRank = 8 - parseInt(bestMove[3]);
 
                     this.makeMove(fromFile, fromRank, toFile, toRank, this.player1);
-                }, timeBudget);
+                }, timeBudget, this.variant);
             }, finalDelay);
         } else {
             console.log('White is not computer or computer player instance missing.');
@@ -563,8 +563,9 @@ class ChessGame {
             const fen = this.board.toFEN(isWhite);
             const skillLevel = computer.level;
 
-            // Quick analysis for Kung Fu (faster thinking)
-            const thinkTime = Math.max(100, 500 - (skillLevel * 20)); // 100-500ms based on skill
+            // Quick analysis for Kung Fu - fixed 300ms since no personal clocks
+            const thinkTime = 300;
+            const waitTime = Math.floor(thinkTime * 2.5);  // 2.5x multiplier like standard games
 
             computer.getBestMove(fen, (result) => {
                 if (this.isGameOver) return;
@@ -597,15 +598,14 @@ class ChessGame {
 
                 if (moveResult.success) {
                     console.log(`[KungFu] ${color} moved ${bestMove}`);
-                    // Schedule next move after cooldown + small thinking delay
-                    const nextDelay = this.cooldownMs + thinkTime + Math.random() * 200;
-                    setTimeout(makeNextMove, nextDelay);
+                    // Wait using standard 2.5x multiplier before next move
+                    setTimeout(makeNextMove, waitTime);
                 } else {
                     // Move failed (piece might not belong to us or invalid), retry
                     console.log(`[KungFu] ${color} move failed: ${moveResult.error}, retrying...`);
                     setTimeout(makeNextMove, 300);
                 }
-            }, thinkTime);
+            }, thinkTime, this.variant);
         };
 
         // Start the loop with initial delay
@@ -1052,47 +1052,37 @@ class ChessGame {
         let rank = startY;
         let rookStartX, destRookX;
 
-        // Check if this is a castling move (for execution purposes)
+        // Check if this is a castling move
         if (this.isCastlingMove(startX, startY, endX, endY)) {
-            // Determine Castling Coordinates
+            // Determine Castling Direction and Rooks
+            // In 960 (and standard 'takes rook'), endX might be the rook position.
+            // We need to trust the direction based on relation between King and clicked square.
+            const isKingside = endX > startX || (endX === 6 && startX === 4); // Basic checks
+
             if (this.variant === 'freestyle') {
                 const files = piece.isWhite ? this.whiteRookFiles : this.blackRookFiles;
                 rookStartX = isKingside ? files.ks : files.qs;
-                destRookX = isKingside ? 5 : 3; // F or D file
             } else {
                 rookStartX = isKingside ? 7 : 0;
-                destRookX = isKingside ? 5 : 3;
             }
 
-            // Move king
-            this.board.setPiece(destKingX, rank, piece);
-            // If King moved from different square, clear old
-            if (startX !== destKingX) {
-                this.board.setPiece(startX, rank, null);
-            }
+            // Define Standard 960 Castling Targets
+            // King -> G (6) / C (2)
+            // Rook -> F (5) / D (3)
+            destKingX = isKingside ? 6 : 2;
+            destRookX = isKingside ? 5 : 3;
 
-            // Move rook
+            // Execute Move Safely:
+            // 1. Get Rook
             const rook = this.board.getPiece(rookStartX, rank);
+
+            // 2. Clear both starting squares
+            this.board.setPiece(startX, rank, null); // Clear King start
+            this.board.setPiece(rookStartX, rank, null); // Clear Rook start
+
+            // 3. Place pieces at destinations
+            this.board.setPiece(destKingX, rank, piece);
             this.board.setPiece(destRookX, rank, rook);
-            // If Rook moved from different square AND it wasn't the king's start square (unlikely unless swap)
-            // Be careful not to clear the King if we just placed it there (swap case)
-            if (rookStartX !== destRookX) {
-                // Special case: if King swapped, don't clear King's new spot
-                if (rookStartX !== destKingX) {
-                    this.board.setPiece(rookStartX, rank, null);
-                }
-            }
-
-            // Check if castling leaves king in check
-            // Note: In 960, simplified undo is hard because pieces can start anywhere.
-            // But we already validated 'canCastle' which checks checks.
-            // If we want to be safe: capture old state, restore if check.
-
-            if (this.isKingInCheck(piece.isWhite)) {
-                // Undo - simplified for now assumes we validated valid move before
-                // Just erroring out if logic failure
-                return { success: false, message: 'Castling illegal (in check)' };
-            }
 
             // Record move
             this.moveHistory.push({
@@ -1111,8 +1101,8 @@ class ChessGame {
                 this.blackKingMoved = true;
             }
 
-            // Update last move for en passant tracking
-            this.lastMove = { startX, startY, endX: kingEndX, endY: rank, piece: 'king' };
+            // Update last move
+            this.lastMove = { startX, startY, endX: destKingX, endY: rank, piece: 'king' };
 
         } else {
             // Check for en passant before normal move
@@ -1229,7 +1219,11 @@ class ChessGame {
         }
 
         // Add increment to the player who just moved
+        // Fix: Subtract time spent during the turn first
+        const timeSpent = Date.now() - this.lastMoveTime;
+
         if (this.isWhiteTurn) {
+            this.whiteTimeRemaining = Math.max(0, this.whiteTimeRemaining - timeSpent);
             this.whiteTimeRemaining += this.incrementMs;
 
             // Check for time stages (Classical controls)
@@ -1245,6 +1239,7 @@ class ChessGame {
                 }
             }
         } else {
+            this.blackTimeRemaining = Math.max(0, this.blackTimeRemaining - timeSpent);
             this.blackTimeRemaining += this.incrementMs;
 
             const moveCount = this.moveHistory.length / 2; // Black moves correspond to even history length (2->1, 4->2)
@@ -1267,6 +1262,18 @@ class ChessGame {
 
         this.isWhiteTurn = !this.isWhiteTurn;
         this.lastMoveTime = Date.now(); // Reset timer for next player
+
+        // King of the Hill: Check if the player who just moved has king on center
+        // (Check BEFORE toggling turn, but we already toggled, so check opposite)
+        const playerWhoMoved = !this.isWhiteTurn; // The player who just moved
+        if (this.variant === 'kingofthehill' && this.isKingOnHill(playerWhoMoved)) {
+            this.isGameOver = true;
+            this.winner = playerWhoMoved ? this.player1 : this.player2;
+            console.log(`King of the Hill! ${this.winner} wins by reaching the center!`);
+            if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'koth' });
+            this.cleanup();
+            return { success: true, gameOver: true, winner: this.winner, reason: 'koth' };
+        }
 
         // Check for checkmate or stalemate for the next player
         const nextPlayerIsWhite = this.isWhiteTurn;
@@ -1350,7 +1357,10 @@ class ChessGame {
                 try {
                     // For level -1, use the game's getLegalMoves directly instead of SimpleEngine
                     // This ensures consistent move validation with the actual game state
-                    if (computer.level === -1) {
+                    // EXCEPTION: Crazyhouse needs to use getCrazyhouseMove for drops!
+                    const isCrazyhouseLevelMinus1 = computer.level === -1 && this.variant === 'crazyhouse';
+
+                    if (computer.level === -1 && !isCrazyhouseLevelMinus1) {
                         const legalMoves = this.getLegalMoves();
                         console.log(`[COMPUTER] Level -1: Using game's getLegalMoves, found ${legalMoves.length} moves`);
 
@@ -1381,10 +1391,28 @@ class ChessGame {
                     }
 
                     // For other levels, use the standard computer.getBestMove flow
-                    computer.getBestMove(fen, (result) => {
+                    // OR for Crazyhouse, use getCrazyhouseMove which understands drops
+                    const isCrazyhouse = this.variant === 'crazyhouse';
+                    const reserve = isCrazyhouse ?
+                        (this.isWhiteTurn ? this.whiteReserve : this.blackReserve) : [];
+
+                    const moveCallback = (result) => {
                         if (this.isGameOver) return;
 
                         try {
+                            // Handle drop moves (Crazyhouse)
+                            if (result.isDrop) {
+                                const computerName = this.isWhiteTurn ? this.player1 : this.player2;
+                                console.log(`[COMPUTER] Crazyhouse drop: ${result.pieceType} to (${result.x}, ${result.y})`);
+                                const dropResult = this.dropPiece(result.pieceType, result.x, result.y, computerName);
+
+                                if (!dropResult.success) {
+                                    console.error(`[COMPUTER] Drop failed: ${dropResult.message}. Retrying...`);
+                                    this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
+                                }
+                                return;
+                            }
+
                             const bestMove = result.move;
                             const evaluation = result.evaluation;
 
@@ -1423,9 +1451,17 @@ class ChessGame {
                                 this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
                             }
                         } catch (innerError) {
-                            console.error('[COMPUTER] Error in getBestMove callback:', innerError);
+                            console.error('[COMPUTER] Error in move callback:', innerError);
                         }
-                    }, currentTimeRemaining);
+                    };
+
+                    // Call appropriate method based on variant
+                    if (isCrazyhouse) {
+                        console.log(`[COMPUTER] Using Crazyhouse move with reserve: [${reserve.join(', ')}]`);
+                        computer.getCrazyhouseMove(fen, reserve, moveCallback, currentTimeRemaining);
+                    } else {
+                        computer.getBestMove(fen, moveCallback, currentTimeRemaining, this.variant);
+                    }
                 } catch (outerError) {
                     console.error('[COMPUTER] Error calling getBestMove:', outerError);
                 }
@@ -1517,6 +1553,28 @@ class ChessGame {
             }
         }
 
+        return false;
+    }
+
+    /**
+     * King of the Hill: Check if king is on a center "hill" square
+     * Center squares are d4, d5, e4, e5 (coordinates: x=3-4, y=3-4)
+     */
+    isKingOnHill(isWhite) {
+        // Find the king's position
+        for (let y = 0; y < 8; y++) {
+            for (let x = 0; x < 8; x++) {
+                const piece = this.board.getPiece(x, y);
+                if (piece && piece.type === 'king' && piece.isWhite === isWhite) {
+                    // Check if king is on center squares: d4(3,4), d5(3,3), e4(4,4), e5(4,3)
+                    // x: d=3, e=4; y: rank 4=4, rank 5=3
+                    if ((x === 3 || x === 4) && (y === 3 || y === 4)) {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
         return false;
     }
 

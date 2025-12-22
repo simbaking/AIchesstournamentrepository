@@ -45,7 +45,8 @@ function getVariantBadge(variant) {
     const badges = {
         'freestyle': { text: '♟️ 960', color: '#3b82f6' },
         'kungfu': { text: '⚡ Kung Fu', color: '#ff4500' },
-        'crazyhouse': { text: '🏠 Crazy', color: '#9333ea' }
+        'crazyhouse': { text: '🏠 Crazy', color: '#9333ea' },
+        'kingofthehill': { text: '⛰️ KOTH', color: '#22c55e' }
     };
 
     const badge = badges[variant] || { text: variant, color: '#666' };
@@ -253,6 +254,13 @@ function renderBoard() {
                 if ((x === lastMove.startX && y === lastMove.startY) ||
                     (x === lastMove.endX && y === lastMove.endY)) {
                     square.classList.add('last-move');
+                }
+            }
+
+            // King of the Hill: Highlight center "hill" squares
+            if (gameState.variant === 'kingofthehill') {
+                if ((x === 3 || x === 4) && (y === 3 || y === 4)) {
+                    square.classList.add('koth-center');
                 }
             }
 
@@ -573,6 +581,23 @@ async function handleDrop(e, x, y) {
     const start = JSON.parse(data);
     if (start.x === x && start.y === y) return;
 
+    // Check for promotion on drop
+    const movingPiece = gameState.board[start.x][start.y];
+    if (movingPiece && movingPiece.type === 'pawn') {
+        const isPromotion = (movingPiece.isWhite && y === 0) || (!movingPiece.isWhite && y === 7);
+        if (isPromotion) {
+            pendingMove = { startX: start.x, startY: start.y, endX: x, endY: y };
+            promotionDialog.classList.add('show');
+
+            // Clean up drag visual states
+            document.querySelectorAll('.square').forEach(sq => {
+                sq.classList.remove('dragging', 'drag-over');
+            });
+            clearSelection();
+            return;
+        }
+    }
+
     clearSelection();
     await makeMove(start.x, start.y, x, y);
 }
@@ -644,6 +669,26 @@ async function handleGameOver() {
     } catch (error) {
         console.error('Error fetching updated scores:', error);
     }
+
+    // Auto-redirect to tournament after 5 seconds
+    const countdownDiv = document.createElement('div');
+    countdownDiv.className = 'countdown-message';
+    countdownDiv.style.marginTop = '15px';
+    countdownDiv.style.color = 'var(--text-muted)';
+    gameResult.appendChild(countdownDiv);
+
+    let countdown = 5;
+    countdownDiv.textContent = `Returning to tournament in ${countdown}s...`;
+
+    const countdownInterval = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+            countdownDiv.textContent = `Returning to tournament in ${countdown}s...`;
+        } else {
+            clearInterval(countdownInterval);
+            window.location.href = 'index.html';
+        }
+    }, 1000);
 }
 
 // Resign

@@ -50,6 +50,13 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
 
     if (!p1 || !p2) return { success: false, error: 'Player not found' };
 
+    // Strict Busy Check
+    if (p1.isBusy() || p2.isBusy()) {
+        const busyPlayer = p1.isBusy() ? p1.getName() : p2.getName();
+        console.warn(`Cannot create game: ${busyPlayer} is already in a game (GameID: ${p1.isBusy() ? p1.getActiveGameId() : p2.getActiveGameId()})`);
+        return { success: false, error: `Player ${busyPlayer} is already busy` };
+    }
+
     const gameId = `game_${gameIdCounter++}`;
 
     const handleGameEnd = (result) => {
@@ -103,8 +110,9 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
 
     activeGames.set(gameId, game);
 
-    p1.setBusy(true);
-    p2.setBusy(true);
+    // Lock players
+    p1.setBusy(true, gameId);
+    p2.setBusy(true, gameId);
 
     // Start the game for computer players
     // For standard chess: only if White is computer (to trigger first move)
@@ -147,7 +155,8 @@ app.post('/api/register', (req, res) => {
         }
     }
 
-    tournament.registerPlayer(name, isComputer || false, level !== undefined ? level : null);
+    const { browserId } = req.body;
+    tournament.registerPlayer(name, isComputer || false, level !== undefined ? level : null, browserId || null);
     console.log(`Player registered: ${name}`);
     res.json({ success: true, message: 'Player registered' });
 });
@@ -162,6 +171,24 @@ app.post('/api/reset', (req, res) => {
 
     console.log('Tournament reset via API');
     res.json({ success: true, message: 'Tournament reset successfully' });
+});
+
+// Clear scores only (keep players)
+app.post('/api/clear-scores', (req, res) => {
+    const players = tournament.getPlayers();
+    players.forEach(player => {
+        player.score = 0;
+    });
+
+    // Stop running tournament but keep players
+    tournament.isRunning = false;
+    activeGames.clear();
+
+    if (tournamentMonitorInterval) clearInterval(tournamentMonitorInterval);
+    if (autoMatchmakingInterval) clearInterval(autoMatchmakingInterval);
+
+    console.log('Scores cleared via API, players kept');
+    res.json({ success: true, message: 'Scores cleared successfully' });
 });
 
 // Start tournament
@@ -292,17 +319,18 @@ app.post('/api/start', (req, res) => {
                 if (match) {
                     const opponent = match.opponent;
 
-                    // Create offer
+                    // Create offer with AI-selected variant for bonus points
                     const offer = {
                         id: offerIdCounter++,
                         player: bot.getName(),
                         timeControl: match.timeControl,
                         increment: match.increment,
+                        variant: match.variant || 'standard', // AI strategically selects variant
                         targets: ['Any'], // Open to all, but AI targeted specific opponent in mind
                         timestamp: Date.now()
                     };
 
-                    console.log(`Auto-offer: ${bot.getName()} offering ${offer.timeControl}m+${offer.increment}s (Targeting: ${opponent.getName()})`);
+                    console.log(`Auto-offer: ${bot.getName()} offering ${offer.timeControl}m+${offer.increment}s [${offer.variant}] (Targeting: ${opponent.getName()})`);
                     gameOffers.push(offer);
                     newOffersCount++;
                 }
@@ -351,7 +379,11 @@ app.post('/api/start', (req, res) => {
                         if (evalResult.shouldAccept) {
                             console.log(`Auto-accept: ${bot.getName()} accepting offer from ${offer.player} (Reason: ${evalResult.reason})`);
 
-                            createGame(offer.player, bot.getName(), offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
+                            const result = createGame(offer.player, bot.getName(), offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
+                            if (!result.success) {
+                                console.error(`[MATCHMAKING ERROR] Failed to create game: ${result.error}`);
+                                continue;
+                            }
                             gameOffers.splice(i, 1);
 
                             // Remove other offers from these players
@@ -513,7 +545,11 @@ app.post('/api/offers/accept', (req, res) => {
     // Remove other offers from these players
     gameOffers = gameOffers.filter(o => o.player !== offer.player && o.player !== player2);
 
-    res.json({ success: true, gameId: result.gameId, message: 'Game started' });
+    if (!result.success) {
+        return res.status(400).json(result);
+    }
+
+    res.json(result);
 });
 
 // Chess Game Routes

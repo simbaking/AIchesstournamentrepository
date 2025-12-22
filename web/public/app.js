@@ -27,7 +27,24 @@ let currentPlayers = [];
 
 // Local Storage Key
 const STORAGE_KEY = 'chess_tournament_player_name';
+const BROWSER_ID_KEY = 'chess_browser_id';
 let myPlayerName = localStorage.getItem(STORAGE_KEY);
+
+// Generate or retrieve persistent browser ID
+function getBrowserId() {
+    let browserId = localStorage.getItem(BROWSER_ID_KEY);
+    if (!browserId) {
+        // Generate a UUID
+        browserId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+        localStorage.setItem(BROWSER_ID_KEY, browserId);
+    }
+    return browserId;
+}
+const myBrowserId = getBrowserId();
 
 // Enable/disable computer level selector
 isComputerCheckbox.addEventListener('change', () => {
@@ -136,7 +153,7 @@ async function updateStatus() {
 
         // Check if my player still exists on server (e.g. after server restart)
         if (myPlayerName) {
-            const me = data.players.find(p => p.name === myPlayerName);
+            const me = data.players.find(p => p.name.toLowerCase() === myPlayerName.toLowerCase());
             if (!me) {
                 // Server forgot us, clear local storage so we can re-register
                 console.log('Local player not found on server, clearing local storage');
@@ -321,7 +338,8 @@ function getVariantBadge(variant) {
     const badges = {
         'freestyle': { text: '♟️ 960', color: '#3b82f6' },
         'kungfu': { text: '⚡ Kung Fu', color: '#ff4500' },
-        'crazyhouse': { text: '🏠 Crazy', color: '#9333ea' }
+        'crazyhouse': { text: '🏠 Crazy', color: '#9333ea' },
+        'kingofthehill': { text: '⛰️ KOTH', color: '#22c55e' }
     };
 
     const badge = badges[variant] || { text: variant, color: '#666' };
@@ -353,9 +371,13 @@ window.acceptOffer = async (offerId) => {
         const data = await response.json();
 
         if (response.ok) {
-            // Open game for acceptor
-            window.open(`game.html?gameId=${data.gameId}&player=${playerName}`, '_blank');
-            showMessage(`Game started! Tab opened for ${playerName}`, 'success');
+            // Open game for acceptor (only if gameId is valid)
+            if (data.gameId) {
+                window.open(`game.html?gameId=${data.gameId}&player=${playerName}`, '_blank');
+                showMessage(`Game started! Tab opened for ${playerName}`, 'success');
+            } else {
+                showMessage('Game created but no ID returned', 'error');
+            }
             updateStatus();
         } else {
             showMessage(data.error, 'error');
@@ -441,7 +463,7 @@ registerForm.addEventListener('submit', async (e) => {
         const response = await fetch(`${API_URL}/api/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, isComputer, level })
+            body: JSON.stringify({ name, isComputer, level, browserId: myBrowserId })
         });
 
         const data = await response.json();
@@ -498,6 +520,9 @@ if (startForm) {
             }
             if (document.getElementById('allow-crazyhouse')?.checked) {
                 allowedVariants.push('crazyhouse');
+            }
+            if (document.getElementById('allow-kingofthehill')?.checked) {
+                allowedVariants.push('kingofthehill');
             }
         }
 
@@ -620,12 +645,14 @@ createOfferForm.addEventListener('submit', async (e) => {
         const data = await response.json();
 
         if (response.ok) {
-            if (data.gameStarted) {
-                // Should not happen immediately anymore due to delay, but keep for robustness
+            if (data.gameStarted && data.gameId) {
+                // Only open tab if game actually started with valid ID
                 window.open(`game.html?gameId=${data.gameId}&player=${playerName}`, '_blank');
                 showMessage(data.message, 'success');
-            } else {
+            } else if (!data.gameStarted) {
                 showMessage('Offer posted! Waiting for opponent...', 'success');
+            } else {
+                showMessage('Offer created', 'success');
             }
             updateStatus();
         } else {
@@ -668,10 +695,12 @@ if (gameForm) {
 
             const data = await response.json();
 
-            if (response.ok) {
+            if (response.ok && data.gameId) {
                 window.open(`game.html?gameId=${data.gameId}&player=${player1Name}`, '_blank');
                 const p2Link = `game.html?gameId=${data.gameId}&player=${player2Name}`;
                 showMessage(`Game started! Player 1 tab opened. <a href="${p2Link}" target="_blank">Open Player 2 View</a>`, 'success');
+            } else if (response.ok) {
+                showMessage('Game created but no ID returned', 'error');
             } else {
                 showMessage(data.error, 'error');
             }
@@ -728,4 +757,31 @@ function formatTime(ms) {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+// Clear Scores button handler
+const clearScoresBtn = document.getElementById('clear-scores-btn');
+if (clearScoresBtn) {
+    clearScoresBtn.addEventListener('click', async () => {
+        if (!confirm('Clear all scores? This will stop the tournament but keep players registered.')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/api/clear-scores`, {
+                method: 'POST'
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                showMessage('Scores cleared! Players are still registered.', 'success');
+                updateStatus();
+            } else {
+                showMessage(data.error || 'Failed to clear scores', 'error');
+            }
+        } catch (error) {
+            console.error('Error clearing scores:', error);
+            showMessage('Error clearing scores', 'error');
+        }
+    });
 }

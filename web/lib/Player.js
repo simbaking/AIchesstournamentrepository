@@ -1,10 +1,12 @@
 class Player {
-    constructor(name, isComputer = false, level = null) {
+    constructor(name, isComputer = false, level = null, browserId = null) {
         this.name = name;
         this.score = 0;
         this.isComputer = isComputer;
         this.level = level;
         this.busy = false;
+        this.activeGameId = null;
+        this.browserId = browserId;  // Persistent browser association for humans
 
         // ELO rating: humans start at 400, computers get ELO based on level
         if (isComputer) {
@@ -19,8 +21,13 @@ class Player {
         return this.busy;
     }
 
-    setBusy(busy) {
+    setBusy(busy, gameId = null) {
         this.busy = busy;
+        this.activeGameId = busy ? gameId : null;
+    }
+
+    getActiveGameId() {
+        return this.activeGameId;
     }
 
     getName() {

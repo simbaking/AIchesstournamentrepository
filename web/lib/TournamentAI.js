@@ -44,18 +44,22 @@ class TournamentAI {
         const playerRankMult = this.tournament.getRankMultiplier(playerRank);
         const oppMult = this.tournament.getOpponentMultiplier(opponentRank);
 
+        // Variant boost - non-standard variants get bonus points!
+        const variant = offer.variant || 'standard';
+        const variantMult = this.tournament.getVariantMultiplier(estimatedDuration, variant);
+
         // ELO consideration - calculate win/draw/loss probabilities
         const eloDiff = player.getElo() - opponent.getElo();
         const winProbability = 1 / (1 + Math.pow(10, -eloDiff / 400)); // Standard ELO formula
         const lossProbability = 1 / (1 + Math.pow(10, eloDiff / 400));
         const drawProbability = 1 - winProbability - lossProbability;
 
-        // Calculate expected points for each outcome
-        // WIN: duration × 3 × rankMult × opponentMult × durationMult
-        const winPoints = estimatedDuration * 3 * playerRankMult * oppMult * durationMult;
+        // Calculate expected points for each outcome (including variant boost!)
+        // WIN: duration × 3 × rankMult × opponentMult × durationMult × variantMult
+        const winPoints = estimatedDuration * 3 * playerRankMult * oppMult * durationMult * variantMult;
 
-        // DRAW: duration × rankMult × durationMult
-        const drawPoints = estimatedDuration * playerRankMult * durationMult;
+        // DRAW: duration × rankMult × durationMult × variantMult
+        const drawPoints = estimatedDuration * playerRankMult * durationMult * variantMult;
 
         // LOSS: 0 points
         const lossPoints = 0;
@@ -97,34 +101,112 @@ class TournamentAI {
     }
 
     /**
-     * Determine optimal time control for creating an offer
+     * Determine optimal time control and variant for creating an offer
+     * Adds randomization for variety while still preferring good strategic choices
      * @param {number} remainingTime - Remaining tournament time in ms
-     * @returns {Object} - {timeControl: number, increment: number}
+     * @returns {Object} - {timeControl: number, increment: number, variant: string}
      */
     selectTimeControl(remainingTime) {
         const remainingMinutes = remainingTime / 60000;
 
-        // Available time controls (from server.js)
+        // Select variant with some randomness
+        const variant = this.selectVariant(remainingMinutes);
+
+        // Available time control options
         const timeControls = [1, 2, 3, 5, 10, 15];
         const increments = [0, 5, 10, 15, 30];
 
-        // Strategy: Maximize duration multiplier while ensuring game completion
-        if (remainingMinutes > 180) {
-            // Plenty of time - go for long games (high duration multiplier)
-            return { timeControl: 15, increment: 30 };
-        } else if (remainingMinutes > 90) {
-            // Moderate time - balanced approach
-            return { timeControl: 10, increment: 15 };
-        } else if (remainingMinutes > 45) {
-            // Running low - medium games
-            return { timeControl: 5, increment: 10 };
-        } else if (remainingMinutes > 20) {
-            // Very low - short games
-            return { timeControl: 3, increment: 5 };
+        // Determine max allowed time control based on remaining tournament time
+        let maxTimeControl = 15;
+        if (remainingMinutes < 180) maxTimeControl = 15;
+        if (remainingMinutes < 90) maxTimeControl = 10;
+        if (remainingMinutes < 45) maxTimeControl = 5;
+        if (remainingMinutes < 20) maxTimeControl = 3;
+        if (remainingMinutes < 10) maxTimeControl = 1;
+
+        // Filter valid time controls
+        const validTimeControls = timeControls.filter(tc => tc <= maxTimeControl);
+
+        // Add weighting - prefer longer games (higher multipliers) but with randomness
+        // 60% chance to pick strategically, 40% chance to pick randomly for variety
+        let selectedTimeControl;
+        if (Math.random() < 0.6) {
+            // Strategic: prefer longer games (more points potential)
+            selectedTimeControl = validTimeControls[validTimeControls.length - 1];
         } else {
-            // Critical - very short games
-            return { timeControl: 1, increment: 0 };
+            // Random: add variety
+            selectedTimeControl = validTimeControls[Math.floor(Math.random() * validTimeControls.length)];
         }
+
+        // Pick increment with some randomness too
+        const validIncrements = increments.filter(inc => inc <= selectedTimeControl * 3);
+        const selectedIncrement = validIncrements[Math.floor(Math.random() * validIncrements.length)];
+
+        return { timeControl: selectedTimeControl, increment: selectedIncrement, variant };
+    }
+
+    /**
+     * Select variant based on tournament allowed variants
+     * Adds randomization for variety - not always picking "optimal" variant
+     * @param {number} remainingMinutes - Remaining tournament time
+     * @returns {string} - Selected variant
+     */
+    selectVariant(remainingMinutes) {
+        const allowedVariants = this.tournament.allowedVariants || ['standard'];
+
+        // Include standard as an option (for variety, even though variants give bonus)
+        const allOptions = [...allowedVariants];
+
+        // Filter to non-standard variants (they give bonus points)
+        const variants = allowedVariants.filter(v => v !== 'standard');
+
+        if (variants.length === 0) {
+            return 'standard';
+        }
+
+        // 70% chance to pick a variant (bonus points), 30% chance standard (variety)
+        if (Math.random() < 0.3 && allOptions.includes('standard')) {
+            return 'standard';
+        }
+
+        // Special restriction for King of the Hill:
+        // Probability = 2 / total number of variants (including standard)
+        // If random check falls within this probability, force verify against preferred
+        // Actually, user wants "reduce how often... to 2/total".
+        // Let's check specifically for KOTH.
+        const kothProb = 2 / allOptions.length;
+
+        // If we were going to pick a variant...
+        // Among variants, add randomness instead of strict priority
+        // 50% chance to use preferred order, 50% chance random
+        if (Math.random() < 0.5) {
+            // Prioritize variants based on computer capabilities
+            const preferredOrder = ['freestyle', 'crazyhouse', 'kungfu']; // Removed KOTH from top priority list
+
+            // Check KOTH explicitly with reduced probability
+            if (variants.includes('kingofthehill') && Math.random() < kothProb) {
+                return 'kingofthehill';
+            }
+
+            for (const pref of preferredOrder) {
+                if (variants.includes(pref)) {
+                    return pref;
+                }
+            }
+        }
+
+        // Random variant from allowed list
+        const choice = variants[Math.floor(Math.random() * variants.length)];
+        // If random choice is KOTH, apply probability filter again?
+        // Or just accept it if it wasn't filtered?
+        // User wants "reduce how often".
+        if (choice === 'kingofthehill' && Math.random() > kothProb) {
+            // Pick another one? Or default to standard?
+            // Let's return standard (or valid non-KOTH) if KOTH rejected
+            const others = variants.filter(v => v !== 'kingofthehill');
+            return others.length > 0 ? others[Math.floor(Math.random() * others.length)] : 'standard';
+        }
+        return choice;
     }
 
     /**
@@ -199,7 +281,8 @@ class TournamentAI {
         return {
             opponent: target,
             timeControl: timeControl.timeControl,
-            increment: timeControl.increment
+            increment: timeControl.increment,
+            variant: timeControl.variant || 'standard'
         };
     }
 

@@ -18,6 +18,7 @@
                 <div id="timer" class="timer"></div>
                 <button id="reset-btn" class="btn btn-danger" style="margin-left: 10px;">Reset
                     Tournament</button>
+                <button id="clear-scores-btn" class="btn btn-warning" style="margin-left: 10px;">Clear Scores</button>
             </div>
         </header>
 
@@ -63,10 +64,15 @@
                             <input type="checkbox" id="allow-kungfu" checked style="width: auto; margin-right: 5px;">
                             <label for="allow-kungfu">⚡ Kung Fu Chess (Real-time)</label>
                         </div>
-                        <div style="display: flex; align-items: center;">
+                        <div style="margin-bottom: 5px; display: flex; align-items: center;">
                             <input type="checkbox" id="allow-crazyhouse" checked
                                 style="width: auto; margin-right: 5px;">
                             <label for="allow-crazyhouse">🏠 Crazyhouse (Drops)</label>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox" id="allow-kingofthehill" checked
+                                style="width: auto; margin-right: 5px;">
+                            <label for="allow-kingofthehill">⛰️ King of the Hill</label>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success">Start Tournament</button>
@@ -117,6 +123,7 @@
                             <option value="freestyle">Freestyle (Chess 960)</option>
                             <option value="kungfu">Kung Fu (Real-time)</option>
                             <option value="crazyhouse">Crazyhouse (Drops)</option>
+                            <option value="kingofthehill">King of the Hill</option>
                         </select>
                         <input type="text" id="offer-start-pos" placeholder="Pos ID (0-959) or Random"
                             style="display:none;">

@@ -10,8 +10,12 @@ class Tournament {
         this.allowedVariants = ['standard', 'freestyle', 'kungfu']; // Specific allowed variants
     }
 
-    registerPlayer(name, isComputer = false, level = null) {
-        this.players.push(new Player(name, isComputer, level));
+    registerPlayer(name, isComputer = false, level = null, browserId = null) {
+        this.players.push(new Player(name, isComputer, level, browserId));
+    }
+
+    getPlayerByBrowserId(browserId) {
+        return this.players.find(p => p.browserId === browserId);
     }
 
     getPlayers() {
@@ -114,7 +118,7 @@ class Tournament {
      * Formula: Y = 1 + ((4 * x^2) / 125) where x is duration in hours
      * Capped at 2.5 hours (max multiplier ~1.2)
      * Standard games return 1.0 (no bonus)
-     * Variants (freestyle, kungfu, future variants) get the calculated bonus
+     * Variants (freestyle, kungfu, crazyhouse, kingofthehill) get the calculated boost
      */
     getVariantMultiplier(durationMs, variant) {
         // Standard games get no bonus
@@ -122,7 +126,8 @@ class Tournament {
             return 1.0;
         }
 
-        // All non-standard variants get the same multiplier
+        // All non-standard variants get the same quadratic boost
+        // Y = 1 + ((4 * x^2) / 125) where x is duration in hours
         const durationHours = Math.min(durationMs / 3600000, 2.5); // Cap at 2.5 hours
         return 1 + ((4 * Math.pow(durationHours, 2)) / 125);
     }
