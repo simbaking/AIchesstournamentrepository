@@ -616,3 +616,282 @@
             #6b8e6b 0%,
             #558b55 100%) !important;
 }
+
+/* ==================== Mobile Chess.com-Style Layout ==================== */
+
+/* Hide mobile elements on desktop */
+.mobile-header,
+.mobile-player-bar,
+.mobile-action-bar {
+    display: none;
+}
+
+/* Board area wrapper */
+.board-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+@media (max-width: 600px) {
+
+    /* Hide desktop header only - sidebar shows below board */
+    .desktop-header {
+        display: none !important;
+    }
+
+    /* Sidebar shows below board with mobile styling */
+    .desktop-sidebar {
+        order: 3;
+        padding: 1rem;
+        background: #302e2b;
+    }
+
+    .desktop-sidebar .info-card {
+        background: #272522;
+        border-color: #3d3b38;
+    }
+
+    /* Show mobile elements */
+    .mobile-header,
+    .mobile-player-bar,
+    .mobile-action-bar {
+        display: flex;
+    }
+
+    /* Full height dark layout */
+    body {
+        padding: 0;
+        margin: 0;
+        background: #302e2b;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        max-width: 100%;
+    }
+
+    /* Mobile Header - minimal */
+    .mobile-header {
+        background: #272522;
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-bottom: 1px solid #3d3b38;
+    }
+
+    .mobile-back {
+        color: #b0aea9;
+        font-size: 1.5rem;
+        text-decoration: none;
+        padding: 0.25rem;
+    }
+
+    .mobile-title {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .mobile-variant {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        background: var(--primary);
+        color: white;
+    }
+
+    /* Game layout stacks vertically */
+    .game-layout {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Board area fills available space */
+    .board-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: #302e2b;
+    }
+
+    /* Mobile Player Bars - above and below board */
+    .mobile-player-bar {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+        background: #272522;
+        gap: 0.5rem;
+    }
+
+    .player-avatar {
+        font-size: 1.5rem;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #3d3b38;
+        border-radius: 4px;
+    }
+
+    .player-info-mobile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .player-name-mobile {
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .player-elo-mobile {
+        color: #b0aea9;
+        font-size: 0.8rem;
+    }
+
+    .captured-mobile {
+        display: flex;
+        gap: 1px;
+        font-size: 0.75rem;
+        color: #b0aea9;
+    }
+
+    .timer-mobile {
+        font-family: 'Courier New', monospace;
+        font-size: 1.1rem;
+        font-weight: bold;
+        background: #3d3b38;
+        color: #fff;
+        padding: 0.35rem 0.6rem;
+        border-radius: 4px;
+        min-width: 60px;
+        text-align: center;
+    }
+
+    /* Active player timer highlight */
+    .mobile-player-bar.active .timer-mobile {
+        background: #81b64c;
+        color: #fff;
+    }
+
+    /* Board container - edge to edge */
+    .board-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .chessboard {
+        --square-size: calc(100vw / 8);
+        grid-template-columns: repeat(8, var(--square-size));
+        grid-template-rows: repeat(8, var(--square-size));
+        border-radius: 0;
+        border: none;
+    }
+
+    .square {
+        width: var(--square-size);
+        height: var(--square-size);
+        font-size: calc(var(--square-size) * 0.7);
+    }
+
+    /* Mobile Bottom Action Bar */
+    .mobile-action-bar {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background: #272522;
+        padding: 0.5rem 0;
+        border-top: 1px solid #3d3b38;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+    }
+
+    .action-btn {
+        background: transparent;
+        border: none;
+        color: #b0aea9;
+        font-size: 1.5rem;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .action-btn:hover,
+    .action-btn:active {
+        color: #fff;
+    }
+
+    /* Add bottom padding so content isn't hidden behind action bar */
+    .container {
+        padding-bottom: 60px;
+    }
+
+    /* Hide messages or position them */
+    .message {
+        position: fixed;
+        bottom: 65px;
+        left: 1rem;
+        right: 1rem;
+        z-index: 101;
+    }
+
+    /* Promotion modal on mobile */
+    .modal-content {
+        max-width: 90vw;
+        padding: 1rem;
+        background: #272522;
+    }
+
+    .promotion-choices {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .promo-btn {
+        font-size: 2rem;
+        padding: 0.75rem 1rem;
+        background: #3d3b38;
+        border-color: #4d4b48;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 360px) {
+    .mobile-header {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .mobile-title {
+        font-size: 0.9rem;
+    }
+
+    .timer-mobile {
+        font-size: 1rem;
+        padding: 0.25rem 0.4rem;
+        min-width: 50px;
+    }
+
+    .player-name-mobile {
+        font-size: 0.8rem;
+    }
+}

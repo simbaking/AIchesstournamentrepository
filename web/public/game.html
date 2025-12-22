@@ -9,15 +9,24 @@
 </head>
 
 <body>
+    <!-- Mobile Header (visible only on mobile) -->
+    <div class="mobile-header">
+        <a href="index.html" class="mobile-back">←</a>
+        <span class="mobile-title">♟️ Chess T.A.T.</span>
+        <span id="mobile-variant-badge" class="mobile-variant"></span>
+    </div>
+
     <div class="container">
-        <header>
+        <!-- Desktop Header (hidden on mobile) -->
+        <header class="desktop-header">
             <h1>♟️ Chess Game</h1>
             <img src="assets/lion.png" class="logo" alt="Lion logo" />
             <a href="index.html" class="back-link">← Back to Tournament</a>
         </header>
 
         <div class="game-layout">
-            <aside class="game-info">
+            <!-- Desktop Sidebar (hidden on mobile) -->
+            <aside class="game-info desktop-sidebar">
                 <div class="info-card">
                     <h2>Players <span id="game-variant-badge"></span></h2>
                     <div class="game-info">
@@ -85,12 +94,46 @@
                 </div>
             </aside>
 
-            <main class="board-container">
-                <div id="chessboard" class="chessboard"></div>
+            <main class="board-area">
+                <!-- Mobile: Opponent Player Bar (above board) -->
+                <div class="mobile-player-bar opponent-bar">
+                    <div class="player-avatar">♟</div>
+                    <div class="player-info-mobile">
+                        <span id="mobile-opponent-name" class="player-name-mobile">Opponent</span>
+                        <span id="mobile-opponent-elo" class="player-elo-mobile">(400)</span>
+                    </div>
+                    <div id="mobile-opponent-captured" class="captured-mobile"></div>
+                    <div id="mobile-opponent-timer" class="timer-mobile">10:00</div>
+                </div>
+
+                <!-- The Chessboard -->
+                <div class="board-container">
+                    <div id="chessboard" class="chessboard"></div>
+                </div>
+
+                <!-- Mobile: Current Player Bar (below board) -->
+                <div class="mobile-player-bar player-bar">
+                    <div class="player-avatar">♙</div>
+                    <div class="player-info-mobile">
+                        <span id="mobile-player-name" class="player-name-mobile">You</span>
+                        <span id="mobile-player-elo" class="player-elo-mobile">(400)</span>
+                    </div>
+                    <div id="mobile-player-captured" class="captured-mobile"></div>
+                    <div id="mobile-player-timer" class="timer-mobile">10:00</div>
+                </div>
             </main>
         </div>
 
         <div id="message" class="message"></div>
+    </div>
+
+    <!-- Mobile Bottom Action Bar -->
+    <div class="mobile-action-bar">
+        <button id="mobile-menu-btn" class="action-btn" title="Menu">☰</button>
+        <button id="mobile-flip-btn" class="action-btn" title="Flip Board">🔄</button>
+        <button id="mobile-draw-btn" class="action-btn" title="Offer Draw">🤝</button>
+        <button id="mobile-resign-btn" class="action-btn" title="Resign">🏳️</button>
+        <a href="index.html" class="action-btn" title="Back">🏠</a>
     </div>
 
     <div id="promotion-dialog" class="modal">

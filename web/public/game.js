@@ -1063,3 +1063,106 @@ async function dropPiece(x, y) {
         alert(result.message || 'Drop failed');
     }
 }
+
+// ==================== Mobile UI Sync ====================
+
+// Update mobile player bars with game data
+function updateMobilePlayerBars() {
+    if (!gameState) return;
+
+    // Get mobile elements
+    const mobileOpponentName = document.getElementById('mobile-opponent-name');
+    const mobileOpponentElo = document.getElementById('mobile-opponent-elo');
+    const mobileOpponentTimer = document.getElementById('mobile-opponent-timer');
+    const mobileOpponentCaptured = document.getElementById('mobile-opponent-captured');
+    const mobilePlayerName = document.getElementById('mobile-player-name');
+    const mobilePlayerElo = document.getElementById('mobile-player-elo');
+    const mobilePlayerTimer = document.getElementById('mobile-player-timer');
+    const mobilePlayerCaptured = document.getElementById('mobile-player-captured');
+    const mobileVariantBadge = document.getElementById('mobile-variant-badge');
+
+    if (!mobileOpponentName) return; // Mobile elements don't exist
+
+    // Determine who is opponent and who is current player
+    const amIWhite = (gameState.player1 === currentPlayerName);
+
+    // If board is flipped, swap the display
+    const showWhiteOnBottom = amIWhite !== isFlipped;
+
+    if (showWhiteOnBottom) {
+        // White on bottom (player bar), Black on top (opponent bar)
+        mobilePlayerName.textContent = gameState.player1;
+        mobilePlayerElo.textContent = gameState.player1Elo ? `(${gameState.player1Elo})` : '';
+        mobileOpponentName.textContent = gameState.player2;
+        mobileOpponentElo.textContent = gameState.player2Elo ? `(${gameState.player2Elo})` : '';
+
+        // Timers
+        updateTimerDisplay(mobilePlayerTimer, gameState.whiteTimeRemaining);
+        updateTimerDisplay(mobileOpponentTimer, gameState.blackTimeRemaining);
+
+        // Active player highlight
+        document.querySelector('.player-bar').classList.toggle('active', gameState.isWhiteTurn);
+        document.querySelector('.opponent-bar').classList.toggle('active', !gameState.isWhiteTurn);
+    } else {
+        // Black on bottom (player bar), White on top (opponent bar)
+        mobilePlayerName.textContent = gameState.player2;
+        mobilePlayerElo.textContent = gameState.player2Elo ? `(${gameState.player2Elo})` : '';
+        mobileOpponentName.textContent = gameState.player1;
+        mobileOpponentElo.textContent = gameState.player1Elo ? `(${gameState.player1Elo})` : '';
+
+        // Timers
+        updateTimerDisplay(mobilePlayerTimer, gameState.blackTimeRemaining);
+        updateTimerDisplay(mobileOpponentTimer, gameState.whiteTimeRemaining);
+
+        // Active player highlight
+        document.querySelector('.player-bar').classList.toggle('active', !gameState.isWhiteTurn);
+        document.querySelector('.opponent-bar').classList.toggle('active', gameState.isWhiteTurn);
+    }
+
+    // Update variant badge
+    if (mobileVariantBadge && gameState.variant && gameState.variant !== 'standard') {
+        const variants = {
+            'freestyle': '960',
+            'kungfu': '⚡KF',
+            'crazyhouse': '🏠',
+            'kingofthehill': '⛰️'
+        };
+        mobileVariantBadge.textContent = variants[gameState.variant] || gameState.variant;
+        mobileVariantBadge.style.display = 'inline';
+    } else if (mobileVariantBadge) {
+        mobileVariantBadge.style.display = 'none';
+    }
+}
+
+// Call updateMobilePlayerBars in renderGame
+const originalRenderGame = renderGame;
+renderGame = function () {
+    originalRenderGame();
+    updateMobilePlayerBars();
+};
+
+// Mobile button event handlers
+const mobileFlipBtn = document.getElementById('mobile-flip-btn');
+const mobileDrawBtn = document.getElementById('mobile-draw-btn');
+const mobileResignBtn = document.getElementById('mobile-resign-btn');
+
+if (mobileFlipBtn) {
+    mobileFlipBtn.addEventListener('click', () => {
+        isFlipped = !isFlipped;
+        renderBoard();
+        updateBoardOrientation();
+        updateMobilePlayerBars();
+    });
+}
+
+if (mobileDrawBtn) {
+    mobileDrawBtn.addEventListener('click', () => {
+        drawBtn.click(); // Trigger the existing draw button
+    });
+}
+
+if (mobileResignBtn) {
+    mobileResignBtn.addEventListener('click', () => {
+        resignBtn.click(); // Trigger the existing resign button
+    });
+}
