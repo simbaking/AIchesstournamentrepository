@@ -692,3 +692,213 @@ h1 {
 .confetti.purple {
     background: #a855f7;
 }
+
+/* ==================== Mobile Responsive Styles ==================== */
+
+@media (max-width: 600px) {
+
+    /* Reduce base padding */
+    body {
+        padding: 0.75rem;
+    }
+
+    /* Header adjustments */
+    header {
+        margin-bottom: 1.5rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        line-height: 1.2;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    /* Logo smaller on mobile */
+    .logo {
+        width: 50px;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Header actions - stack vertically */
+    .header-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .header-actions .btn {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.75rem;
+        margin: 0 !important;
+    }
+
+    .timer {
+        font-size: 1.25rem !important;
+    }
+
+    /* Cards - reduced padding */
+    .card {
+        padding: 1rem;
+        border-radius: 0.75rem;
+    }
+
+    /* Single column grid on mobile */
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Form inputs - full width and better sizing */
+    input[type="text"],
+    input[type="number"],
+    select {
+        font-size: 16px !important;
+        /* Prevents iOS zoom on focus */
+        padding: 0.75rem;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Computer player row - stack on mobile */
+    #register-form>div:first-of-type {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.5rem !important;
+    }
+
+    #register-form label {
+        font-size: 0.9rem;
+    }
+
+    #computer-level {
+        width: 100% !important;
+    }
+
+    /* Start tournament time inputs */
+    #start-form>div:first-of-type {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Offer form - stack vertically */
+    .offer-form {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+    }
+
+    .offer-form select,
+    .offer-form input {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    #offer-increment {
+        width: 100% !important;
+    }
+
+    #offer-targets {
+        height: 80px !important;
+    }
+
+    /* Variant selection panel */
+    #variant-selection {
+        margin-left: 0 !important;
+        padding: 0.75rem !important;
+    }
+
+    #variant-selection label {
+        font-size: 0.85rem;
+    }
+
+    /* Buttons - larger touch targets */
+    .btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        min-height: 44px;
+        /* iOS recommended touch target */
+    }
+
+    /* Player items - reduce padding */
+    .player-item {
+        padding: 0.75rem;
+        font-size: 0.875rem;
+        flex-wrap: wrap;
+    }
+
+    .player-score {
+        font-size: 0.8rem;
+    }
+
+    /* Status badge smaller */
+    .status-badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 1rem;
+    }
+
+    /* Open offers - better mobile layout */
+    #open-offers .player-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    #open-offers .player-item>div:last-child {
+        width: 100%;
+    }
+
+    #open-offers .btn {
+        width: 100%;
+    }
+
+    /* Celebration modal mobile */
+    .celebration-content {
+        padding: 1.5rem;
+        max-width: 95%;
+    }
+
+    .celebration-title {
+        font-size: 1.5rem;
+    }
+
+    .result-card {
+        padding: 0.75rem;
+        gap: 0.5rem;
+    }
+
+    .result-medal {
+        font-size: 1.75rem;
+        min-width: 2rem;
+    }
+
+    .result-name {
+        font-size: 1rem;
+    }
+
+    .result-score {
+        font-size: 1rem;
+    }
+}
+
+/* Extra small screens (very small phones) */
+@media (max-width: 360px) {
+    body {
+        padding: 0.5rem;
+    }
+
+    h1 {
+        font-size: 1.25rem;
+    }
+
+    .card {
+        padding: 0.75rem;
+    }
+
+    .btn {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
+    }
+}
