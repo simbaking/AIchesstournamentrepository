@@ -257,29 +257,189 @@
 }
 
 @media (max-width: 600px) {
+
+    /* Use viewport-based sizing for the board */
     .chessboard {
-        grid-template-columns: repeat(8, 45px);
-        grid-template-rows: repeat(8, 45px);
+        /* Calculate square size: (viewport - padding) / 8 */
+        --square-size: calc((100vw - 2rem) / 8);
+        grid-template-columns: repeat(8, var(--square-size));
+        grid-template-rows: repeat(8, var(--square-size));
+        border-width: 2px;
     }
 
     .square {
-        width: 45px;
-        height: 45px;
-        font-size: 2rem;
+        width: var(--square-size);
+        height: var(--square-size);
+        font-size: calc(var(--square-size) * 0.65);
+    }
+
+    /* Header adjustments */
+    header {
+        margin-bottom: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .logo {
+        width: 50px;
+    }
+
+    .back-link {
+        font-size: 0.9rem;
+    }
+
+    /* Player info cards - horizontal layout */
+    .info-card {
+        padding: 0.75rem;
+        border-radius: 0.75rem;
+    }
+
+    .info-card h2 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Player sections more compact */
+    .player {
+        padding: 0.5rem;
+        gap: 0.25rem;
+    }
+
+    .player-details {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .timer-display {
+        font-size: 1rem;
+        padding: 0.15rem 0.35rem;
+    }
+
+    /* Turn indicator smaller */
+    #turn-indicator {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+
+    /* Material advantage smaller */
+    .material-advantage {
+        font-size: 0.85rem;
+        padding: 0.35rem;
+    }
+
+    /* Buttons - touch friendly */
+    .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+        min-height: 40px;
+    }
+
+    /* Actions card - buttons in row */
+    .info-card .btn {
+        margin-bottom: 0.35rem;
+    }
+
+    /* Game timer smaller */
+    .game-timer {
+        font-size: 1.5rem;
+    }
+
+    /* Captured pieces smaller */
+    .captured-pieces {
+        min-height: 1.2rem;
+    }
+
+    .captured-piece {
+        font-size: 1rem;
+    }
+
+    /* Pocket pieces smaller */
+    .pocket-pieces {
+        padding: 0.35rem;
+        gap: 0.35rem;
+    }
+
+    .pocket-piece {
+        font-size: 1.25rem;
+    }
+
+    .pocket-label {
+        font-size: 0.8rem;
+    }
+
+    /* Promotion modal */
+    .modal-content {
+        padding: 1rem;
+        max-width: 95vw;
+    }
+
+    .modal-content h3 {
+        font-size: 1rem;
+    }
+
+    .promotion-choices {
+        gap: 0.5rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .promo-btn {
+        font-size: 1.5rem;
+        padding: 0.75rem;
+    }
+
+    /* Game over card */
+    #game-result {
+        font-size: 0.95rem;
+        padding: 0.75rem;
+    }
+
+    /* Final scores */
+    .final-scores {
+        padding: 0.75rem;
+    }
+
+    .final-scores p {
+        font-size: 0.9rem;
+    }
+
+    /* Valid move marker smaller */
+    .valid-move-marker {
+        width: 18px;
+        height: 18px;
     }
 }
 
-.square.last-move {
-    box-shadow: inset 0 0 0 4px rgba(251, 191, 36, 0.8);
+/* Extra small phones */
+@media (max-width: 360px) {
+    .chessboard {
+        --square-size: calc((100vw - 1rem) / 8);
+    }
+
+    header h1 {
+        font-size: 1.25rem;
+    }
+
+    .timer-display {
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
+    }
 }
 
-.final-scor.player {
-    padding: 1rem;
-    border-radius: 8px;
-    background-color: var(--card-bg);
-    transition: all 0.3s ease;
-    width: 200px;
-    text-align: center;
+/* ==================== Base Styles (non-responsive) ==================== */
+
+.square.last-move {
+    box-shadow: inset 0 0 0 4px rgba(251, 191, 36, 0.8);
 }
 
 .player-details {
