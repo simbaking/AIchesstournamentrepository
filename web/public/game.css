@@ -653,6 +653,11 @@
         border-color: var(--primary);
     }
 
+    /* Hide Actions card on mobile - these actions are in the action bar */
+    .actions-card {
+        display: none !important;
+    }
+
     /* Show mobile elements */
     .mobile-header,
     .mobile-player-bar,
@@ -815,9 +820,10 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
-        background: var(--bg-dark);
-        padding: 0.5rem 0;
-        border-top: 1px solid var(--primary);
+        background: #1a0f08;
+        /* Solid dark brown, more opaque than var(--bg-dark) */
+        padding: 0.75rem 0;
+        border-top: 2px solid var(--primary);
         position: fixed;
         bottom: 0;
         left: 0;
