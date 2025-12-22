@@ -645,12 +645,12 @@
     .desktop-sidebar {
         order: 3;
         padding: 1rem;
-        background: #302e2b;
+        background: var(--primary);
     }
 
     .desktop-sidebar .info-card {
-        background: #272522;
-        border-color: #3d3b38;
+        background: var(--bg-card);
+        border-color: var(--border);
     }
 
     /* Show mobile elements */
@@ -660,11 +660,11 @@
         display: flex;
     }
 
-    /* Full height dark layout */
+    /* Full height layout with original colors */
     body {
         padding: 0;
         margin: 0;
-        background: #302e2b;
+        background: var(--primary);
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -680,16 +680,16 @@
 
     /* Mobile Header - minimal */
     .mobile-header {
-        background: #272522;
+        background: var(--bg-card);
         padding: 0.75rem 1rem;
         display: flex;
         align-items: center;
         gap: 1rem;
-        border-bottom: 1px solid #3d3b38;
+        border-bottom: 1px solid var(--border);
     }
 
     .mobile-back {
-        color: #b0aea9;
+        color: var(--text);
         font-size: 1.5rem;
         text-decoration: none;
         padding: 0.25rem;
@@ -722,7 +722,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background: #302e2b;
+        background: var(--primary);
     }
 
     /* Mobile Player Bars - above and below board */
@@ -730,7 +730,7 @@
         display: flex;
         align-items: center;
         padding: 0.5rem 0.75rem;
-        background: #272522;
+        background: var(--bg-card);
         gap: 0.5rem;
     }
 
@@ -741,7 +741,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #3d3b38;
+        background: rgba(0, 0, 0, 0.2);
         border-radius: 4px;
     }
 
@@ -759,7 +759,7 @@
     }
 
     .player-elo-mobile {
-        color: #b0aea9;
+        color: var(--text-muted);
         font-size: 0.8rem;
     }
 
@@ -767,14 +767,14 @@
         display: flex;
         gap: 1px;
         font-size: 0.75rem;
-        color: #b0aea9;
+        color: var(--text-muted);
     }
 
     .timer-mobile {
         font-family: 'Courier New', monospace;
         font-size: 1.1rem;
         font-weight: bold;
-        background: #3d3b38;
+        background: rgba(0, 0, 0, 0.3);
         color: #fff;
         padding: 0.35rem 0.6rem;
         border-radius: 4px;
@@ -784,7 +784,7 @@
 
     /* Active player timer highlight */
     .mobile-player-bar.active .timer-mobile {
-        background: #81b64c;
+        background: var(--secondary);
         color: #fff;
     }
 
@@ -815,9 +815,9 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
-        background: #272522;
+        background: var(--bg-card);
         padding: 0.5rem 0;
-        border-top: 1px solid #3d3b38;
+        border-top: 1px solid var(--border);
         position: fixed;
         bottom: 0;
         left: 0;
@@ -828,7 +828,7 @@
     .action-btn {
         background: transparent;
         border: none;
-        color: #b0aea9;
+        color: var(--text);
         font-size: 1.5rem;
         padding: 0.5rem 1rem;
         cursor: pointer;
@@ -838,7 +838,7 @@
 
     .action-btn:hover,
     .action-btn:active {
-        color: #fff;
+        color: var(--gold);
     }
 
     /* Add bottom padding so content isn't hidden behind action bar */
@@ -859,7 +859,7 @@
     .modal-content {
         max-width: 90vw;
         padding: 1rem;
-        background: #272522;
+        background: var(--bg-card);
     }
 
     .promotion-choices {
@@ -870,8 +870,8 @@
     .promo-btn {
         font-size: 2rem;
         padding: 0.75rem 1rem;
-        background: #3d3b38;
-        border-color: #4d4b48;
+        background: rgba(0, 0, 0, 0.2);
+        border-color: var(--border);
     }
 }
 
