@@ -1,5 +1,5 @@
 class Player {
-    constructor(name, isComputer = false, level = null, browserId = null) {
+    constructor(name, isComputer = false, level = null, browserId = null, clientIP = null) {
         this.name = name;
         this.score = 0;
         this.isComputer = isComputer;
@@ -7,6 +7,7 @@ class Player {
         this.busy = false;
         this.activeGameId = null;
         this.browserId = browserId;  // Persistent browser association for humans
+        this.clientIP = clientIP;    // IP address for LAN multiplayer
 
         // ELO rating: humans start at 400, computers get ELO based on level
         if (isComputer) {
@@ -15,6 +16,10 @@ class Player {
         } else {
             this.elo = 400; // Human players start at 400 ELO
         }
+    }
+
+    getClientIP() {
+        return this.clientIP;
     }
 
     isBusy() {

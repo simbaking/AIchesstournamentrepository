@@ -132,8 +132,9 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
 
 // Register a player
 app.post('/api/register', (req, res) => {
-    const { name, isComputer, level } = req.body;
-    console.log(`Register request: ${name}, isComputer: ${isComputer}, level: ${level}`);
+    const { name, isComputer, level, browserId } = req.body;
+    const clientIP = req.ip || req.connection.remoteAddress || 'unknown';
+    console.log(`Register request: ${name}, isComputer: ${isComputer}, level: ${level}, IP: ${clientIP}`);
 
     if (!name || name.trim() === '') {
         return res.status(400).json({ error: 'Player name is required' });
@@ -144,20 +145,22 @@ app.post('/api/register', (req, res) => {
         return res.status(400).json({ error: 'Player already exists' });
     }
 
-    // Server-side check: Only allow one human player in the tournament
+    // Server-side check: Only allow one human player PER IP ADDRESS
+    // This allows multiple humans from different computers on the same network
     if (!isComputer) {
         const players = tournament.getPlayers();
-        const existingHuman = players.find(p => !p.isComputerPlayer());
-        if (existingHuman) {
+        const existingHumanFromIP = players.find(p =>
+            !p.isComputerPlayer() && p.getClientIP() === clientIP
+        );
+        if (existingHumanFromIP) {
             return res.status(400).json({
-                error: `Only one human player allowed per tournament. "${existingHuman.getName()}" is already registered.`
+                error: `You already have a human player registered: "${existingHumanFromIP.getName()}". Only one human per device allowed.`
             });
         }
     }
 
-    const { browserId } = req.body;
-    tournament.registerPlayer(name, isComputer || false, level !== undefined ? level : null, browserId || null);
-    console.log(`Player registered: ${name}`);
+    tournament.registerPlayer(name, isComputer || false, level !== undefined ? level : null, browserId || null, clientIP);
+    console.log(`Player registered: ${name} from IP: ${clientIP}`);
     res.json({ success: true, message: 'Player registered' });
 });
 
@@ -171,6 +174,28 @@ app.post('/api/reset', (req, res) => {
 
     console.log('Tournament reset via API');
     res.json({ success: true, message: 'Tournament reset successfully' });
+});
+
+// Get server info (LAN IPs for sharing)
+app.get('/api/server-info', (req, res) => {
+    const os = require('os');
+    const networkInterfaces = os.networkInterfaces();
+    const lanIPs = [];
+
+    for (const interfaceName in networkInterfaces) {
+        for (const iface of networkInterfaces[interfaceName]) {
+            if (iface.family === 'IPv4' && !iface.internal) {
+                lanIPs.push(iface.address);
+            }
+        }
+    }
+
+    res.json({
+        port: PORT,
+        lanIPs,
+        localUrl: `http://localhost:${PORT}`,
+        lanUrls: lanIPs.map(ip => `http://${ip}:${PORT}`)
+    });
 });
 
 // Clear scores only (keep players)
@@ -806,7 +831,34 @@ function parseTimeControl(input, inputIncrement = 0) {
     return { minutes: isNaN(minutes) ? 10 : minutes, increment: isNaN(inc) ? 0 : inc, stages: [] };
 }
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Chess Tournament Server running on http://localhost:${PORT}`);
+// Start server on 0.0.0.0 for LAN access
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n╔══════════════════════════════════════════════════════════════╗`);
+    console.log(`║           Chess Tournament Server Started!                   ║`);
+    console.log(`╚══════════════════════════════════════════════════════════════╝`);
+    console.log(`\nLocal:    http://localhost:${PORT}`);
+
+    // Get and display LAN IP addresses
+    const os = require('os');
+    const networkInterfaces = os.networkInterfaces();
+    const lanIPs = [];
+
+    for (const interfaceName in networkInterfaces) {
+        for (const iface of networkInterfaces[interfaceName]) {
+            // Skip internal (loopback) and non-IPv4 addresses
+            if (iface.family === 'IPv4' && !iface.internal) {
+                lanIPs.push(iface.address);
+            }
+        }
+    }
+
+    if (lanIPs.length > 0) {
+        console.log(`\nLAN Access (for other devices on same WiFi):`);
+        lanIPs.forEach(ip => {
+            console.log(`          http://${ip}:${PORT}`);
+        });
+        console.log(`\nShare these URLs with other players!`);
+    }
+
+    console.log(`\n────────────────────────────────────────────────────────────────`);
 });

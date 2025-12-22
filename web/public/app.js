@@ -465,9 +465,9 @@ registerForm.addEventListener('submit', async (e) => {
     const isComputer = isComputerCheckbox.checked;
     const level = isComputer ? parseInt(computerLevelSelect.value) : null;
 
-    // Client-side check for existing human registration
+    // Client-side check for existing human registration on this device
     if (!isComputer && myPlayerName) {
-        showMessage(`You are already registered as <strong>${myPlayerName}</strong>. Only one human player per browser is allowed.`, 'error');
+        showMessage(`You are already registered as <strong>${myPlayerName}</strong>. Only one human player per device is allowed.`, 'error');
         return;
     }
 
