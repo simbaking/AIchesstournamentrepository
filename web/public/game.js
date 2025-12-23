@@ -37,6 +37,8 @@ let isFlipped = false;
 let hasAutoFlipped = false;
 let pendingMove = null;
 let selectedDropPiece = null;
+let previousBoardState = null; // For diffing - only update changed squares
+let boardInitialized = false; // Track if board DOM has been built
 
 // Get variant badge HTML
 function getVariantBadge(variant) {
@@ -186,8 +188,12 @@ function renderGame() {
         updateTimerDisplay(blackTimer, gameState.blackTimeRemaining);
     }
 
-    // Render board
-    renderBoard();
+    // Render board (with diffing to prevent flicker)
+    if (!boardInitialized) {
+        initBoard();
+        boardInitialized = true;
+    }
+    updateBoard();
 
     // Render captured pieces and material advantage
     renderMaterial();
@@ -231,7 +237,187 @@ function renderGame() {
     }
 }
 
-// Render the chess board
+// Initialize the board DOM once (called only on first render)
+function initBoard() {
+    chessboard.innerHTML = '';
+
+    for (let y = 0; y < 8; y++) {
+        for (let x = 0; x < 8; x++) {
+            const square = document.createElement('div');
+            square.className = 'square';
+            square.className += (x + y) % 2 === 0 ? ' light' : ' dark';
+            square.dataset.x = x;
+            square.dataset.y = y;
+            square.id = `square-${x}-${y}`;
+
+            // Event listeners (permanent, don't need to recreate)
+            square.addEventListener('click', () => handleSquareClick(x, y));
+            square.addEventListener('dragover', handleDragOver);
+            square.addEventListener('dragenter', handleDragEnter);
+            square.addEventListener('dragleave', handleDragLeave);
+            square.addEventListener('dragend', handleDragEnd);
+            square.addEventListener('drop', (e) => handleDrop(e, x, y));
+
+            chessboard.appendChild(square);
+        }
+    }
+
+    // Initialize previous state
+    previousBoardState = {
+        board: null,
+        lastMoveHash: null,
+        validMovesHash: null,
+        cooldowns: null,
+        isFlipped: isFlipped
+    };
+}
+
+// Update board by diffing - only update squares that changed
+function updateBoard() {
+    if (!gameState || !gameState.board) return;
+
+    // Check if board orientation changed - if so, rearrange squares
+    if (previousBoardState && previousBoardState.isFlipped !== isFlipped) {
+        reorderSquaresForFlip();
+        previousBoardState.isFlipped = isFlipped;
+    }
+
+    // Get last move for highlighting
+    let lastMove = null;
+    if (gameState.moveHistory && gameState.moveHistory.length > 0) {
+        lastMove = gameState.moveHistory[gameState.moveHistory.length - 1];
+    }
+    const lastMoveHash = lastMove ? `${lastMove.startX},${lastMove.startY},${lastMove.endX},${lastMove.endY}` : null;
+    const validMovesHash = validMoves.map(m => `${m.x},${m.y}`).join(';');
+
+    // Iterate through all squares and update only what changed
+    for (let y = 0; y < 8; y++) {
+        for (let x = 0; x < 8; x++) {
+            const square = document.getElementById(`square-${x}-${y}`);
+            if (!square) continue;
+
+            const piece = gameState.board[x][y];
+            const prevPiece = previousBoardState?.board?.[x]?.[y];
+
+            // Check if piece changed
+            const pieceChanged = JSON.stringify(piece) !== JSON.stringify(prevPiece);
+
+            // Check if this square is part of last move (for highlighting)
+            const isLastMoveSquare = lastMove && (
+                (x === lastMove.startX && y === lastMove.startY) ||
+                (x === lastMove.endX && y === lastMove.endY)
+            );
+
+            // Check if this square has a valid move indicator
+            const hasValidMove = validMoves.some(m => m.x === x && m.y === y);
+
+            // Update piece if changed
+            if (pieceChanged) {
+                // Remove existing piece image
+                const existingPiece = square.querySelector('.piece');
+                if (existingPiece) existingPiece.remove();
+
+                // Add new piece if present
+                if (piece) {
+                    const pieceImg = document.createElement('img');
+                    pieceImg.className = 'piece';
+                    const color = piece.isWhite ? 'white' : 'black';
+                    pieceImg.src = `pieces/${color}-${piece.type}.png`;
+                    pieceImg.alt = `${color} ${piece.type}`;
+                    pieceImg.draggable = true;
+                    pieceImg.addEventListener('dragstart', (e) => handleDragStart(e, x, y));
+                    square.appendChild(pieceImg);
+                    square.classList.add('has-piece');
+                } else {
+                    square.classList.remove('has-piece');
+                }
+            }
+
+            // Update last-move highlight
+            if (isLastMoveSquare) {
+                square.classList.add('last-move');
+            } else {
+                square.classList.remove('last-move');
+            }
+
+            // Update valid move indicators
+            const existingIndicator = square.querySelector('.valid-move-indicator');
+            if (hasValidMove && !existingIndicator) {
+                const indicator = document.createElement('div');
+                indicator.className = 'valid-move-indicator';
+                square.appendChild(indicator);
+            } else if (!hasValidMove && existingIndicator) {
+                existingIndicator.remove();
+            }
+
+            // King of the Hill: Highlight center squares
+            if (gameState.variant === 'kingofthehill') {
+                if ((x === 3 || x === 4) && (y === 3 || y === 4)) {
+                    square.classList.add('koth-center');
+                }
+            }
+
+            // Update cooldown visualization (Kung Fu Chess)
+            const existingCooldown = square.querySelector('.cooldown-progress');
+            if (existingCooldown) existingCooldown.remove();
+            square.classList.remove('cooldown');
+
+            if (gameState.cooldowns) {
+                const key = `${x},${y}`;
+                const cooldownEnd = gameState.cooldowns[key];
+                if (cooldownEnd > Date.now()) {
+                    square.classList.add('cooldown');
+                    const remainingMs = cooldownEnd - Date.now();
+                    const totalMs = gameState.cooldownMs || 10000;
+                    const progressPercent = Math.min(100, (remainingMs / totalMs) * 100);
+                    const progressEl = document.createElement('div');
+                    progressEl.className = 'cooldown-progress';
+                    progressEl.style.height = `${progressPercent}%`;
+                    square.appendChild(progressEl);
+                }
+            }
+        }
+    }
+
+    // Store current state for next diff
+    previousBoardState = {
+        board: JSON.parse(JSON.stringify(gameState.board)),
+        lastMoveHash: lastMoveHash,
+        validMovesHash: validMovesHash,
+        cooldowns: gameState.cooldowns ? { ...gameState.cooldowns } : null,
+        isFlipped: isFlipped
+    };
+}
+
+// Reorder squares in DOM when board is flipped
+function reorderSquaresForFlip() {
+    const squares = Array.from(chessboard.children);
+    chessboard.innerHTML = '';
+
+    if (isFlipped) {
+        // Reverse order for flipped board
+        squares.reverse();
+    }
+
+    // Re-append in correct order
+    const startY = isFlipped ? 7 : 0;
+    const endY = isFlipped ? -1 : 8;
+    const stepY = isFlipped ? -1 : 1;
+    const startX = isFlipped ? 7 : 0;
+    const endX = isFlipped ? -1 : 8;
+    const stepX = isFlipped ? -1 : 1;
+
+    for (let y = startY; y !== endY; y += stepY) {
+        for (let x = startX; x !== endX; x += stepX) {
+            const square = document.getElementById(`square-${x}-${y}`);
+            if (square) {
+                chessboard.appendChild(square);
+            }
+        }
+    }
+}
+
+// Render the chess board (legacy - kept for compatibility but not used in normal flow)
 function renderBoard() {
     chessboard.innerHTML = '';
 
