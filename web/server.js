@@ -607,6 +607,9 @@ app.get('/api/game/:gameId', (req, res) => {
     gameState.player1Elo = p1 ? p1.getElo() : null;
     gameState.player2Elo = p2 ? p2.getElo() : null;
 
+    // Add tournament time remaining
+    gameState.tournamentTimeRemaining = tournament.getRemainingTime();
+
     res.json(gameState);
 });
 
