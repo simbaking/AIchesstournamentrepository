@@ -324,13 +324,6 @@ function renderBoard() {
                 square.appendChild(indicator);
             }
 
-            // Valid Move Indicator
-            if (validMoves.some(m => m.x === x && m.y === y)) {
-                const indicator = document.createElement('div');
-                indicator.className = 'valid-move-indicator';
-                square.appendChild(indicator);
-            }
-
             chessboard.appendChild(square);
         }
     }
@@ -358,16 +351,11 @@ async function handleSquareClick(x, y) {
     }
 
     const piece = gameState.board[x][y];
-    const isMyTurn = (gameState.currentPlayer.toLowerCase() === currentPlayerName.toLowerCase());
-
-    // Determine my color (assuming P1 = White)
     const amIWhite = (gameState.player1.toLowerCase() === currentPlayerName.toLowerCase());
 
     // If no piece selected yet: SELECT
     if (selectedSquare === null) {
         if (!piece) return;
-
-        // Verify Ownership
         if (piece.isWhite !== amIWhite) return;
 
         // Kung Fu Cooldown Check
@@ -381,8 +369,8 @@ async function handleSquareClick(x, y) {
 
         // Select it
         selectedSquare = { x, y };
-        renderBoard(); // Update selection visual
-        fetchValidMoves(x, y); // Fetch and show dots
+        renderBoard();
+        fetchValidMoves(x, y);
         return;
     }
 
@@ -397,14 +385,7 @@ async function handleSquareClick(x, y) {
         // 2. Clicked valid move: EXECUTE
         const isValidMove = validMoves.some(m => m.x === x && m.y === y);
 
-        // Also support clicking opponent piece (capture) without explicit dot if laggy
-        // But for reliable click-to-move, rely on validMoves for explicit user intent validation
-        // Or if clicked square has opponent piece, treat as capture attempt if validMove list is empty/loading?
-        // Let's rely on validMoves. If user clicks fast, they might click before dots verify.
-        // Fallback: If clicked square is different and empty/opponent, TRY move.
-
-        // Revised Logic:
-        // If clicked square is Own Piece -> Switch Selection
+        // Switch selection to own piece
         if (piece && piece.isWhite === amIWhite) {
             selectedSquare = { x, y };
             renderBoard();
@@ -412,97 +393,34 @@ async function handleSquareClick(x, y) {
             return;
         }
 
-        // Try to move
-        // Check Confirmation Logic
-        // initialTimeControl is in minutes. Standard game > 30m.
-        // gameState.timeControl is time remaining? No, server sends 'timeControl' as initial minutes in getState?
-        // Let's check getState in server.js: timeControl: this.timeControlMs / 60000
-        const initialMinutes = gameState.timeControl || 10;
-        const needsConfirmation = initialMinutes > 30 && !gameState.isGameOver;
+        // Only proceed if VALID
+        if (isValidMove) {
+            const initialMinutes = gameState.timeControl || 10;
+            const needsConfirmation = initialMinutes > 30 && !gameState.isGameOver;
 
-        if (needsConfirmation) {
-            // Show confirmation modal
-            pendingMove = { startX: selectedSquare.x, startY: selectedSquare.y, endX: x, endY: y };
+            if (needsConfirmation) {
+                // Show confirmation modal
+                pendingMove = { startX: selectedSquare.x, startY: selectedSquare.y, endX: x, endY: y };
 
-            // Convert coords to algebraic for display
-            const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-            const target = `${files[x]}${8 - y}`; // Display as 'e4'
+                // Convert coords to algebraic for display
+                const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+                const target = `${files[x]}${8 - y}`;
 
-            document.getElementById('confirm-move-target').textContent = target;
-            document.getElementById('confirmation-modal').classList.add('show');
-            return;
+                document.getElementById('confirm-move-target').textContent = target;
+                document.getElementById('confirmation-modal').classList.add('show');
+                return;
+            }
+
+            // Move immediately
+            const startX = selectedSquare.x;
+            const startY = selectedSquare.y;
+            clearSelection();
+            await makeMove(startX, startY, x, y);
+        } else {
+            // Invalid move click -> Deselect
+            clearSelection();
         }
-
-        // Move immediately
-        const startX = selectedSquare.x;
-        const startY = selectedSquare.y;
-        clearSelection();
-        await makeMove(startX, startY, x, y);
     }
-}
-
-// 2. Clicked my own piece: Switch selection
-if (piece && piece.isWhite === amIWhite) {
-    selectedSquare = { x, y };
-    highlightSquare(x, y);
-    fetchValidMoves(x, y);
-    return;
-}
-
-// 3. Clicked empty or opponent: Attempt Move
-console.log(`Attempting move from (${selectedSquare.x}, ${selectedSquare.y}) to (${x}, ${y})`);
-
-// Check for promotion
-const movingPiece = gameState.board[selectedSquare.x][selectedSquare.y];
-if (!movingPiece) { clearSelection(); return; }
-
-const isPawn = movingPiece.type === 'pawn';
-// White(starts low y=6) moves UP to 0. Promote at 0.
-// Black(starts high y=1) moves DOWN to 7. Promote at 7.
-// Wait! Black y=1 starts at top (Rank 7)? 
-// If y=0 is Rank 8 (Top), then Black starts at 1. Moves to 7 (Bottom).
-// White starts at 6. Moves to 0 (Top).
-// So: White promotes at 0. Black promotes at 7.
-const isPromotion = isPawn && ((movingPiece.isWhite && y === 0) || (!movingPiece.isWhite && y === 7));
-
-if (isPromotion) {
-    pendingMove = { startX: selectedSquare.x, startY: selectedSquare.y, endX: x, endY: y };
-    promotionDialog.classList.add('show');
-    clearSelection();
-    return;
-}
-
-await makeMove(selectedSquare.x, selectedSquare.y, x, y);
-clearSelection();
-    }
-}
-
-
-// Fetch valid moves
-async function fetchValidMoves(x, y) {
-    try {
-        const response = await fetch(`/api/game/${gameId}/moves?x=${x}&y=${y}`);
-        const data = await response.json();
-        if (data.moves) {
-            highlightValidMoves(data.moves);
-        }
-    } catch (error) {
-        console.error('Error fetching valid moves:', error);
-    }
-}
-
-// Highlight valid moves
-function highlightValidMoves(moves) {
-    moves.forEach(move => {
-        const square = document.querySelector(`[data-x="${move.x}"][data-y="${move.y}"]`);
-        if (square) {
-            square.classList.add('valid-move');
-            // Add a marker for valid moves
-            const marker = document.createElement('div');
-            marker.className = 'valid-move-marker';
-            square.appendChild(marker);
-        }
-    });
 }
 
 // Highlight selected square
@@ -516,7 +434,6 @@ function highlightSquare(x, y) {
     }
 }
 
-// Clear selection
 // Clear selection
 function clearSelection() {
     selectedSquare = null;
@@ -838,12 +755,10 @@ declineDrawBtn.addEventListener('click', async () => {
 });
 
 // Return to tournament (Close window)
-// Return to tournament (Close window)
 returnBtn.addEventListener('click', () => {
     window.close();
 });
 
-// Flip board
 // Flip board logic
 function updateBoardOrientation() {
     const gameInfoDiv = document.querySelector('.info-card .game-info');
@@ -941,14 +856,6 @@ function formatTime(ms) {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Format time helper
-function formatTime(ms) {
-    const totalSeconds = Math.max(0, Math.floor(ms / 1000));
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-}
-
 // Update tournament timer
 async function updateTournamentTimer() {
     try {
@@ -976,7 +883,6 @@ async function updateTournamentTimer() {
 // Initialize
 updateGameState();
 updateInterval = setInterval(updateGameState, 1000);
-// Add this to game.js after the renderBoard function
 
 // Material values for pieces
 const MATERIAL_VALUES = {
@@ -1036,9 +942,6 @@ function renderMaterial() {
         materialAdvDiv.innerHTML = '<span style="color: var(--text-muted);">Equal</span>';
     }
 }
-
-// Crazyhouse: Selected piece from pocket for dropping
-// selectedDropPiece moved to top
 
 // Render Crazyhouse pocket pieces
 function renderPockets() {
@@ -1125,14 +1028,12 @@ async function dropPiece(x, y) {
     const result = await response.json();
     if (result.success) {
         selectedDropPiece = null;
-        fetchGameState();
+        updateGameState();
     } else {
         console.error('Drop failed:', result.message);
-        alert(result.message || 'Drop failed');
+        showMessage(result.message || 'Drop failed', 'error');
     }
 }
-
-// ==================== Mobile UI Sync ====================
 
 // Update mobile player bars with game data
 function updateMobilePlayerBars() {
