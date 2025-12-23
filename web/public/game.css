@@ -908,17 +908,53 @@
         padding-bottom: 60px;
     }
 
-    /* Hide messages or position them */
-    /* Position messages at the top in the orange space */
+    /* Position messages in flow (push content down) */
     .message {
-        position: fixed;
-        top: 15px;
-        left: 1rem;
-        right: 1rem;
-        bottom: auto;
-        /* Reset bottom */
-        z-index: 2000;
-        /* Ensure it's above everything including modals */
+        display: block;
+        /* Always take up space */
+        visibility: hidden;
+        /* Invisible by default */
+        position: relative;
+        /* In flow */
+        width: 100%;
+        max-width: none;
+        min-height: 50px;
+        /* Reserve fixed height to prevent jumping */
+        box-sizing: border-box;
+
+        top: auto;
+        left: auto;
+        transform: none;
+        z-index: 10;
+
+        /* Box Styling - Default transparent/invisible */
+        background-color: transparent;
+        color: var(--text);
+        padding: 0.75rem 1rem;
+        border-radius: 0;
+        border-bottom: none;
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .message.show {
+        visibility: visible;
+        background-color: var(--bg-card);
+        border-bottom: 2px solid var(--border);
+    }
+
+    /* Error message specific styling */
+    .message.error {
+        background-color: var(--danger);
+        color: white;
+        border-color: #b91c1c;
+    }
+
+    .message.success {
+        background-color: var(--success);
+        color: white;
+        border-color: #15803d;
     }
 
     /* Promotion modal on mobile */
