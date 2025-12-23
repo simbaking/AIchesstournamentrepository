@@ -7,6 +7,11 @@
     display: none;
 }
 
+/* Global captured piece image styling */
+.captured-piece-img {
+    vertical-align: middle;
+}
+
 .game-layout {
     display: grid;
     grid-template-columns: 300px 1fr;
@@ -201,19 +206,10 @@
 
 .piece {
     pointer-events: auto;
-    /* Enable for drag and drop */
     z-index: 10;
-}
-
-/* Make white pieces appear filled */
-.piece.white {
-    text-shadow:
-        -1px -1px 0 currentColor,
-        1px -1px 0 currentColor,
-        -1px 1px 0 currentColor,
-        1px 1px 0 currentColor,
-        0 0 2px currentColor;
-    font-weight: bold;
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
 }
 
 /* Drag and Drop */
@@ -643,25 +639,9 @@
 
 @media (max-width: 600px) {
 
-    /* Hide desktop header only - sidebar shows below board */
-    .desktop-header {
-        display: none !important;
-    }
-
-    /* Sidebar shows below board with mobile styling */
+    /* Hide desktop header and sidebar completely on mobile */
+    .desktop-header,
     .desktop-sidebar {
-        order: 3;
-        padding: 1rem;
-        background: var(--primary);
-    }
-
-    .desktop-sidebar .info-card {
-        background: var(--bg-dark);
-        border-color: var(--primary);
-    }
-
-    /* Hide Actions card on mobile - these actions are in the action bar */
-    .actions-card {
         display: none !important;
     }
 
@@ -747,14 +727,12 @@
     }
 
     .player-avatar {
-        font-size: 1.5rem;
         width: 32px;
         height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        object-fit: contain;
         background: rgba(0, 0, 0, 0.2);
         border-radius: 4px;
+        padding: 2px;
     }
 
     .player-info-mobile {
@@ -783,9 +761,8 @@
 
     .captured-mobile {
         display: flex;
-        gap: 1px;
-        font-size: 0.75rem;
-        color: var(--text-muted);
+        align-items: center;
+        gap: 2px;
     }
 
     .material-mobile {

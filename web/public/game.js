@@ -266,26 +266,18 @@ function renderBoard() {
 
             const piece = gameState.board[x][y];
             if (piece) {
-                const pieceSpan = document.createElement('span');
-                pieceSpan.className = 'piece';
-                pieceSpan.textContent = piece.unicode;
-
-                // Ensure visibility
-                pieceSpan.style.color = piece.isWhite ? '#fff' : '#000';
-                // Add text shadow for better visibility on both square colors
-                if (piece.isWhite) {
-                    pieceSpan.style.textShadow = '0 0 2px #000';
-                }
+                const pieceImg = document.createElement('img');
+                pieceImg.className = 'piece';
+                const color = piece.isWhite ? 'white' : 'black';
+                pieceImg.src = `pieces/${color}-${piece.type}.png`;
+                pieceImg.alt = `${color} ${piece.type}`;
 
                 // Make piece draggable
-                pieceSpan.draggable = true;
-                pieceSpan.addEventListener('dragstart', (e) => handleDragStart(e, x, y));
+                pieceImg.draggable = true;
+                pieceImg.addEventListener('dragstart', (e) => handleDragStart(e, x, y));
 
-                square.appendChild(pieceSpan);
-
-                if (piece.unicode) {
-                    square.classList.add('has-piece');
-                }
+                square.appendChild(pieceImg);
+                square.classList.add('has-piece');
             }
 
             // Cooldown visualization with progress bar
@@ -926,15 +918,11 @@ const MATERIAL_VALUES = {
     'king': 0
 };
 
-// Piece Unicode symbols
-const PIECE_SYMBOLS = {
-    'pawn': '♟',
-    'knight': '♞',
-    'bishop': '♝',
-    'rook': '♜',
-    'queen': '♛',
-    'king': '♚'
-};
+// Helper function to get piece image HTML
+function getPieceImgHtml(type, isWhite, size = 20) {
+    const color = isWhite ? 'white' : 'black';
+    return `<img src="pieces/${color}-${type}.png" alt="${color} ${type}" class="captured-piece-img" style="width: ${size}px; height: ${size}px;">`;
+}
 
 // Render captured pieces and material advantage
 function renderMaterial() {
@@ -944,14 +932,14 @@ function renderMaterial() {
     const blackCapturedDiv = document.getElementById('black-captured');
     const materialAdvDiv = document.getElementById('material-advantage');
 
-    // Render captured pieces for white
+    // Render captured pieces for white (pieces that white captured, so they're black pieces)
     whiteCapturedDiv.innerHTML = gameState.capturedByWhite
-        .map(p => `<span class="captured-piece">${PIECE_SYMBOLS[p.type]}</span>`)
+        .map(p => getPieceImgHtml(p.type, false, 18))
         .join('');
 
-    // Render captured pieces for black
+    // Render captured pieces for black (pieces that black captured, so they're white pieces)
     blackCapturedDiv.innerHTML = gameState.capturedByBlack
-        .map(p => `<span class="captured-piece">${PIECE_SYMBOLS[p.type]}</span>`)
+        .map(p => getPieceImgHtml(p.type, true, 18))
         .join('');
 
     // Calculate material advantage
@@ -997,7 +985,7 @@ function renderPockets() {
         : whiteReserve.map((type, idx) =>
             `<span class="pocket-piece ${selectedDropPiece?.color === 'white' && selectedDropPiece?.type === type ? 'selected' : ''}" 
                    data-type="${type}" data-color="white" 
-                   onclick="selectDropPiece('${type}', 'white')">${PIECE_SYMBOLS[type] || type}</span>`
+                   onclick="selectDropPiece('${type}', 'white')">${getPieceImgHtml(type, true, 24)}</span>`
         ).join('');
 
     // Render black's pocket pieces
@@ -1007,7 +995,7 @@ function renderPockets() {
         : blackReserve.map((type, idx) =>
             `<span class="pocket-piece ${selectedDropPiece?.color === 'black' && selectedDropPiece?.type === type ? 'selected' : ''}" 
                    data-type="${type}" data-color="black" 
-                   onclick="selectDropPiece('${type}', 'black')">${PIECE_SYMBOLS[type] || type}</span>`
+                   onclick="selectDropPiece('${type}', 'black')">${getPieceImgHtml(type, false, 24)}</span>`
         ).join('');
 }
 
@@ -1144,15 +1132,15 @@ function updateMobilePlayerBars() {
             }
         }
 
-        // Captured pieces - White's captures shown on White's bar, Black's captures on Black's bar
+        // Captured pieces - White's captures shown on White's bar (captured black pieces)
         if (mobilePlayerCaptured && gameState.capturedByWhite) {
             mobilePlayerCaptured.innerHTML = gameState.capturedByWhite
-                .map(p => `<span>${PIECE_SYMBOLS[p.type]}</span>`)
+                .map(p => getPieceImgHtml(p.type, false, 16))
                 .join('');
         }
         if (mobileOpponentCaptured && gameState.capturedByBlack) {
             mobileOpponentCaptured.innerHTML = gameState.capturedByBlack
-                .map(p => `<span>${PIECE_SYMBOLS[p.type]}</span>`)
+                .map(p => getPieceImgHtml(p.type, true, 16))
                 .join('');
         }
 
@@ -1193,15 +1181,15 @@ function updateMobilePlayerBars() {
             }
         }
 
-        // Captured pieces - Black's captures shown on Black's bar (bottom), White's on White's bar (top)
+        // Captured pieces - Black's captures shown on Black's bar (captured white pieces)
         if (mobilePlayerCaptured && gameState.capturedByBlack) {
             mobilePlayerCaptured.innerHTML = gameState.capturedByBlack
-                .map(p => `<span>${PIECE_SYMBOLS[p.type]}</span>`)
+                .map(p => getPieceImgHtml(p.type, true, 16))
                 .join('');
         }
         if (mobileOpponentCaptured && gameState.capturedByWhite) {
             mobileOpponentCaptured.innerHTML = gameState.capturedByWhite
-                .map(p => `<span>${PIECE_SYMBOLS[p.type]}</span>`)
+                .map(p => getPieceImgHtml(p.type, false, 16))
                 .join('');
         }
 
