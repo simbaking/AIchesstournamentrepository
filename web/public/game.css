@@ -735,13 +735,13 @@
     }
 
     /* Board area fills available space but stays top aligned */
+    /* Board area fills available space but stays top aligned */
     .board-area {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        /* Was center - this caused the gap! */
-        background: var(--secondary);
-        /* Changed from primary to secondary/orange */
+        background: var(--primary);
+        /* Reverted to orange as requested */
         padding-top: 10px;
         /* Small buffer */
     }
