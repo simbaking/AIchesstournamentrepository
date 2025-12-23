@@ -909,12 +909,16 @@
     }
 
     /* Hide messages or position them */
+    /* Position messages at the top in the orange space */
     .message {
         position: fixed;
-        bottom: 65px;
+        top: 15px;
         left: 1rem;
         right: 1rem;
-        z-index: 101;
+        bottom: auto;
+        /* Reset bottom */
+        z-index: 2000;
+        /* Ensure it's above everything including modals */
     }
 
     /* Promotion modal on mobile */
