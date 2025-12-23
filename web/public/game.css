@@ -817,6 +817,31 @@
         color: var(--gold);
     }
 
+    .material-divider {
+        color: var(--text-muted);
+        opacity: 0.5;
+    }
+
+    .material-advantage {
+        font-weight: 600;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+    }
+
+    .material-advantage.white-ahead {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+    }
+
+    .material-advantage.black-ahead {
+        background: rgba(0, 0, 0, 0.3);
+        color: #999;
+    }
+
+    .material-advantage.equal {
+        color: var(--text-muted);
+    }
+
     .timer-mobile {
         font-family: 'Courier New', monospace;
         font-size: 1.1rem;

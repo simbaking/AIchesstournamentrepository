@@ -1085,6 +1085,7 @@ function updateMobilePlayerBars() {
     const mobilePlayerMaterial = document.getElementById('mobile-player-material');
     const mobileVariantBadge = document.getElementById('mobile-variant-badge');
     const mobileTournamentTimer = document.getElementById('mobile-tournament-timer');
+    const mobileMaterialAdvantage = document.getElementById('mobile-material-advantage');
 
     if (!mobileOpponentName) return; // Mobile elements don't exist
 
@@ -1098,6 +1099,20 @@ function updateMobilePlayerBars() {
     const whiteMaterial = gameState.whiteMaterial || 0;
     const blackMaterial = gameState.blackMaterial || 0;
     const materialDiff = whiteMaterial - blackMaterial;
+
+    // Update central material advantage display
+    if (mobileMaterialAdvantage) {
+        if (materialDiff > 0) {
+            mobileMaterialAdvantage.textContent = `White +${materialDiff}`;
+            mobileMaterialAdvantage.className = 'material-advantage white-ahead';
+        } else if (materialDiff < 0) {
+            mobileMaterialAdvantage.textContent = `Black +${Math.abs(materialDiff)}`;
+            mobileMaterialAdvantage.className = 'material-advantage black-ahead';
+        } else {
+            mobileMaterialAdvantage.textContent = 'Equal';
+            mobileMaterialAdvantage.className = 'material-advantage equal';
+        }
+    }
 
     if (showWhiteOnBottom) {
         // White on bottom (player bar), Black on top (opponent bar)
