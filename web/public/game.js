@@ -1075,11 +1075,16 @@ function updateMobilePlayerBars() {
     const mobileOpponentElo = document.getElementById('mobile-opponent-elo');
     const mobileOpponentTimer = document.getElementById('mobile-opponent-timer');
     const mobileOpponentCaptured = document.getElementById('mobile-opponent-captured');
+    const mobileOpponentColor = document.getElementById('mobile-opponent-color');
+    const mobileOpponentMaterial = document.getElementById('mobile-opponent-material');
     const mobilePlayerName = document.getElementById('mobile-player-name');
     const mobilePlayerElo = document.getElementById('mobile-player-elo');
     const mobilePlayerTimer = document.getElementById('mobile-player-timer');
     const mobilePlayerCaptured = document.getElementById('mobile-player-captured');
+    const mobilePlayerColor = document.getElementById('mobile-player-color');
+    const mobilePlayerMaterial = document.getElementById('mobile-player-material');
     const mobileVariantBadge = document.getElementById('mobile-variant-badge');
+    const mobileTournamentTimer = document.getElementById('mobile-tournament-timer');
 
     if (!mobileOpponentName) return; // Mobile elements don't exist
 
@@ -1089,12 +1094,40 @@ function updateMobilePlayerBars() {
     // If board is flipped, swap the display
     const showWhiteOnBottom = amIWhite !== isFlipped;
 
+    // Calculate material difference
+    const whiteMaterial = gameState.whiteMaterial || 0;
+    const blackMaterial = gameState.blackMaterial || 0;
+    const materialDiff = whiteMaterial - blackMaterial;
+
     if (showWhiteOnBottom) {
         // White on bottom (player bar), Black on top (opponent bar)
         mobilePlayerName.textContent = gameState.player1;
         mobilePlayerElo.textContent = gameState.player1Elo ? `(${gameState.player1Elo})` : '';
+        if (mobilePlayerColor) mobilePlayerColor.textContent = '(White)';
+
         mobileOpponentName.textContent = gameState.player2;
         mobileOpponentElo.textContent = gameState.player2Elo ? `(${gameState.player2Elo})` : '';
+        if (mobileOpponentColor) mobileOpponentColor.textContent = '(Black)';
+
+        // Material advantage
+        if (mobilePlayerMaterial && mobileOpponentMaterial) {
+            if (materialDiff > 0) {
+                mobilePlayerMaterial.textContent = `+${materialDiff}`;
+                mobilePlayerMaterial.className = 'material-mobile ahead';
+                mobileOpponentMaterial.textContent = '';
+                mobileOpponentMaterial.className = 'material-mobile';
+            } else if (materialDiff < 0) {
+                mobileOpponentMaterial.textContent = `+${Math.abs(materialDiff)}`;
+                mobileOpponentMaterial.className = 'material-mobile ahead';
+                mobilePlayerMaterial.textContent = '';
+                mobilePlayerMaterial.className = 'material-mobile';
+            } else {
+                mobilePlayerMaterial.textContent = '';
+                mobileOpponentMaterial.textContent = '';
+                mobilePlayerMaterial.className = 'material-mobile';
+                mobileOpponentMaterial.className = 'material-mobile';
+            }
+        }
 
         // Timers
         updateTimerDisplay(mobilePlayerTimer, gameState.whiteTimeRemaining);
@@ -1107,8 +1140,31 @@ function updateMobilePlayerBars() {
         // Black on bottom (player bar), White on top (opponent bar)
         mobilePlayerName.textContent = gameState.player2;
         mobilePlayerElo.textContent = gameState.player2Elo ? `(${gameState.player2Elo})` : '';
+        if (mobilePlayerColor) mobilePlayerColor.textContent = '(Black)';
+
         mobileOpponentName.textContent = gameState.player1;
         mobileOpponentElo.textContent = gameState.player1Elo ? `(${gameState.player1Elo})` : '';
+        if (mobileOpponentColor) mobileOpponentColor.textContent = '(White)';
+
+        // Material advantage
+        if (mobilePlayerMaterial && mobileOpponentMaterial) {
+            if (materialDiff < 0) {
+                mobilePlayerMaterial.textContent = `+${Math.abs(materialDiff)}`;
+                mobilePlayerMaterial.className = 'material-mobile ahead';
+                mobileOpponentMaterial.textContent = '';
+                mobileOpponentMaterial.className = 'material-mobile';
+            } else if (materialDiff > 0) {
+                mobileOpponentMaterial.textContent = `+${materialDiff}`;
+                mobileOpponentMaterial.className = 'material-mobile ahead';
+                mobilePlayerMaterial.textContent = '';
+                mobilePlayerMaterial.className = 'material-mobile';
+            } else {
+                mobilePlayerMaterial.textContent = '';
+                mobileOpponentMaterial.textContent = '';
+                mobilePlayerMaterial.className = 'material-mobile';
+                mobileOpponentMaterial.className = 'material-mobile';
+            }
+        }
 
         // Timers
         updateTimerDisplay(mobilePlayerTimer, gameState.blackTimeRemaining);
@@ -1117,6 +1173,13 @@ function updateMobilePlayerBars() {
         // Active player highlight
         document.querySelector('.player-bar').classList.toggle('active', !gameState.isWhiteTurn);
         document.querySelector('.opponent-bar').classList.toggle('active', gameState.isWhiteTurn);
+    }
+
+    // Update tournament timer
+    if (mobileTournamentTimer && gameState.tournamentTimeRemaining !== undefined) {
+        const mins = Math.floor(gameState.tournamentTimeRemaining / 60000);
+        const secs = Math.floor((gameState.tournamentTimeRemaining % 60000) / 1000);
+        mobileTournamentTimer.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
     // Update variant badge

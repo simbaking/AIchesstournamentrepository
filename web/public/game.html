@@ -100,9 +100,11 @@
                     <div class="player-avatar">♟</div>
                     <div class="player-info-mobile">
                         <span id="mobile-opponent-name" class="player-name-mobile">Opponent</span>
+                        <span id="mobile-opponent-color" class="player-color-mobile">(Black)</span>
                         <span id="mobile-opponent-elo" class="player-elo-mobile">(400)</span>
                     </div>
                     <div id="mobile-opponent-captured" class="captured-mobile"></div>
+                    <div id="mobile-opponent-material" class="material-mobile"></div>
                     <div id="mobile-opponent-timer" class="timer-mobile">10:00</div>
                 </div>
 
@@ -116,10 +118,18 @@
                     <div class="player-avatar">♙</div>
                     <div class="player-info-mobile">
                         <span id="mobile-player-name" class="player-name-mobile">You</span>
+                        <span id="mobile-player-color" class="player-color-mobile">(White)</span>
                         <span id="mobile-player-elo" class="player-elo-mobile">(400)</span>
                     </div>
                     <div id="mobile-player-captured" class="captured-mobile"></div>
+                    <div id="mobile-player-material" class="material-mobile"></div>
                     <div id="mobile-player-timer" class="timer-mobile">10:00</div>
+                </div>
+
+                <!-- Mobile: Tournament Time (kept at bottom) -->
+                <div class="mobile-tournament-time">
+                    <span>Tournament:</span>
+                    <span id="mobile-tournament-timer">--:--</span>
                 </div>
             </main>
         </div>
@@ -129,7 +139,6 @@
 
     <!-- Mobile Bottom Action Bar -->
     <div class="mobile-action-bar">
-        <button id="mobile-menu-btn" class="action-btn" title="Menu">☰</button>
         <button id="mobile-flip-btn" class="action-btn" title="Flip Board">🔄</button>
         <button id="mobile-draw-btn" class="action-btn" title="Offer Draw">🤝</button>
         <button id="mobile-resign-btn" class="action-btn" title="Resign">🏳️</button>

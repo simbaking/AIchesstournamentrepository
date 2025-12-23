@@ -763,6 +763,12 @@
         font-size: 0.9rem;
     }
 
+    .player-color-mobile {
+        color: var(--gold);
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
     .player-elo-mobile {
         color: var(--text-muted);
         font-size: 0.8rem;
@@ -773,6 +779,42 @@
         gap: 1px;
         font-size: 0.75rem;
         color: var(--text-muted);
+    }
+
+    .material-mobile {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--gold);
+        min-width: 30px;
+        text-align: center;
+    }
+
+    .material-mobile.ahead {
+        color: #22c55e;
+        /* Green when ahead */
+    }
+
+    .material-mobile.behind {
+        color: #ef4444;
+        /* Red when behind */
+    }
+
+    /* Tournament time section */
+    .mobile-tournament-time {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        background: var(--bg-dark);
+        color: var(--text);
+        font-size: 0.9rem;
+    }
+
+    .mobile-tournament-time #mobile-tournament-timer {
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+        color: var(--gold);
     }
 
     .timer-mobile {
