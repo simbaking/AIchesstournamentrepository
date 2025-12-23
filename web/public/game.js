@@ -109,7 +109,9 @@ async function updateGameState() {
 
         // Auto-flip board if playing as Black
         if (!hasAutoFlipped && gameState) {
+            const isPlayer1 = currentPlayerName.toLowerCase() === gameState.player1.toLowerCase();
             const isPlayer2 = currentPlayerName.toLowerCase() === gameState.player2.toLowerCase();
+
             if (isPlayer2) {
                 isFlipped = true;
                 updateBoardOrientation();
@@ -140,8 +142,11 @@ async function updateGameState() {
 // Render the game
 function renderGame() {
     // Update player names
-    whitePlayerName.textContent = gameState.player1 + (gameState.player1Elo ? ` (${gameState.player1Elo})` : '');
-    blackPlayerName.textContent = gameState.player2 + (gameState.player2Elo ? ` (${gameState.player2Elo})` : '');
+    const p1You = gameState.player1.toLowerCase() === currentPlayerName.toLowerCase() ? ' (You)' : '';
+    const p2You = gameState.player2.toLowerCase() === currentPlayerName.toLowerCase() ? ' (You)' : '';
+
+    whitePlayerName.textContent = gameState.player1 + (gameState.player1Elo ? ` (${gameState.player1Elo})` : '') + p1You;
+    blackPlayerName.textContent = gameState.player2 + (gameState.player2Elo ? ` (${gameState.player2Elo})` : '') + p2You;
 
     // Update variant badge
     const variantBadgeEl = document.getElementById('game-variant-badge');

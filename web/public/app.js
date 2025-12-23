@@ -441,7 +441,7 @@ async function updateActiveGames() {
                                 ${variantBadge}
                             </span>
                             <span class="score">
-                                <a href="game.html?gameId=${game.gameId}&player=${game.player1}" target="_blank" style="color: var(--accent); text-decoration: none;">
+                                <a href="game.html?gameId=${game.gameId}" target="_blank" style="color: var(--accent); text-decoration: none;">
                                     ${statusText} →
                                 </a>
                             </span>
