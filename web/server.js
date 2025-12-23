@@ -605,6 +605,27 @@ app.get('/api/game/:gameId', (req, res) => {
     res.json(gameState);
 });
 
+// Get valid moves for a piece
+app.get('/api/game/:gameId/valid-moves', (req, res) => {
+    const { gameId } = req.params;
+    const { x, y } = req.query;
+
+    const game = activeGames.get(gameId);
+    if (!game) {
+        return res.status(404).json({ error: 'Game not found' });
+    }
+
+    const startX = parseInt(x);
+    const startY = parseInt(y);
+
+    if (isNaN(startX) || isNaN(startY)) {
+        return res.status(400).json({ error: 'Invalid coordinates' });
+    }
+
+    const moves = game.getLegalMovesForPiece(startX, startY);
+    res.json({ success: true, moves });
+});
+
 // Make a move
 app.post('/api/game/:gameId/move', (req, res) => {
     const { gameId } = req.params;

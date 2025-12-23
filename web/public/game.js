@@ -29,12 +29,14 @@ const declineDrawBtn = document.getElementById('decline-draw-btn');
 
 let gameState = null;
 let selectedSquare = null;
+let validMoves = []; // Store valid moves for selected piece
 let updateInterval = null;
 let timerInterval = null;
 let lastTickTime = Date.now();
 let isFlipped = false;
 let hasAutoFlipped = false;
 let pendingMove = null;
+let selectedDropPiece = null;
 
 // Get variant badge HTML
 function getVariantBadge(variant) {
@@ -315,12 +317,25 @@ function renderBoard() {
             square.addEventListener('dragend', handleDragEnd);
             square.addEventListener('drop', (e) => handleDrop(e, x, y));
 
+            // Valid Move Indicator
+            if (validMoves.some(m => m.x === x && m.y === y)) {
+                const indicator = document.createElement('div');
+                indicator.className = 'valid-move-indicator';
+                square.appendChild(indicator);
+            }
+
+            // Valid Move Indicator
+            if (validMoves.some(m => m.x === x && m.y === y)) {
+                const indicator = document.createElement('div');
+                indicator.className = 'valid-move-indicator';
+                square.appendChild(indicator);
+            }
+
             chessboard.appendChild(square);
         }
     }
 }
 
-// Handle square click
 // Handle square click
 async function handleSquareClick(x, y) {
     if (gameState.isGameOver) return;
@@ -345,23 +360,6 @@ async function handleSquareClick(x, y) {
     const piece = gameState.board[x][y];
     const isMyTurn = (gameState.currentPlayer.toLowerCase() === currentPlayerName.toLowerCase());
 
-    // Turn Check (Standard Only)
-    // In Kung Fu, we don't enforce turns, but we might want to check for "Game Not Started" or similar?
-    // For now, only block if Standard and Not My Turn.
-    if (gameState.variant !== 'kungfu') {
-        // Computer check
-        const currentPlayerType = gameState.isWhiteTurn ? gameState.whitePlayerType : gameState.blackPlayerType;
-        if (currentPlayerType === 'computer') {
-            showMessage('Computer is thinking...', 'info');
-            return;
-        }
-
-        if (!isMyTurn) {
-            showMessage(`It is ${gameState.currentPlayer}'s turn`, 'warning');
-            return;
-        }
-    }
-
     // Determine my color (assuming P1 = White)
     const amIWhite = (gameState.player1.toLowerCase() === currentPlayerName.toLowerCase());
 
@@ -370,10 +368,7 @@ async function handleSquareClick(x, y) {
         if (!piece) return;
 
         // Verify Ownership
-        if (piece.isWhite !== amIWhite) {
-            // Cannot select opponent's piece
-            return;
-        }
+        if (piece.isWhite !== amIWhite) return;
 
         // Kung Fu Cooldown Check
         if (gameState.variant === 'kungfu' && gameState.cooldowns) {
@@ -386,9 +381,8 @@ async function handleSquareClick(x, y) {
 
         // Select it
         selectedSquare = { x, y };
-        console.log(`Selected square: (${x}, ${y})`);
-        highlightSquare(x, y);
-        fetchValidMoves(x, y);
+        renderBoard(); // Update selection visual
+        fetchValidMoves(x, y); // Fetch and show dots
         return;
     }
 
@@ -400,39 +394,86 @@ async function handleSquareClick(x, y) {
             return;
         }
 
-        // 2. Clicked my own piece: Switch selection
+        // 2. Clicked valid move: EXECUTE
+        const isValidMove = validMoves.some(m => m.x === x && m.y === y);
+
+        // Also support clicking opponent piece (capture) without explicit dot if laggy
+        // But for reliable click-to-move, rely on validMoves for explicit user intent validation
+        // Or if clicked square has opponent piece, treat as capture attempt if validMove list is empty/loading?
+        // Let's rely on validMoves. If user clicks fast, they might click before dots verify.
+        // Fallback: If clicked square is different and empty/opponent, TRY move.
+
+        // Revised Logic:
+        // If clicked square is Own Piece -> Switch Selection
         if (piece && piece.isWhite === amIWhite) {
             selectedSquare = { x, y };
-            highlightSquare(x, y);
+            renderBoard();
             fetchValidMoves(x, y);
             return;
         }
 
-        // 3. Clicked empty or opponent: Attempt Move
-        console.log(`Attempting move from (${selectedSquare.x}, ${selectedSquare.y}) to (${x}, ${y})`);
+        // Try to move
+        // Check Confirmation Logic
+        // initialTimeControl is in minutes. Standard game > 30m.
+        // gameState.timeControl is time remaining? No, server sends 'timeControl' as initial minutes in getState?
+        // Let's check getState in server.js: timeControl: this.timeControlMs / 60000
+        const initialMinutes = gameState.timeControl || 10;
+        const needsConfirmation = initialMinutes > 30 && !gameState.isGameOver;
 
-        // Check for promotion
-        const movingPiece = gameState.board[selectedSquare.x][selectedSquare.y];
-        if (!movingPiece) { clearSelection(); return; }
-
-        const isPawn = movingPiece.type === 'pawn';
-        // White(starts low y=6) moves UP to 0. Promote at 0.
-        // Black(starts high y=1) moves DOWN to 7. Promote at 7.
-        // Wait! Black y=1 starts at top (Rank 7)? 
-        // If y=0 is Rank 8 (Top), then Black starts at 1. Moves to 7 (Bottom).
-        // White starts at 6. Moves to 0 (Top).
-        // So: White promotes at 0. Black promotes at 7.
-        const isPromotion = isPawn && ((movingPiece.isWhite && y === 0) || (!movingPiece.isWhite && y === 7));
-
-        if (isPromotion) {
+        if (needsConfirmation) {
+            // Show confirmation modal
             pendingMove = { startX: selectedSquare.x, startY: selectedSquare.y, endX: x, endY: y };
-            promotionDialog.classList.add('show');
-            clearSelection();
+
+            // Convert coords to algebraic for display
+            const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+            const target = `${files[x]}${8 - y}`; // Display as 'e4'
+
+            document.getElementById('confirm-move-target').textContent = target;
+            document.getElementById('confirmation-modal').classList.add('show');
             return;
         }
 
-        await makeMove(selectedSquare.x, selectedSquare.y, x, y);
+        // Move immediately
+        const startX = selectedSquare.x;
+        const startY = selectedSquare.y;
         clearSelection();
+        await makeMove(startX, startY, x, y);
+    }
+}
+
+// 2. Clicked my own piece: Switch selection
+if (piece && piece.isWhite === amIWhite) {
+    selectedSquare = { x, y };
+    highlightSquare(x, y);
+    fetchValidMoves(x, y);
+    return;
+}
+
+// 3. Clicked empty or opponent: Attempt Move
+console.log(`Attempting move from (${selectedSquare.x}, ${selectedSquare.y}) to (${x}, ${y})`);
+
+// Check for promotion
+const movingPiece = gameState.board[selectedSquare.x][selectedSquare.y];
+if (!movingPiece) { clearSelection(); return; }
+
+const isPawn = movingPiece.type === 'pawn';
+// White(starts low y=6) moves UP to 0. Promote at 0.
+// Black(starts high y=1) moves DOWN to 7. Promote at 7.
+// Wait! Black y=1 starts at top (Rank 7)? 
+// If y=0 is Rank 8 (Top), then Black starts at 1. Moves to 7 (Bottom).
+// White starts at 6. Moves to 0 (Top).
+// So: White promotes at 0. Black promotes at 7.
+const isPromotion = isPawn && ((movingPiece.isWhite && y === 0) || (!movingPiece.isWhite && y === 7));
+
+if (isPromotion) {
+    pendingMove = { startX: selectedSquare.x, startY: selectedSquare.y, endX: x, endY: y };
+    promotionDialog.classList.add('show');
+    clearSelection();
+    return;
+}
+
+await makeMove(selectedSquare.x, selectedSquare.y, x, y);
+clearSelection();
     }
 }
 
@@ -476,13 +517,36 @@ function highlightSquare(x, y) {
 }
 
 // Clear selection
+// Clear selection
 function clearSelection() {
     selectedSquare = null;
+    selectedDropPiece = null;
+    validMoves = []; // Clear valid moves
+
+    // Clear visual styles
     document.querySelectorAll('.square').forEach(sq => {
-        sq.classList.remove('selected', 'valid-move');
-        const marker = sq.querySelector('.valid-move-marker');
-        if (marker) marker.remove();
+        sq.classList.remove('selected', 'last-move');
     });
+
+    renderBoard();
+    renderPockets();
+}
+
+// Fetch valid moves from server
+async function fetchValidMoves(x, y) {
+    if (!gameId) return;
+
+    try {
+        const response = await fetch(`/api/game/${gameId}/valid-moves?x=${x}&y=${y}`);
+        const data = await response.json();
+
+        if (data.success && data.moves) {
+            validMoves = data.moves;
+            renderBoard(); // Re-render to show indicators
+        }
+    } catch (err) {
+        console.error('Error fetching valid moves:', err);
+    }
 }
 
 // Drag and Drop Handlers
@@ -974,7 +1038,7 @@ function renderMaterial() {
 }
 
 // Crazyhouse: Selected piece from pocket for dropping
-let selectedDropPiece = null;
+// selectedDropPiece moved to top
 
 // Render Crazyhouse pocket pieces
 function renderPockets() {
@@ -1268,5 +1332,28 @@ if (mobileDrawBtn) {
 if (mobileResignBtn) {
     mobileResignBtn.addEventListener('click', () => {
         resignBtn.click(); // Trigger the existing resign button
+    });
+}
+
+// Confirmation Modal Handlers
+const confirmMoveBtn = document.getElementById('confirm-move-btn');
+const cancelMoveBtn = document.getElementById('cancel-move-btn');
+const confirmationModal = document.getElementById('confirmation-modal');
+
+if (confirmMoveBtn) {
+    confirmMoveBtn.addEventListener('click', async () => {
+        if (pendingMove) {
+            await makeMove(pendingMove.startX, pendingMove.startY, pendingMove.endX, pendingMove.endY);
+            pendingMove = null;
+            confirmationModal.classList.remove('show');
+            clearSelection();
+        }
+    });
+}
+
+if (cancelMoveBtn) {
+    cancelMoveBtn.addEventListener('click', () => {
+        pendingMove = null;
+        confirmationModal.classList.remove('show');
     });
 }

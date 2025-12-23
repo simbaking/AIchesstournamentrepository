@@ -1641,6 +1641,37 @@ class ChessGame {
         return !this.isKingInCheck(isWhite) && !this.hasLegalMoves(isWhite);
     }
 
+    // Get all legal moves for a specific piece at (x, y)
+    getLegalMovesForPiece(x, y) {
+        const piece = this.board.getPiece(x, y);
+        if (!piece) return [];
+
+        const moves = [];
+        for (let endY = 0; endY < 8; endY++) {
+            for (let endX = 0; endX < 8; endX++) {
+                if (x === endX && y === endY) continue;
+
+                if (piece.isValidMove(this.board, x, y, endX, endY)) {
+                    // Simulate move to check for king safety
+                    const capturedPiece = this.board.getPiece(endX, endY);
+                    this.board.grid[endX][endY] = piece;
+                    this.board.grid[x][y] = null;
+
+                    const inCheck = this.isKingInCheck(piece.isWhite);
+
+                    // Undo move
+                    this.board.grid[x][y] = piece;
+                    this.board.grid[endX][endY] = capturedPiece;
+
+                    if (!inCheck) {
+                        moves.push({ x: endX, y: endY });
+                    }
+                }
+            }
+        }
+        return moves;
+    }
+
     checkTimeout() {
         if (this.isGameOver) return;
 
