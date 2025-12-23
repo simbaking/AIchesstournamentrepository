@@ -241,8 +241,17 @@ function renderGame() {
 function initBoard() {
     chessboard.innerHTML = '';
 
-    for (let y = 0; y < 8; y++) {
-        for (let x = 0; x < 8; x++) {
+    // Respect current flip state when creating squares
+    const startY = isFlipped ? 7 : 0;
+    const endY = isFlipped ? -1 : 8;
+    const stepY = isFlipped ? -1 : 1;
+
+    const startX = isFlipped ? 7 : 0;
+    const endX = isFlipped ? -1 : 8;
+    const stepX = isFlipped ? -1 : 1;
+
+    for (let y = startY; y !== endY; y += stepY) {
+        for (let x = startX; x !== endX; x += stepX) {
             const square = document.createElement('div');
             square.className = 'square';
             square.className += (x + y) % 2 === 0 ? ' light' : ' dark';
