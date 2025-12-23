@@ -1,5 +1,12 @@
 @import url('style.css');
 
+/* Mobile-only elements - hidden by default on desktop */
+.mobile-tournament-time,
+.mobile-player-bar,
+.mobile-action-bar {
+    display: none;
+}
+
 .game-layout {
     display: grid;
     grid-template-columns: 300px 1fr;

@@ -1144,6 +1144,18 @@ function updateMobilePlayerBars() {
             }
         }
 
+        // Captured pieces - White's captures shown on White's bar, Black's captures on Black's bar
+        if (mobilePlayerCaptured && gameState.capturedByWhite) {
+            mobilePlayerCaptured.innerHTML = gameState.capturedByWhite
+                .map(p => `<span>${PIECE_SYMBOLS[p.type]}</span>`)
+                .join('');
+        }
+        if (mobileOpponentCaptured && gameState.capturedByBlack) {
+            mobileOpponentCaptured.innerHTML = gameState.capturedByBlack
+                .map(p => `<span>${PIECE_SYMBOLS[p.type]}</span>`)
+                .join('');
+        }
+
         // Timers
         updateTimerDisplay(mobilePlayerTimer, gameState.whiteTimeRemaining);
         updateTimerDisplay(mobileOpponentTimer, gameState.blackTimeRemaining);
@@ -1179,6 +1191,18 @@ function updateMobilePlayerBars() {
                 mobilePlayerMaterial.className = 'material-mobile';
                 mobileOpponentMaterial.className = 'material-mobile';
             }
+        }
+
+        // Captured pieces - Black's captures shown on Black's bar (bottom), White's on White's bar (top)
+        if (mobilePlayerCaptured && gameState.capturedByBlack) {
+            mobilePlayerCaptured.innerHTML = gameState.capturedByBlack
+                .map(p => `<span>${PIECE_SYMBOLS[p.type]}</span>`)
+                .join('');
+        }
+        if (mobileOpponentCaptured && gameState.capturedByWhite) {
+            mobileOpponentCaptured.innerHTML = gameState.capturedByWhite
+                .map(p => `<span>${PIECE_SYMBOLS[p.type]}</span>`)
+                .join('');
         }
 
         // Timers

@@ -767,7 +767,15 @@ class ChessGame {
         if (this.isGameOver) return { success: false, error: 'Game is over' };
 
         // 1. Basic Turn Validation (Skipped for Kung Fu)
-        const isWhite = player === this.player1;
+        // Use case-insensitive comparison to handle URL/localStorage case differences
+        const isWhite = player.toLowerCase() === this.player1.toLowerCase();
+        const isBlack = player.toLowerCase() === this.player2.toLowerCase();
+
+        // Validate player is actually in this game
+        if (!isWhite && !isBlack) {
+            return { success: false, error: `Player ${player} is not in this game (players: ${this.player1}, ${this.player2})` };
+        }
+
         if (this.variant !== 'kungfu' && isWhite !== this.isWhiteTurn) {
             return { success: false, error: 'Not your turn' };
         }
