@@ -450,7 +450,7 @@ function clearSelection() {
 }
 
 // Fetch valid moves from server
-async function fetchValidMoves(x, y) {
+async function fetchValidMoves(x, y, skipFullRender = false) {
     if (!gameId) return;
 
     try {
@@ -459,11 +459,31 @@ async function fetchValidMoves(x, y) {
 
         if (data.success && data.moves) {
             validMoves = data.moves;
-            renderBoard(); // Re-render to show indicators
+            if (skipFullRender) {
+                updateMoveIndicators();
+            } else {
+                renderBoard(); // Re-render to show indicators
+            }
         }
     } catch (err) {
         console.error('Error fetching valid moves:', err);
     }
+}
+
+// Update valid move indicators without full re-render (for drag support)
+function updateMoveIndicators() {
+    // Remove existing indicators first
+    document.querySelectorAll('.valid-move-indicator').forEach(el => el.remove());
+
+    // Add new ones
+    validMoves.forEach(move => {
+        const square = document.querySelector(`.square[data-x="${move.x}"][data-y="${move.y}"]`);
+        if (square) {
+            const indicator = document.createElement('div');
+            indicator.className = 'valid-move-indicator';
+            square.appendChild(indicator);
+        }
+    });
 }
 
 // Drag and Drop Handlers
@@ -515,8 +535,8 @@ function handleDragStart(e, x, y) {
     e.dataTransfer.setData('text/plain', JSON.stringify({ x, y }));
     e.dataTransfer.effectAllowed = 'move';
 
-    // Select the square visually
-    handleSquareClick(x, y);
+    // Fetch valid moves and show dots, BUT do not re-render (skipFullRender=true)
+    fetchValidMoves(x, y, true);
 }
 
 function handleDragOver(e) {
