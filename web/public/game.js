@@ -564,7 +564,7 @@ async function handleSquareClick(x, y) {
 
         // Select it
         selectedSquare = { x, y };
-        renderBoard();
+        highlightSquare(x, y);
         fetchValidMoves(x, y);
         return;
     }
@@ -583,7 +583,7 @@ async function handleSquareClick(x, y) {
         // Switch selection to own piece
         if (piece && piece.isWhite === amIWhite) {
             selectedSquare = { x, y };
-            renderBoard();
+            highlightSquare(x, y);
             fetchValidMoves(x, y);
             return;
         }
@@ -640,7 +640,7 @@ function clearSelection() {
         sq.classList.remove('selected', 'last-move');
     });
 
-    renderBoard();
+    updateBoard(); // Use diffing update, not full rebuild
     renderPockets();
 }
 
@@ -657,7 +657,7 @@ async function fetchValidMoves(x, y, skipFullRender = false) {
             if (skipFullRender) {
                 updateMoveIndicators();
             } else {
-                renderBoard(); // Re-render to show indicators
+                updateBoard(); // Show indicators via diffing update
             }
         }
     } catch (err) {
@@ -1013,7 +1013,8 @@ function updateBoardOrientation() {
 
 flipBtn.addEventListener('click', () => {
     isFlipped = !isFlipped;
-    renderBoard();
+    reorderSquaresForFlip();
+    updateBoard();
     updateBoardOrientation();
 });
 
@@ -1222,7 +1223,7 @@ function selectDropPiece(type, color) {
     }
 
     renderPockets();
-    renderBoard(); // Re-render to show drop targets
+    updateBoard(); // Update to show drop targets
 }
 
 // Drop a piece from pocket onto the board
@@ -1433,7 +1434,8 @@ const mobileResignBtn = document.getElementById('mobile-resign-btn');
 if (mobileFlipBtn) {
     mobileFlipBtn.addEventListener('click', () => {
         isFlipped = !isFlipped;
-        renderBoard();
+        reorderSquaresForFlip();
+        updateBoard();
         updateBoardOrientation();
         updateMobilePlayerBars();
     });
