@@ -144,7 +144,7 @@ function formatScore(totalMs) {
 
 // Helper to format player name with (You)
 function formatPlayerName(name) {
-    return name === myPlayerName ? `${name} (You)` : name;
+    return (name && myPlayerName && name.toLowerCase() === myPlayerName.toLowerCase()) ? `${name} (You)` : name;
 }
 
 // Fetch and update status
@@ -194,7 +194,7 @@ async function updateStatus() {
                 const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
                 const playerType = player.isComputer ? `🤖 Level ${player.level} (${player.elo})` : `👤 (${player.elo})`;
                 const displayName = formatPlayerName(player.name);
-                const highlightClass = player.name === myPlayerName ? 'highlight-me' : '';
+                const highlightClass = (player.name && myPlayerName && player.name.toLowerCase() === myPlayerName.toLowerCase()) ? 'highlight-me' : '';
 
                 return `
                     <div class="player-item ${highlightClass}">

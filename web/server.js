@@ -145,18 +145,10 @@ app.post('/api/register', (req, res) => {
         return res.status(400).json({ error: 'Player already exists' });
     }
 
-    // Server-side check: Only allow one human player PER IP ADDRESS
-    // This allows multiple humans from different computers on the same network
+    // Server-side check: Allow multiple human players from the same IP
+    // (Helps with players on the same LAN/WiFi)
     if (!isComputer) {
-        const players = tournament.getPlayers();
-        const existingHumanFromIP = players.find(p =>
-            !p.isComputerPlayer() && p.getClientIP() === clientIP
-        );
-        if (existingHumanFromIP) {
-            return res.status(400).json({
-                error: `You already have a human player registered: "${existingHumanFromIP.getName()}". Only one human per device allowed.`
-            });
-        }
+        console.log(`[REGISTER] Human player "${name}" registering from IP: ${clientIP}, browserId: ${browserId}`);
     }
 
     tournament.registerPlayer(name, isComputer || false, level !== undefined ? level : null, browserId || null, clientIP);
@@ -685,8 +677,8 @@ app.post('/api/game/:gameId/resign', (req, res) => {
         return res.status(404).json({ error: 'Game not found' });
     }
 
-    // Convert player name to color
-    const color = player === game.player1 ? 'white' : 'black';
+    // Convert player name to color (case-insensitive)
+    const color = player.toLowerCase() === game.player1.toLowerCase() ? 'white' : 'black';
     const result = game.resign(color);
 
     if (!result.success) {
@@ -713,8 +705,8 @@ app.post('/api/game/:gameId/offer-draw', (req, res) => {
         return res.status(404).json({ error: 'Game not found' });
     }
 
-    // Convert player name to color
-    const color = player === game.player1 ? 'white' : 'black';
+    // Convert player name to color (case-insensitive)
+    const color = player.toLowerCase() === game.player1.toLowerCase() ? 'white' : 'black';
     const result = game.offerDraw(color);
 
     if (!result.success) {

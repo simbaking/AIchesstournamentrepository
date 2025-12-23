@@ -109,7 +109,8 @@ async function updateGameState() {
 
         // Auto-flip board if playing as Black
         if (!hasAutoFlipped && gameState) {
-            if (currentPlayerName === gameState.player2) {
+            const isPlayer2 = currentPlayerName.toLowerCase() === gameState.player2.toLowerCase();
+            if (isPlayer2) {
                 isFlipped = true;
                 updateBoardOrientation();
             }
@@ -203,14 +204,14 @@ function renderGame() {
         turn: gameState.isWhiteTurn ? 'White' : 'Black',
         currentPlayer: gameState.currentPlayer,
         myName: currentPlayerName,
-        canMove: gameState.currentPlayer === currentPlayerName
+        canMove: gameState.currentPlayer.toLowerCase() === currentPlayerName.toLowerCase()
     });
 
     // Display draw offer if present
     if (gameState.drawOfferedBy && !gameState.isGameOver) {
         const offeredBy = gameState.drawOfferedBy === 'white' ? gameState.player1 : gameState.player2;
-        const canRespond = (gameState.drawOfferedBy === 'white' && currentPlayerName === gameState.player2) ||
-            (gameState.drawOfferedBy === 'black' && currentPlayerName === gameState.player1);
+        const canRespond = (gameState.drawOfferedBy === 'white' && currentPlayerName.toLowerCase() === gameState.player2.toLowerCase()) ||
+            (gameState.drawOfferedBy === 'black' && currentPlayerName.toLowerCase() === gameState.player1.toLowerCase());
 
         if (canRespond) {
             drawOfferCard.style.display = 'block';
@@ -357,7 +358,7 @@ async function handleSquareClick(x, y) {
     }
 
     // Determine my color (assuming P1 = White)
-    const amIWhite = (gameState.player1 === currentPlayerName);
+    const amIWhite = (gameState.player1.toLowerCase() === currentPlayerName.toLowerCase());
 
     // If no piece selected yet: SELECT
     if (selectedSquare === null) {
@@ -493,7 +494,7 @@ function handleDragStart(e, x, y) {
     }
 
     // Determine if I am White
-    const amIWhite = (gameState.player1 === currentPlayerName);
+    const amIWhite = (gameState.player1.toLowerCase() === currentPlayerName.toLowerCase());
 
     // Check piece ownership - can only drag my own pieces
     if (piece.isWhite !== amIWhite) {
@@ -1001,9 +1002,9 @@ function renderPockets() {
 
 // Select a piece from pocket for dropping
 function selectDropPiece(type, color) {
-    const isMyPiece = (color === 'white' && currentPlayerName === gameState.player1) ||
-        (color === 'black' && currentPlayerName === gameState.player2);
-    const isMyTurn = gameState.currentPlayer === currentPlayerName;
+    const isMyPiece = (color === 'white' && currentPlayerName.toLowerCase() === gameState.player1.toLowerCase()) ||
+        (color === 'black' && currentPlayerName.toLowerCase() === gameState.player2.toLowerCase());
+    const isMyTurn = gameState.currentPlayer.toLowerCase() === currentPlayerName.toLowerCase();
 
     if (!isMyPiece) {
         console.log('Not your piece to drop');
@@ -1078,7 +1079,7 @@ function updateMobilePlayerBars() {
     if (!mobileOpponentName) return; // Mobile elements don't exist
 
     // Determine who is opponent and who is current player
-    const amIWhite = (gameState.player1 === currentPlayerName);
+    const amIWhite = (gameState.player1.toLowerCase() === currentPlayerName.toLowerCase());
 
     // If board is flipped, swap the display
     const showWhiteOnBottom = amIWhite !== isFlipped;
