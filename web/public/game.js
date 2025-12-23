@@ -930,6 +930,18 @@ function getPieceImgHtml(type, isWhite, size = 20) {
     return `<img src="pieces/${color}-${type}.png" alt="${color} ${type}" class="captured-piece-img" style="width: ${size}px; height: ${size}px;">`;
 }
 
+// Calculate material difference
+function calculateMaterialDifference() {
+    if (!gameState || !gameState.capturedByWhite || !gameState.capturedByBlack) return 0;
+
+    const whiteMaterial = gameState.capturedByWhite.reduce((sum, p) => sum + MATERIAL_VALUES[p.type], 0);
+    const blackMaterial = gameState.capturedByBlack.reduce((sum, p) => sum + MATERIAL_VALUES[p.type], 0);
+
+    // Advantage > 0: White is ahead
+    // Advantage < 0: Black is ahead
+    return whiteMaterial - blackMaterial;
+}
+
 // Render captured pieces and material advantage
 function renderMaterial() {
     if (!gameState.capturedByWhite || !gameState.capturedByBlack) return;
@@ -949,9 +961,7 @@ function renderMaterial() {
         .join('');
 
     // Calculate material advantage
-    const whiteMaterial = gameState.capturedByWhite.reduce((sum, p) => sum + MATERIAL_VALUES[p.type], 0);
-    const blackMaterial = gameState.capturedByBlack.reduce((sum, p) => sum + MATERIAL_VALUES[p.type], 0);
-    const advantage = whiteMaterial - blackMaterial;
+    const advantage = calculateMaterialDifference();
 
     // Display material advantage
     if (advantage > 0) {
@@ -1090,9 +1100,7 @@ function updateMobilePlayerBars() {
     const showWhiteOnBottom = amIWhite !== isFlipped;
 
     // Calculate material difference
-    const whiteMaterial = gameState.whiteMaterial || 0;
-    const blackMaterial = gameState.blackMaterial || 0;
-    const materialDiff = whiteMaterial - blackMaterial;
+    const materialDiff = calculateMaterialDifference();
 
     // Update central material advantage display
     if (mobileMaterialAdvantage) {
