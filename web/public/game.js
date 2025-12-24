@@ -97,10 +97,19 @@ async function updateGameState() {
         const response = await fetch(`/api/game/${gameId}`);
         if (!response.ok) {
             console.error('Failed to fetch game state:', response.status);
-            // Only redirect if game hasn't ended (prevents redirect during close countdown)
+            // Game was likely terminated server-side (tournament ended)
+            // Treat this as game over: close tab and return to tournament
             if (!gameEnded) {
-                showMessage('Game not found', 'error');
-                setTimeout(() => window.location.href = 'index.html', 2000);
+                gameEnded = true;
+                clearInterval(updateInterval);
+                clearInterval(timerInterval);
+                showMessage('Game ended - returning to tournament', 'info');
+
+                // Notify tournament tab and close
+                gameChannel.postMessage({ type: 'GAME_CLOSED', gameId: gameId });
+                setTimeout(() => {
+                    window.close();
+                }, 1500);
             }
             return;
         }
