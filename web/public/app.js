@@ -27,6 +27,7 @@ let currentPlayers = [];
 let wasTournamentRunning = false; // Track tournament state for end detection
 let celebrationShown = false; // Prevent multiple celebrations
 let openedGames = new Set(); // Track games already auto-opened for this player
+let childWindows = new Map(); // Track child window references for focus management
 
 // Local Storage Key
 const STORAGE_KEY = 'chess_tournament_player_name';
@@ -105,6 +106,27 @@ function showMessage(text, type = 'success') {
     setTimeout(() => {
         messageDiv.classList.remove('show');
     }, 5000);
+}
+
+// Open game window and track it for focus management
+function openGameWindow(url, gameId) {
+    const childWindow = window.open(url, '_blank');
+
+    if (childWindow) {
+        childWindows.set(gameId, childWindow);
+
+        // Monitor child window and return focus when it closes
+        const checkChild = setInterval(() => {
+            if (childWindow.closed) {
+                clearInterval(checkChild);
+                childWindows.delete(gameId);
+                console.log(`Game ${gameId} tab closed. Returning focus to main tab.`);
+                window.focus();
+            }
+        }, 500);
+    }
+
+    return childWindow;
 }
 
 // Toggle variant selection panel based on Allow Variants checkbox
@@ -386,7 +408,7 @@ window.acceptOffer = async (offerId) => {
         if (response.ok) {
             // Open game for acceptor (only if gameId is valid)
             if (data.gameId) {
-                window.open(`game.html?gameId=${data.gameId}&player=${playerName}`, '_blank');
+                openGameWindow(`game.html?gameId=${data.gameId}&player=${playerName}`, data.gameId);
                 showMessage(`Game started! Tab opened for ${playerName}`, 'success');
             } else {
                 showMessage('Game created but no ID returned', 'error');
@@ -417,7 +439,7 @@ async function updateActiveGames() {
                     // New game involving this player - open it in a new tab
                     console.log(`Auto-opening game ${game.gameId} for player ${myPlayerName}`);
                     openedGames.add(game.gameId);
-                    window.open(`game.html?gameId=${game.gameId}&player=${encodeURIComponent(myPlayerName)}`, '_blank');
+                    openGameWindow(`game.html?gameId=${game.gameId}&player=${encodeURIComponent(myPlayerName)}`, game.gameId);
                 }
             }
         }
@@ -457,7 +479,7 @@ async function updateActiveGames() {
                                 ${variantBadge}
                             </span>
                             <span class="score">
-                                <a href="#" onclick="window.open('game.html?gameId=${game.gameId}', '_blank'); return false;" style="color: var(--accent); text-decoration: none; cursor: pointer;">
+                                <a href="#" onclick="openGameWindow('game.html?gameId=${game.gameId}', '${game.gameId}'); return false;" style="color: var(--accent); text-decoration: none; cursor: pointer;">
                                     ${statusText} →
                                 </a>
                             </span>
@@ -675,7 +697,7 @@ createOfferForm.addEventListener('submit', async (e) => {
         if (response.ok) {
             if (data.gameStarted && data.gameId) {
                 // Only open tab if game actually started with valid ID
-                window.open(`game.html?gameId=${data.gameId}&player=${playerName}`, '_blank');
+                openGameWindow(`game.html?gameId=${data.gameId}&player=${playerName}`, data.gameId);
                 showMessage(data.message, 'success');
             } else if (!data.gameStarted) {
                 showMessage('Offer posted! Waiting for opponent...', 'success');
@@ -724,7 +746,7 @@ if (gameForm) {
             const data = await response.json();
 
             if (response.ok && data.gameId) {
-                window.open(`game.html?gameId=${data.gameId}&player=${player1Name}`, '_blank');
+                openGameWindow(`game.html?gameId=${data.gameId}&player=${player1Name}`, data.gameId);
                 const p2Link = `game.html?gameId=${data.gameId}&player=${player2Name}`;
                 showMessage(`Game started! Player 1 tab opened. <a href="${p2Link}" target="_blank">Open Player 2 View</a>`, 'success');
             } else if (response.ok) {
