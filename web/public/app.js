@@ -26,6 +26,7 @@ let statusInterval = null;
 let currentPlayers = [];
 let wasTournamentRunning = false; // Track tournament state for end detection
 let celebrationShown = false; // Prevent multiple celebrations
+let openedGames = new Set(); // Track games already auto-opened for this player
 
 // Local Storage Key
 const STORAGE_KEY = 'chess_tournament_player_name';
@@ -405,6 +406,21 @@ async function updateActiveGames() {
         const response = await fetch(`${API_URL}/api/games`);
         const data = await response.json();
         const activeGamesDiv = document.getElementById('active-games');
+
+        // Auto-open game tab for human players when their game starts
+        if (myPlayerName) {
+            for (const game of data.games) {
+                const isMyGame = game.player1.toLowerCase() === myPlayerName.toLowerCase() ||
+                    game.player2.toLowerCase() === myPlayerName.toLowerCase();
+
+                if (isMyGame && !game.isGameOver && !openedGames.has(game.gameId)) {
+                    // New game involving this player - open it in a new tab
+                    console.log(`Auto-opening game ${game.gameId} for player ${myPlayerName}`);
+                    openedGames.add(game.gameId);
+                    window.open(`game.html?gameId=${game.gameId}&player=${encodeURIComponent(myPlayerName)}`, '_blank');
+                }
+            }
+        }
 
         if (data.games.length === 0) {
             activeGamesDiv.innerHTML = '<p class="empty-state">No games in progress</p>';
