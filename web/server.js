@@ -43,6 +43,12 @@ const HUMAN_PRIORITY_DELAY = 10000; // 10 seconds
 
 // Helper to create and start a game
 function createGame(player1Name, player2Name, timeControlMinutes, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random', cooldownSeconds = 10) {
+    // Check if tournament is running before creating game
+    if (!tournament.checkIsRunning()) {
+        console.warn(`Cannot create game: Tournament is not running`);
+        return { success: false, error: 'Tournament is not running' };
+    }
+
     console.log(`Creating game between ${player1Name} and ${player2Name}, variant: ${variant}, cooldown: ${cooldownSeconds}s`);
 
     const p1 = tournament.getPlayerByName(player1Name);
@@ -269,6 +275,11 @@ app.post('/api/start', (req, res) => {
                 }
             }
 
+            // Clear all pending game offers
+            const clearedOffers = gameOffers.length;
+            gameOffers.length = 0;
+            console.log(`Cleared ${clearedOffers} pending game offers`);
+
             clearInterval(tournamentMonitorInterval);
             tournamentMonitorInterval = null;
             if (autoMatchmakingInterval) {
@@ -477,6 +488,11 @@ app.post('/api/offers/create', (req, res) => {
 
     console.log(`[OFFER_CREATE] Received: player1=${player1}, variant=${variant}, startPos=${startPos}`);
 
+    // Check if tournament is running
+    if (!tournament.checkIsRunning()) {
+        return res.status(400).json({ error: 'Tournament is not running' });
+    }
+
     if (!player1 || !timeControl) {
         return res.status(400).json({ error: 'Player name and time control required' });
     }
@@ -519,6 +535,11 @@ app.post('/api/offers/create', (req, res) => {
 // Accept a game offer
 app.post('/api/offers/accept', (req, res) => {
     const { offerId, player2 } = req.body; // Renamed playerName to player2
+
+    // Check if tournament is running
+    if (!tournament.checkIsRunning()) {
+        return res.status(400).json({ error: 'Tournament is not running' });
+    }
 
     const offerIndex = gameOffers.findIndex(o => o.id === parseInt(offerId)); // Used gameOffers and parseInt to match existing structure
     if (offerIndex === -1) {
