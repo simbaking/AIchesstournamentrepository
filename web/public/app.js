@@ -538,6 +538,13 @@ registerForm.addEventListener('submit', async (e) => {
             setTimeout(updateStatus, 300);
         } else {
             showMessage(data.error, 'error');
+
+            // If server says this browser already has a player, restore localStorage
+            if (data.existingPlayer) {
+                console.log(`Server says we're already registered as ${data.existingPlayer}, restoring localStorage`);
+                localStorage.setItem(STORAGE_KEY, data.existingPlayer);
+                myPlayerName = data.existingPlayer;
+            }
         }
     } catch (error) {
         showMessage('Error registering player', 'error');

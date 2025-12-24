@@ -151,8 +151,18 @@ app.post('/api/register', (req, res) => {
         return res.status(400).json({ error: 'Player already exists' });
     }
 
-    // Server-side check: Allow multiple human players from the same IP
-    // (Helps with players on the same LAN/WiFi)
+    // Server-side check: One human player per browser ID
+    if (!isComputer && browserId) {
+        const existingByBrowserId = tournament.getPlayerByBrowserId(browserId);
+        if (existingByBrowserId && !existingByBrowserId.isComputerPlayer()) {
+            console.log(`[REGISTER] Rejected: browserId ${browserId} already has human player ${existingByBrowserId.getName()}`);
+            return res.status(400).json({
+                error: `This device is already registered as ${existingByBrowserId.getName()}`,
+                existingPlayer: existingByBrowserId.getName()
+            });
+        }
+    }
+
     if (!isComputer) {
         console.log(`[REGISTER] Human player "${name}" registering from IP: ${clientIP}, browserId: ${browserId}`);
     }
