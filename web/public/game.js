@@ -40,6 +40,9 @@ let selectedDropPiece = null;
 let previousBoardState = null; // For diffing - only update changed squares
 let boardInitialized = false; // Track if board DOM has been built
 
+// Touch drag state for mobile
+let touchDragState = null; // { startX, startY, pieceEl, ghostEl }
+
 // Get variant badge HTML
 function getVariantBadge(variant) {
     if (!variant || variant === 'standard') {
@@ -262,10 +265,121 @@ function initBoard() {
             // Event listeners (permanent, don't need to recreate)
             square.addEventListener('click', () => handleSquareClick(x, y));
 
-            // Touch support for mobile (touchstart fires before click)
+            // Touch support for mobile - distinguish tap vs drag
+            let touchStartTime = 0;
+            let touchStartPos = null;
+
             square.addEventListener('touchstart', (e) => {
-                e.preventDefault(); // Prevent default touch behavior
-                handleSquareClick(x, y);
+                e.preventDefault();
+                touchStartTime = Date.now();
+                touchStartPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+
+                // Check if there's a piece to potentially drag
+                const piece = gameState.board[x][y];
+                const amIWhite = (gameState.player1.toLowerCase() === currentPlayerName.toLowerCase());
+
+                if (piece && piece.isWhite === amIWhite) {
+                    // Start potential drag
+                    touchDragState = {
+                        startX: x,
+                        startY: y,
+                        pieceEl: square.querySelector('.piece'),
+                        ghostEl: null,
+                        hasMoved: false
+                    };
+
+                    // Show valid moves immediately
+                    selectedSquare = { x, y };
+                    highlightSquare(x, y);
+                    fetchValidMoves(x, y);
+                }
+            }, { passive: false });
+
+            square.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (!touchDragState || !touchDragState.pieceEl) return;
+
+                const touch = e.touches[0];
+                const moveDistance = Math.sqrt(
+                    Math.pow(touch.clientX - touchStartPos.x, 2) +
+                    Math.pow(touch.clientY - touchStartPos.y, 2)
+                );
+
+                // Only start drag if moved more than 10px (prevents accidental drags)
+                if (moveDistance > 10) {
+                    touchDragState.hasMoved = true;
+
+                    // Create ghost piece if not exists
+                    if (!touchDragState.ghostEl) {
+                        const ghost = touchDragState.pieceEl.cloneNode(true);
+                        ghost.style.position = 'fixed';
+                        ghost.style.width = '60px';
+                        ghost.style.height = '60px';
+                        ghost.style.pointerEvents = 'none';
+                        ghost.style.zIndex = '9999';
+                        ghost.style.opacity = '0.8';
+                        ghost.style.transform = 'translate(-50%, -50%)';
+                        document.body.appendChild(ghost);
+                        touchDragState.ghostEl = ghost;
+
+                        // Dim original piece
+                        touchDragState.pieceEl.style.opacity = '0.3';
+                    }
+
+                    // Move ghost to touch position
+                    touchDragState.ghostEl.style.left = touch.clientX + 'px';
+                    touchDragState.ghostEl.style.top = touch.clientY + 'px';
+
+                    // Highlight square under finger
+                    highlightSquareUnderTouch(touch.clientX, touch.clientY);
+                }
+            }, { passive: false });
+
+            square.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                const touchDuration = Date.now() - touchStartTime;
+
+                if (touchDragState) {
+                    // Clean up ghost
+                    if (touchDragState.ghostEl) {
+                        touchDragState.ghostEl.remove();
+                    }
+                    if (touchDragState.pieceEl) {
+                        touchDragState.pieceEl.style.opacity = '1';
+                    }
+
+                    if (touchDragState.hasMoved && e.changedTouches.length > 0) {
+                        // Dragged and dropped - find target square
+                        const touch = e.changedTouches[0];
+                        const targetSquare = getSquareAtPosition(touch.clientX, touch.clientY);
+
+                        if (targetSquare) {
+                            const targetX = parseInt(targetSquare.dataset.x);
+                            const targetY = parseInt(targetSquare.dataset.y);
+
+                            // Check if valid move
+                            const isValidMove = validMoves.some(m => m.x === targetX && m.y === targetY);
+                            if (isValidMove) {
+                                const startX = touchDragState.startX;
+                                const startY = touchDragState.startY;
+                                clearSelection();
+                                makeMove(startX, startY, targetX, targetY);
+                            } else {
+                                clearSelection();
+                            }
+                        } else {
+                            clearSelection();
+                        }
+                    } else if (touchDuration < 300) {
+                        // Quick tap - use click-to-move
+                        handleSquareClick(x, y);
+                    }
+
+                    touchDragState = null;
+                } else {
+                    // No drag state - just a tap
+                    handleSquareClick(x, y);
+                }
             }, { passive: false });
 
             square.addEventListener('dragover', handleDragOver);
@@ -688,6 +802,36 @@ function updateMoveIndicators() {
             square.appendChild(indicator);
         }
     });
+}
+
+// Get square element at screen position (for touch drag)
+function getSquareAtPosition(clientX, clientY) {
+    const elements = document.elementsFromPoint(clientX, clientY);
+    for (const el of elements) {
+        if (el.classList.contains('square')) {
+            return el;
+        }
+    }
+    return null;
+}
+
+// Highlight square under touch during drag
+function highlightSquareUnderTouch(clientX, clientY) {
+    // Remove drag-over class from all squares
+    document.querySelectorAll('.square.drag-over').forEach(sq => {
+        sq.classList.remove('drag-over');
+    });
+
+    // Add to square under finger
+    const square = getSquareAtPosition(clientX, clientY);
+    if (square) {
+        // Only highlight if it's a valid move target
+        const x = parseInt(square.dataset.x);
+        const y = parseInt(square.dataset.y);
+        if (validMoves.some(m => m.x === x && m.y === y)) {
+            square.classList.add('drag-over');
+        }
+    }
 }
 
 // Drag and Drop Handlers
