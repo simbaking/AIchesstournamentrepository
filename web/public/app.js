@@ -27,7 +27,6 @@ let currentPlayers = [];
 let wasTournamentRunning = false; // Track tournament state for end detection
 let celebrationShown = false; // Prevent multiple celebrations
 let openedGames = new Set(); // Track games already auto-opened for this player
-let childWindows = new Map(); // Track child window references for focus management
 
 // Local Storage Key
 const STORAGE_KEY = 'chess_tournament_player_name';
@@ -108,22 +107,26 @@ function showMessage(text, type = 'success') {
     }, 5000);
 }
 
-// Open game window and track it for focus management
+// BroadcastChannel for cross-tab communication
+const gameChannel = new BroadcastChannel('chess_games');
+
+// Listen for game tab close notifications
+gameChannel.onmessage = (event) => {
+    if (event.data.type === 'GAME_CLOSED') {
+        console.log(`Game ${event.data.gameId} closed. Returning focus to tournament tab.`);
+        openedGames.delete(event.data.gameId);
+        window.focus();
+    }
+};
+
+// Open game window with unique name (prevents duplicate tabs)
 function openGameWindow(url, gameId) {
-    const childWindow = window.open(url, '_blank');
+    // Use named window - if a window with this name exists, it will be reused
+    const windowName = 'chess_game_' + gameId;
+    const childWindow = window.open(url, windowName);
 
     if (childWindow) {
-        childWindows.set(gameId, childWindow);
-
-        // Monitor child window and return focus when it closes
-        const checkChild = setInterval(() => {
-            if (childWindow.closed) {
-                clearInterval(checkChild);
-                childWindows.delete(gameId);
-                console.log(`Game ${gameId} tab closed. Returning focus to main tab.`);
-                window.focus();
-            }
-        }, 500);
+        childWindow.focus(); // Bring to front if already exists
     }
 
     return childWindow;

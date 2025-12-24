@@ -41,6 +41,14 @@ let previousBoardState = null; // For diffing - only update changed squares
 let boardInitialized = false; // Track if board DOM has been built
 let gameEnded = false; // Track if game over is being handled
 
+// BroadcastChannel for notifying tournament tab when game closes
+const gameChannel = new BroadcastChannel('chess_games');
+
+// Notify tournament tab when this tab is closed (manually or otherwise)
+window.addEventListener('beforeunload', () => {
+    gameChannel.postMessage({ type: 'GAME_CLOSED', gameId: gameId });
+});
+
 // Touch drag state for mobile
 let touchDragState = null; // { startX, startY, pieceEl, ghostEl }
 
@@ -1042,8 +1050,13 @@ async function handleGameOver() {
             countdownDiv.textContent = `This tab will close in ${countdown}s...`;
         } else {
             clearInterval(countdownInterval);
-            // Close the tab (works if opened via window.open)
+
+            // Notify tournament tab that game is closing
+            gameChannel.postMessage({ type: 'GAME_CLOSED', gameId: gameId });
+
+            // Close the tab (works if opened via window.open with named window)
             window.close();
+
             // If window.close() doesn't work (not opened by script), show message
             countdownDiv.textContent = 'You can close this tab now.';
         }
