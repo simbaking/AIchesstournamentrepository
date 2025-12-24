@@ -1029,15 +1029,18 @@ async function handleGameOver() {
     gameResult.appendChild(countdownDiv);
 
     let countdown = 5;
-    countdownDiv.textContent = `Returning to tournament in ${countdown}s...`;
+    countdownDiv.textContent = `This tab will close in ${countdown}s...`;
 
     const countdownInterval = setInterval(() => {
         countdown--;
         if (countdown > 0) {
-            countdownDiv.textContent = `Returning to tournament in ${countdown}s...`;
+            countdownDiv.textContent = `This tab will close in ${countdown}s...`;
         } else {
             clearInterval(countdownInterval);
-            window.location.href = 'index.html';
+            // Close the tab (works if opened via window.open)
+            window.close();
+            // If window.close() doesn't work (not opened by script), show message
+            countdownDiv.textContent = 'You can close this tab now.';
         }
     }, 1000);
 }
