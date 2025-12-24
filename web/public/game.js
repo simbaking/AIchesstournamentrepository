@@ -261,6 +261,13 @@ function initBoard() {
 
             // Event listeners (permanent, don't need to recreate)
             square.addEventListener('click', () => handleSquareClick(x, y));
+
+            // Touch support for mobile (touchstart fires before click)
+            square.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Prevent default touch behavior
+                handleSquareClick(x, y);
+            }, { passive: false });
+
             square.addEventListener('dragover', handleDragOver);
             square.addEventListener('dragenter', handleDragEnter);
             square.addEventListener('dragleave', handleDragLeave);

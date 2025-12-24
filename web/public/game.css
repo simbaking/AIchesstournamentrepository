@@ -230,6 +230,11 @@
     width: 80%;
     height: 80%;
     object-fit: contain;
+    /* Prevent long-press context menu on mobile */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
 }
 
 /* Drag and Drop */
@@ -678,8 +683,17 @@
         margin: 0;
         background: var(--primary);
         min-height: 100vh;
+        max-height: 100vh;
+        /* Lock height */
         display: flex;
         flex-direction: column;
+        overflow: hidden;
+        /* Prevent vertical scrolling */
+        position: fixed;
+        /* Lock entire page */
+        width: 100%;
+        touch-action: none;
+        /* Disable browser touch scrolling */
     }
 
     .container {
