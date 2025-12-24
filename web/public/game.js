@@ -625,10 +625,12 @@ async function handleSquareClick(x, y) {
     }
 }
 
-// Highlight selected square
+// Highlight selected square (visual only - does NOT clear state)
 function highlightSquare(x, y) {
-    // Remove selected class from all squares
-    clearSelection();
+    // Remove selected class from all squares (visual only)
+    document.querySelectorAll('.square.selected').forEach(sq => {
+        sq.classList.remove('selected');
+    });
 
     const square = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
     if (square) {
