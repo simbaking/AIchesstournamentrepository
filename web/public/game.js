@@ -39,6 +39,7 @@ let pendingMove = null;
 let selectedDropPiece = null;
 let previousBoardState = null; // For diffing - only update changed squares
 let boardInitialized = false; // Track if board DOM has been built
+let gameEnded = false; // Track if game over is being handled
 
 // Touch drag state for mobile
 let touchDragState = null; // { startX, startY, pieceEl, ghostEl }
@@ -88,8 +89,11 @@ async function updateGameState() {
         const response = await fetch(`/api/game/${gameId}`);
         if (!response.ok) {
             console.error('Failed to fetch game state:', response.status);
-            showMessage('Game not found', 'error');
-            setTimeout(() => window.location.href = 'index.html', 2000);
+            // Only redirect if game hasn't ended (prevents redirect during close countdown)
+            if (!gameEnded) {
+                showMessage('Game not found', 'error');
+                setTimeout(() => window.location.href = 'index.html', 2000);
+            }
             return;
         }
 
@@ -986,6 +990,7 @@ async function makeMove(startX, startY, endX, endY, promotionPiece = 'queen') {
 
 // Handle game over
 async function handleGameOver() {
+    gameEnded = true; // Prevent 404 redirect during close countdown
     clearInterval(updateInterval);
     clearInterval(timerInterval);
     gameOverCard.style.display = 'block';
