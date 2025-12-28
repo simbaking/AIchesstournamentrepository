@@ -898,7 +898,11 @@
     }
 
     .chessboard {
-        --square-size: calc(100vw / 8);
+        /* Calculate available height: 100vh minus header(50px), 2 player bars(~80px each), 
+           tournament bar(~45px), action bar(~70px), and some padding = ~325px */
+        --available-height: calc(100vh - 325px);
+        /* Use smaller of viewport width or available height for square size */
+        --square-size: min(calc(100vw / 8), calc(var(--available-height) / 8));
         grid-template-columns: repeat(8, var(--square-size));
         grid-template-rows: repeat(8, var(--square-size));
         border-radius: 0;

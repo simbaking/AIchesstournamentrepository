@@ -49,7 +49,13 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
         return { success: false, error: 'Tournament is not running' };
     }
 
-    console.log(`Creating game between ${player1Name} and ${player2Name}, variant: ${variant}, cooldown: ${cooldownSeconds}s`);
+    // Randomize colors - 50% chance to pick white
+    const participants = [player1Name, player2Name];
+    const whiteIndex = Math.random() < 0.5 ? 0 : 1;
+    player1Name = participants[whiteIndex];
+    player2Name = participants[1 - whiteIndex];
+
+    console.log(`[COLOR] Matchup: ${participants[0]} vs ${participants[1]} -> ${player1Name} (White), ${player2Name} (Black)`);
 
     const p1 = tournament.getPlayerByName(player1Name);
     const p2 = tournament.getPlayerByName(player2Name);
@@ -105,7 +111,10 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
         }
     };
 
-    const game = new ChessGame(player1Name, player2Name, gameId, timeControlMinutes, handleGameEnd, incrementSeconds, timeStages, variant, startPos, cooldownSeconds);
+    const game = new ChessGame(player1Name, player2Name, gameId, timeControlMinutes, handleGameEnd, incrementSeconds, timeStages, variant, startPos, cooldownSeconds, p1 ? p1.getElo() : 1200, p2 ? p2.getElo() : 1200);
+
+    // Set tournament time getter so computers can consider tournament time
+    game.getTournamentTimeRemaining = () => tournament.getRemainingTime();
 
     if (p1.isComputerPlayer()) {
         game.setPlayerType('white', 'computer', p1.getLevel());
@@ -361,6 +370,7 @@ app.post('/api/start', (req, res) => {
                     const offer = {
                         id: offerIdCounter++,
                         player: bot.getName(),
+                        elo: bot.getElo(),
                         timeControl: match.timeControl,
                         increment: match.increment,
                         variant: match.variant || 'standard', // AI strategically selects variant
@@ -528,6 +538,7 @@ app.post('/api/offers/create', (req, res) => {
     const offer = {
         id: offerIdCounter++,
         player: player1,
+        elo: player.getElo(),
         timeControl: config.minutes,
         increment: config.increment,
         timeStages: config.stages,
@@ -824,7 +835,9 @@ app.get('/api/games', (req, res) => {
             timeControl: state.timeControl,
             increment: state.increment,
             duration: state.duration,
-            variant: state.variant
+            variant: state.variant,
+            player1Elo: state.player1Elo,
+            player2Elo: state.player2Elo
         };
     });
     res.json({ games });

@@ -259,6 +259,10 @@ class ChessGame {
         this.cooldownMs = cooldownSeconds * 1000; // Configurable cooldown duration
         this.board = new Board();
 
+        // ELO ratings for decision making
+        this.player1Elo = arguments[10] || 1200; // Passed as 11th arg or default
+        this.player2Elo = arguments[11] || 1200; // Passed as 12th arg or default
+
         console.log(`[ChessGame] Constructor called with variant: "${variant}", startPos: "${startPos}", cooldown: ${cooldownSeconds}s`);
 
         if (this.variant === 'freestyle') {
@@ -299,6 +303,9 @@ class ChessGame {
 
         // Draw offer state
         this.drawOfferedBy = null; // 'white' or 'black' or null
+
+        // Tournament time getter (set by server.js if in tournament)
+        this.getTournamentTimeRemaining = null;
 
         // Castling tracking
         this.whiteKingMoved = false;
@@ -491,56 +498,8 @@ class ChessGame {
         }
 
         // Standard chess: If white is a computer, trigger the first move
-        if (this.whitePlayerType === 'computer' && this.computerPlayers.white) {
-            const fen = this.board.toFEN(true);
-            const computer = this.computerPlayers.white;
-            const skillLevel = computer.level;
-
-            // Calculate thinking time
-            const baseDelay = 2500 - (skillLevel / 20) * 2000;
-            const randomFactor = 0.8 + Math.random() * 0.4;
-            const finalDelay = Math.floor(baseDelay * randomFactor);
-
-            const timePercentage = 0.01 + (skillLevel / 20) * 0.04;
-            const timeBudget = Math.min(this.whiteTimeRemaining * timePercentage, 10000);
-
-            console.log(`Scheduling computer move. Delay: ${finalDelay}, Budget: ${timeBudget}, Level: ${skillLevel}`);
-
-            setTimeout(() => {
-                console.log('Timeout fired. Calling getBestMove...');
-                computer.getBestMove(fen, (result) => {
-                    const bestMove = result.move;
-                    const evaluation = result.evaluation;
-                    console.log(`Computer found best move: ${bestMove}, evaluation: ${evaluation}`);
-
-                    // Computer decision logic (from white's perspective)
-                    if (evaluation < -400) {
-                        // Resign if evaluation is very bad (< -400 centipawns ~ 10% win chance)
-                        console.log(`White computer resigning (eval: ${evaluation})`);
-                        this.resign('white');
-                        return;
-                    } else if (evaluation <= -200) {
-                        // Offer draw if evaluation is bad (≤ -200 centipawns ~ 30% win chance)
-                        console.log(`White computer offering draw (eval: ${evaluation})`);
-                        this.offerDraw('white');
-                    }
-
-                    if (!bestMove) {
-                        console.error('Computer failed to find a move!');
-                        return;
-                    }
-
-                    const fromFile = bestMove.charCodeAt(0) - 97;
-                    const fromRank = 8 - parseInt(bestMove[1]);
-                    const toFile = bestMove.charCodeAt(2) - 97;
-                    const toRank = 8 - parseInt(bestMove[3]);
-
-                    this.makeMove(fromFile, fromRank, toFile, toRank, this.player1);
-                }, timeBudget, this.variant);
-            }, finalDelay);
-        } else {
-            console.log('White is not computer or computer player instance missing.');
-        }
+        // Standard chess: Check if the first player (White) is a computer and schedule move
+        this.scheduleComputerMove();
     }
 
     // Kung Fu Chess: Continuous computer move loop
@@ -800,10 +759,19 @@ class ChessGame {
 
         // 3. Move Legality
         if (!piece.isValidMove(this.board, fromFile, fromRank, toFile, toRank)) {
+            const isEnPassant = this.isEnPassantMove(fromFile, fromRank, toFile, toRank);
+            const isCastling = this.isCastlingMove(fromFile, fromRank, toFile, toRank);
+
             // Check En Passant and Castling
-            if (!this.isEnPassantMove(fromFile, fromRank, toFile, toRank) &&
-                !this.isCastlingMove(fromFile, fromRank, toFile, toRank)) {
+            if (!isEnPassant && !isCastling) {
                 return { success: false, error: 'Invalid move' };
+            }
+
+            if (isCastling) {
+                const isKingside = toFile > fromFile;
+                if (!this.canCastle(piece.isWhite, isKingside)) {
+                    return { success: false, error: 'Invalid castling move' };
+                }
             }
         }
 
@@ -1335,23 +1303,9 @@ class ChessGame {
             let timeBudget = 100;
 
             if (finalDelay === null) {
-                const skillLevel = computer.level;
-                const baseDelay = 1000 - (skillLevel / 20) * 750;
-                const randomFactor = 0.8 + Math.random() * 0.4;
-                finalDelay = Math.floor(baseDelay * randomFactor);
-
-                // Calculate time budget
-                const currentTimeRemaining = this.isWhiteTurn ? this.whiteTimeRemaining : this.blackTimeRemaining;
-                let baseTimePercentage = 0.01 + (skillLevel / 20) * 0.04;
-                const timeRemainingSeconds = currentTimeRemaining / 1000;
-                let adaptiveFactor = 1.0;
-
-                if (timeRemainingSeconds < 30) adaptiveFactor = 0.25;
-                else if (timeRemainingSeconds < 60) adaptiveFactor = 0.5;
-                else if (timeRemainingSeconds < 120) adaptiveFactor = 0.75;
-
-                timeBudget = Math.min(currentTimeRemaining * baseTimePercentage * adaptiveFactor, 10000);
-                if (isNaN(timeBudget) || timeBudget < 50) timeBudget = 100;
+                // Let ComputerPlayer handle the timing logic (consistency check + delay)
+                // We just trigger it immediately
+                finalDelay = 0;
             }
 
             console.log(`[COMPUTER] Scheduling move for ${isComputerWhite ? 'White' : 'Black'} in ${finalDelay}ms`);
@@ -1360,7 +1314,17 @@ class ChessGame {
                 if (this.isGameOver) return; // Game might have ended during delay
 
                 // Get actual remaining time for the computer to calculate thinking time
-                const currentTimeRemaining = this.isWhiteTurn ? this.whiteTimeRemaining : this.blackTimeRemaining;
+                let currentTimeRemaining = this.isWhiteTurn ? this.whiteTimeRemaining : this.blackTimeRemaining;
+
+                // Also consider tournament time if available (use the smaller of the two)
+                if (this.getTournamentTimeRemaining) {
+                    const tournamentTime = this.getTournamentTimeRemaining();
+                    console.log(`[COMPUTER] Time check - Game clock: ${currentTimeRemaining}ms, Tournament: ${tournamentTime}ms`);
+                    if (tournamentTime !== null && tournamentTime > 0 && tournamentTime < currentTimeRemaining) {
+                        console.log(`[COMPUTER] Using tournament time (${tournamentTime}ms) instead of game clock (${currentTimeRemaining}ms)`);
+                        currentTimeRemaining = tournamentTime;
+                    }
+                }
 
                 try {
                     // For level -1 and 0, use the game's getLegalMoves directly instead of SimpleEngine
@@ -1436,10 +1400,17 @@ class ChessGame {
                             if (retryCount === 0) {
                                 const computerEval = isComputerWhite ? evaluation : -evaluation;
                                 const colorName = isComputerWhite ? 'white' : 'black';
-                                if (computerEval < -400) {
+                                const myElo = isComputerWhite ? (this.player1Elo || 1200) : (this.player2Elo || 1200);
+                                const oppElo = isComputerWhite ? (this.player2Elo || 1200) : (this.player1Elo || 1200);
+                                const myTime = isComputerWhite ? this.whiteTimeRemaining : this.blackTimeRemaining;
+                                const oppTime = isComputerWhite ? this.blackTimeRemaining : this.whiteTimeRemaining;
+
+                                if (this.shouldResign(computerEval, computer.level)) {
+                                    console.log(`${colorName} computer resigning (eval: ${computerEval})`);
                                     this.resign(colorName);
                                     return;
-                                } else if (computerEval <= -200) {
+                                } else if (this.shouldOfferDraw(computerEval, computer.level, myElo, oppElo, myTime, oppTime, this.moveHistory.length / 2)) {
+                                    console.log(`${colorName} computer offering draw (eval: ${computerEval})`);
                                     this.offerDraw(colorName);
                                 }
                             }
@@ -1451,39 +1422,93 @@ class ChessGame {
                                 return;
                             }
 
-                            // Parse move
+                            // Parse and execute move
                             const fromFile = bestMove.charCodeAt(0) - 97;
                             const fromRank = 8 - parseInt(bestMove[1]);
                             const toFile = bestMove.charCodeAt(2) - 97;
                             const toRank = 8 - parseInt(bestMove[3]);
-                            const promotionPiece = bestMove.length === 5 ? bestMove[4] : 'queen'; // Default to queen if not specified
 
                             const computerName = this.isWhiteTurn ? this.player1 : this.player2;
-                            const moveResult = this.makeMove(fromFile, fromRank, toFile, toRank, computerName, promotionPiece);
+                            const moveResult = this.makeMove(fromFile, fromRank, toFile, toRank, computerName);
 
                             if (!moveResult.success) {
-                                console.error(`[COMPUTER] Invalid move ${bestMove}: ${moveResult.message}. Retrying...`);
-                                // Keep retrying with increasing delay
+                                console.error(`[COMPUTER] Level ${computer.level}: Move ${bestMove} failed unexpectedly: ${moveResult.message}`);
                                 this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
                             }
-                        } catch (innerError) {
-                            console.error('[COMPUTER] Error in move callback:', innerError);
+                            return;
+
+                        } catch (err) {
+                            console.error('Error processing computer move:', err);
                         }
                     };
 
-                    // Call appropriate method based on variant
                     if (isCrazyhouse) {
-                        console.log(`[COMPUTER] Using Crazyhouse move with reserve: [${reserve.join(', ')}]`);
                         computer.getCrazyhouseMove(fen, reserve, moveCallback, currentTimeRemaining);
                     } else {
                         computer.getBestMove(fen, moveCallback, currentTimeRemaining, this.variant);
                     }
-                } catch (outerError) {
-                    console.error('[COMPUTER] Error calling getBestMove:', outerError);
+                } catch (outerErr) {
+                    console.error('[COMPUTER] Critical error in scheduleComputerMove:', outerErr);
                 }
             }, finalDelay);
+        } else {
+            // console.log('[DEBUG_MOVE] Computer move scheduled but conditions not met');
         }
     }
+
+    shouldResign(evaluation, level) {
+        // Beginners never resign to allow human to practice checkmate
+        if (level < 5) return false;
+
+        // Mid-level (5-15) resigns if down significant material (Queen ~900cp)
+        if (level <= 15) {
+            return evaluation < -900;
+        }
+
+        // High-level (16-20) resigns in hopeless positions
+        // -500 is roughly a Rook advantage
+        return evaluation < -500;
+    }
+
+    shouldOfferDraw(evaluation, level, myElo, oppElo, myTime, oppTime, moveNumber) {
+        // Don't offer too early
+        if (moveNumber < 20) return false;
+
+        // Don't offer if already offered recently (simple check to avoid spam, though state is tracked elsewhere)
+        if (this.drawOfferedBy) return false;
+
+        // 1. Equal Position (0.00 +/- 50cp)
+        // Only offer with low probability to simulate human hesitance
+        if (evaluation >= -50 && evaluation <= 50) {
+            return Math.random() < 0.10; // 10% chance per move in drawn positions
+        }
+
+        // 2. Strategic Save (Opponent is much stronger but I'm holding)
+        // If opponent is +200 ELO better, and position is equal or slightly worse but holdable
+        if (oppElo > myElo + 200 && evaluation >= -100 && evaluation <= 50) {
+            return Math.random() < 0.05; // 5% chance
+        }
+
+        // 3. Time Trouble
+        // Opponent is low on time (< 30s) but I have time (> 60s) AND position is not winning for me
+        // Actually etiquette says: "If your opponent has much more time but you're slightly ahead... pos is drawish"
+        // Or if I am in time trouble?
+        // Let's implement: I am okay on time, Opponent is low, position is equal. Press them? No, that's mean.
+        // User said: "Time Trouble: If your opponent has much more time but you're slightly ahead... and position is drawish"
+        // Meaning: I have less time, Opponent has more. I want to bail out.
+        if (this.timeControlMs > 0 && myTime < 30000 && oppTime > 60000 && evaluation >= -50 && evaluation <= 100) {
+            return Math.random() < 0.20; // 20% chance to beg for draw
+        }
+
+        // 4. Opponent Strength / Respect
+        // If I am worse (-200 to -100) but opponent is super strong, I might offer? No, usually you offer when equal.
+        // User: "Opponent's Strength: To show respect... or if you know you're outmatched."
+
+        return false;
+    }
+
+
+
 
     /**
      * Get all legal moves for the current player.
@@ -1770,7 +1795,9 @@ class ChessGame {
             cooldownMs: this.cooldownMs,
             // Crazyhouse reserves
             whiteReserve: this.whiteReserve,
-            blackReserve: this.blackReserve
+            blackReserve: this.blackReserve,
+            player1Elo: this.player1Elo,
+            player2Elo: this.player2Elo
         };
     }
 

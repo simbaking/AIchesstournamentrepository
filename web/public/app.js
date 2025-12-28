@@ -326,6 +326,7 @@ function updateOpenOffers(offers) {
         }
 
         const playerDisplay = formatPlayerName(offer.player);
+        const eloDisplay = offer.elo ? `(${offer.elo})` : '';
 
         // Variant badge
         const variantBadge = getVariantBadge(offer.variant);
@@ -354,7 +355,7 @@ function updateOpenOffers(offers) {
         return `
             <div class="player-item" style="flex-wrap: wrap; gap: 10px;">
                 <div style="flex: 1;">
-                    <strong>${playerDisplay}</strong> wants to play 
+                    <strong>${playerDisplay} ${eloDisplay}</strong> wants to play 
                     <span class="score">${timeText}</span>
                     ${variantBadge}
                     <br><small style="color: var(--text-muted);">Target: ${targetText}</small>
@@ -463,8 +464,8 @@ async function updateActiveGames() {
                 const durationText = formatTime(game.duration || 0);
 
                 // Format player names
-                const p1Display = formatPlayerName(game.player1);
-                const p2Display = formatPlayerName(game.player2);
+                const p1Display = formatPlayerName(game.player1) + (game.player1Elo ? ` (${game.player1Elo})` : '');
+                const p2Display = formatPlayerName(game.player2) + (game.player2Elo ? ` (${game.player2Elo})` : '');
 
                 // Highlight current player
                 const p1Class = game.currentPlayer === game.player1 && !game.isGameOver ? 'style="font-weight: bold; color: var(--primary);"' : '';
