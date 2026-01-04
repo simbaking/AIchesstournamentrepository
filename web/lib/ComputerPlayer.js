@@ -413,6 +413,28 @@ class ComputerPlayer {
     }
 
     /**
+     * Map game variant names to UCI_Variant values supported by multi-variant Stockfish
+     * Variants supported: chess, atomic, 3check, horde, kingofthehill, racingkings
+     */
+    getUciVariant(variant) {
+        const variantMap = {
+            'standard': 'chess',
+            'freestyle': 'chess',  // Chess960 is handled via UCI_Chess960 option
+            'chess960': 'chess',
+            'atomic': 'atomic',
+            '3check': '3check',
+            'threecheck': '3check',
+            'horde': 'horde',
+            'kingofthehill': 'kingofthehill',
+            'koth': 'kingofthehill',
+            'racingkings': 'racingkings',
+            'kungfu': 'chess',      // Kung Fu uses standard chess evaluation
+            'crazyhouse': 'chess'   // Crazyhouse uses SimpleEngine, but fallback to chess
+        };
+        return variantMap[variant] || 'chess';
+    }
+
+    /**
      * Get best move with timing logic:
      * - Think for 1/250th of remaining time until consistent move
      * - Wait thinking_time * 1.0 before returning
@@ -497,6 +519,14 @@ class ComputerPlayer {
         // Initialize real-time consistency tracking
         this.currentPvMove = ponderSeed;  // Seed with pondered move if available
         this.pvStableSince = Date.now();
+
+        // Set UCI_Variant for multi-variant stockfish (atomic, horde, etc.)
+        // Must be set BEFORE sending the position
+        const uciVariant = this.getUciVariant(variant);
+        if (uciVariant !== 'chess') {
+            console.log(`[COMPUTER] Setting UCI_Variant to ${uciVariant}`);
+            this.sendCommand(`setoption name UCI_Variant value ${uciVariant}`);
+        }
 
         // Send position and start INFINITE search (we'll stop when consistent)
         this.sendCommand(`position fen ${fen}`);
