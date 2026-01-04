@@ -722,6 +722,91 @@ class ChessGame {
         }
     }
 
+    // ==================== ATOMIC CHESS METHODS ====================
+
+    // Get all adjacent squares (8 surrounding squares)
+    getAdjacentSquares(x, y) {
+        const adjacent = [];
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                if (dx === 0 && dy === 0) continue;
+                const nx = x + dx;
+                const ny = y + dy;
+                if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
+                    adjacent.push({ x: nx, y: ny });
+                }
+            }
+        }
+        return adjacent;
+    }
+
+    // Perform an atomic explosion at the given square
+    // Returns { explodedPieces: [], kingExploded: 'white'|'black'|null }
+    performExplosion(x, y, capturingPieceIsWhite) {
+        const explodedPieces = [];
+        let kingExploded = null;
+
+        // Explode the capturing piece (already at destination after move)
+        const capturingPiece = this.board.getPiece(x, y);
+        if (capturingPiece) {
+            explodedPieces.push({ ...capturingPiece, x, y, role: 'capturer' });
+            this.board.setPiece(x, y, null);
+        }
+
+        // Explode all adjacent pieces (except pawns)
+        const adjacent = this.getAdjacentSquares(x, y);
+        for (const sq of adjacent) {
+            const piece = this.board.getPiece(sq.x, sq.y);
+            if (piece) {
+                // Pawns are immune to explosions (unless directly captured)
+                if (piece.type === 'pawn') continue;
+
+                explodedPieces.push({ ...piece, x: sq.x, y: sq.y, role: 'collateral' });
+
+                // Check if a king was exploded
+                if (piece.type === 'king') {
+                    kingExploded = piece.isWhite ? 'white' : 'black';
+                }
+
+                this.board.setPiece(sq.x, sq.y, null);
+            }
+        }
+
+        console.log(`[ATOMIC] Explosion at (${x},${y}): ${explodedPieces.length} pieces destroyed, kingExploded=${kingExploded}`);
+        return { explodedPieces, kingExploded };
+    }
+
+    // Check if a capture move would explode the player's own king
+    wouldExplodeOwnKing(startX, startY, endX, endY) {
+        const piece = this.board.getPiece(startX, startY);
+        if (!piece) return false;
+
+        const targetPiece = this.board.getPiece(endX, endY);
+        if (!targetPiece) return false; // Not a capture, no explosion
+
+        // Check if own king is adjacent to the explosion site
+        const adjacent = this.getAdjacentSquares(endX, endY);
+        for (const sq of adjacent) {
+            const adjPiece = this.board.getPiece(sq.x, sq.y);
+            if (adjPiece && adjPiece.type === 'king' && adjPiece.isWhite === piece.isWhite) {
+                // Own king would be caught in blast
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Check if a king can capture in atomic (answer: never)
+    isAtomicKingCapture(startX, startY, endX, endY) {
+        const piece = this.board.getPiece(startX, startY);
+        if (!piece || piece.type !== 'king') return false;
+
+        const targetPiece = this.board.getPiece(endX, endY);
+        return targetPiece !== null; // King is trying to capture something
+    }
+
+
     makeMove(fromFile, fromRank, toFile, toRank, player, promotionPiece = 'queen') {
         if (this.isGameOver) return { success: false, error: 'Game is over' };
 
@@ -776,6 +861,16 @@ class ChessGame {
         }
 
         // Note: King-in-check validation is handled inside executeMove()
+
+        // ATOMIC: King cannot capture (would explode itself)
+        if (this.variant === 'atomic' && this.isAtomicKingCapture(fromFile, fromRank, toFile, toRank)) {
+            return { success: false, error: 'In Atomic Chess, kings cannot capture' };
+        }
+
+        // ATOMIC: Cannot make a move that would explode own king
+        if (this.variant === 'atomic' && this.wouldExplodeOwnKing(fromFile, fromRank, toFile, toRank)) {
+            return { success: false, error: 'Move would explode your own king' };
+        }
 
         // 4. Execute Move
         const targetPiece = this.board.getPiece(toFile, toRank);
@@ -1142,35 +1237,95 @@ class ChessGame {
                     return result;
                 }
 
-                // Check if this leaves king in check
-                if (this.isKingInCheck(piece.isWhite)) {
-                    // Undo move
-                    this.board.setPiece(startX, startY, piece);
-                    this.board.setPiece(endX, endY, capturedPiece);
-                    return { success: false, message: 'Move would leave king in check' };
-                }
+                // ATOMIC: Handle explosion if this is a capture
+                if (this.variant === 'atomic' && capturedPiece) {
+                    // Perform the explosion at the capture square
+                    const explosion = this.performExplosion(endX, endY, piece.isWhite);
 
-                // Record captured piece
-                if (capturedPiece) {
-                    if (piece.isWhite) {
-                        this.capturedByWhite.push({ type: capturedPiece.type, isWhite: false });
-                        // Crazyhouse: Add to reserve (promoted pieces revert to pawns)
-                        if (this.variant === 'crazyhouse') {
-                            // If it was a promoted piece, it becomes a pawn
-                            const reserveType = capturedPiece.wasPromoted ? 'pawn' : capturedPiece.type;
-                            this.whiteReserve.push(reserveType);
-                        }
-                    } else {
-                        this.capturedByBlack.push({ type: capturedPiece.type, isWhite: true });
-                        // Crazyhouse: Add to reserve (promoted pieces revert to pawns)
-                        if (this.variant === 'crazyhouse') {
-                            const reserveType = capturedPiece.wasPromoted ? 'pawn' : capturedPiece.type;
-                            this.blackReserve.push(reserveType);
+                    // Track all exploded pieces as captures
+                    for (const exploded of explosion.explodedPieces) {
+                        if (exploded.isWhite !== piece.isWhite) {
+                            // Enemy piece exploded - record as capture by attacker
+                            if (piece.isWhite) {
+                                this.capturedByWhite.push({ type: exploded.type, isWhite: false });
+                            } else {
+                                this.capturedByBlack.push({ type: exploded.type, isWhite: true });
+                            }
                         }
                     }
-                }
 
-                this.moveHistory.push({ startX, startY, endX, endY, player: this.getCurrentPlayer() });
+                    // Also add the originally captured piece
+                    if (piece.isWhite) {
+                        this.capturedByWhite.push({ type: capturedPiece.type, isWhite: false });
+                    } else {
+                        this.capturedByBlack.push({ type: capturedPiece.type, isWhite: true });
+                    }
+
+                    // Check if enemy king was exploded - WIN!
+                    if (explosion.kingExploded) {
+                        const winnerIsWhite = explosion.kingExploded === 'black';
+                        this.isGameOver = true;
+                        this.winner = winnerIsWhite ? this.player1 : this.player2;
+                        console.log(`[ATOMIC] ${explosion.kingExploded} king exploded! ${this.winner} wins!`);
+
+                        // Record move and trigger game over
+                        this.moveHistory.push({
+                            startX, startY, endX, endY,
+                            player: this.getCurrentPlayer(),
+                            atomic: true,
+                            explosionSquare: { x: endX, y: endY }
+                        });
+
+                        if (this.onGameOver) {
+                            this.onGameOver({ winner: this.winner, reason: 'atomic_explosion' });
+                        }
+                        this.cleanup();
+                        return {
+                            success: true,
+                            gameOver: true,
+                            winner: this.winner,
+                            reason: 'atomic_explosion'
+                        };
+                    }
+
+                    // Record the atomic move
+                    this.moveHistory.push({
+                        startX, startY, endX, endY,
+                        player: this.getCurrentPlayer(),
+                        atomic: true,
+                        explosionSquare: { x: endX, y: endY }
+                    });
+                } else {
+                    // Non-atomic or non-capture: standard check handling
+                    if (this.variant !== 'atomic' && this.isKingInCheck(piece.isWhite)) {
+                        // Undo move
+                        this.board.setPiece(startX, startY, piece);
+                        this.board.setPiece(endX, endY, capturedPiece);
+                        return { success: false, message: 'Move would leave king in check' };
+                    }
+
+                    // Record captured piece
+                    if (capturedPiece) {
+                        if (piece.isWhite) {
+                            this.capturedByWhite.push({ type: capturedPiece.type, isWhite: false });
+                            // Crazyhouse: Add to reserve (promoted pieces revert to pawns)
+                            if (this.variant === 'crazyhouse') {
+                                // If it was a promoted piece, it becomes a pawn
+                                const reserveType = capturedPiece.wasPromoted ? 'pawn' : capturedPiece.type;
+                                this.whiteReserve.push(reserveType);
+                            }
+                        } else {
+                            this.capturedByBlack.push({ type: capturedPiece.type, isWhite: true });
+                            // Crazyhouse: Add to reserve (promoted pieces revert to pawns)
+                            if (this.variant === 'crazyhouse') {
+                                const reserveType = capturedPiece.wasPromoted ? 'pawn' : capturedPiece.type;
+                                this.blackReserve.push(reserveType);
+                            }
+                        }
+                    }
+
+                    this.moveHistory.push({ startX, startY, endX, endY, player: this.getCurrentPlayer() });
+                }
             }
 
             // Track king and rook movements for castling
@@ -1682,13 +1837,32 @@ class ChessGame {
                     this.board.grid[endX][endY] = piece;
                     this.board.grid[x][y] = null;
 
-                    const inCheck = this.isKingInCheck(piece.isWhite);
+                    let isLegal = true;
 
-                    // Undo move
+                    // Standard check: would move leave king in check?
+                    if (this.variant !== 'atomic') {
+                        if (this.isKingInCheck(piece.isWhite)) {
+                            isLegal = false;
+                        }
+                    }
+
+                    // Undo move simulation
                     this.board.grid[x][y] = piece;
                     this.board.grid[endX][endY] = capturedPiece;
 
-                    if (!inCheck) {
+                    // ATOMIC: Additional filters
+                    if (this.variant === 'atomic' && isLegal) {
+                        // King cannot capture in atomic
+                        if (piece.type === 'king' && capturedPiece) {
+                            isLegal = false;
+                        }
+                        // Cannot make capture that would explode own king
+                        if (capturedPiece && this.wouldExplodeOwnKing(x, y, endX, endY)) {
+                            isLegal = false;
+                        }
+                    }
+
+                    if (isLegal) {
                         moves.push({ x: endX, y: endY });
                     }
                 }

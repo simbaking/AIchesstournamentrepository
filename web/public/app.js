@@ -378,7 +378,8 @@ function getVariantBadge(variant) {
         'freestyle': { text: '♟️ 960', color: '#3b82f6' },
         'kungfu': { text: '⚡ Kung Fu', color: '#ff4500' },
         'crazyhouse': { text: '🏠 Crazy', color: '#9333ea' },
-        'kingofthehill': { text: '⛰️ KOTH', color: '#22c55e' }
+        'kingofthehill': { text: '⛰️ KOTH', color: '#22c55e' },
+        'atomic': { text: '💥 Atomic', color: '#dc2626' }
     };
 
     const badge = badges[variant] || { text: variant, color: '#666' };
@@ -584,6 +585,9 @@ if (startForm) {
             }
             if (document.getElementById('allow-kingofthehill')?.checked) {
                 allowedVariants.push('kingofthehill');
+            }
+            if (document.getElementById('allow-atomic')?.checked) {
+                allowedVariants.push('atomic');
             }
         }
 

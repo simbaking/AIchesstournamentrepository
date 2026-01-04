@@ -262,7 +262,7 @@ app.post('/api/start', (req, res) => {
 
     // Pass allowVariants and specific allowedVariants
     const variantsAllowed = allowVariants !== undefined ? allowVariants : true;
-    const specificVariants = allowedVariants || ['standard', 'freestyle', 'kungfu'];
+    const specificVariants = allowedVariants || ['standard', 'freestyle', 'kungfu', 'crazyhouse', 'kingofthehill', 'atomic'];
     tournament.startTournament(durationMs, variantsAllowed, specificVariants);
 
     // Start tournament monitor to end games when tournament expires
