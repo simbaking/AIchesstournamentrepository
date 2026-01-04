@@ -278,33 +278,35 @@ app.post('/api/start', (req, res) => {
             console.log(`[MONITOR] Running: ${isRunning}, Remaining: ${(remaining / 60000).toFixed(1)}m, ActiveGames: ${activeGames.size}, Offers: ${gameOffers.length}`);
         }
 
-        if (!isRunning && activeGames.size > 0) {
-            console.log('Tournament ended. Terminating all active games...');
 
-            for (const [gameId, game] of activeGames.entries()) {
-                if (!game.isGameOver) {
-                    const whiteTime = game.whiteTimeRemaining;
-                    const blackTime = game.blackTimeRemaining;
-                    let winner = whiteTime > blackTime ? game.player1 : (blackTime > whiteTime ? game.player2 : null);
+        if (!isRunning) {
+            // Clear pending game offers when tournament ends
+            if (gameOffers.length > 0) {
+                const clearedOffers = gameOffers.length;
+                gameOffers.length = 0;
+                console.log(`Cleared ${clearedOffers} pending game offers`);
+            }
 
-                    console.log(`Ending game ${gameId}: ${game.player1} (${whiteTime}ms) vs ${game.player2} (${blackTime}ms). Winner: ${winner || 'Draw'}`);
-                    game.isGameOver = true;
-                    game.winner = winner;
-                    if (game.onGameOver) game.onGameOver({ winner, reason: 'tournament_timeout' });
+            // Terminate active games
+            if (activeGames.size > 0) {
+                console.log('Tournament ended. Terminating all active games...');
+
+                for (const [gameId, game] of activeGames.entries()) {
+                    if (!game.isGameOver) {
+                        const whiteTime = game.whiteTimeRemaining;
+                        const blackTime = game.blackTimeRemaining;
+                        let winner = whiteTime > blackTime ? game.player1 : (blackTime > whiteTime ? game.player2 : null);
+
+                        console.log(`Ending game ${gameId}: ${game.player1} (${whiteTime}ms) vs ${game.player2} (${blackTime}ms). Winner: ${winner || 'Draw'}`);
+                        game.isGameOver = true;
+                        game.winner = winner;
+                        if (game.onGameOver) game.onGameOver({ winner, reason: 'tournament_timeout' });
+                    }
                 }
             }
 
-            // Clear all pending game offers
-            const clearedOffers = gameOffers.length;
-            gameOffers.length = 0;
-            console.log(`Cleared ${clearedOffers} pending game offers`);
-
             clearInterval(tournamentMonitorInterval);
             tournamentMonitorInterval = null;
-            if (autoMatchmakingInterval) {
-                clearInterval(autoMatchmakingInterval);
-                autoMatchmakingInterval = null;
-            }
             if (autoMatchmakingInterval) {
                 clearInterval(autoMatchmakingInterval);
                 autoMatchmakingInterval = null;

@@ -1694,6 +1694,62 @@ class ChessGame {
                 }
             }
         }
+
+        // Add castling moves for king
+        if (piece.type === 'king') {
+            const rank = piece.isWhite ? 7 : 0;
+            // Only check castling if king is on its starting rank
+            if (y === rank) {
+                // Kingside castling (target: g-file = x:6)
+                if (this.canCastle(piece.isWhite, true)) {
+                    moves.push({ x: 6, y: rank });
+                }
+                // Queenside castling (target: c-file = x:2)
+                if (this.canCastle(piece.isWhite, false)) {
+                    moves.push({ x: 2, y: rank });
+                }
+            }
+        }
+
+        // Add en passant moves for pawn
+        if (piece.type === 'pawn') {
+            const direction = piece.isWhite ? -1 : 1;
+            const enPassantRank = piece.isWhite ? 3 : 4;
+
+            // Only check en passant if pawn is on correct rank
+            if (y === enPassantRank && this.lastMove && this.lastMove.piece === 'pawn') {
+                const lastMoveDistance = Math.abs(this.lastMove.endY - this.lastMove.startY);
+
+                // Check if opponent pawn just moved 2 squares and is adjacent
+                if (lastMoveDistance === 2 && this.lastMove.endY === y) {
+                    // Check left and right for en passant target
+                    for (const dx of [-1, 1]) {
+                        const targetX = x + dx;
+                        if (targetX >= 0 && targetX < 8 && this.lastMove.endX === targetX) {
+                            const enPassantY = y + direction;
+
+                            // Simulate en passant to verify it doesn't leave king in check
+                            const capturedPawn = this.board.getPiece(targetX, y);
+                            this.board.grid[targetX][enPassantY] = piece;
+                            this.board.grid[x][y] = null;
+                            this.board.grid[targetX][y] = null;
+
+                            const inCheck = this.isKingInCheck(piece.isWhite);
+
+                            // Undo simulation
+                            this.board.grid[x][y] = piece;
+                            this.board.grid[targetX][enPassantY] = null;
+                            this.board.grid[targetX][y] = capturedPawn;
+
+                            if (!inCheck) {
+                                moves.push({ x: targetX, y: enPassantY });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         return moves;
     }
 

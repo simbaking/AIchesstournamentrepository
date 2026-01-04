@@ -1097,3 +1097,84 @@
     gap: 1rem;
     margin-top: 1.5rem;
 }
+
+/* Move History Navigation */
+.move-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+}
+
+.nav-btn {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    color: var(--text);
+    font-size: 1.25rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.move-counter {
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    min-width: 60px;
+    text-align: center;
+    padding: 0.25rem 0.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 0.25rem;
+}
+
+/* Viewing History Mode Indicator */
+.chessboard.viewing-history {
+    opacity: 0.85;
+    box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.6), 0 20px 40px var(--shadow);
+}
+
+.move-navigation.viewing-history .move-counter {
+    background: var(--gold);
+    color: #000;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+    .move-navigation {
+        gap: 0.35rem;
+        margin-top: 0.5rem;
+        padding: 0.35rem;
+    }
+
+    .nav-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .move-counter {
+        font-size: 0.9rem;
+        min-width: 50px;
+    }
+}

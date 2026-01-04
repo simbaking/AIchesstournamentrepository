@@ -41,6 +41,10 @@ let previousBoardState = null; // For diffing - only update changed squares
 let boardInitialized = false; // Track if board DOM has been built
 let gameEnded = false; // Track if game over is being handled
 
+// History navigation state
+let historyViewIndex = -1; // -1 means viewing current position, 0+ means viewing move at that index
+let boardHistory = []; // Array of board states for each move
+
 // BroadcastChannel for notifying tournament tab when game closes
 const gameChannel = new BroadcastChannel('chess_games');
 
@@ -213,11 +217,16 @@ function renderGame() {
     }
 
     // Render board (with diffing to prevent flicker)
+    // Skip if viewing history - don't overwrite the historical view
     if (!boardInitialized) {
         initBoard();
         boardInitialized = true;
     }
-    updateBoard();
+
+    // Only update board display if we're viewing the live position
+    if (typeof isViewingHistory !== 'function' || !isViewingHistory()) {
+        updateBoard();
+    }
 
     // Render captured pieces and material advantage
     renderMaterial();
@@ -244,7 +253,6 @@ function renderGame() {
         canMove: gameState.currentPlayer.toLowerCase() === currentPlayerName.toLowerCase()
     });
 
-    // Display draw offer if present
     if (gameState.drawOfferedBy && !gameState.isGameOver) {
         const offeredBy = gameState.drawOfferedBy === 'white' ? gameState.player1 : gameState.player2;
         const canRespond = (gameState.drawOfferedBy === 'white' && currentPlayerName.toLowerCase() === gameState.player2.toLowerCase()) ||
@@ -258,6 +266,11 @@ function renderGame() {
         }
     } else {
         drawOfferCard.style.display = 'none';
+    }
+
+    // Update navigation UI if not viewing history
+    if (typeof updateNavigationUI === 'function' && typeof isViewingHistory === 'function' && !isViewingHistory()) {
+        updateNavigationUI();
     }
 }
 
@@ -428,8 +441,14 @@ function initBoard() {
 }
 
 // Update board by diffing - only update squares that changed
-function updateBoard() {
+function updateBoard(forceRefresh = false) {
     if (!gameState || !gameState.board) return;
+
+    // Force full refresh if requested (e.g., returning from history view)
+    if (forceRefresh) {
+        console.log('[NAV] updateBoard: Force refresh - clearing previous state');
+        previousBoardState = null;
+    }
 
     // Check if board orientation changed - if so, rearrange squares
     if (previousBoardState && previousBoardState.isFlipped !== isFlipped) {
@@ -674,6 +693,12 @@ function renderBoard() {
 async function handleSquareClick(x, y) {
     if (gameState.isGameOver) return;
 
+    // If viewing history, return to current position before allowing interaction
+    if (isViewingHistory()) {
+        navigateToEnd();
+        return;
+    }
+
     // Crazyhouse: If a pocket piece is selected, drop it
     if (selectedDropPiece && gameState.variant === 'crazyhouse') {
         const piece = gameState.board[x][y];
@@ -863,6 +888,13 @@ function highlightSquareUnderTouch(clientX, clientY) {
 function handleDragStart(e, x, y) {
     if (gameState.isGameOver) {
         e.preventDefault();
+        return;
+    }
+
+    // If viewing history, return to current position
+    if (isViewingHistory()) {
+        e.preventDefault();
+        navigateToEnd();
         return;
     }
 
@@ -1662,3 +1694,311 @@ if (cancelMoveBtn) {
         confirmationModal.classList.remove('show');
     });
 }
+
+// ==================== Move History Navigation ====================
+
+const navStartBtn = document.getElementById('nav-start');
+const navBackBtn = document.getElementById('nav-back');
+const navForwardBtn = document.getElementById('nav-forward');
+const navEndBtn = document.getElementById('nav-end');
+const moveCounterEl = document.getElementById('move-counter');
+const moveNavigation = document.querySelector('.move-navigation');
+
+// Check if we're viewing history (not the current position)
+function isViewingHistory() {
+    return historyViewIndex >= 0;
+}
+
+// Update the move counter display and button states
+function updateNavigationUI() {
+    const totalMoves = gameState?.moveHistory?.length || 0;
+    const currentView = historyViewIndex < 0 ? totalMoves : historyViewIndex;
+
+    console.log(`[NAV] updateNavigationUI: historyViewIndex=${historyViewIndex}, totalMoves=${totalMoves}, currentView=${currentView}`);
+
+    if (moveCounterEl) {
+        moveCounterEl.textContent = `${currentView}/${totalMoves}`;
+    }
+
+    // Update button states
+    // Back/Start are disabled at position 0 (starting position)
+    if (navStartBtn) navStartBtn.disabled = currentView === 0;
+    if (navBackBtn) navBackBtn.disabled = currentView === 0;
+    // Forward/End are disabled when at live position (historyViewIndex < 0)
+    if (navForwardBtn) navForwardBtn.disabled = historyViewIndex < 0;
+    if (navEndBtn) navEndBtn.disabled = historyViewIndex < 0;
+
+    // Visual indicator for history mode
+    if (moveNavigation) {
+        moveNavigation.classList.toggle('viewing-history', isViewingHistory());
+    }
+    if (chessboard) {
+        chessboard.classList.toggle('viewing-history', isViewingHistory());
+    }
+}
+
+// Render a specific board state from history
+function renderHistoricalBoard(moveIndex) {
+    if (!gameState || !gameState.moveHistory) return;
+
+    console.log(`[NAV] renderHistoricalBoard(${moveIndex}), totalMoves: ${gameState.moveHistory.length}`);
+
+    // Build the board state at a specific move index
+    // moveIndex = 0 means starting position (no moves applied)
+    // moveIndex = N means board after moves 0..N-1 have been applied
+    const board = buildBoardAtMove(moveIndex);
+    if (!board) return;
+
+    // Get the move for highlighting - this is the move that was just made to reach this position
+    let lastMove = null;
+    if (moveIndex > 0 && gameState.moveHistory[moveIndex - 1]) {
+        lastMove = gameState.moveHistory[moveIndex - 1];
+        console.log(`[NAV] Highlighting move ${moveIndex - 1}:`, lastMove);
+    } else {
+        console.log(`[NAV] No move to highlight (starting position)`);
+    }
+
+    // Render the historical board
+    for (let y = 0; y < 8; y++) {
+        for (let x = 0; x < 8; x++) {
+            const square = document.getElementById(`square-${x}-${y}`);
+            if (!square) continue;
+
+            // Clear existing piece
+            const existingPiece = square.querySelector('.piece');
+            if (existingPiece) existingPiece.remove();
+
+            // Remove valid move indicators
+            const existingIndicator = square.querySelector('.valid-move-indicator');
+            if (existingIndicator) existingIndicator.remove();
+
+            // Update last-move highlight
+            const isLastMoveSquare = lastMove && (
+                (x === lastMove.startX && y === lastMove.startY) ||
+                (x === lastMove.endX && y === lastMove.endY)
+            );
+            square.classList.toggle('last-move', isLastMoveSquare);
+
+            // Add piece if present
+            const piece = board[x][y];
+            if (piece) {
+                const pieceImg = document.createElement('img');
+                pieceImg.className = 'piece';
+                const color = piece.isWhite ? 'white' : 'black';
+                pieceImg.src = `pieces/${color}-${piece.type}.png`;
+                pieceImg.alt = `${color} ${piece.type}`;
+                pieceImg.draggable = false; // Disable dragging in history mode
+                square.appendChild(pieceImg);
+                square.classList.add('has-piece');
+            } else {
+                square.classList.remove('has-piece');
+            }
+        }
+    }
+}
+
+// Build the board state at a specific move index (0 = starting position)
+function buildBoardAtMove(moveIndex) {
+    if (!gameState) return null;
+
+    // Start with the initial board setup
+    const board = createInitialBoard();
+
+    // Apply moves up to (but not including) moveIndex
+    for (let i = 0; i < moveIndex && i < gameState.moveHistory.length; i++) {
+        const move = gameState.moveHistory[i];
+        applyMoveToBoard(board, move);
+    }
+
+    return board;
+}
+
+// Create an initial chess board (standard position)
+function createInitialBoard() {
+    const board = Array(8).fill(null).map(() => Array(8).fill(null));
+
+    // Setup pawns
+    for (let x = 0; x < 8; x++) {
+        board[x][1] = { type: 'pawn', isWhite: false };
+        board[x][6] = { type: 'pawn', isWhite: true };
+    }
+
+    // Setup back rows
+    const backRow = ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'];
+    for (let x = 0; x < 8; x++) {
+        board[x][0] = { type: backRow[x], isWhite: false };
+        board[x][7] = { type: backRow[x], isWhite: true };
+    }
+
+    return board;
+}
+
+// Apply a single move to a board state
+function applyMoveToBoard(board, move) {
+    if (move.castling) {
+        // Handle castling
+        const rank = move.startY;
+        const isKingside = move.castling === 'kingside';
+
+        // Move king
+        const king = board[move.startX][rank];
+        board[move.startX][rank] = null;
+        board[move.endX][rank] = king;
+
+        // Move rook
+        const rookFromX = isKingside ? 7 : 0;
+        const rookToX = isKingside ? 5 : 3;
+        const rook = board[rookFromX][rank];
+        board[rookFromX][rank] = null;
+        board[rookToX][rank] = rook;
+    } else if (move.enPassant) {
+        // Handle en passant
+        const piece = board[move.startX][move.startY];
+        board[move.startX][move.startY] = null;
+        board[move.endX][move.endY] = piece;
+        // Remove captured pawn
+        board[move.endX][move.startY] = null;
+    } else {
+        // Normal move
+        const piece = board[move.startX][move.startY];
+        board[move.startX][move.startY] = null;
+        board[move.endX][move.endY] = piece;
+
+        // Handle promotion (simplified - always queen if reaching back rank)
+        if (piece && piece.type === 'pawn') {
+            if ((piece.isWhite && move.endY === 0) || (!piece.isWhite && move.endY === 7)) {
+                piece.type = 'queen'; // Default promotion to queen in history view
+            }
+        }
+    }
+}
+
+// Navigate to start (position 0 = before any moves)
+function navigateToStart() {
+    console.log('[NAV] navigateToStart called');
+    if (!gameState?.moveHistory?.length) {
+        console.log('[NAV] No move history, returning');
+        return;
+    }
+    historyViewIndex = 0;
+    console.log(`[NAV] Set historyViewIndex to 0, calling renderHistoricalBoard(0)`);
+    renderHistoricalBoard(0);
+    updateNavigationUI();
+    clearSelection();
+}
+
+// Navigate back one move
+function navigateBack() {
+    console.log('[NAV] navigateBack called');
+    if (!gameState?.moveHistory?.length) {
+        console.log('[NAV] No move history, returning');
+        return;
+    }
+
+    const totalMoves = gameState.moveHistory.length;
+    console.log(`[NAV] Current historyViewIndex=${historyViewIndex}, totalMoves=${totalMoves}`);
+
+    let targetIndex;
+
+    if (historyViewIndex === -1) {
+        // Currently at live position (all moves applied)
+        // Going back means showing state after totalMoves-1 moves
+        targetIndex = totalMoves - 1;
+        console.log(`[NAV] At live, going back to position ${targetIndex}`);
+    } else if (historyViewIndex > 0) {
+        // Already in history, go back one more
+        targetIndex = historyViewIndex - 1;
+        console.log(`[NAV] In history, going back from ${historyViewIndex} to ${targetIndex}`);
+    } else {
+        // Already at position 0, can't go back further
+        console.log('[NAV] Already at position 0, cannot go back');
+        return;
+    }
+
+    historyViewIndex = targetIndex;
+    console.log(`[NAV] Rendering historical board at position ${historyViewIndex}`);
+    renderHistoricalBoard(historyViewIndex);
+    updateNavigationUI();
+    clearSelection();
+}
+
+// Navigate forward one move  
+function navigateForward() {
+    console.log('[NAV] navigateForward called');
+    if (!gameState?.moveHistory?.length) {
+        console.log('[NAV] No move history, returning');
+        return;
+    }
+
+    if (historyViewIndex === -1) {
+        console.log('[NAV] Already at live position, cannot go forward');
+        return;
+    }
+
+    const totalMoves = gameState.moveHistory.length;
+    console.log(`[NAV] Current historyViewIndex=${historyViewIndex}, totalMoves=${totalMoves}`);
+
+    const targetIndex = historyViewIndex + 1;
+    console.log(`[NAV] Target index after increment: ${targetIndex}`);
+
+    if (targetIndex >= totalMoves) {
+        // Reached the live position
+        console.log('[NAV] Reached live position, setting historyViewIndex=-1 and calling updateBoard');
+        historyViewIndex = -1;
+        updateBoard(true); // Force refresh to ensure board is restored correctly
+    } else {
+        // Still in history
+        console.log(`[NAV] Moving forward to position ${targetIndex}`);
+        historyViewIndex = targetIndex;
+        renderHistoricalBoard(historyViewIndex);
+    }
+
+    updateNavigationUI();
+    clearSelection();
+}
+
+// Navigate to end (live position)
+function navigateToEnd() {
+    console.log('[NAV] navigateToEnd called');
+    if (historyViewIndex === -1) {
+        console.log('[NAV] Already at live position');
+        return;
+    }
+
+    console.log('[NAV] Returning to live position');
+    historyViewIndex = -1;
+    updateBoard(true); // Force refresh to ensure board is restored correctly
+    updateNavigationUI();
+    clearSelection();
+}
+
+// Event listeners for navigation buttons
+if (navStartBtn) navStartBtn.addEventListener('click', navigateToStart);
+if (navBackBtn) navBackBtn.addEventListener('click', navigateBack);
+if (navForwardBtn) navForwardBtn.addEventListener('click', navigateForward);
+if (navEndBtn) navEndBtn.addEventListener('click', navigateToEnd);
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    // Only handle arrow keys if not typing in an input
+    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+
+    if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        navigateBack();
+    } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        navigateForward();
+    } else if (e.key === 'Home') {
+        e.preventDefault();
+        navigateToStart();
+    } else if (e.key === 'End') {
+        e.preventDefault();
+        navigateToEnd();
+    }
+});
+
+// Initial navigation UI update
+setTimeout(() => {
+    updateNavigationUI();
+}, 1000);

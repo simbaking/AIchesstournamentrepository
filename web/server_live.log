@@ -1,0 +1,2307 @@
+
+╔══════════════════════════════════════════════════════════════╗
+║           Chess Tournament Server Started!                   ║
+╚══════════════════════════════════════════════════════════════╝
+
+Local:    http://localhost:3000
+
+LAN Access (for other devices on same WiFi):
+          http://192.168.1.71:3000
+
+Share these URLs with other players!
+
+────────────────────────────────────────────────────────────────
+Register request: hwan, isComputer: false, level: null, IP: 127.0.0.1
+[REGISTER] Human player "hwan" registering from IP: 127.0.0.1, browserId: 35958cbc-8d52-4563-b277-3c71bd8cfe64
+Player registered: hwan from IP: 127.0.0.1
+Register request: cpu1, isComputer: true, level: 1, IP: 127.0.0.1
+Player registered: cpu1 from IP: 127.0.0.1
+Start tournament request: 20 minutes
+Tournament started! Duration: 1200000ms, Allow Variants: true, Allowed: standard, freestyle, kungfu, crazyhouse, kingofthehill
+Auto-offer: cpu1 offering 3m+0s [freestyle] (Targeting: hwan)
+[OFFER_CREATE] Received: player1=hwan, variant=standard, startPos=random
+[Matchmaking] 0 idle computers, 2 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 19.8m, ActiveGames: 0, Offers: 2
+[Matchmaking] 0 idle computers, 2 active offers, 2 available players
+Auto-accept: cpu1 accepting offer from hwan (Reason: Good value: 165091 pts/min, 91% win / 0% draw)
+[COLOR] Matchup: hwan vs cpu1 -> hwan (White), cpu1 (Black)
+[ChessGame] Constructor called with variant: "standard", startPos: "random", cooldown: 10s
+[ChessGame] Standard mode, using setupBoard()
+[COMPUTER] Initializing Stockfish level 1
+[SF_WORKER] Starting...
+[COMPUTER] Stockfish ready
+[SF_WORKER] Stockfish loaded
+[SF_WORKER] Ready
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+Move request for game game_1: 4,6 -> 4,4 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 600000ms, Tournament: 1179030ms
+[COMPUTER] Level 1, remaining: 600000ms, consistency: 2400ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 3055ms: e7e6. Stopping search.
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 4084ms: e7e6. Stopping search.
+[COMPUTER] PV stable for 5066ms: e7e6. Stopping search.
+[COMPUTER] Bestmove: e7e5, eval: -5, took: 10200ms
+[COMPUTER] Move 'e7e5' confirmed after 10200ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: a2a4, a2a3, b2b4, b2b3, c2c4, c2c3, d2d4, d2d3
+[COMPUTER] Ponder a2a4 -> b8c6 (214ms total)
+[COMPUTER] Ponder a2a3 -> h7h5 (208ms total)
+[COMPUTER] Ponder b2b4 -> d7d6 (208ms total)
+[COMPUTER] Ponder b2b3 -> e7e6 (208ms total)
+[COMPUTER] Ponder c2c4 -> e7e6 (214ms total)
+[COMPUTER] Ponder c2c3 -> h7h5 (207ms total)
+[COMPUTER] Ponder d2d4 -> e5d4 (206ms total)
+[COMPUTER] Ponder d2d3 -> d7d6 (207ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder a2a4 -> d7d5 (419ms total)
+[COMPUTER] Ponder a2a4 -> h7h5 (622ms total)
+[COMPUTER] Ponder a2a4 -> g8f6 (830ms total)
+[COMPUTER] Ponder a2a4 -> e7e6 (1035ms total)
+[COMPUTER] Ponder a2a3 -> g8f6 (421ms total)
+[COMPUTER] Ponder a2a4 -> e7e6 (1242ms total)
+[COMPUTER] Ponder a2a4 -> c7c5 (1445ms total)
+[COMPUTER] Ponder a2a4 -> g8f6 (1650ms total)
+[COMPUTER] Ponder a2a4 -> e7e6 (1854ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder a2a3 -> d7d6 (634ms total)
+[COMPUTER] Ponder a2a4 -> e7e6 (2068ms total)
+[COMPUTER] Ponder b2b4 -> g8f6 (417ms total)
+Move request for game game_1: 6,7 -> 5,5 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 589788ms, Tournament: 1164354ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 589788ms, consistency: 2359ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2626ms: b8c6. Stopping search.
+[COMPUTER] PV stable for 2706ms: b8c6. Stopping search.
+[COMPUTER] PV stable for 3511ms: b8c6. Stopping search.
+[COMPUTER] PV stable for 4178ms: b8c6. Stopping search.
+[COMPUTER] Bestmove: d7d5, eval: 24, took: 4724ms
+[COMPUTER] Move 'd7d5' confirmed after 4724ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: e4d5, f3e5, f3g5, f3d4, f3h4, a2a4, a2a3, b2b4
+[COMPUTER] Ponder e4d5 -> d7d6 (208ms total)
+[COMPUTER] Ponder f3e5 -> d5e4 (205ms total)
+[COMPUTER] Ponder f3g5 -> e7e6 (214ms total)
+[COMPUTER] Ponder f3d4 -> g8f6 (215ms total)
+[COMPUTER] Ponder f3h4 -> e7e6 (214ms total)
+[COMPUTER] Ponder a2a4 -> d5e4 (208ms total)
+[COMPUTER] Ponder a2a3 -> d5e4 (203ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder b2b4 -> d5e4 (206ms total)
+[COMPUTER] Ponder e4d5 -> d7d6 (415ms total)
+[COMPUTER] Ponder e4d5 -> h7h5 (619ms total)
+[COMPUTER] Ponder e4d5 -> e5e4 (823ms total)
+[COMPUTER] Ponder e4d5 -> c7c6 (1031ms total)
+[COMPUTER] Ponder f3e5 -> d7d6 (415ms total)
+[COMPUTER] Ponder e4d5 -> e5e4 (1246ms total)
+[COMPUTER] Ponder e4d5 -> e5e4 (1449ms total)
+[COMPUTER] Ponder e4d5 -> e5e4 (1657ms total)
+[COMPUTER] Ponder e4d5 -> e5e4 (1860ms total)
+[COMPUTER] Ponder f3e5 -> d5e4 (622ms total)
+[COMPUTER] Ponder e4d5 -> d7d6 (2064ms total)
+[COMPUTER] Ponder f3g5 -> h7h6 (418ms total)
+[COMPUTER] Ponder e4d5 -> d7d6 (2270ms total)
+[MONITOR] Running: true, Remaining: 19.2m, ActiveGames: 1, Offers: 0
+[COMPUTER] Ponder e4d5 -> g8f6 (2477ms total)
+[COMPUTER] Ponder e4d5 -> d7d6 (2689ms total)
+[COMPUTER] Ponder f3e5 -> d7d6 (827ms total)
+[COMPUTER] Ponder e4d5 -> g8f6 (2900ms total)
+[COMPUTER] Ponder e4d5 -> c7c6 (3112ms total)
+[COMPUTER] Ponder e4d5 -> f7f5 (3318ms total)
+[COMPUTER] Ponder f3e5 -> c7c6 (1031ms total)
+[COMPUTER] Ponder e4d5 -> c7c6 (3527ms total)
+[COMPUTER] Ponder f3d4 -> e5d4 (420ms total)
+[COMPUTER] Ponder e4d5 -> d7d6 (3736ms total)
+[COMPUTER] Ponder e4d5 -> e5e4 (3942ms total)
+[COMPUTER] Ponder f3g5 -> c7c6 (630ms total)
+[COMPUTER] Ponder e4d5 -> c7c6 (4152ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder f3e5 -> d5e4 (1237ms total)
+[COMPUTER] Ponder e4d5 -> e5e4 (4433ms total)
+[COMPUTER] Ponder e4d5 -> g8f6 (4637ms total)
+[COMPUTER] Ponder e4d5 -> d7d6 (4845ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder e4d5 -> h7h5 (5049ms total)
+[COMPUTER] Ponder f3e5 -> f7f6 (1441ms total)
+[COMPUTER] Ponder e4d5 -> c7c6 (5255ms total)
+[COMPUTER] Ponder e4d5 -> e5e4 (5459ms total)
+[COMPUTER] Ponder f3h4 -> g7g5 (419ms total)
+[COMPUTER] Ponder e4d5 -> e5e4 (5668ms total)
+[COMPUTER] Ponder e4d5 -> c7c6 (5875ms total)
+[COMPUTER] Ponder f3g5 -> e7e6 (847ms total)
+[COMPUTER] Ponder f3e5 -> f7f6 (1650ms total)
+[COMPUTER] Ponder e4d5 -> e5e4 (6088ms total)
+[COMPUTER] Ponder e4d5 -> d7d6 (6292ms total)
+[COMPUTER] Ponder e4d5 -> d7d6 (6505ms total)
+[COMPUTER] Ponder e4d5 -> d7d6 (6709ms total)
+[COMPUTER] Ponder f3e5 -> f7f6 (1862ms total)
+[COMPUTER] Ponder e4d5 -> e5e4 (6922ms total)
+[COMPUTER] Ponder f3d4 -> c7c6 (625ms total)
+Move request for game game_1: 3,6 -> 3,4 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 585011ms, Tournament: 1147345ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 585011ms, consistency: 2340ms
+[COMPUTER] PV stable for 2493ms: e5d4. Stopping search.
+[COMPUTER] PV stable for 2817ms: e5d4. Stopping search.
+[COMPUTER] PV stable for 3077ms: e5d4. Stopping search.
+[COMPUTER] PV stable for 4119ms: e5d4. Stopping search.
+[COMPUTER] Bestmove: g8f6, eval: -24, took: 4313ms
+[COMPUTER] Move 'g8f6' confirmed after 4313ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: d4e5, e4d5, f3e5, f3g5, f3h4, a2a4, a2a3, b2b4
+[COMPUTER] Ponder d4e5 -> f6e4 (210ms total)
+[COMPUTER] Ponder e4d5 -> a7a6 (209ms total)
+[COMPUTER] Ponder f3e5 -> h7h5 (209ms total)
+[COMPUTER] Ponder f3g5 -> b8c6 (204ms total)
+[COMPUTER] Ponder f3h4 -> d7d6 (213ms total)
+[COMPUTER] Ponder a2a4 -> c7c5 (204ms total)
+[COMPUTER] Ponder a2a3 -> d5e4 (208ms total)
+[COMPUTER] Ponder b2b4 -> e5d4 (203ms total)
+[COMPUTER] Ponder d4e5 -> f6e4 (418ms total)
+[COMPUTER] Ponder d4e5 -> d7d6 (624ms total)
+[COMPUTER] Ponder d4e5 -> f6e4 (829ms total)
+Move request for game game_1: 1,7 -> 2,5 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 580634ms, Tournament: 1140519ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 580634ms, consistency: 2322ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2403ms: f6e4. Stopping search.
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 5164ms: f6e4. Stopping search.
+[COMPUTER] PV stable for 5646ms: f6e4. Stopping search.
+[MONITOR] Running: true, Remaining: 18.7m, ActiveGames: 1, Offers: 0
+[COMPUTER] PV stable for 6773ms: f6e4. Stopping search.
+[COMPUTER] Bestmove: e5d4, eval: -5, took: 16433ms
+[COMPUTER] Move 'e5d4' confirmed after 16433ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: e4d5, e4e5, c3b5, c3d5, c3a4, f3e5, f3g5, f3d4
+[COMPUTER] Ponder e4d5 -> e7e5 (211ms total)
+[COMPUTER] Ponder e4e5 -> b8c6 (207ms total)
+[COMPUTER] Ponder c3b5 -> c7c6 (210ms total)
+[COMPUTER] Ponder c3d5 -> e7e5 (205ms total)
+[COMPUTER] Ponder c3a4 -> b8c6 (211ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder f3e5 -> d4c3 (205ms total)
+[COMPUTER] Ponder f3g5 -> c7c6 (210ms total)
+[COMPUTER] Ponder f3d4 -> b8c6 (208ms total)
+[COMPUTER] Ponder e4d5 -> c7c5 (415ms total)
+[COMPUTER] Ponder e4d5 -> c7c5 (617ms total)
+[COMPUTER] Ponder e4d5 -> c7c5 (826ms total)
+[COMPUTER] Ponder e4d5 -> c7c5 (1030ms total)
+[COMPUTER] Ponder e4e5 -> c7c5 (422ms total)
+[COMPUTER] Ponder e4d5 -> d4c3 (1237ms total)
+[COMPUTER] Ponder e4d5 -> e7e5 (1444ms total)
+[COMPUTER] Ponder e4d5 -> e7e5 (1653ms total)
+[COMPUTER] Ponder e4d5 -> e7e5 (1862ms total)
+[COMPUTER] Ponder e4e5 -> d4c3 (630ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder e4d5 -> e7e6 (2090ms total)
+[COMPUTER] Ponder c3b5 -> e7e5 (415ms total)
+[COMPUTER] Ponder e4d5 -> c7c5 (2300ms total)
+[COMPUTER] Ponder e4d5 -> d4c3 (2508ms total)
+[COMPUTER] Ponder e4d5 -> d4c3 (2712ms total)
+Move request for game game_1: 5,5 -> 3,4 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 564179ms, Tournament: 1118824ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 564179ms, consistency: 2256ms
+[COMPUTER] PV stable for 2458ms: d5e4. Stopping search.
+[COMPUTER] PV stable for 3482ms: d5e4. Stopping search.
+[COMPUTER] PV stable for 3767ms: d5e4. Stopping search.
+[COMPUTER] Bestmove: d8e7, eval: 107, took: 3878ms
+[COMPUTER] Move 'd8e7' confirmed after 3878ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: d4c6, d4e6, d4b5, d4f5, d4b3, d4f3, e4d5, e4e5
+[COMPUTER] Ponder d4c6 -> b8c6 (205ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (203ms total)
+[COMPUTER] Ponder d4b5 -> f6e4 (205ms total)
+[COMPUTER] Ponder d4f5 -> e7e5 (208ms total)
+[COMPUTER] Ponder d4b3 -> d5e4 (206ms total)
+[COMPUTER] Ponder d4f3 -> e7c5 (203ms total)
+[COMPUTER] Ponder e4d5 -> c7c6 (212ms total)
+[COMPUTER] Ponder e4e5 -> e7e5 (206ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (414ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (618ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (825ms total)
+[COMPUTER] Ponder d4e6 -> f7e6 (418ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (1037ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder d4c6 -> d7c6 (1241ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (1445ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (1659ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (1862ms total)
+[COMPUTER] Ponder d4e6 -> f7e6 (621ms total)
+[COMPUTER] Ponder d4b5 -> a7a6 (411ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (2069ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (2275ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (2482ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (2687ms total)
+[COMPUTER] Ponder d4e6 -> f7e6 (826ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (2895ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (3103ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (3308ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (1032ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (3515ms total)
+[COMPUTER] Ponder d4f5 -> e7c5 (413ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (3720ms total)
+[COMPUTER] Ponder d4b5 -> d5e4 (617ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (3923ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (4134ms total)
+[COMPUTER] Ponder d4e6 -> e7e6 (1240ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (4341ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (4551ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (4755ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (4960ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (5163ms total)
+[COMPUTER] Ponder d4e6 -> f7e6 (1445ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (5365ms total)
+[COMPUTER] Ponder d4b3 -> d5e4 (407ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (5572ms total)
+[COMPUTER] Ponder d4b5 -> c7c6 (822ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (5775ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (5979ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (1647ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (6182ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (6398ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (6604ms total)
+Move request for game game_1: 5,7 -> 3,5 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 560255ms, Tournament: 1103538ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 560255ms, consistency: 2241ms
+[MONITOR] Running: true, Remaining: 18.4m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2664ms: d5e4. Stopping search.
+[COMPUTER] PV stable for 3168ms: d5e4. Stopping search.
+[COMPUTER] PV stable for 3715ms: d5e4. Stopping search.
+[COMPUTER] PV stable for 4137ms: d5e4. Stopping search.
+[COMPUTER] Bestmove: h7h5, eval: 117, took: 5060ms
+[COMPUTER] Move 'h7h5' confirmed after 5060ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: d4c6, d4e6, d4b5, d4f5, d4b3, d4f3, e4d5, e4e5
+[COMPUTER] Ponder d4c6 -> b8c6 (202ms total)
+[COMPUTER] Ponder d4e6 -> e7e6 (202ms total)
+[COMPUTER] Ponder d4b5 -> d5e4 (202ms total)
+[COMPUTER] Ponder d4f5 -> e7e5 (213ms total)
+[COMPUTER] Ponder d4b3 -> e7d6 (205ms total)
+[COMPUTER] Ponder d4f3 -> e7c5 (210ms total)
+[COMPUTER] Ponder e4d5 -> e7d6 (203ms total)
+[COMPUTER] Ponder e4e5 -> f6g4 (203ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (410ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (615ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (824ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (408ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (1031ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (1238ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (1446ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (1661ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (623ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (1869ms total)
+[COMPUTER] Ponder d4b5 -> c7c6 (414ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (2079ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder d4c6 -> b8c6 (2283ms total)
+Move request for game game_1: 2,7 -> 4,5 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 555133ms, Tournament: 1093726ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 555133ms, consistency: 2220ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2890ms: d5e4. Stopping search.
+[COMPUTER] Bestmove: c7c6, eval: 95, took: 2937ms
+[COMPUTER] Move 'c7c6' confirmed after 2937ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: d4c6, d4e6, d4b5, d4f5, d4b3, d4f3, e4d5, e4e5
+[COMPUTER] Ponder d4c6 -> b7c6 (206ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (206ms total)
+[COMPUTER] Ponder d4b5 -> e7e5 (206ms total)
+[COMPUTER] Ponder d4f5 -> e7e5 (207ms total)
+[COMPUTER] Ponder d4b3 -> d7d6 (217ms total)
+[COMPUTER] Ponder d4f3 -> d7d6 (207ms total)
+[COMPUTER] Ponder e4d5 -> d7d6 (205ms total)
+[COMPUTER] Ponder e4e5 -> e7e5 (210ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (418ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (626ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (834ms total)
+[COMPUTER] Ponder d4e6 -> e7e6 (409ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (1041ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (1253ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (1463ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (1666ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (613ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (1874ms total)
+[COMPUTER] Ponder d4b5 -> a7a5 (410ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (2080ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (2290ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (2493ms total)
+[COMPUTER] Ponder d4e6 -> f7e6 (821ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (2697ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (2904ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (3107ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (3316ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (1024ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (3522ms total)
+[COMPUTER] Ponder d4f5 -> d5e4 (412ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (3729ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder d4b5 -> d5e4 (626ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (3933ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (4142ms total)
+[COMPUTER] Ponder d4e6 -> e7e6 (1230ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (4345ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (4551ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (4754ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (4965ms total)
+[COMPUTER] Ponder d4e6 -> e7e6 (1435ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (5191ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (5396ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (5608ms total)
+[COMPUTER] Ponder d4b3 -> d5e4 (420ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (5813ms total)
+[COMPUTER] Ponder d4b5 -> a7a6 (833ms total)
+[COMPUTER] Ponder d4e6 -> f7e6 (1640ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (6018ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (6230ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (6440ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (6645ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (1850ms total)
+[COMPUTER] Ponder d4f5 -> e7e6 (616ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (6848ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (7057ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (7260ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (7466ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (2059ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (7673ms total)
+[COMPUTER] Ponder d4f3 -> d7d6 (414ms total)
+[COMPUTER] Ponder d4b5 -> c6b5 (1040ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (7881ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (8094ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (8301ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (2277ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (8512ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (8724ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (8934ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (9137ms total)
+[COMPUTER] Ponder d4e6 -> f7e6 (2483ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (9344ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (9558ms total)
+[COMPUTER] Ponder d4b5 -> a7a6 (1243ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (9770ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (9973ms total)
+[COMPUTER] Ponder d4f5 -> e7e6 (824ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (2691ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (10179ms total)
+[COMPUTER] Ponder e4d5 -> f6d5 (413ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (10384ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (10592ms total)
+[COMPUTER] Ponder d4b3 -> d5e4 (640ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (10797ms total)
+[COMPUTER] Ponder d4e6 -> e7e6 (2895ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (11001ms total)
+[MONITOR] Running: true, Remaining: 17.9m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder d4c6 -> d7c6 (11206ms total)
+[COMPUTER] Ponder d4b5 -> g7g6 (1447ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (11415ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (11618ms total)
+[COMPUTER] Ponder d4e6 -> f7e6 (3104ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (11821ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (12024ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (12233ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (12436ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (3307ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (12643ms total)
+Move request for game game_1: 3,7 -> 3,6 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 552075ms, Tournament: 1069476ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 552075ms, consistency: 2208ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2240ms: d5e4. Stopping search.
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 3225ms: d5e4. Stopping search.
+[COMPUTER] PV stable for 3632ms: d5e4. Stopping search.
+[COMPUTER] PV stable for 5632ms: d5e4. Stopping search.
+[COMPUTER] Bestmove: f6e4, eval: 84, took: 6845ms
+[COMPUTER] Move 'f6e4' confirmed after 6845ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: d4c6, d4e6, d4b5, d4f5, d4b3, d4f3, c3b5, c3d5
+[COMPUTER] Ponder d4c6 -> b8c6 (211ms total)
+[COMPUTER] Ponder d4e6 -> e4d2 (203ms total)
+[COMPUTER] Ponder d4b5 -> e4d2 (202ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder d4f5 -> e7e6 (205ms total)
+[COMPUTER] Ponder d4b3 -> e4d2 (203ms total)
+[COMPUTER] Ponder d4f3 -> e4d2 (202ms total)
+[COMPUTER] Ponder c3b5 -> c6b5 (208ms total)
+[COMPUTER] Ponder c3d5 -> c6d5 (208ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (413ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (618ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (827ms total)
+[COMPUTER] Ponder d4e6 -> e7e6 (404ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (1031ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (1241ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (1447ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (1652ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (610ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder d4c6 -> b8c6 (1862ms total)
+[COMPUTER] Ponder d4b5 -> c6b5 (405ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (2072ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (2277ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (2481ms total)
+[COMPUTER] Ponder d4e6 -> f7e6 (816ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (2690ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (2895ms total)
+[COMPUTER] Ponder d4c6 -> e4d2 (3102ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (3310ms total)
+[COMPUTER] Ponder d4e6 -> e4d2 (1019ms total)
+[COMPUTER] Ponder d4f5 -> e4d2 (417ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (3515ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (3724ms total)
+[COMPUTER] Ponder d4b5 -> e4d2 (613ms total)
+[COMPUTER] Ponder d4c6 -> e4d2 (3928ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (4152ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (1228ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (4359ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (4565ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (4770ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (4983ms total)
+[COMPUTER] Ponder d4e6 -> e7e6 (1445ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (5189ms total)
+[COMPUTER] Ponder d4b3 -> e4d2 (412ms total)
+Move request for game game_1: 2,5 -> 4,4 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 545141ms, Tournament: 1053238ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 545141ms, consistency: 2180ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 3647ms: d5e4. Stopping search.
+[COMPUTER] PV stable for 4122ms: d5e4. Stopping search.
+[COMPUTER] PV stable for 4693ms: d5e4. Stopping search.
+[COMPUTER] Bestmove: g7g6, eval: 116, took: 4700ms
+[COMPUTER] Move 'g7g6' confirmed after 4700ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: d4c6, d4e6, d4b5, d4f5, d4b3, d4f3, e4d6, e4f6
+[COMPUTER] Ponder d4c6 -> b8c6 (210ms total)
+[COMPUTER] Ponder d4e6 -> e7e6 (204ms total)
+[COMPUTER] Ponder d4b5 -> c6b5 (205ms total)
+[COMPUTER] Ponder d4f5 -> g6f5 (207ms total)
+[COMPUTER] Ponder d4b3 -> b8a6 (203ms total)
+[COMPUTER] Ponder d4f3 -> d5e4 (209ms total)
+[COMPUTER] Ponder e4d6 -> e7d6 (206ms total)
+[COMPUTER] Ponder e4f6 -> g7f6 (218ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (416ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (622ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (828ms total)
+[COMPUTER] Ponder d4e6 -> e7e6 (414ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (1034ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (1238ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (1440ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (1645ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (1852ms total)
+[COMPUTER] Ponder d4e6 -> e7e6 (624ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (2058ms total)
+[COMPUTER] Ponder d4b5 -> d5e4 (412ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (2263ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (2467ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (2674ms total)
+[COMPUTER] Ponder d4e6 -> f7e6 (828ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (2878ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (3086ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (3294ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (3499ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (1034ms total)
+[COMPUTER] Ponder d4f5 -> e7e5 (412ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (3714ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (3934ms total)
+[COMPUTER] Ponder d4b5 -> c6b5 (619ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (4140ms total)
+[COMPUTER] Ponder d4e6 -> d5e4 (1237ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (4349ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (4556ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (4762ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (4967ms total)
+[COMPUTER] Ponder d4e6 -> d5e4 (1440ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (5176ms total)
+[COMPUTER] Ponder d4b3 -> b8a6 (411ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (5383ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (5590ms total)
+[COMPUTER] Ponder d4b5 -> c6b5 (822ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (5794ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (1653ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (5998ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (6204ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (6407ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (6613ms total)
+[COMPUTER] Ponder d4f5 -> g6f5 (616ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (6822ms total)
+[COMPUTER] Ponder d4e6 -> d7e6 (1862ms total)
+[COMPUTER] Ponder d4c6 -> d5e4 (7025ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (7326ms total)
+Move request for game game_1: 4,4 -> 6,3 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 540356ms, Tournament: 1035999ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 540356ms, consistency: 2161ms
+[COMPUTER] PV stable for 2371ms: f8g7. Stopping search.
+[COMPUTER] Bestmove: c8g4, eval: -581, took: 4390ms
+[COMPUTER] Move 'c8g4' confirmed after 4390ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: g5f7, g5h7, g5e6, g5e4, g5f3, g5h3, d4c6, d4e6
+[COMPUTER] Ponder g5f7 -> e7f7 (212ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (211ms total)
+[COMPUTER] Ponder g5e6 -> g4e6 (207ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder g5e4 -> d5e4 (203ms total)
+[COMPUTER] Ponder g5f3 -> g4e6 (209ms total)
+[COMPUTER] Ponder g5h3 -> g8h6 (211ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (212ms total)
+[COMPUTER] Ponder d4e6 -> g4e6 (210ms total)
+[COMPUTER] Ponder g5f7 -> e7e3 (421ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (633ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (836ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (1038ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder g5h7 -> c6c5 (414ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (1244ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (1446ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (1661ms total)
+[COMPUTER] Ponder g5h7 -> g4e2 (619ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (1864ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (2066ms total)
+[COMPUTER] Ponder g5e6 -> d7e6 (414ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (2287ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (2501ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (831ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (2703ms total)
+Move request for game game_1: 4,7 -> 6,7 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 535890ms, Tournament: 1026069ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 535890ms, consistency: 2143ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2739ms: e8d8. Stopping search.
+[COMPUTER] Bestmove: f8g7, eval: -830, took: 6357ms
+[COMPUTER] Move 'f8g7' confirmed after 6357ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: g5f7, g5h7, g5e6, g5e4, g5f3, g5h3, d4c6, d4e6
+[COMPUTER] Ponder g5f7 -> e7f7 (204ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (214ms total)
+[COMPUTER] Ponder g5e6 -> d7e6 (207ms total)
+[COMPUTER] Ponder g5e4 -> d5e4 (206ms total)
+[COMPUTER] Ponder g5f3 -> g4f3 (206ms total)
+[COMPUTER] Ponder g5h3 -> g4h3 (216ms total)
+[COMPUTER] Ponder d4c6 -> d7c6 (203ms total)
+[COMPUTER] Ponder d4e6 -> g4e6 (217ms total)
+[MONITOR] Running: true, Remaining: 17.0m, ActiveGames: 1, Offers: 0
+[COMPUTER] Ponder g5f7 -> e7f7 (415ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (622ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (830ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (1035ms total)
+[COMPUTER] Ponder g5h7 -> c6c5 (420ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (1245ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (1459ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (1666ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (1870ms total)
+[COMPUTER] Ponder g5h7 -> g7d4 (640ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (2078ms total)
+[COMPUTER] Ponder g5e6 -> d7e6 (415ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (2293ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (2501ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (2718ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (851ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (2925ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (3132ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (3341ms total)
+[COMPUTER] Ponder g5e4 -> g7d4 (420ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (3551ms total)
+[COMPUTER] Ponder g5h7 -> g7d4 (1061ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (3759ms total)
+[COMPUTER] Ponder g5e6 -> g4e6 (627ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (3972ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (4179ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (4384ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (1273ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (4591ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (4798ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (5003ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (5207ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (1482ms total)
+[COMPUTER] Ponder g5f3 -> g4f3 (408ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (5423ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (5642ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (5850ms total)
+[COMPUTER] Ponder g5e6 -> g4e6 (832ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (6058ms total)
+[COMPUTER] Ponder g5h7 -> c6c5 (1684ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (6261ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder g5f7 -> e7f7 (6464ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (6673ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (6885ms total)
+[COMPUTER] Ponder g5e4 -> d5e4 (623ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (1891ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (7091ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (7305ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (7508ms total)
+[COMPUTER] Ponder g5e6 -> d7e6 (1041ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (7715ms total)
+[COMPUTER] Ponder g5h7 -> g7d4 (2099ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (7921ms total)
+[COMPUTER] Ponder g5h3 -> g4h3 (428ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (8133ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (8336ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (8541ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (2317ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (8754ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (8960ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (9166ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (9373ms total)
+[COMPUTER] Ponder g5h7 -> g4e2 (2532ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (9578ms total)
+[COMPUTER] Ponder g5e6 -> d7e6 (1253ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (9785ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (9998ms total)
+[COMPUTER] Ponder g5e4 -> d7d6 (835ms total)
+[COMPUTER] Ponder d4c6 -> b7c6 (410ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (10212ms total)
+[COMPUTER] Ponder g5h7 -> g7d4 (2737ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (10416ms total)
+[COMPUTER] Ponder g5f3 -> c6c5 (622ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder g5f7 -> g4e2 (10624ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (10833ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (11036ms total)
+[COMPUTER] Ponder g5h7 -> c6c5 (2956ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (11247ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (11452ms total)
+[COMPUTER] Ponder g5e6 -> f7e6 (1458ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (11660ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (11866ms total)
+[COMPUTER] Ponder g5h7 -> c6c5 (3164ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (12074ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (12283ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (12495ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (12698ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (3366ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (12908ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (13119ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (13333ms total)
+[COMPUTER] Ponder g5e6 -> d7e6 (1663ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (13547ms total)
+[COMPUTER] Ponder g5e4 -> d5e4 (1050ms total)
+[COMPUTER] Ponder g5h7 -> g4e2 (3570ms total)
+[COMPUTER] Ponder g5f7 -> g7d4 (13760ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (13962ms total)
+[COMPUTER] Ponder d4e6 -> g4e6 (429ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (14174ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (14381ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (3778ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (14600ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (14808ms total)
+[COMPUTER] Ponder g5f7 -> g7d4 (15014ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+Move request for game game_1: 2,6 -> 2,4 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 529495ms, Tournament: 994696ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 529495ms, consistency: 2117ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2470ms: e8f8. Stopping search.
+[COMPUTER] Bestmove: c6c5, eval: -575, took: 3721ms
+[COMPUTER] Move 'c6c5' confirmed after 3721ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: g5f7, g5h7, g5e6, g5e4, g5f3, g5h3, c4d5, d4c6
+[COMPUTER] Ponder g5f7 -> e7f7 (217ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (204ms total)
+[COMPUTER] Ponder g5e6 -> g4e6 (206ms total)
+[COMPUTER] Ponder g5e4 -> d5e4 (203ms total)
+[COMPUTER] Ponder g5f3 -> c5d4 (226ms total)
+[COMPUTER] Ponder g5h3 -> g4h3 (207ms total)
+[COMPUTER] Ponder c4d5 -> c5d4 (213ms total)
+[COMPUTER] Ponder d4c6 -> b8c6 (203ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (425ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (652ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (858ms total)
+[COMPUTER] Ponder g5h7 -> c5d4 (416ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (1063ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (1274ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (1484ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (1696ms total)
+[COMPUTER] Ponder g5h7 -> g7d4 (622ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (1909ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder g5e6 -> g4e6 (424ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (2122ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (2332ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (2535ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (833ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (2738ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (2946ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (3155ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (3365ms total)
+[COMPUTER] Ponder g5e4 -> d5e4 (463ms total)
+[COMPUTER] Ponder g5h7 -> g8f6 (1056ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (3578ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (3786ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (3998ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder g5e6 -> d7e6 (666ms total)
+[COMPUTER] Ponder g5f7 -> c5d4 (4210ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (4417ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (1264ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (4620ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (4828ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (5033ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (5245ms total)
+[COMPUTER] Ponder g5h7 -> c5d4 (1472ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (5450ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (5659ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (5869ms total)
+[COMPUTER] Ponder g5f3 -> d5c4 (434ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (6072ms total)
+[COMPUTER] Ponder g5h7 -> g8f6 (1680ms total)
+[COMPUTER] Ponder g5e6 -> d7e6 (878ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (6277ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (6490ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (6694ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (6906ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (1891ms total)
+Move request for game game_1: 3,4 -> 1,3 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 525703ms, Tournament: 978951ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 525703ms, consistency: 2102ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2776ms: b8d7. Stopping search.
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2190ms: b8c6. Stopping search.
+[COMPUTER] Bestmove: b8c6, eval: -935, took: 8882ms
+[COMPUTER] Move 'b8c6' confirmed after 8882ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: b5a7, b5c7, b5d6, b5d4, b5a3, b5c3, g5f7, g5h7
+[COMPUTER] Ponder b5a7 -> c6a7 (202ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder b5c7 -> d8c7 (205ms total)
+[COMPUTER] Ponder b5d6 -> e7d6 (212ms total)
+[COMPUTER] Ponder b5d4 -> c5d4 (205ms total)
+[COMPUTER] Ponder b5a3 -> g8f6 (205ms total)
+[COMPUTER] Ponder b5c3 -> d5c4 (223ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (209ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (207ms total)
+[COMPUTER] Ponder b5a7 -> g8f6 (408ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (612ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (816ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (1019ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (409ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (1224ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (1429ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (1638ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (1848ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (620ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (2051ms total)
+[COMPUTER] Ponder b5d6 -> e7d6 (421ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (2267ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (2485ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (831ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (2693ms total)
+[COMPUTER] Ponder b5a7 -> h7h6 (2901ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (3111ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (3318ms total)
+[COMPUTER] Ponder b5d4 -> c6e5 (415ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (3521ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1034ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (3730ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (3936ms total)
+[COMPUTER] Ponder b5d6 -> e7d6 (639ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (4145ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1246ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (4353ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (4561ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (4772ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (4980ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (5186ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1457ms total)
+[COMPUTER] Ponder b5a3 -> e7e5 (415ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (5395ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (5608ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (5816ms total)
+[COMPUTER] Ponder b5d6 -> c7d6 (846ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (6028ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1676ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (6237ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (6441ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (6648ms total)
+[COMPUTER] Ponder b5a7 -> g4e6 (6858ms total)
+[COMPUTER] Ponder b5d4 -> c6d4 (626ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1884ms total)
+[COMPUTER] Ponder b5a7 -> g4e6 (7073ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder b5a7 -> d5d4 (7290ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (7504ms total)
+[COMPUTER] Ponder b5a7 -> g4e6 (7706ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (2088ms total)
+[COMPUTER] Ponder b5d6 -> c7d6 (1049ms total)
+[COMPUTER] Ponder b5a7 -> g8f6 (7911ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (8114ms total)
+[COMPUTER] Ponder b5c3 -> d5d4 (431ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (8318ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder b5a7 -> a8a7 (8529ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (2299ms total)
+[COMPUTER] Ponder b5a7 -> g8f6 (8742ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (8947ms total)
+[COMPUTER] Ponder b5a7 -> g4e6 (9150ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (9357ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (2512ms total)
+[COMPUTER] Ponder b5a7 -> g4e6 (9562ms total)
+[COMPUTER] Ponder b5d6 -> c7d6 (1257ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (9766ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (9971ms total)
+[COMPUTER] Ponder b5a7 -> g4e6 (10196ms total)
+[COMPUTER] Ponder b5d4 -> c5d4 (841ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (2721ms total)
+Move request for game game_1: 3,5 -> 2,6 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Time check - Game clock: 516763ms, Tournament: 952655ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 516763ms, consistency: 2067ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 4671ms: d5d4. Stopping search.
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 5733ms: d5d4. Stopping search.
+[COMPUTER] Bestmove: e8f8, eval: -727, took: 14115ms
+[COMPUTER] Move 'e8f8' confirmed after 14115ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: b5a7, b5c7, b5d6, b5d4, b5a3, b5c3, g5f7, g5h7
+[COMPUTER] Ponder b5a7 -> c6a7 (206ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (214ms total)
+[COMPUTER] Ponder b5d6 -> e7d6 (205ms total)
+[COMPUTER] Ponder b5d4 -> c5d4 (225ms total)
+[COMPUTER] Ponder b5a3 -> h7h6 (207ms total)
+[COMPUTER] Ponder b5c3 -> g7c3 (212ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (202ms total)
+[COMPUTER] Ponder g5h7 -> b7b6 (224ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder b5a7 -> d5d4 (419ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (624ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (837ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (1052ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (426ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (1269ms total)
+[COMPUTER] Ponder b5a7 -> d5c4 (1483ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (1702ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (1907ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (639ms total)
+[COMPUTER] Ponder b5d6 -> c7d6 (412ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (2117ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (2322ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (2538ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (2752ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (845ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (2961ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (3175ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (3377ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (3590ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1049ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (3801ms total)
+[COMPUTER] Ponder b5d4 -> c5d4 (429ms total)
+[COMPUTER] Ponder b5d6 -> e7d6 (615ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (4012ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (4224ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1274ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (4430ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (4646ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (4861ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (5064ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (5271ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1487ms total)
+[COMPUTER] Ponder b5a3 -> d5c4 (413ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (5493ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (5701ms total)
+[COMPUTER] Ponder b5d6 -> c7d6 (823ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (5925ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (6133ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1692ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (6340ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (6545ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (6750ms total)
+[COMPUTER] Ponder b5a7 -> d5c4 (6955ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1918ms total)
+[COMPUTER] Ponder b5d4 -> c5d4 (639ms total)
+[COMPUTER] Ponder b5a7 -> d5c4 (7160ms total)
+[COMPUTER] Ponder b5a7 -> d5c4 (7363ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (7579ms total)
+[COMPUTER] Ponder b5d6 -> e7d6 (1038ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (7786ms total)
+[COMPUTER] Ponder b5c3 -> d5d4 (418ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (2126ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (8008ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder b5a7 -> d5d4 (8213ms total)
+[COMPUTER] Ponder b5a7 -> d5c4 (8471ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (8674ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (2332ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (8884ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (9096ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (9301ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (9507ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (2548ms total)
+[COMPUTER] Ponder b5d6 -> e7d6 (1247ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (9712ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (9922ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (10137ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (413ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (10344ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (2763ms total)
+[COMPUTER] Ponder b5d4 -> c6d4 (854ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (10550ms total)
+[COMPUTER] Ponder b5a3 -> d5d4 (626ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (10759ms total)
+[COMPUTER] Ponder b5a7 -> d5c4 (10971ms total)
+[COMPUTER] Ponder b5a7 -> d5c4 (11184ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (2970ms total)
+[COMPUTER] Ponder b5a7 -> d5c4 (11389ms total)
+[COMPUTER] Ponder b5d6 -> c7d6 (1453ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (11592ms total)
+[COMPUTER] Ponder b5a7 -> d5d4 (11805ms total)
+[COMPUTER] Ponder b5a7 -> d5c4 (12009ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (3174ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (12216ms total)
+[COMPUTER] Ponder b5a7 -> d5c4 (12423ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder b5a7 -> d5d4 (12627ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (12832ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (3389ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (13035ms total)
+Move request for game game_1: 2,4 -> 3,3 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 502587ms, Tournament: 916664ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 502587ms, consistency: 2010ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2877ms: c6e5. Stopping search.
+[COMPUTER] PV stable for 5378ms: c6e5. Stopping search.
+[COMPUTER] Bestmove: g4d7, eval: -775, took: 8776ms
+[COMPUTER] Move 'g4d7' confirmed after 8776ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: b5a7, b5c7, b5d6, b5d4, b5a3, b5c3, d5c6, d5d6
+[COMPUTER] Ponder b5a7 -> c6d4 (208ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (208ms total)
+[COMPUTER] Ponder b5d6 -> e7d6 (208ms total)
+[COMPUTER] Ponder b5d4 -> c6b4 (206ms total)
+[COMPUTER] Ponder b5a3 -> c6d4 (206ms total)
+[COMPUTER] Ponder b5c3 -> c6b4 (210ms total)
+[COMPUTER] Ponder d5c6 -> b8c6 (202ms total)
+[COMPUTER] Ponder d5d6 -> c7d6 (201ms total)
+[COMPUTER] Ponder b5a7 -> c6b4 (412ms total)
+[COMPUTER] Ponder b5a7 -> c6d4 (618ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder b5a7 -> c6d4 (824ms total)
+[COMPUTER] Ponder b5a7 -> c6d4 (1032ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (415ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (1236ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (1448ms total)
+[COMPUTER] Ponder b5a7 -> c6e5 (1659ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (1867ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (619ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (2084ms total)
+[COMPUTER] Ponder b5d6 -> c7d6 (417ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (2294ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (2507ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (829ms total)
+[COMPUTER] Ponder b5a7 -> c6d4 (2718ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (2924ms total)
+[COMPUTER] Ponder b5a7 -> c6a7 (3134ms total)
+[COMPUTER] Ponder b5a7 -> c6e5 (3340ms total)
+[COMPUTER] Ponder b5d4 -> c6d4 (411ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1036ms total)
+[COMPUTER] Ponder b5a7 -> c6e5 (3548ms total)
+[COMPUTER] Ponder b5a7 -> c6e5 (3750ms total)
+Move request for game game_1: 3,3 -> 2,2 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 493782ms, Tournament: 900956ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 493782ms, consistency: 1975ms
+[COMPUTER] PV stable for 2263ms: d7c6. Stopping search.
+[COMPUTER] PV stable for 2769ms: d7c6. Stopping search.
+[COMPUTER] PV stable for 2894ms: d7c6. Stopping search.
+[COMPUTER] Bestmove: d7g4, eval: -1136, took: 3219ms
+[COMPUTER] Move 'd7g4' confirmed after 3219ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: c6b7, b5a7, b5c7, b5d6, b5d4, b5a3, b5c3, g5f7
+[COMPUTER] Ponder c6b7 -> c8b7 (204ms total)
+[COMPUTER] Ponder b5a7 -> g8f6 (205ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (214ms total)
+[COMPUTER] Ponder b5d6 -> c7d6 (207ms total)
+[COMPUTER] Ponder b5d4 -> c5d4 (219ms total)
+[COMPUTER] Ponder b5a3 -> b8c6 (208ms total)
+[COMPUTER] Ponder b5c3 -> b8c6 (207ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (204ms total)
+[COMPUTER] Ponder c6b7 -> g4f3 (411ms total)
+[MONITOR] Running: true, Remaining: 14.9m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c6b7 -> c8b7 (615ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (823ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (1027ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (414ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (1233ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (1443ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (1653ms total)
+[COMPUTER] Ponder c6b7 -> g7c3 (1861ms total)
+[COMPUTER] Ponder b5a7 -> b8c6 (626ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c6b7 -> c8b7 (2066ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (418ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (2270ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (2476ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (2681ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder b5a7 -> a8a7 (839ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (2888ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (3090ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (3297ms total)
+[COMPUTER] Ponder c6b7 -> g4f3 (3499ms total)
+[COMPUTER] Ponder b5d6 -> e7d6 (418ms total)
+[COMPUTER] Ponder b5a7 -> b7b5 (1044ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (3704ms total)
+[COMPUTER] Ponder c6b7 -> g7c3 (3907ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (637ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (4111ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (4314ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (1246ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (4518ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (4722ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (4928ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (5133ms total)
+[COMPUTER] Ponder b5a7 -> b8c6 (1459ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (5336ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (5540ms total)
+[COMPUTER] Ponder b5d4 -> c5d4 (429ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (5747ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (844ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (5955ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (1669ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (6160ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (6366ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (6573ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (6781ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (1875ms total)
+[COMPUTER] Ponder b5d6 -> c7d6 (628ms total)
+[MONITOR] Running: true, Remaining: 14.8m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c6b7 -> c8b7 (6985ms total)
+[COMPUTER] Ponder c6b7 -> g7c3 (7191ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (7395ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (7602ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (2080ms total)
+[COMPUTER] Ponder b5a3 -> b7c6 (420ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (7806ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1061ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (8014ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (8218ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (8426ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (2284ms total)
+[COMPUTER] Ponder c6b7 -> g4f3 (8630ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (8834ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c6b7 -> c8b7 (9039ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (9242ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (2491ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (9446ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (9655ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1270ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (9862ms total)
+[COMPUTER] Ponder c6b7 -> g7c3 (10072ms total)
+[COMPUTER] Ponder b5a7 -> d7d6 (2699ms total)
+[COMPUTER] Ponder b5d6 -> c7d6 (838ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (10277ms total)
+[COMPUTER] Ponder b5c3 -> b8c6 (413ms total)
+[COMPUTER] Ponder c6b7 -> g4e2 (10484ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (10686ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (10891ms total)
+[COMPUTER] Ponder b5d4 -> c5d4 (643ms total)
+[COMPUTER] Ponder b5a7 -> b7c6 (2908ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (11098ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (11306ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (11512ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1473ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (11718ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (3113ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (11923ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (12133ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (12337ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (12541ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (3323ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c6b7 -> c8b7 (12746ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (12949ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (13153ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (427ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (13363ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1684ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (3538ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (13566ms total)
+[COMPUTER] Ponder b5d6 -> e7d6 (1043ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (13775ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (13979ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (14183ms total)
+[COMPUTER] Ponder b5a7 -> b8c6 (3758ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (14389ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (14594ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (14799ms total)
+[COMPUTER] Ponder c6b7 -> g7c3 (15011ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (15217ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (3962ms total)
+[COMPUTER] Ponder b5a3 -> b7c6 (630ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1891ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (15423ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (15628ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c6b7 -> c8b7 (15836ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (16040ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (4168ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (16245ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder b5d4 -> d7c6 (852ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (16458ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (16661ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (16865ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (4376ms total)
+[COMPUTER] Ponder b5d6 -> e7d6 (1255ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (17072ms total)
+Move request for game game_1: 1,6 -> 1,4 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 490461ms, Tournament: 869089ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 490461ms, consistency: 1961ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2610ms: b7b6. Stopping search.
+[COMPUTER] PV stable for 2883ms: b7b6. Stopping search.
+[COMPUTER] Bestmove: b7c6, eval: -1029, took: 5544ms
+[COMPUTER] Move 'b7c6' confirmed after 5544ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: b5a7, b5c7, b5d6, b5d4, b5a3, b5c3, g5f7, g5h7
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder b5a7 -> a8a7 (203ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (206ms total)
+[COMPUTER] Ponder b5d6 -> c7d6 (206ms total)
+[COMPUTER] Ponder b5d4 -> c5d4 (217ms total)
+[COMPUTER] Ponder b5a3 -> c5b4 (208ms total)
+[COMPUTER] Ponder b5c3 -> c5b4 (210ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (210ms total)
+[COMPUTER] Ponder g5h7 -> c6b5 (207ms total)
+[COMPUTER] Ponder b5a7 -> b8a6 (405ms total)
+[COMPUTER] Ponder b5a7 -> g8h6 (612ms total)
+[COMPUTER] Ponder b5a7 -> c5c4 (818ms total)
+[COMPUTER] Ponder b5a7 -> c5c4 (1028ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (417ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder b5a7 -> h7h6 (1233ms total)
+[COMPUTER] Ponder b5a7 -> b8a6 (1435ms total)
+[COMPUTER] Ponder b5a7 -> c5c4 (1640ms total)
+[COMPUTER] Ponder b5a7 -> c5c4 (1843ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (620ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (2047ms total)
+[COMPUTER] Ponder b5d6 -> e7d6 (413ms total)
+[COMPUTER] Ponder b5a7 -> c5c4 (2251ms total)
+[COMPUTER] Ponder b5a7 -> a8a7 (2456ms total)
+[COMPUTER] Ponder b5a7 -> h7h6 (2660ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (827ms total)
+[COMPUTER] Ponder b5a7 -> g7f6 (2869ms total)
+[COMPUTER] Ponder b5a7 -> c5c4 (3074ms total)
+[COMPUTER] Ponder b5a7 -> c5b4 (3282ms total)
+[COMPUTER] Ponder b5a7 -> c5b4 (3489ms total)
+[COMPUTER] Ponder b5c7 -> d8c7 (1030ms total)
+[COMPUTER] Ponder b5d4 -> g7d4 (435ms total)
+[COMPUTER] Ponder b5a7 -> c5b4 (3691ms total)
+Move request for game game_1: 1,4 -> 2,3 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 484907ms, Tournament: 856717ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 484907ms, consistency: 1939ms
+[MONITOR] Running: true, Remaining: 14.3m, ActiveGames: 1, Offers: 0
+[COMPUTER] PV stable for 1945ms: c6b5. Stopping search.
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 3778ms: c6b5. Stopping search.
+[COMPUTER] Bestmove: c6b5, eval: -745, took: 5637ms
+[COMPUTER] Move 'c6b5' confirmed after 5637ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: c5c6, g5f7, g5h7, g5e6, g5e4, g5f3, g5h3, e3d4
+[COMPUTER] Ponder c5c6 -> d7c6 (204ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (221ms total)
+[COMPUTER] Ponder g5h7 -> g8f6 (206ms total)
+[COMPUTER] Ponder g5e6 -> d7e6 (205ms total)
+[COMPUTER] Ponder g5e4 -> f7f5 (206ms total)
+[COMPUTER] Ponder g5f3 -> e7e6 (203ms total)
+[COMPUTER] Ponder g5h3 -> b8c6 (210ms total)
+[COMPUTER] Ponder e3d4 -> g7d4 (208ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (412ms total)
+[COMPUTER] Ponder c5c6 -> h7h6 (616ms total)
+[COMPUTER] Ponder c5c6 -> b5b4 (822ms total)
+[COMPUTER] Ponder c5c6 -> h7h6 (1033ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (428ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (1241ms total)
+[COMPUTER] Ponder c5c6 -> h7h6 (1457ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (1661ms total)
+[COMPUTER] Ponder c5c6 -> d7d5 (1868ms total)
+[COMPUTER] Ponder g5f7 -> g4e2 (637ms total)
+[COMPUTER] Ponder g5h7 -> b8a6 (409ms total)
+[COMPUTER] Ponder c5c6 -> g8f6 (2074ms total)
+[COMPUTER] Ponder c5c6 -> h7h6 (2279ms total)
+[COMPUTER] Ponder c5c6 -> h7h6 (2494ms total)
+[COMPUTER] Ponder c5c6 -> h7h6 (2701ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (839ms total)
+[COMPUTER] Ponder c5c6 -> h7h6 (2912ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (3115ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (3319ms total)
+[COMPUTER] Ponder g5e6 -> f7e6 (407ms total)
+Move request for game game_1: 0,6 -> 0,4 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 479256ms, Tournament: 844860ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 479256ms, consistency: 1917ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2039ms: a8d8. Stopping search.
+[COMPUTER] Bestmove: a8d8, eval: -666, took: 3065ms
+[COMPUTER] Move 'a8d8' confirmed after 3065ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: c5c6, g5f7, g5h7, g5e6, g5e4, g5f3, g5h3, a4a5
+[COMPUTER] Ponder c5c6 -> d7c6 (203ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (212ms total)
+[COMPUTER] Ponder g5h7 -> b8c6 (202ms total)
+[COMPUTER] Ponder g5e6 -> d7e6 (203ms total)
+[COMPUTER] Ponder g5e4 -> b5a4 (202ms total)
+[COMPUTER] Ponder g5f3 -> b8a6 (206ms total)
+[COMPUTER] Ponder g5h3 -> g4h3 (208ms total)
+[COMPUTER] Ponder a4a5 -> b8a6 (208ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (408ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (616ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (820ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (1029ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (427ms total)
+[COMPUTER] Ponder c5c6 -> b5b4 (1233ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (1436ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (1639ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (1844ms total)
+[COMPUTER] Ponder g5f7 -> b8a6 (635ms total)
+[COMPUTER] Ponder g5h7 -> d7d6 (407ms total)
+[MONITOR] Running: true, Remaining: 14.0m, ActiveGames: 1, Offers: 0
+[COMPUTER] Ponder c5c6 -> b7c6 (2054ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (2264ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (2469ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (2672ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (841ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (2878ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (3083ms total)
+[COMPUTER] Ponder c5c6 -> h7h6 (3289ms total)
+[COMPUTER] Ponder g5e6 -> g4e6 (411ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c5c6 -> d7c6 (3493ms total)
+[COMPUTER] Ponder g5f7 -> b8a6 (1046ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (3700ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (613ms total)
+[COMPUTER] Ponder c5c6 -> h7h6 (3907ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c5c6 -> b7b6 (4119ms total)
+[COMPUTER] Ponder c5c6 -> b7b6 (4324ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (1258ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (4542ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (4749ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (4954ms total)
+Move request for game game_1: 3,6 -> 1,4 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 476138ms, Tournament: 833018ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 476138ms, consistency: 1904ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 3837ms: g7a1. Stopping search.
+[COMPUTER] Bestmove: g7a1, eval: -732, took: 11896ms
+[COMPUTER] Move 'g7a1' confirmed after 11896ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: c5c6, g5f7, g5h7, g5e6, g5e4, g5f3, g5h3, a4a5
+[COMPUTER] Ponder c5c6 -> e7b4 (208ms total)
+[COMPUTER] Ponder g5f7 -> b8c6 (218ms total)
+[COMPUTER] Ponder g5h7 -> b8a6 (209ms total)
+[COMPUTER] Ponder g5e6 -> g4e6 (210ms total)
+[COMPUTER] Ponder g5e4 -> b8c6 (209ms total)
+[COMPUTER] Ponder g5f3 -> b8c6 (207ms total)
+[COMPUTER] Ponder g5h3 -> b5a4 (210ms total)
+[COMPUTER] Ponder a4a5 -> b8a6 (204ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (416ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (623ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (836ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (1043ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (428ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (1250ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (1454ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (1661ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c5c6 -> e7b4 (1867ms total)
+[COMPUTER] Ponder g5f7 -> b8c6 (632ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (2084ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (431ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (2293ms total)
+Move request for game game_1: 5,7 -> 0,7 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 464215ms, Tournament: 816389ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 464215ms, consistency: 1856ms
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[MONITOR] Running: true, Remaining: 13.5m, ActiveGames: 1, Offers: 0
+[COMPUTER] PV stable for 3453ms: f7f6. Stopping search.
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 5685ms: f7f6. Stopping search.
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 8313ms: f7f6. Stopping search.
+[COMPUTER] PV stable for 11039ms: f7f6. Stopping search.
+[COMPUTER] Bestmove: g4f5, eval: -752, took: 16103ms
+[COMPUTER] Move 'g4f5' confirmed after 16103ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: c5c6, g5f7, g5h7, g5e6, g5e4, g5f3, g5h3, a4a5
+[COMPUTER] Ponder c5c6 -> e7b4 (202ms total)
+[COMPUTER] Ponder g5f7 -> f5c2 (210ms total)
+[COMPUTER] Ponder g5h7 -> b5a4 (203ms total)
+[COMPUTER] Ponder g5e6 -> f5e6 (209ms total)
+[COMPUTER] Ponder g5e4 -> b5a4 (205ms total)
+[COMPUTER] Ponder g5f3 -> f5c2 (203ms total)
+[COMPUTER] Ponder g5h3 -> b5a4 (205ms total)
+[COMPUTER] Ponder a4a5 -> h7h6 (210ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c5c6 -> e7b4 (407ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (611ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (815ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (1019ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (470ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (1223ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (1429ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (1646ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (1855ms total)
+[COMPUTER] Ponder g5h7 -> f5c2 (408ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (2064ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (692ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (2270ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (2476ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (2683ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (2887ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (899ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (3092ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (3299ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (3507ms total)
+[COMPUTER] Ponder g5e6 -> e7e6 (424ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (3711ms total)
+[MONITOR] Running: true, Remaining: 13.2m, ActiveGames: 1, Offers: 0
+[COMPUTER] Ponder g5f7 -> f5c2 (1102ms total)
+[COMPUTER] Ponder g5h7 -> f5c2 (613ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (3913ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (4116ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (4322ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (4533ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (1304ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (4741ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (4948ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (5151ms total)
+[COMPUTER] Ponder g5e4 -> b8c6 (411ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (5358ms total)
+[COMPUTER] Ponder g5f7 -> e7f7 (1510ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (5563ms total)
+[COMPUTER] Ponder g5h7 -> b8c6 (815ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (5768ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (5970ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (6177ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder g5f7 -> a7a5 (1718ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (6381ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (6585ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (6791ms total)
+[COMPUTER] Ponder c5c6 -> e7b4 (7001ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder g5e6 -> f7e6 (632ms total)
+Move request for game game_1: 1,4 -> 2,5 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 448064ms, Tournament: 788137ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 448064ms, consistency: 1792ms
+[COMPUTER] PV stable for 1793ms: f7f6. Stopping search.
+[COMPUTER] PV stable for 2310ms: f7f6. Stopping search.
+[COMPUTER] PV stable for 3012ms: f7f6. Stopping search.
+[COMPUTER] Bestmove: f7f6, eval: -766, took: 5658ms
+[COMPUTER] Move 'f7f6' confirmed after 5658ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: c5c6, g5f7, g5h7, g5e6, g5e4, g5f3, g5h3, a4a5
+[COMPUTER] Ponder c5c6 -> f6g5 (210ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (203ms total)
+[COMPUTER] Ponder g5h7 -> f5c2 (205ms total)
+[COMPUTER] Ponder g5e6 -> f7e6 (214ms total)
+[COMPUTER] Ponder g5e4 -> e7e6 (203ms total)
+[COMPUTER] Ponder g5f3 -> f5c2 (206ms total)
+[COMPUTER] Ponder g5h3 -> b5a4 (203ms total)
+[COMPUTER] Ponder a4a5 -> f5c2 (208ms total)
+[COMPUTER] Ponder c5c6 -> f5c2 (413ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (622ms total)
+[COMPUTER] Ponder c5c6 -> f5c2 (826ms total)
+[COMPUTER] Ponder g5f7 -> f5c2 (408ms total)
+[COMPUTER] Ponder c5c6 -> f6g5 (1030ms total)
+[COMPUTER] Ponder c5c6 -> f5c2 (1234ms total)
+[COMPUTER] Ponder c5c6 -> f5c2 (1438ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (1641ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (629ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (1846ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (2051ms total)
+[COMPUTER] Ponder g5h7 -> h8h7 (411ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (2257ms total)
+[COMPUTER] Ponder c5c6 -> f6g5 (2465ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c5c6 -> b7c6 (2673ms total)
+[COMPUTER] Ponder g5f7 -> f5c2 (835ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (2876ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (3081ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (3289ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (3494ms total)
+[COMPUTER] Ponder g5f7 -> f5c2 (1043ms total)
+[COMPUTER] Ponder g5e6 -> e7e6 (418ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (3699ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (3912ms total)
+[COMPUTER] Ponder g5h7 -> b5a4 (622ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (4146ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (4354ms total)
+[COMPUTER] Ponder g5f7 -> b5b4 (1246ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (4559ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (4765ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (4970ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (5175ms total)
+[COMPUTER] Ponder g5f7 -> e8f7 (1454ms total)
+[COMPUTER] Ponder g5e4 -> f5e4 (420ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (5378ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (5588ms total)
+Move request for game game_1: 6,3 -> 5,5 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 442330ms, Tournament: 772570ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 442330ms, consistency: 1769ms
+[MONITOR] Running: true, Remaining: 12.9m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2211ms: b5b4. Stopping search.
+[COMPUTER] Bestmove: b5b4, eval: -307, took: 2366ms
+[COMPUTER] Move 'b5b4' confirmed after 2366ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: c5c6, a4a5, c3f6, c3e5, c3b4, c3c4, c3d4, c3a3
+[COMPUTER] Ponder c5c6 -> b7c6 (203ms total)
+[COMPUTER] Ponder a4a5 -> b4c3 (209ms total)
+[COMPUTER] Ponder c3f6 -> g7f6 (211ms total)
+[COMPUTER] Ponder c3e5 -> e7e5 (206ms total)
+[COMPUTER] Ponder c3b4 -> b8c6 (208ms total)
+[COMPUTER] Ponder c3c4 -> b8a6 (203ms total)
+[COMPUTER] Ponder c3d4 -> f5c2 (204ms total)
+[COMPUTER] Ponder c3a3 -> f5c2 (203ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (405ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (608ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (815ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (1026ms total)
+[COMPUTER] Ponder a4a5 -> b4c3 (410ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (1233ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (1436ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (1661ms total)
+[COMPUTER] Ponder a4a5 -> f5c2 (619ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (1863ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (2073ms total)
+[COMPUTER] Ponder c3f6 -> g8f6 (605ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (2277ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (2487ms total)
+[COMPUTER] Ponder a4a5 -> b4c3 (823ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (2695ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (2912ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (3125ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (3331ms total)
+[COMPUTER] Ponder a4a5 -> b4c3 (1029ms total)
+[COMPUTER] Ponder c3e5 -> f6e5 (412ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (3546ms total)
+[COMPUTER] Ponder c5c6 -> b4c3 (3755ms total)
+Move request for game game_1: 2,5 -> 2,4 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 439929ms, Tournament: 762994ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 439929ms, consistency: 1759ms
+[COMPUTER] PV stable for 1942ms: e7f7. Stopping search.
+[COMPUTER] Bestmove: f8g7, eval: -367, took: 4987ms
+[COMPUTER] Move 'f8g7' confirmed after 4987ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: c5c6, a4a5, c4f7, c4a6, c4e6, c4b5, c4d5, c4b4
+[COMPUTER] Ponder c5c6 -> d7c6 (206ms total)
+[COMPUTER] Ponder a4a5 -> d7d6 (208ms total)
+[COMPUTER] Ponder c4f7 -> e7f7 (211ms total)
+[COMPUTER] Ponder c4a6 -> b8a6 (214ms total)
+[COMPUTER] Ponder c4e6 -> d7e6 (211ms total)
+[COMPUTER] Ponder c4b5 -> a7a5 (209ms total)
+[COMPUTER] Ponder c4d5 -> f5c2 (212ms total)
+[COMPUTER] Ponder c4b4 -> f5e6 (210ms total)
+[COMPUTER] Ponder c5c6 -> f5c2 (412ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (619ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (822ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c5c6 -> b8c6 (1031ms total)
+[COMPUTER] Ponder a4a5 -> f5c2 (413ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (1232ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (1443ms total)
+[COMPUTER] Ponder c5c6 -> f5c2 (1647ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (1850ms total)
+[COMPUTER] Ponder a4a5 -> f5e6 (618ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (2055ms total)
+[COMPUTER] Ponder c4f7 -> e7f7 (423ms total)
+[COMPUTER] Ponder c5c6 -> d7d5 (2259ms total)
+[COMPUTER] Ponder c5c6 -> f5c2 (2461ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (2664ms total)
+[COMPUTER] Ponder a4a5 -> b8c6 (824ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (2870ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (3073ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (3275ms total)
+[COMPUTER] Ponder c5c6 -> d7d5 (3478ms total)
+[COMPUTER] Ponder a4a5 -> b8c6 (1028ms total)
+[COMPUTER] Ponder c4a6 -> b7a6 (422ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (3682ms total)
+[COMPUTER] Ponder c5c6 -> d7d5 (3887ms total)
+[COMPUTER] Ponder c4f7 -> e7f7 (629ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (4090ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (4293ms total)
+[COMPUTER] Ponder a4a5 -> f5c2 (1233ms total)
+[COMPUTER] Ponder c5c6 -> f5c2 (4502ms total)
+[COMPUTER] Ponder c5c6 -> d7d5 (4705ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (4916ms total)
+[COMPUTER] Ponder c5c6 -> d7d5 (5120ms total)
+[COMPUTER] Ponder a4a5 -> f5c2 (1442ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (5327ms total)
+[COMPUTER] Ponder c4e6 -> d7e6 (417ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c5c6 -> b7c6 (5537ms total)
+[COMPUTER] Ponder c5c6 -> d7d5 (5741ms total)
+[COMPUTER] Ponder c4f7 -> e7f7 (836ms total)
+[COMPUTER] Ponder c5c6 -> b7c6 (5953ms total)
+[COMPUTER] Ponder a4a5 -> f5e6 (1646ms total)
+[COMPUTER] Ponder c5c6 -> b8c6 (6161ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (6366ms total)
+[COMPUTER] Ponder c5c6 -> d7c6 (6576ms total)
+[COMPUTER] Ponder c5c6 -> f5c2 (6787ms total)
+Move request for game game_1: 2,3 -> 2,2 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 434922ms, Tournament: 746451ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 434922ms, consistency: 1739ms
+[MONITOR] Running: true, Remaining: 12.4m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 1874ms: e7e6. Stopping search.
+[MONITOR] Running: true, Remaining: 12.3m, ActiveGames: 1, Offers: 0
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] PV stable for 2102ms: e7f7. Stopping search.
+[COMPUTER] Bestmove: e7f7, eval: -353, took: 9795ms
+[COMPUTER] Move 'e7f7' confirmed after 9795ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: c6b7, c6d7, a4a5, c4f7, c4a6, c4e6, c4b5, c4c5
+[COMPUTER] Ponder c6b7 -> c8b7 (202ms total)
+[COMPUTER] Ponder c6d7 -> d8d7 (204ms total)
+[COMPUTER] Ponder a4a5 -> f7c4 (209ms total)
+[COMPUTER] Ponder c4f7 -> e8f7 (208ms total)
+[COMPUTER] Ponder c4a6 -> b8a6 (208ms total)
+[COMPUTER] Ponder c4e6 -> d7e6 (205ms total)
+[COMPUTER] Ponder c4b5 -> b7c6 (208ms total)
+[COMPUTER] Ponder c4c5 -> d7c6 (209ms total)
+[COMPUTER] Ponder c6b7 -> f7c4 (445ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (648ms total)
+[COMPUTER] Ponder c6b7 -> f7c4 (852ms total)
+[COMPUTER] Ponder c6d7 -> f5d7 (408ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (1056ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (1261ms total)
+[COMPUTER] Ponder c6b7 -> f7c4 (1470ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (1674ms total)
+[COMPUTER] Ponder c6d7 -> d8d7 (615ms total)
+[COMPUTER] Ponder c6b7 -> f7c4 (1893ms total)
+[COMPUTER] Ponder a4a5 -> f7c4 (416ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c6b7 -> c8b7 (2099ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (2306ms total)
+[COMPUTER] Ponder c6b7 -> f7c4 (2509ms total)
+[COMPUTER] Ponder c6d7 -> d8d7 (820ms total)
+[COMPUTER] Ponder c6b7 -> f7c4 (2717ms total)
+[COMPUTER] Ponder c6b7 -> f7c4 (2922ms total)
+[COMPUTER] Ponder c6b7 -> c8b7 (3133ms total)
+Move request for game game_1: 2,2 -> 2,1 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 425109ms, Tournament: 730913ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 425109ms, consistency: 1700ms
+[COMPUTER] PV stable for 2514ms: f7c4. Stopping search.
+[COMPUTER] Bestmove: d8d1, eval: 921, took: 2532ms
+[COMPUTER] Move 'd8d1' confirmed after 2532ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 2 moves: c2d1, e1d1
+[COMPUTER] Ponder c2d1 -> f7c4 (206ms total)
+[COMPUTER] Ponder e1d1 -> f7c4 (203ms total)
+[COMPUTER] Ponder c2d1 -> d7d5 (415ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (621ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c2d1 -> f7c4 (824ms total)
+[COMPUTER] Ponder e1d1 -> f7c4 (409ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (1027ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (1230ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (1444ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c2d1 -> f7c4 (1648ms total)
+[COMPUTER] Ponder e1d1 -> f7c4 (625ms total)
+[COMPUTER] Ponder c2d1 -> e7e6 (1854ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (2059ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (2264ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (2473ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (2676ms total)
+[COMPUTER] Ponder e1d1 -> f7c4 (850ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (2886ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (3090ms total)
+[COMPUTER] Ponder c2d1 -> e7e6 (3304ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (3510ms total)
+[COMPUTER] Ponder e1d1 -> f7c4 (1063ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (3713ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (3920ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (4140ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (4347ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder e1d1 -> f7c4 (1272ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (4551ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (4756ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (4964ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (5167ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder e1d1 -> f7c4 (1481ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (5377ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (5579ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (5789ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c2d1 -> f7c4 (6003ms total)
+[COMPUTER] Ponder e1d1 -> f7c4 (1687ms total)
+[COMPUTER] Ponder c2d1 -> f7c4 (6208ms total)
+[COMPUTER] Ponder c2d1 -> e7e6 (6416ms total)
+Move request for game game_1: 0,7 -> 3,7 by hwan (promo: queen)
+[DEBUG_MOVE] Turn switch: isWhiteTurn=false, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=computer, computerExists=true, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[DEBUG_MOVE] Triggering computer move! Retry: 0
+[COMPUTER] Scheduling move for Black in 0ms
+Move result: { success: true, gameOver: false, winner: null }
+[COMPUTER] Time check - Game clock: 422543ms, Tournament: 719602ms
+[COMPUTER] Stopping ponder to start search
+[COMPUTER] Ponder search stopped.
+[COMPUTER] Level 1, remaining: 422543ms, consistency: 1690ms
+[COMPUTER] PV stable for 1731ms: f7c4. Stopping search.
+[COMPUTER] PV stable for 2669ms: f7c4. Stopping search.
+[COMPUTER] PV stable for 2777ms: f7c4. Stopping search.
+[COMPUTER] PV stable for 2897ms: f7c4. Stopping search.
+[COMPUTER] Bestmove: f7c4, eval: -33, took: 2901ms
+[COMPUTER] Move 'f7c4' confirmed after 2901ms. Playing immediately.
+[DEBUG_MOVE] Turn switch: isWhiteTurn=true, whiteType=human, blackType=computer
+[DEBUG_MOVE] nextPlayerType=human, computerExists=false, isGameOver=false
+[DEBUG_MOVE] computerPlayers.white=false, computerPlayers.black=true
+[COMPUTER] Starting multi-move ponder...
+[COMPUTER] Multi-pondering 8 moves: c7b8, c7b8, c7b8, c7b8, c7d8, c7d8, c7d8, c7d8
+[COMPUTER] Ponder c7b8 -> f5c2 (207ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (206ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (204ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (209ms total)
+[COMPUTER] Ponder c7d8 -> c4c2 (211ms total)
+[COMPUTER] Ponder c7d8 -> f5c2 (212ms total)
+[COMPUTER] Ponder c7d8 -> e7e5 (204ms total)
+[COMPUTER] Ponder c7d8 -> f5c2 (204ms total)
+[COMPUTER] Ponder c7b8 -> d7d6 (421ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (629ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c7b8 -> c4c2 (833ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (409ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (1037ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (1244ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (1450ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (1656ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (614ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (1863ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (411ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c7b8 -> f5c2 (2066ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (2272ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (2478ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (819ms total)
+[COMPUTER] Ponder c7b8 -> d7d6 (2680ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (2887ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (3092ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (3300ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (1022ms total)
+[COMPUTER] Ponder c7b8 -> d7d6 (3503ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (414ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (3711ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (639ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (3915ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c7b8 -> f5c2 (4121ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (1226ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (4325ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (4534ms total)
+[COMPUTER] Ponder c7b8 -> d7d6 (4740ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (4943ms total)
+[COMPUTER] Ponder c7b8 -> f5e6 (1428ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (5147ms total)
+[COMPUTER] Ponder c7b8 -> d7d6 (5352ms total)
+[COMPUTER] Ponder c7d8 -> e7e5 (414ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (5556ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (5763ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (1634ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (846ms total)
+[COMPUTER] Ponder c7b8 -> f5e6 (5967ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (6172ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (6380ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (6582ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (1839ms total)
+[COMPUTER] Ponder c7b8 -> d7d5 (6785ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (615ms total)
+[COMPUTER] Ponder c7b8 -> f5e6 (7008ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (7215ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (7417ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (2042ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (7623ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (1053ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (7825ms total)
+[MONITOR] Running: true, Remaining: 11.7m, ActiveGames: 1, Offers: 0
+[COMPUTER] Ponder c7d8 -> f5c2 (417ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (8028ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (8234ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (2244ms total)
+[COMPUTER] Ponder c7b8 -> d7d6 (8440ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (8646ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (8850ms total)
+[COMPUTER] Ponder c7b8 -> f5e6 (9055ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (2447ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (9261ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (9466ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (9671ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (1261ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (9878ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (2653ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (822ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (10125ms total)
+[COMPUTER] Ponder c7d8 -> f5c2 (409ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (10332ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (10539ms total)
+[COMPUTER] Ponder c7d8 -> d7d5 (618ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (10743ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (2859ms total)
+[MONITOR] Running: true, Remaining: 11.6m, ActiveGames: 1, Offers: 0
+[COMPUTER] Ponder c7b8 -> f5c2 (10946ms total)
+[COMPUTER] Ponder c7b8 -> d7d6 (11152ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (11358ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (1464ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c7b8 -> c4c2 (11560ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (3063ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (11763ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (11973ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (12178ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (12385ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (3268ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (12588ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (12794ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (12997ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (13201ms total)
+[COMPUTER] Ponder c7b8 -> f5c2 (3477ms total)
+[COMPUTER] Ponder c7d8 -> e7e5 (413ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (1027ms total)
+[Matchmaking] 0 idle computers, 0 active offers, 0 available players
+[COMPUTER] Ponder c7b8 -> c4c2 (1673ms total)
+[COMPUTER] Ponder c7b8 -> c4c2 (13406ms total)
+white resigned. Winner: cpu1
+Game game_1 ended. Winner: cpu1, Reason: resignation
+hwan ELO: 400 → 376 (-24)
+cpu1 wins! Gets 1259103 ms (3× × 0.76 rank × 1.12 opp × 1.00 dur × 1.00 var = ×0.85)
+[GAME] Terminating Black Computer
+[GAME] Terminating Black Computer
+hwan ELO: 376 → 355 (-21)
+cpu1 wins! Gets 1259108 ms (3× × 0.76 rank × 1.12 opp × 1.00 dur × 1.00 var = ×0.85)
+Auto-offer: cpu1 offering 3m+0s [kingofthehill] (Targeting: hwan)
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 11.4m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 11.4m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 10.9m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 10.8m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 10.7m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 10.5m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 10.4m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 9.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 9.1m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 9.1m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 8.9m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 8.6m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 8.5m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 8.2m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 8.2m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 8.1m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 7.1m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 7.0m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 6.5m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 6.1m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 5.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 4.8m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 4.8m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 4.5m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 4.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 4.2m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 3.4m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 3.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 3.2m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 3.0m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 2.6m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 2.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 2.2m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 2.1m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 1.6m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 0.6m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: true, Remaining: 0.4m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 0.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+[MONITOR] Running: true, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 2 available players
+Tournament time expired!
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
+[MONITOR] Running: false, Remaining: 0.0m, ActiveGames: 0, Offers: 1
