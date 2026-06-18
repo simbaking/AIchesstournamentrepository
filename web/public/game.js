@@ -194,20 +194,42 @@ function renderGame() {
         // Hide timer displays for Kung Fu
         document.querySelectorAll('.timer-display').forEach(el => el.style.display = 'none');
         turnIndicator.textContent = '⚡ Kung Fu Chess - Move Anytime!';
+        turnIndicator.classList.remove('time-scramble');
     } else {
         // Show timers for other variants
         document.querySelectorAll('.timer-display').forEach(el => el.style.display = '');
         // Update turn indicator
-        turnIndicator.textContent = `${gameState.currentPlayer}'s Turn`;
+        const activeTimeMs = gameState.isWhiteTurn ? gameState.whiteTimeRemaining : gameState.blackTimeRemaining;
+        const isTimeScramble = activeTimeMs < 180000; // < 3 minutes
+        if (isTimeScramble) {
+            turnIndicator.textContent = `⚠️ ${gameState.currentPlayer}'s Turn – Time Scramble!`;
+            turnIndicator.classList.add('time-scramble');
+        } else {
+            turnIndicator.textContent = `${gameState.currentPlayer}'s Turn`;
+            turnIndicator.classList.remove('time-scramble');
+        }
     }
 
     // Highlight active player (not for Kung Fu since both can move)
-    document.querySelectorAll('.player').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.player').forEach(p => {
+        p.classList.remove('active');
+        p.classList.remove('time-scramble');
+    });
     if (!isKungFu) {
+        const activeTimeMs = gameState.isWhiteTurn ? gameState.whiteTimeRemaining : gameState.blackTimeRemaining;
+        const isTimeScramble = activeTimeMs < 180000;
         if (gameState.isWhiteTurn) {
-            document.querySelector('.white-player').classList.add('active');
+            const whitePlayerEl = document.querySelector('.white-player');
+            if (whitePlayerEl) {
+                whitePlayerEl.classList.add('active');
+                if (isTimeScramble) whitePlayerEl.classList.add('time-scramble');
+            }
         } else {
-            document.querySelector('.black-player').classList.add('active');
+            const blackPlayerEl = document.querySelector('.black-player');
+            if (blackPlayerEl) {
+                blackPlayerEl.classList.add('active');
+                if (isTimeScramble) blackPlayerEl.classList.add('time-scramble');
+            }
         }
     }
 
@@ -1528,6 +1550,32 @@ function startClientTimer() {
         } else {
             gameState.blackTimeRemaining -= delta;
             updateTimerDisplay(blackTimer, gameState.blackTimeRemaining);
+        }
+
+        // Keep time-scramble classes in sync during smooth tick
+        const activeTimeMs = gameState.isWhiteTurn ? gameState.whiteTimeRemaining : gameState.blackTimeRemaining;
+        const isScramble = activeTimeMs < 180000;
+
+        // Desktop player cards
+        const whiteEl = document.querySelector('.white-player');
+        const blackEl = document.querySelector('.black-player');
+        if (whiteEl) whiteEl.classList.toggle('time-scramble', gameState.isWhiteTurn && isScramble);
+        if (blackEl) blackEl.classList.toggle('time-scramble', !gameState.isWhiteTurn && isScramble);
+
+        // Turn indicator
+        if (turnIndicator) turnIndicator.classList.toggle('time-scramble', isScramble);
+
+        // Mobile bars
+        const playerBar = document.querySelector('.player-bar');
+        const opponentBar = document.querySelector('.opponent-bar');
+        if (playerBar && opponentBar) {
+            if (playerBar.classList.contains('active')) {
+                playerBar.classList.toggle('time-scramble', isScramble);
+                opponentBar.classList.remove('time-scramble');
+            } else {
+                opponentBar.classList.toggle('time-scramble', isScramble);
+                playerBar.classList.remove('time-scramble');
+            }
         }
     }, 100);
 }

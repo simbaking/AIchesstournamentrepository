@@ -60,6 +60,41 @@
     box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
 }
 
+/* === TIME SCRAMBLE: < 3 min remaining and it's your turn === */
+@keyframes scramble-pulse {
+    0%   { box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3), 0 0 12px rgba(239, 68, 68, 0.2); border-color: #ef4444; }
+    50%  { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0.55), 0 0 28px rgba(239, 68, 68, 0.5); border-color: #fca5a5; }
+    100% { box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3), 0 0 12px rgba(239, 68, 68, 0.2); border-color: #ef4444; }
+}
+
+@keyframes scramble-timer-flash {
+    0%   { color: #ff4444; text-shadow: 0 0 8px rgba(255,68,68,0.6); }
+    50%  { color: #ff8888; text-shadow: 0 0 20px rgba(255,68,68,1); }
+    100% { color: #ff4444; text-shadow: 0 0 8px rgba(255,68,68,0.6); }
+}
+
+@keyframes scramble-indicator-flash {
+    0%   { background: linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%); transform: scale(1); }
+    50%  { background: linear-gradient(135deg, #ef4444 0%, #991b1b 100%); transform: scale(1.02); }
+    100% { background: linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%); transform: scale(1); }
+}
+
+.player.active.time-scramble {
+    animation: scramble-pulse 0.7s ease-in-out infinite;
+    border-color: #ef4444;
+}
+
+.player.active.time-scramble .timer-display {
+    animation: scramble-timer-flash 0.7s ease-in-out infinite;
+    background: rgba(127, 29, 29, 0.5);
+}
+
+.turn-indicator.time-scramble {
+    animation: scramble-indicator-flash 0.7s ease-in-out infinite;
+    font-size: 1.4rem;
+    letter-spacing: 0.02em;
+}
+
 .player-icon {
     font-size: 2rem;
 }
@@ -72,6 +107,7 @@
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     border-radius: 0.5rem;
     margin-bottom: 0.5rem;
+    transition: font-size 0.3s ease;
 }
 
 .game-timer {
@@ -881,6 +917,23 @@
     .mobile-player-bar.active .timer-mobile {
         background: var(--gold);
         color: #fff;
+    }
+
+    /* Time scramble highlight on mobile */
+    @keyframes mobile-scramble-pulse {
+        0%   { background: rgba(127,29,29,0.6); box-shadow: 0 0 8px rgba(239,68,68,0.5); }
+        50%  { background: rgba(185,28,28,0.85); box-shadow: 0 0 20px rgba(239,68,68,0.9); }
+        100% { background: rgba(127,29,29,0.6); box-shadow: 0 0 8px rgba(239,68,68,0.5); }
+    }
+
+    .mobile-player-bar.active.time-scramble {
+        animation: scramble-pulse 0.7s ease-in-out infinite;
+    }
+
+    .mobile-player-bar.active.time-scramble .timer-mobile {
+        animation: mobile-scramble-pulse 0.7s ease-in-out infinite;
+        color: #fca5a5;
+        font-weight: 900;
     }
 
     /* Board container - edge to edge */
