@@ -1,6 +1,22 @@
 // API base URL
 const API_URL = '';
 
+/**
+ * Write to element.innerHTML while preserving the window scroll position.
+ * - Skips the write entirely when content hasn't changed (no-op on same data).
+ * - When content does change, saves scrollX/scrollY before the DOM rebuild
+ *   and restores them synchronously after. Because JS is single-threaded the
+ *   browser cannot repaint in between, so the scroll lock is invisible to the
+ *   user even when game state updates mid-poll.
+ */
+function setHTML(el, html) {
+    if (!el || el.innerHTML === html) return; // nothing changed – skip
+    const sx = window.scrollX;
+    const sy = window.scrollY;
+    el.innerHTML = html;
+    window.scrollTo(sx, sy); // restore before browser gets a chance to repaint
+}
+
 // DOM elements
 const registerForm = document.getElementById('register-form');
 const startForm = document.getElementById('start-form');
@@ -258,10 +274,10 @@ async function updateStatus() {
 
         // Update leaderboard
         if (data.players.length === 0) {
-            leaderboard.innerHTML = '<p class="empty-state">No players registered yet</p>';
+            setHTML(leaderboard, '<p class="empty-state">No players registered yet</p>');
         } else {
             const sortedPlayers = [...data.players].sort((a, b) => b.score - a.score);
-            leaderboard.innerHTML = sortedPlayers.map((player, index) => {
+            setHTML(leaderboard, sortedPlayers.map((player, index) => {
                 const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
                 const playerType = player.isComputer ? `🤖 Level ${player.level} (${player.elo})` : `👤 (${player.elo})`;
                 const displayName = formatPlayerName(player.name);
@@ -273,7 +289,7 @@ async function updateStatus() {
                         <span class="player-score">${formatScore(player.score)}</span>
                     </div>
                 `;
-            }).join('');
+            }).join(''));
         }
 
         // Store players for dropdown updates
@@ -358,11 +374,11 @@ function updatePlayerDropdowns(players) {
 // Update open offers list
 function updateOpenOffers(offers) {
     if (offers.length === 0) {
-        openOffersDiv.innerHTML = '<p class="empty-state">No active offers</p>';
+        setHTML(openOffersDiv, '<p class="empty-state">No active offers</p>');
         return;
     }
 
-    openOffersDiv.innerHTML = offers.map(offer => {
+    const newHtml = offers.map(offer => {
         const timeText = `${offer.timeControl}m${offer.increment ? '+' + offer.increment + 's' : ''}`;
 
         let targetText = 'Any';
@@ -411,6 +427,7 @@ function updateOpenOffers(offers) {
             </div>
         `;
     }).join('');
+    setHTML(openOffersDiv, newHtml);
 }
 
 // Get variant badge HTML
@@ -495,9 +512,9 @@ async function updateActiveGames() {
         }
 
         if (data.games.length === 0) {
-            activeGamesDiv.innerHTML = '<p class="empty-state">No games in progress</p>';
+            setHTML(activeGamesDiv, '<p class="empty-state">No games in progress</p>');
         } else {
-            activeGamesDiv.innerHTML = data.games.map(game => {
+            const newHtml = data.games.map(game => {
                 const statusIcon = game.isGameOver ? '✓' : '⏱️';
                 const statusText = game.isGameOver
                     ? (game.winner ? `Winner: ${formatPlayerName(game.winner)}` : 'Draw')
@@ -540,6 +557,7 @@ async function updateActiveGames() {
                     </div>
                 `;
             }).join('');
+            setHTML(activeGamesDiv, newHtml);
         }
     } catch (error) {
         console.error('Error updating active games:', error);
