@@ -529,19 +529,30 @@ class ComputerPlayer {
         // Use SimpleEngine only for level -1 and 0 (or if forced)
         // Fix: Don't let SimpleEngine block Stockfish for higher levels just because it exists
         if (this.simpleEngine && (this.level <= 0)) {
-            // Calculate think delay: 2x the consistency time formula
-            const divisor = (variant === 'kungfu') ? 1000 : 250;
-            const thinkDelay = Math.max(100, Math.floor(remainingTimeMs / divisor) * 2);
+            if (this.level === -1) {
+                // Level -1: keep original proportional delay + 1 extra second
+                const divisor = (variant === 'kungfu') ? 1000 : 250;
+                const thinkDelay = Math.max(100, Math.floor(remainingTimeMs / divisor) * 2) + 1000;
 
-            console.log(`[COMPUTER] SimpleEngine level ${this.level}, thinking for ${thinkDelay}ms`);
+                console.log(`[COMPUTER] Level -1 (random), thinking for ${thinkDelay}ms (base + 1s bonus)`);
 
-            setTimeout(() => {
-                if (this.level === -1) {
+                setTimeout(() => {
                     this.simpleEngine.getRandomMove(fen, callback);
-                } else {
-                    this.simpleEngine.getMinimaxMove(fen, callback, 2);
-                }
-            }, thinkDelay);
+                }, thinkDelay);
+            } else {
+                // Level 0: time the actual minimax calculation, then wait 5000x that duration
+                const calcStart = Date.now();
+                this.simpleEngine.getMinimaxMove(fen, (result) => {
+                    const calcTime = Date.now() - calcStart;
+                    const waitTime = calcTime * 5000;
+
+                    console.log(`[COMPUTER] Level 0 (minimax), calc took ${calcTime}ms, waiting ${waitTime}ms (5000x)`);
+
+                    setTimeout(() => {
+                        callback(result);
+                    }, waitTime);
+                }, 2);
+            }
             return;
         }
 

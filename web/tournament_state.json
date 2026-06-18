@@ -1,5 +1,5 @@
 {
-  "timestamp": 1781816382742,
+  "timestamp": 1781816392770,
   "tournament": {
     "players": [
       {
@@ -87,9 +87,9 @@
       "timeStages": [],
       "startTime": 1781815638254,
       "isWhiteTurn": false,
-      "whiteTimeRemaining": 231429,
-      "blackTimeRemaining": 231106,
-      "lastMoveTime": 1781816380791,
+      "whiteTimeRemaining": 231892,
+      "blackTimeRemaining": 231479,
+      "lastMoveTime": 1781816389955,
       "board": [
         [
           null,
@@ -112,7 +112,12 @@
           null,
           null,
           null,
-          null,
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          },
           null,
           null
         ],
@@ -140,16 +145,6 @@
             "symbol": "R",
             "unicode": "♖"
           },
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
           null,
           null,
           null,
@@ -166,6 +161,16 @@
           },
           null,
           null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
           {
             "type": "pawn",
             "isWhite": true,
@@ -182,12 +187,7 @@
           null,
           null,
           null,
-          {
-            "type": "rook",
-            "isWhite": true,
-            "symbol": "R",
-            "unicode": "♖"
-          },
+          null,
           null,
           null
         ],
@@ -1565,6 +1565,20 @@
           "endX": 1,
           "endY": 1,
           "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu0"
         }
       ],
       "capturedByWhite": [
@@ -1691,11 +1705,11 @@
       "blackKingsideRookMoved": true,
       "blackQueensideRookMoved": true,
       "lastMove": {
-        "startX": 1,
-        "startY": 2,
+        "startX": 6,
+        "startY": 5,
         "endX": 1,
-        "endY": 1,
-        "piece": "king"
+        "endY": 5,
+        "piece": "rook"
       },
       "computerLevels": {
         "white": 0,
@@ -2000,12 +2014,28 @@
       "incrementMs": 0,
       "timeStages": [],
       "startTime": 1781816379407,
-      "isWhiteTurn": false,
-      "whiteTimeRemaining": 58862,
-      "blackTimeRemaining": 59197,
-      "lastMoveTime": 1781816381405,
+      "isWhiteTurn": true,
+      "whiteTimeRemaining": 53997,
+      "blackTimeRemaining": 53250,
+      "lastMoveTime": 1781816392217,
       "board": [
         [
+          null,
+          null,
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
           null,
           {
             "type": "king",
@@ -2015,39 +2045,13 @@
           },
           null,
           null,
-          null,
-          null,
-          null,
-          {
-            "type": "rook",
-            "isWhite": true,
-            "symbol": "R",
-            "unicode": "♖"
-          }
-        ],
-        [
-          null,
-          null,
-          {
-            "type": "rook",
-            "isWhite": false,
-            "symbol": "r",
-            "unicode": "♜"
-          },
-          null,
-          null,
           {
             "type": "pawn",
             "isWhite": true,
             "symbol": "P",
             "unicode": "♙"
           },
-          {
-            "type": "rook",
-            "isWhite": true,
-            "symbol": "R",
-            "unicode": "♖"
-          },
+          null,
           null
         ],
         [
@@ -2059,12 +2063,7 @@
             "symbol": "p",
             "unicode": "♟"
           },
-          {
-            "type": "knight",
-            "isWhite": false,
-            "symbol": "n",
-            "unicode": "♞"
-          },
+          null,
           {
             "type": "pawn",
             "isWhite": true,
@@ -2157,7 +2156,12 @@
             "unicode": "♙"
           },
           null,
-          null,
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          },
           null
         ]
       ],
@@ -2686,6 +2690,41 @@
           "endX": 0,
           "endY": 7,
           "player": "cpu2"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu1"
+        },
+        {
+          "startX": 0,
+          "startY": 7,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu2"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu1"
+        },
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 7,
+          "endY": 6,
+          "player": "cpu2"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu1"
         }
       ],
       "capturedByWhite": [
@@ -2724,6 +2763,10 @@
         {
           "type": "queen",
           "isWhite": false
+        },
+        {
+          "type": "rook",
+          "isWhite": false
         }
       ],
       "capturedByBlack": [
@@ -2758,13 +2801,17 @@
         {
           "type": "pawn",
           "isWhite": true
+        },
+        {
+          "type": "rook",
+          "isWhite": true
         }
       ],
       "whitePlayerType": "computer",
       "blackPlayerType": "computer",
       "isComputerThinking": {
-        "white": false,
-        "black": true
+        "white": true,
+        "black": false
       },
       "isGameOver": false,
       "winner": null,
@@ -2776,11 +2823,11 @@
       "blackKingsideRookMoved": true,
       "blackQueensideRookMoved": true,
       "lastMove": {
-        "startX": 6,
-        "startY": 7,
-        "endX": 0,
-        "endY": 7,
-        "piece": "rook"
+        "startX": 0,
+        "startY": 1,
+        "endX": 1,
+        "endY": 2,
+        "piece": "king"
       },
       "computerLevels": {
         "white": 2,
