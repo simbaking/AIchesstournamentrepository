@@ -169,7 +169,7 @@
     justify-content: center;
     font-size: 3.5rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: filter 0.1s ease;
     user-select: none;
     position: relative;
     /* Required for cooldown overlay */
@@ -683,17 +683,11 @@
         margin: 0;
         background: var(--primary);
         min-height: 100vh;
-        max-height: 100vh;
-        /* Lock height */
         display: flex;
         flex-direction: column;
-        overflow: hidden;
-        /* Prevent vertical scrolling */
-        position: fixed;
-        /* Lock entire page */
+        overflow-y: auto;
+        /* Allow vertical scrolling so action bar is reachable */
         width: 100%;
-        touch-action: none;
-        /* Disable browser touch scrolling */
     }
 
     .container {
@@ -915,7 +909,7 @@
         font-size: calc(var(--square-size) * 0.7);
     }
 
-    /* Mobile Bottom Action Bar */
+    /* Mobile Bottom Action Bar — in normal document flow (scrollable) */
     .mobile-action-bar {
         display: flex;
         justify-content: space-around;
@@ -924,11 +918,10 @@
         /* Solid dark brown, more opaque than var(--bg-dark) */
         padding: 0.75rem 0;
         border-top: 2px solid var(--primary);
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
+        /* Position in normal flow so user can scroll to it */
+        position: relative;
+        width: 100%;
+        z-index: 10;
     }
 
     .action-btn {
@@ -950,11 +943,6 @@
     .action-btn:active {
         /* Use active instead of hover for mobile */
         color: var(--gold);
-    }
-
-    /* Add bottom padding so content isn't hidden behind action bar */
-    .container {
-        padding-bottom: 60px;
     }
 
     /* Position messages in flow (push content down) */

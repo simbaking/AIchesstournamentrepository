@@ -85,6 +85,28 @@ class Player {
     toString() {
         return `${this.name} (Score: ${this.getFormattedScore()}, ELO: ${this.elo})`;
     }
+    toJSON() {
+        return {
+            name: this.name,
+            score: this.score,
+            isComputer: this.isComputer,
+            level: this.level,
+            busy: this.busy,
+            activeGameId: this.activeGameId,
+            browserId: this.browserId,
+            clientIP: this.clientIP,
+            elo: this.elo
+        };
+    }
+
+    static fromJSON(data) {
+        const player = new Player(data.name, data.isComputer, data.level, data.browserId, data.clientIP);
+        player.score = data.score;
+        player.busy = data.busy;
+        player.activeGameId = data.activeGameId;
+        player.elo = data.elo;
+        return player;
+    }
 }
 
 module.exports = Player;

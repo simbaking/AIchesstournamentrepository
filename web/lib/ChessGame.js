@@ -248,7 +248,7 @@ class Board {
 
 // Chess game manager
 class ChessGame {
-    constructor(player1Name, player2Name, gameId, timeControlMinutes = 10, onGameOver = null, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random', cooldownSeconds = 10) {
+    constructor(player1Name, player2Name, gameId, timeControlMinutes = 10, onGameOver = null, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random', cooldownSeconds = 10, player1Elo = 1200, player2Elo = 1200) {
         this.gameId = gameId;
         this.player1 = player1Name; // White
         this.player2 = player2Name; // Black
@@ -260,8 +260,8 @@ class ChessGame {
         this.board = new Board();
 
         // ELO ratings for decision making
-        this.player1Elo = arguments[10] || 1200; // Passed as 11th arg or default
-        this.player2Elo = arguments[11] || 1200; // Passed as 12th arg or default
+        this.player1Elo = player1Elo;
+        this.player2Elo = player2Elo;
 
         console.log(`[ChessGame] Constructor called with variant: "${variant}", startPos: "${startPos}", cooldown: ${cooldownSeconds}s`);
 
@@ -280,6 +280,7 @@ class ChessGame {
         this.startTime = Date.now();
         this.isGameOver = false;
         this.winner = null;
+        this.termination = null; // 'checkmate', 'stalemate', 'draw', 'resignation', 'timeout'
         this.moveHistory = [];
         this.onGameOver = onGameOver;
 
@@ -299,6 +300,10 @@ class ChessGame {
         this.computerPlayers = {
             white: null,
             black: null
+        };
+        this.isComputerThinking = {
+            white: false,
+            black: false
         };
 
         // Draw offer state
@@ -577,32 +582,23 @@ class ChessGame {
         const piece = this.board.getPiece(startX, startY);
         if (!piece || piece.type !== 'king') return false;
 
+        // Must be on the same rank
+        if (startY !== endY) return false;
+
         if (this.variant === 'standard') {
-            return Math.abs(endX - startX) === 2 && startY === endY;
+            return Math.abs(endX - startX) === 2;
         } else {
             // In 960, castling is indicated by King capturing own Rook
-            // OR moving to the G/C file if standard UI logic handles it.
-            // Let's support "King takes Rook" as the universal 960 castling input method.
             const target = this.board.getPiece(endX, endY);
             if (target && target.type === 'rook' && target.isWhite === piece.isWhite) {
                 return true;
             }
             // Also support standard-like click behavior: moving King to G or C file
-            // if it looks like a castling attempt (2 squares or onto destination).
-            // But standard 2-square might not apply if King starts on b1 and goes to c1.
-
-            // For now, let's assume the UI sends the move "King to destination square (g1 or c1)".
-            // BUT, if king starts on f1, moving to g1 is a 1-square move (normal king move).
-            // This ambiguity is tricky. The standard way in UCI is "King takes Rook" or "King to Castling Target".
-
-            // Let's handle: King moves to c-file or g-file (standard targets)
-            // AND the move is > 1 distance OR it moves over a rook? No.
-
-            // Simplest internal logic: is dest G1/G8 or C1/C8 and this is a king?
-            // If so, and valid, treat as castle.
+            // BUT only if it's more than 1 square away (to avoid treating normal
+            // king moves like f1->g1 as castling)
             const isKingsideDest = (endX === 6);
             const isQueensideDest = (endX === 2);
-            if (isKingsideDest || isQueensideDest) return true;
+            if ((isKingsideDest || isQueensideDest) && Math.abs(endX - startX) > 1) return true;
 
             return false;
         }
@@ -611,17 +607,13 @@ class ChessGame {
     // Check if castling is legal
     canCastle(isWhite, isKingside) {
         if (this.variant === 'freestyle') {
-            // ... (standard tracking check)
             if (isWhite && this.whiteKingMoved) return false;
             if (!isWhite && this.blackKingMoved) return false;
 
             const files = isWhite ? this.whiteRookFiles : this.blackRookFiles;
             const rookFile = isKingside ? files.ks : files.qs;
-            if (rookFile === -1) return false; // Should not happen
+            if (rookFile === -1) return false;
 
-            // We need to track if THAT specific rook moved.
-            // Current boolean flags are a bit simple, but let's reuse them assuming
-            // "kingside rook" means "the rook to the right of the king".
             if (isWhite && isKingside && this.whiteKingsideRookMoved) return false;
             if (isWhite && !isKingside && this.whiteQueensideRookMoved) return false;
             if (!isWhite && isKingside && this.blackKingsideRookMoved) return false;
@@ -630,41 +622,25 @@ class ChessGame {
             const rank = isWhite ? 7 : 0;
             const kingFile = this.getKingFile(isWhite, rank);
 
-            // 960 Castling Logic
-            // 1. King and Rook have not moved. (Checked)
-            // 2. Path between King and Rook is clear (except King and Rook).
-            // 3. Squares King crosses (and start/end) are not under attack.
-
-            // Actual Logic:
-            // Target King Pos: G-file (6) for KS, C-file (2) for QS.
-            // Target Rook Pos: F-file (5) for KS, D-file (3) for QS.
-
+            // 960 Castling destinations
             const destKingX = isKingside ? 6 : 2;
             const destRookX = isKingside ? 5 : 3;
 
-            // Range 1: Between King and Rook (exclusive) must be clear.
-            const startX = Math.min(kingFile, rookFile);
-            const endX = Math.max(kingFile, rookFile);
-            for (let i = startX + 1; i < endX; i++) {
-                if (this.board.getPiece(i, rank)) return false;
+            // ALL squares that the king and rook travel through (and land on)
+            // must be empty, except for the king and rook themselves.
+            // This covers: king start..dest, rook start..dest, and everything in between.
+            const allMin = Math.min(kingFile, rookFile, destKingX, destRookX);
+            const allMax = Math.max(kingFile, rookFile, destKingX, destRookX);
+            for (let i = allMin; i <= allMax; i++) {
+                if (i === kingFile || i === rookFile) continue; // King and rook are expected
+                const p = this.board.getPiece(i, rank);
+                if (p) return false; // Any other piece blocks castling
             }
 
-            // Range 2: Destination squares must be clear (or occupied by K/R participating).
-            // Destination King
-            let p = this.board.getPiece(destKingX, rank);
-            if (p && p.type !== 'king' && p.type !== 'rook') return false;
-            // Destination Rook
-            p = this.board.getPiece(destRookX, rank);
-            if (p && p.type !== 'king' && p.type !== 'rook') return false;
-
-            // Range 3: King must not be in check, pass through check, or end in check.
-            // Squares to check: KingStart -> KingDest (inclusive)
+            // King must not be in check, pass through check, or end in check.
             const checkStart = Math.min(kingFile, destKingX);
             const checkEnd = Math.max(kingFile, destKingX);
-
-            // Note: In 960, checks apply to the squares the king TRAVELS.
             for (let i = checkStart; i <= checkEnd; i++) {
-                // Simpler: Is start in check?
                 if (this.isSquareAttacked(i, rank, !isWhite)) return false;
             }
 
@@ -776,26 +752,107 @@ class ChessGame {
         return { explodedPieces, kingExploded };
     }
 
-    // Check if a capture move would explode the player's own king
-    wouldExplodeOwnKing(startX, startY, endX, endY) {
-        const piece = this.board.getPiece(startX, startY);
-        if (!piece) return false;
 
-        const targetPiece = this.board.getPiece(endX, endY);
-        if (!targetPiece) return false; // Not a capture, no explosion
+    toJSON() {
+        return {
+            gameId: this.gameId,
+            player1: this.player1,
+            player2: this.player2,
+            player1Elo: this.player1Elo,
+            player2Elo: this.player2Elo,
+            variant: this.variant,
+            startPos: this.startPos,
+            startPosId: this.startPosId,
+            cooldownMs: this.cooldownMs,
+            timeControlMs: this.timeControlMs,
+            incrementMs: this.incrementMs,
+            timeStages: this.timeStages,
+            startTime: this.startTime,
+            isWhiteTurn: this.isWhiteTurn,
+            whiteTimeRemaining: this.whiteTimeRemaining,
+            blackTimeRemaining: this.blackTimeRemaining,
+            lastMoveTime: this.lastMoveTime,
+            board: this.board.toJSON(),
+            moveHistory: this.moveHistory, // Simplified: just arrays? or do we need special handling? It's array of objects/strings.
+            capturedByWhite: this.capturedByWhite, // Objects?
+            capturedByBlack: this.capturedByBlack,
+            whitePlayerType: this.whitePlayerType,
+            blackPlayerType: this.blackPlayerType,
+            isComputerThinking: this.isComputerThinking,
+            isGameOver: this.isGameOver,
+            winner: this.winner,
+            termination: this.termination,
+            whiteKingMoved: this.whiteKingMoved,
+            blackKingMoved: this.blackKingMoved,
+            whiteKingsideRookMoved: this.whiteKingsideRookMoved,
+            whiteQueensideRookMoved: this.whiteQueensideRookMoved,
+            blackKingsideRookMoved: this.blackKingsideRookMoved,
+            blackQueensideRookMoved: this.blackQueensideRookMoved,
+            lastMove: this.lastMove,
 
-        // Check if own king is adjacent to the explosion site
-        const adjacent = this.getAdjacentSquares(endX, endY);
-        for (const sq of adjacent) {
-            const adjPiece = this.board.getPiece(sq.x, sq.y);
-            if (adjPiece && adjPiece.type === 'king' && adjPiece.isWhite === piece.isWhite) {
-                // Own king would be caught in blast
-                return true;
+            // Save computer levels
+            computerLevels: {
+                white: this.computerPlayers.white ? this.computerPlayers.white.level : null,
+                black: this.computerPlayers.black ? this.computerPlayers.black.level : null
             }
+        };
+    }
+
+    static fromJSON(data, onGameOver) {
+        const cooldownSeconds = data.cooldownMs / 1000;
+        const timeControlMinutes = data.timeControlMs / 60 / 1000;
+        const incrementSeconds = data.incrementMs / 1000;
+
+        const game = new ChessGame(
+            data.player1,
+            data.player2,
+            data.gameId,
+            timeControlMinutes,
+            onGameOver,
+            incrementSeconds,
+            data.timeStages,
+            data.variant,
+            data.startPos,
+            cooldownSeconds,
+            data.player1Elo,
+            data.player2Elo
+        );
+
+        game.startPosId = data.startPosId;
+        game.startTime = data.startTime;
+        game.isWhiteTurn = data.isWhiteTurn;
+        game.whiteTimeRemaining = data.whiteTimeRemaining;
+        game.blackTimeRemaining = data.blackTimeRemaining;
+        game.lastMoveTime = Date.now();
+
+        game.board = Board.fromJSON(data.board);
+        game.moveHistory = data.moveHistory;
+        game.capturedByWhite = data.capturedByWhite;
+        game.capturedByBlack = data.capturedByBlack;
+        game.whitePlayerType = data.whitePlayerType;
+        game.blackPlayerType = data.blackPlayerType;
+        game.isComputerThinking = data.isComputerThinking || { white: false, black: false };
+        game.isGameOver = data.isGameOver;
+        game.winner = data.winner;
+        game.termination = data.termination;
+        game.whiteKingMoved = data.whiteKingMoved;
+        game.blackKingMoved = data.blackKingMoved;
+        game.whiteKingsideRookMoved = data.whiteKingsideRookMoved;
+        game.whiteQueensideRookMoved = data.whiteQueensideRookMoved;
+        game.blackKingsideRookMoved = data.blackKingsideRookMoved;
+        game.blackQueensideRookMoved = data.blackQueensideRookMoved;
+        game.lastMove = data.lastMove;
+
+        if (data.whitePlayerType === 'computer' && data.computerLevels && data.computerLevels.white !== null) {
+            game.setPlayerType('white', 'computer', data.computerLevels.white);
+        }
+        if (data.blackPlayerType === 'computer' && data.computerLevels && data.computerLevels.black !== null) {
+            game.setPlayerType('black', 'computer', data.computerLevels.black);
         }
 
-        return false;
+        return game;
     }
+
 
     // Check if a king can capture in atomic (answer: never)
     isAtomicKingCapture(startX, startY, endX, endY) {
@@ -843,9 +900,10 @@ class ChessGame {
         }
 
         // 3. Move Legality
+        let isCastling = false;
         if (!piece.isValidMove(this.board, fromFile, fromRank, toFile, toRank)) {
             const isEnPassant = this.isEnPassantMove(fromFile, fromRank, toFile, toRank);
-            const isCastling = this.isCastlingMove(fromFile, fromRank, toFile, toRank);
+            isCastling = this.isCastlingMove(fromFile, fromRank, toFile, toRank);
 
             // Check En Passant and Castling
             if (!isEnPassant && !isCastling) {
@@ -880,12 +938,14 @@ class ChessGame {
             this.board.movePiece(fromFile, fromRank, toFile, toRank);
             this.isGameOver = true;
             this.winner = isWhite ? this.player1 : this.player2;
+            this.termination = 'king_capture';
             this.onGameOver({ winner: this.winner, reason: 'king_capture' });
             return { success: true, isGameOver: true, winner: this.winner };
         }
 
-        // Standard execution
-        const moveResult = this.executeMove(fromFile, fromRank, toFile, toRank, promotionPiece);
+        // Standard execution — pass validated castling side to executeMove
+        const castlingSide = isCastling ? (toFile > fromFile ? 'kingside' : 'queenside') : null;
+        const moveResult = this.executeMove(fromFile, fromRank, toFile, toRank, promotionPiece, castlingSide);
 
         // Check if executeMove failed (e.g., move leaves king in check)
         if (!moveResult.success) {
@@ -991,6 +1051,7 @@ class ChessGame {
         if (this.isCheckmate(nextPlayerIsWhite)) {
             this.isGameOver = true;
             this.winner = nextPlayerIsWhite ? this.player2 : this.player1;
+            this.termination = 'checkmate';
             console.log(`Checkmate by drop! ${this.winner} wins!`);
             if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'checkmate' });
             this.cleanup();
@@ -1000,6 +1061,7 @@ class ChessGame {
         if (this.isStalemate(nextPlayerIsWhite)) {
             this.isGameOver = true;
             this.winner = null;
+            this.termination = 'stalemate';
             console.log('Stalemate after drop! Game is a draw.');
             if (this.onGameOver) this.onGameOver({ winner: null, reason: 'stalemate' });
             this.cleanup();
@@ -1092,6 +1154,7 @@ class ChessGame {
                 this.whiteTimeRemaining = 0;
                 this.isGameOver = true;
                 this.winner = this.player2; // Black wins
+                this.termination = 'timeout';
                 console.log('Server detected White timeout');
                 if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'timeout' });
                 this.cleanup();
@@ -1102,6 +1165,7 @@ class ChessGame {
                 this.blackTimeRemaining = 0;
                 this.isGameOver = true;
                 this.winner = this.player1; // White wins
+                this.termination = 'timeout';
                 console.log('Server detected Black timeout');
                 if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'timeout' });
                 this.cleanup();
@@ -1115,33 +1179,29 @@ class ChessGame {
         return this.isWhiteTurn ? this.player1 : this.player2;
     }
 
-    executeMove(startX, startY, endX, endY, promotionPiece = 'queen') {
+    executeMove(startX, startY, endX, endY, promotionPiece = 'queen', castlingSide = null) {
         const piece = this.board.getPiece(startX, startY);
         // Helper variables for castling logic
-        const isKingside = endX > startX;
         let destKingX = endX;
         let rank = startY;
         let rookStartX, destRookX;
 
-        // Check if this is a castling move
-        if (this.isCastlingMove(startX, startY, endX, endY)) {
-            // Determine Castling Direction and Rooks
-            // In 960 (and standard 'takes rook'), endX might be the rook position.
-            // We need to trust the direction based on relation between King and clicked square.
-            const isKingside = endX > startX || (endX === 6 && startX === 4); // Basic checks
+        // Only execute as castling if makeMove validated it and passed the side
+        if (castlingSide) {
+            const isCastlingKingside = castlingSide === 'kingside';
 
             if (this.variant === 'freestyle') {
                 const files = piece.isWhite ? this.whiteRookFiles : this.blackRookFiles;
-                rookStartX = isKingside ? files.ks : files.qs;
+                rookStartX = isCastlingKingside ? files.ks : files.qs;
             } else {
-                rookStartX = isKingside ? 7 : 0;
+                rookStartX = isCastlingKingside ? 7 : 0;
             }
 
             // Define Standard 960 Castling Targets
             // King -> G (6) / C (2)
             // Rook -> F (5) / D (3)
-            destKingX = isKingside ? 6 : 2;
-            destRookX = isKingside ? 5 : 3;
+            destKingX = isCastlingKingside ? 6 : 2;
+            destRookX = isCastlingKingside ? 5 : 3;
 
             // Execute Move Safely:
             // 1. Get Rook
@@ -1162,7 +1222,8 @@ class ChessGame {
                 endX: destKingX,
                 endY: rank,
                 player: this.getCurrentPlayer(),
-                castling: isKingside ? 'kingside' : 'queenside'
+                castling: isCastlingKingside ? 'kingside' : 'queenside',
+                rookStartX: rookStartX
             });
 
             // Mark king as moved
@@ -1266,6 +1327,7 @@ class ChessGame {
                         const winnerIsWhite = explosion.kingExploded === 'black';
                         this.isGameOver = true;
                         this.winner = winnerIsWhite ? this.player1 : this.player2;
+                        this.termination = 'atomic_explosion';
                         console.log(`[ATOMIC] ${explosion.kingExploded} king exploded! ${this.winner} wins!`);
 
                         // Record move and trigger game over
@@ -1324,7 +1386,13 @@ class ChessGame {
                         }
                     }
 
-                    this.moveHistory.push({ startX, startY, endX, endY, player: this.getCurrentPlayer() });
+                    // Include promotionPiece if this was a promotion
+                    const historyEntry = { startX, startY, endX, endY, player: this.getCurrentPlayer() };
+                    if (piece && piece.type !== 'pawn' && this.board.getPiece(endX, endY)?.wasPromoted) {
+                        // Piece was just promoted by board.movePiece - record what it became
+                        historyEntry.promotionPiece = this.board.getPiece(endX, endY).type;
+                    }
+                    this.moveHistory.push(historyEntry);
                 }
             }
 
@@ -1400,6 +1468,7 @@ class ChessGame {
         if (this.variant === 'kingofthehill' && this.isKingOnHill(playerWhoMoved)) {
             this.isGameOver = true;
             this.winner = playerWhoMoved ? this.player1 : this.player2;
+            this.termination = 'koth';
             console.log(`King of the Hill! ${this.winner} wins by reaching the center!`);
             if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'koth' });
             this.cleanup();
@@ -1412,6 +1481,7 @@ class ChessGame {
         if (this.isCheckmate(nextPlayerIsWhite)) {
             this.isGameOver = true;
             this.winner = nextPlayerIsWhite ? this.player2 : this.player1;
+            this.termination = 'checkmate';
             console.log(`Checkmate! ${this.winner} wins!`);
             if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'checkmate' });
             this.cleanup();
@@ -1421,6 +1491,7 @@ class ChessGame {
         if (this.isStalemate(nextPlayerIsWhite)) {
             this.isGameOver = true;
             this.winner = null; // Draw
+            this.termination = 'stalemate';
             console.log('Stalemate! Game is a draw.');
             if (this.onGameOver) this.onGameOver({ winner: null, reason: 'stalemate' });
             this.cleanup();
@@ -1445,6 +1516,17 @@ class ChessGame {
     scheduleComputerMove(delayOverride = null, retryCount = 0) {
         if (this.isGameOver) return;
 
+        const colorName = this.isWhiteTurn ? 'white' : 'black';
+
+        // Bug 4 fix: Cap retries to prevent infinite silent hang
+        const MAX_RETRIES = 50;
+        if (retryCount >= MAX_RETRIES) {
+            console.error(`[COMPUTER] Max retries (${MAX_RETRIES}) exceeded for ${colorName} — resigning to prevent freeze`);
+            if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
+            this.resign(colorName);
+            return;
+        }
+
         const nextPlayerType = this.isWhiteTurn ? this.whitePlayerType : this.blackPlayerType;
         const computer = this.isWhiteTurn ? this.computerPlayers.white : this.computerPlayers.black;
 
@@ -1452,6 +1534,16 @@ class ChessGame {
             console.log(`[DEBUG_MOVE] Triggering computer move! Retry: ${retryCount}`);
             const fen = this.board.toFEN(this.isWhiteTurn);
             const isComputerWhite = this.isWhiteTurn;
+
+            // Use lock to prevent concurrent computer moves for the same player
+            if (retryCount === 0) {
+                if (this.isComputerThinking && this.isComputerThinking[colorName]) {
+                    console.warn(`[COMPUTER] scheduleComputerMove ignored: ${colorName} is already thinking.`);
+                    return;
+                }
+                if (!this.isComputerThinking) this.isComputerThinking = { white: false, black: false };
+                this.isComputerThinking[colorName] = true;
+            }
 
             // Calculate delay
             let finalDelay = delayOverride;
@@ -1508,20 +1600,40 @@ class ChessGame {
                             selectedMove = shuffled[0];
                         }
                         const bestMove = selectedMove.move;
-                        console.log(`[COMPUTER] Level ${computer.level}: Selected move ${bestMove}`);
 
-                        const fromFile = bestMove.charCodeAt(0) - 97;
-                        const fromRank = 8 - parseInt(bestMove[1]);
-                        const toFile = bestMove.charCodeAt(2) - 97;
-                        const toRank = 8 - parseInt(bestMove[3]);
+                        // Add artificial thinking delay: 5x the consistency time that
+                        // higher-level computers use for their thinking threshold
+                        // Formula: max(50, floor(remainingTime / divisor)) * 5
+                        const divisor = (this.variant === 'kungfu') ? 1000 : 250;
+                        const consistencyTime = Math.max(50, Math.floor(currentTimeRemaining / divisor));
+                        const thinkDelay = consistencyTime * 5;
+                        console.log(`[COMPUTER] Level ${computer.level}: Selected move ${bestMove}, thinking for ${thinkDelay}ms (consistency=${consistencyTime}ms × 5)`);
 
-                        const computerName = this.isWhiteTurn ? this.player1 : this.player2;
-                        const moveResult = this.makeMove(fromFile, fromRank, toFile, toRank, computerName);
+                        setTimeout(() => {
+                            if (this.isGameOver) return;
 
-                        if (!moveResult.success) {
-                            console.error(`[COMPUTER] Level ${computer.level}: Move ${bestMove} failed unexpectedly: ${moveResult.message}`);
-                            this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
-                        }
+                            // Bug 5 fix: Verify turn hasn't changed during delay
+                            if (this.isWhiteTurn !== isComputerWhite) {
+                                console.log(`[COMPUTER] Turn changed during think delay — aborting stale move`);
+                                if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
+                                return;
+                            }
+
+                            const fromFile = bestMove.charCodeAt(0) - 97;
+                            const fromRank = 8 - parseInt(bestMove[1]);
+                            const toFile = bestMove.charCodeAt(2) - 97;
+                            const toRank = 8 - parseInt(bestMove[3]);
+
+                            const computerName = this.isWhiteTurn ? this.player1 : this.player2;
+                            const moveResult = this.makeMove(fromFile, fromRank, toFile, toRank, computerName);
+
+                            if (moveResult.success) {
+                                if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
+                            } else {
+                                console.error(`[COMPUTER] Level ${computer.level}: Move ${bestMove} failed unexpectedly: ${moveResult.error || moveResult.message}`);
+                                this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
+                            }
+                        }, thinkDelay);
                         return;
                     }
 
@@ -1541,7 +1653,9 @@ class ChessGame {
                                 console.log(`[COMPUTER] Crazyhouse drop: ${result.pieceType} to (${result.x}, ${result.y})`);
                                 const dropResult = this.dropPiece(result.pieceType, result.x, result.y, computerName);
 
-                                if (!dropResult.success) {
+                                if (dropResult.success) {
+                                    if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
+                                } else {
                                     console.error(`[COMPUTER] Drop failed: ${dropResult.message}. Retrying...`);
                                     this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
                                 }
@@ -1550,6 +1664,21 @@ class ChessGame {
 
                             const bestMove = result.move;
                             const evaluation = result.evaluation;
+
+                            // Handle stockfish errors / no moves found
+                            if (!bestMove || bestMove === '(none)') {
+                                console.error(`[COMPUTER] Engine returned ${bestMove ? '(none)' : 'null'} for ${colorName} - resigning`);
+                                if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
+                                this.resign(colorName);
+                                return;
+                            }
+
+                            // Bug 5 fix: Verify turn hasn't changed during engine thinking
+                            if (this.isWhiteTurn !== isComputerWhite) {
+                                console.log(`[COMPUTER] Turn changed during engine thinking — aborting stale move`);
+                                if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
+                                return;
+                            }
 
                             // Decision logic (Resign/Draw) - only on first try to avoid spam loop
                             if (retryCount === 0) {
@@ -1562,19 +1691,13 @@ class ChessGame {
 
                                 if (this.shouldResign(computerEval, computer.level)) {
                                     console.log(`${colorName} computer resigning (eval: ${computerEval})`);
+                                    if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
                                     this.resign(colorName);
                                     return;
                                 } else if (this.shouldOfferDraw(computerEval, computer.level, myElo, oppElo, myTime, oppTime, this.moveHistory.length / 2)) {
                                     console.log(`${colorName} computer offering draw (eval: ${computerEval})`);
                                     this.offerDraw(colorName);
                                 }
-                            }
-
-                            if (!bestMove) {
-                                console.error('[COMPUTER] Failed to find a move! Retrying...');
-                                // Keep retrying with increasing delay
-                                this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
-                                return;
                             }
 
                             // Parse and execute move
@@ -1586,14 +1709,18 @@ class ChessGame {
                             const computerName = this.isWhiteTurn ? this.player1 : this.player2;
                             const moveResult = this.makeMove(fromFile, fromRank, toFile, toRank, computerName);
 
-                            if (!moveResult.success) {
-                                console.error(`[COMPUTER] Level ${computer.level}: Move ${bestMove} failed unexpectedly: ${moveResult.message}`);
+                            if (moveResult.success) {
+                                if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
+                            } else {
+                                console.error(`[COMPUTER] Level ${computer.level}: Move ${bestMove} failed unexpectedly: ${moveResult.error || moveResult.message}`);
                                 this.scheduleComputerMove(200 * Math.min(retryCount + 1, 10), retryCount + 1);
                             }
                             return;
 
                         } catch (err) {
                             console.error('Error processing computer move:', err);
+                            // Bug 6 fix: Retry on catch instead of silently hanging
+                            this.scheduleComputerMove(1000, retryCount + 1);
                         }
                     };
 
@@ -1604,6 +1731,8 @@ class ChessGame {
                     }
                 } catch (outerErr) {
                     console.error('[COMPUTER] Critical error in scheduleComputerMove:', outerErr);
+                    // Bug 6 fix: Retry on critical error instead of silently hanging
+                    this.scheduleComputerMove(1000, retryCount + 1);
                 }
             }, finalDelay);
         } else {
@@ -1711,6 +1840,26 @@ class ChessGame {
                     }
                 }
             }
+        }
+
+        // Add castling moves (not covered by isValidMove which only allows 1-square king moves)
+        const kingRank = isWhite ? 7 : 0;
+        // Kingside
+        if (this.canCastle(isWhite, true)) {
+            const from = String.fromCharCode(97 + 4) + (8 - kingRank); // e1 or e8 (standard)
+            const to = String.fromCharCode(97 + 6) + (8 - kingRank);   // g1 or g8
+            // Find king's actual position for freestyle
+            const kingFile = this.getKingFile(isWhite, kingRank);
+            const fromActual = String.fromCharCode(97 + kingFile) + (8 - kingRank);
+            const toActual = String.fromCharCode(97 + 6) + (8 - kingRank);
+            moves.push({ from: fromActual, to: toActual, move: fromActual + toActual });
+        }
+        // Queenside
+        if (this.canCastle(isWhite, false)) {
+            const kingFile = this.getKingFile(isWhite, kingRank);
+            const fromActual = String.fromCharCode(97 + kingFile) + (8 - kingRank);
+            const toActual = String.fromCharCode(97 + 2) + (8 - kingRank);
+            moves.push({ from: fromActual, to: toActual, move: fromActual + toActual });
         }
 
         return moves;
@@ -1927,30 +2076,6 @@ class ChessGame {
         return moves;
     }
 
-    checkTimeout() {
-        if (this.isGameOver) return;
-
-        const now = Date.now();
-        const timeSpent = now - this.lastMoveTime;
-
-        if (this.isWhiteTurn) {
-            if (this.whiteTimeRemaining - timeSpent <= 0) {
-                this.isGameOver = true;
-                this.winner = this.player2;
-                this.whiteTimeRemaining = 0;
-                if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'timeout' });
-            }
-        } else {
-            if (this.blackTimeRemaining - timeSpent <= 0) {
-                this.isGameOver = true;
-                this.winner = this.player1;
-                this.blackTimeRemaining = 0;
-                if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'timeout' });
-            }
-        }
-        return this.isGameOver;
-    }
-
     getDuration() {
         return Date.now() - this.startTime;
     }
@@ -2008,6 +2133,7 @@ class ChessGame {
             currentPlayer: this.getCurrentPlayer(),
             isGameOver: this.isGameOver,
             winner: this.winner,
+            termination: this.termination,
             duration: this.getDuration(),
             moveHistory: this.moveHistory,
             whiteTimeRemaining: Math.max(0, currentWhiteTime),
@@ -2046,6 +2172,7 @@ class ChessGame {
         }
         this.isGameOver = true;
         this.winner = 'draw';
+        this.termination = 'draw_agreement';
         console.log('Draw accepted');
         if (this.onGameOver) {
             this.onGameOver({ winner: null, reason: 'draw_agreement' });
@@ -2069,6 +2196,7 @@ class ChessGame {
         }
         this.isGameOver = true;
         this.winner = color === 'white' ? this.player2 : this.player1;
+        this.termination = 'resignation';
         console.log(`${color} resigned. Winner: ${this.winner}`);
         if (this.onGameOver) {
             this.onGameOver({ winner: this.winner, reason: 'resignation' });

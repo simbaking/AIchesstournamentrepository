@@ -46,9 +46,16 @@
                 <h2>Start Tournament</h2>
                 <form id="start-form">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <input type="number" id="duration-hours" placeholder="Hours" min="0" max="24" value="0">
-                        <input type="number" id="duration-minutes" placeholder="Minutes" min="0" max="59" value="5"
-                            required>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <input type="number" id="duration-hours" placeholder="0" min="0" max="24" value="0"
+                                style="flex: 1;">
+                            <span style="font-size: 0.9em; color: var(--text-color); opacity: 0.8;">Hours</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <input type="number" id="duration-minutes" placeholder="5" min="0" max="59" value="5"
+                                required style="flex: 1;">
+                            <span style="font-size: 0.9em; color: var(--text-color); opacity: 0.8;">Minutes</span>
+                        </div>
                     </div>
                     <div style="margin: 10px 0; display: flex; align-items: center;">
                         <input type="checkbox" id="allow-variants" checked style="width: auto; margin-right: 5px;">
@@ -120,7 +127,11 @@
                             <option value="classical">Classical (120/40, 60/20, 15+30)</option>
                             <option value="uscf">USCF (90/40, 30+30)</option>
                         </select>
-                        <input type="number" id="offer-increment" placeholder="Inc (s)" min="0" value="0">
+                        <div style="display: flex; align-items: center; gap: 3px;">
+                            <input type="number" id="offer-increment" placeholder="Increment" min="0" value="0"
+                                style="width: 80px;">
+                            <span style="font-size: 0.85em; color: var(--text-color); opacity: 0.8;">sec</span>
+                        </div>
 
                         <select id="offer-variant" style="width: auto;">
                             <option value="standard" selected>Standard Chess</option>
@@ -128,7 +139,7 @@
                             <option value="kungfu">Kung Fu (Real-time)</option>
                             <option value="crazyhouse">Crazyhouse (Drops)</option>
                             <option value="kingofthehill">King of the Hill</option>
-                            <option value="atomic">💥 Atomic Chess</option>
+                            <option value="atomic">Atomic Chess</option>
                         </select>
                         <input type="text" id="offer-start-pos" placeholder="Pos ID (0-959) or Random"
                             style="display:none;">

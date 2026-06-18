@@ -50,6 +50,10 @@ class ComputerPlayer {
         return ComputerPlayer.getElo(this.level);
     }
 
+    getLastEvaluation() {
+        return this.lastEvaluation || 0;
+    }
+
     init() {
         console.log(`[COMPUTER] Initializing Stockfish level ${this.level}`);
 
@@ -70,6 +74,15 @@ class ComputerPlayer {
             this.worker.on('exit', (code) => {
                 if (code !== 0 && !this.isTerminating) {
                     console.error(`[COMPUTER] Worker exited ${code}, restarting...`);
+                    // Safeguard: fire any pending callbacks to prevent the engine from freezing
+                    if (this.pendingCallback) {
+                        try { this.pendingCallback({ move: null, evaluation: 0 }); } catch (e) { /* ignore */ }
+                        this.pendingCallback = null;
+                    }
+                    if (this.pendingRequest) {
+                        try { this.pendingRequest.callback({ move: null, evaluation: 0 }); } catch (e) { /* ignore */ }
+                        this.pendingRequest = null;
+                    }
                     setTimeout(() => this.init(), 1000);
                 }
             });
@@ -94,7 +107,7 @@ class ComputerPlayer {
             const elapsed = Date.now() - this.lastHeartbeat;
             if (elapsed > 30000 && !this.isTerminating) {
                 console.error('[COMPUTER] Worker stuck, restarting...');
-                this.terminateWorker();
+                this.terminateWorker(); // Bug 3 fix: terminateWorker now fires pendingCallback
                 setTimeout(() => this.init(), 1000);
             }
         }, 10000);
@@ -103,11 +116,31 @@ class ComputerPlayer {
     terminateWorker() {
         this.isTerminating = true;
         if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
+        if (this.safetyTimeout) { clearTimeout(this.safetyTimeout); this.safetyTimeout = null; }
+        if (this.ponderStopTimeout) { clearTimeout(this.ponderStopTimeout); this.ponderStopTimeout = null; }
+
+        // Bug 3 fix: Fire pending callback so scheduleComputerMove can retry
+        if (this.pendingCallback) {
+            console.error('[COMPUTER] Worker terminated with pending callback — firing with null move');
+            const cb = this.pendingCallback;
+            this.pendingCallback = null;
+            try { cb({ move: null, evaluation: 0 }); } catch (e) { /* ignore */ }
+        }
+        // Also handle queued ponder request
+        if (this.pendingRequest) {
+            console.error('[COMPUTER] Worker terminated with pending ponder request — dropping');
+            const req = this.pendingRequest;
+            this.pendingRequest = null;
+            try { req.callback({ move: null, evaluation: 0 }); } catch (e) { /* ignore */ }
+        }
+
         if (this.worker) {
             this.worker.terminate();
             this.worker = null;
         }
         this.isReady = false;
+        this.stoppingPonder = false;
+        this.isPondering = false;
     }
 
     handleMessage(msg) {
@@ -145,26 +178,49 @@ class ComputerPlayer {
             }
         }
 
-        // Track current best move during search - REAL-TIME consistency check
+        // Track current best move during search - CUMULATIVE TIME tracking
+        // Each move accumulates time as "best", first to reach 5x consistency wins
         if (text.startsWith('info') && text.includes(' pv ')) {
             const pvMatch = text.match(/ pv (\w+)/);
             if (pvMatch && this.pendingCallback) {
                 const currentMove = pvMatch[1];
                 const now = Date.now();
 
-                // Track when this move first appeared
-                if (currentMove !== this.currentPvMove) {
-                    // Move changed - reset stability timer
-                    this.currentPvMove = currentMove;
-                    this.pvStableSince = now;
-                } else {
-                    // Same move - check if stable long enough
+                // Initialize cumulative tracking map if needed
+                if (!this.moveTimeAccumulator) {
+                    this.moveTimeAccumulator = new Map();
+                }
+
+                // Add time to previous best move (if any)
+                if (this.currentPvMove && this.pvLastUpdate) {
+                    const elapsed = now - this.pvLastUpdate;
+                    const prevTime = this.moveTimeAccumulator.get(this.currentPvMove) || 0;
+                    this.moveTimeAccumulator.set(this.currentPvMove, prevTime + elapsed);
+                }
+
+                // Update current tracking
+                this.currentPvMove = currentMove;
+                this.pvLastUpdate = now;
+
+                // Check if this move has accumulated enough total time (5x consistency)
+                const accumulatedTime = this.moveTimeAccumulator.get(currentMove) || 0;
+                const requiredTime = this.currentConsistencyTime * 5;
+
+                if (accumulatedTime >= requiredTime) {
+                    console.log(`[COMPUTER] Move ${currentMove} accumulated ${accumulatedTime}ms (need ${requiredTime}ms). Choosing it.`);
+                    this.sendCommand('stop');
+                }
+
+                // Also check for fast consecutive stability (original behavior)
+                if (currentMove === this.lastPvMove) {
                     const stableDuration = now - this.pvStableSince;
                     if (stableDuration >= this.currentConsistencyTime) {
-                        // Consistency achieved! Stop the search
                         console.log(`[COMPUTER] PV stable for ${stableDuration}ms: ${currentMove}. Stopping search.`);
                         this.sendCommand('stop');
                     }
+                } else {
+                    this.lastPvMove = currentMove;
+                    this.pvStableSince = now;
                 }
 
                 this.moveHistory.push({ move: currentMove, time: now });
@@ -212,6 +268,9 @@ class ComputerPlayer {
             if (this.pendingCallback) {
                 const callback = this.pendingCallback;
                 this.pendingCallback = null;
+
+                // Clear safety timeout since we got a bestmove
+                if (this.safetyTimeout) { clearTimeout(this.safetyTimeout); this.safetyTimeout = null; }
 
                 console.log(`[COMPUTER] Move '${move}' confirmed after ${thinkingTime}ms. Playing immediately.`);
 
@@ -448,17 +507,41 @@ class ComputerPlayer {
             this.isPondering = false;
             // Queue this request to run after stop completes
             this.pendingRequest = { fen, callback, remainingTimeMs, variant };
+
+            // Bug 2 fix: Timeout for ponder-stop phase — if bestmove never comes, force proceed
+            if (this.ponderStopTimeout) clearTimeout(this.ponderStopTimeout);
+            this.ponderStopTimeout = setTimeout(() => {
+                if (this.stoppingPonder) {
+                    console.error('[COMPUTER] Ponder stop timed out after 5s — forcing proceed');
+                    this.stoppingPonder = false;
+                    this.isPondering = false;
+                    this.clearPonderState();
+                    if (this.pendingRequest) {
+                        const req = this.pendingRequest;
+                        this.pendingRequest = null;
+                        this.getBestMove(req.fen, req.callback, req.remainingTimeMs, req.variant);
+                    }
+                }
+            }, 5000);
             return;
         }
 
         // Use SimpleEngine only for level -1 and 0 (or if forced)
         // Fix: Don't let SimpleEngine block Stockfish for higher levels just because it exists
         if (this.simpleEngine && (this.level <= 0)) {
-            if (this.level === -1) {
-                this.simpleEngine.getRandomMove(fen, callback);
-            } else {
-                this.simpleEngine.getMinimaxMove(fen, callback, 2);
-            }
+            // Calculate think delay: 2x the consistency time formula
+            const divisor = (variant === 'kungfu') ? 1000 : 250;
+            const thinkDelay = Math.max(100, Math.floor(remainingTimeMs / divisor) * 2);
+
+            console.log(`[COMPUTER] SimpleEngine level ${this.level}, thinking for ${thinkDelay}ms`);
+
+            setTimeout(() => {
+                if (this.level === -1) {
+                    this.simpleEngine.getRandomMove(fen, callback);
+                } else {
+                    this.simpleEngine.getMinimaxMove(fen, callback, 2);
+                }
+            }, thinkDelay);
             return;
         }
 
@@ -500,8 +583,9 @@ class ComputerPlayer {
         // Calculate thinking time
         // Standard: 1/250th of remaining time
         // Kung Fu: 1/1000th (4x faster sampling) to handle real-time pressure
+        // No max cap - cumulative tracking handles oscillation prevention
         const divisor = (variant === 'kungfu') ? 1000 : 250;
-        const consistencyTime = Math.max(50, Math.min(10000, Math.floor(remainingTimeMs / divisor)));
+        const consistencyTime = Math.max(50, Math.floor(remainingTimeMs / divisor));
 
         // Store for later use in consistency loop
         this.currentConsistencyTime = consistencyTime;
@@ -512,6 +596,10 @@ class ComputerPlayer {
 
         console.log(`[COMPUTER] Level ${this.level}, remaining: ${remainingTimeMs}ms, consistency: ${consistencyTime}ms`);
 
+        if (this.pendingCallback) {
+            console.error('[COMPUTER] Overwriting pending callback! Previous search was never completed.');
+            try { this.pendingCallback({ move: null, evaluation: 0 }); } catch (e) { /* ignore */ }
+        }
         this.pendingCallback = callback;
         this.thinkingStartTime = Date.now();
         this.moveHistory = [];
@@ -519,6 +607,9 @@ class ComputerPlayer {
         // Initialize real-time consistency tracking
         this.currentPvMove = ponderSeed;  // Seed with pondered move if available
         this.pvStableSince = Date.now();
+        this.lastPvMove = ponderSeed;
+        this.pvLastUpdate = Date.now();
+        this.moveTimeAccumulator = new Map();  // Reset cumulative tracking for new search
 
         // Set UCI_Variant for multi-variant stockfish (atomic, horde, etc.)
         // Must be set BEFORE sending the position
@@ -531,6 +622,19 @@ class ComputerPlayer {
         // Send position and start INFINITE search (we'll stop when consistent)
         this.sendCommand(`position fen ${fen}`);
         this.sendCommand('go infinite');
+
+        // Bug 1 fix: Safety timeout — if Stockfish never responds (e.g. checkmate position),
+        // fire the callback with null after 15s so scheduleComputerMove can retry
+        if (this.safetyTimeout) clearTimeout(this.safetyTimeout);
+        this.safetyTimeout = setTimeout(() => {
+            if (this.pendingCallback) {
+                console.error('[COMPUTER] Safety timeout: no bestmove in 15s — firing callback with null');
+                this.sendCommand('stop');
+                const cb = this.pendingCallback;
+                this.pendingCallback = null;
+                try { cb({ move: null, evaluation: 0 }); } catch (e) { /* ignore */ }
+            }
+        }, 15000);
     }
 
     /**

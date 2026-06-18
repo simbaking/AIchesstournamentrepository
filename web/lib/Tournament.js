@@ -23,19 +23,35 @@ class Tournament {
     }
 
     startTournament(durationMillis, allowVariants = true, allowedVariants = ['standard', 'freestyle', 'kungfu']) {
+        // Reset scores for all players
+        this.players.forEach(p => p.score = 0);
+
         this.startTime = Date.now();
         this.durationLimit = durationMillis;
         this.allowVariants = allowVariants;
         this.allowedVariants = allowedVariants;
         this.isRunning = true;
+
+        // Verbose logging for timer debugging
+        console.log(`[TOURNAMENT_START] StartTime: ${new Date(this.startTime).toISOString()}`);
+        console.log(`[TOURNAMENT_START] Duration: ${(durationMillis / 60000).toFixed(1)} minutes (${durationMillis}ms)`);
         console.log(`Tournament started! Duration: ${durationMillis}ms, Allow Variants: ${allowVariants}, Allowed: ${allowedVariants.join(', ')}`);
     }
 
     checkIsRunning() {
         if (!this.isRunning) return false;
+
+        // Validate startTime and durationLimit to prevent instant expiry from corrupted state
+        if (!this.startTime || !this.durationLimit) {
+            console.error('[TOURNAMENT_TIMER] Invalid state detected: startTime=' + this.startTime + ', durationLimit=' + this.durationLimit);
+            // Don't change isRunning state when data is invalid - return current state
+            return this.isRunning;
+        }
+
         const elapsed = Date.now() - this.startTime;
         if (elapsed >= this.durationLimit) {
             this.isRunning = false;
+            console.log(`[TOURNAMENT_TIMER] Time expired! Elapsed: ${(elapsed / 60000).toFixed(1)}m, Limit: ${(this.durationLimit / 60000).toFixed(1)}m`);
             console.log('Tournament time expired!');
         }
         return this.isRunning;
@@ -220,13 +236,40 @@ class Tournament {
     }
 
     reset() {
+        // Reset everything including players
         this.players = [];
         this.isRunning = false;
         this.startTime = null;
         this.durationLimit = 0;
         this.allowVariants = true;
         this.allowedVariants = ['standard', 'freestyle', 'kungfu'];
-        console.log('Tournament state reset.');
+        console.log('Tournament reset (all players cleared).');
+    }
+    toJSON() {
+        return {
+            players: this.players.map(p => p.toJSON()),
+            isRunning: this.isRunning,
+            startTime: this.startTime,
+            durationLimit: this.durationLimit,
+            allowVariants: this.allowVariants,
+            allowedVariants: this.allowedVariants
+        };
+    }
+
+    static fromJSON(data) {
+        const tournament = new Tournament();
+        // Restore players
+        if (data.players) {
+            tournament.players = data.players.map(pData => Player.fromJSON(pData));
+        }
+
+        tournament.isRunning = data.isRunning;
+        tournament.startTime = data.startTime;
+        tournament.durationLimit = data.durationLimit;
+        tournament.allowVariants = data.allowVariants;
+        tournament.allowedVariants = data.allowedVariants;
+
+        return tournament;
     }
 }
 

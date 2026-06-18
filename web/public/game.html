@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess Game</title>
-    <link rel="stylesheet" href="game.css">
+    <link rel="stylesheet" href="game.css?v=2">
 </head>
 
 <body>
@@ -182,7 +182,20 @@
         </div>
     </div>
 
-    <script src="game.js"></script>
+
+    <!-- Celebration Modal -->
+    <div id="celebration-modal" class="celebration-modal">
+        <div class="confetti-container" id="confetti-container"></div>
+        <div class="celebration-content">
+            <h2 id="celebration-title" class="celebration-title">Victory!</h2>
+            <div id="celebration-details" class="celebration-results">
+                <!-- Winner info will be injected here -->
+            </div>
+            <button id="celebration-close-btn" class="celebration-close">Return to Tournament</button>
+        </div>
+    </div>
+
+    <script src="game.js?v=2"></script>
 </body>
 
 </html>

@@ -193,14 +193,59 @@ async function updateStatus() {
         // Update status badge
         if (data.isRunning) {
             statusBadge.textContent = 'Running';
-            statusBadge.classList.add('running');
+            statusBadge.classList.remove('status-badge');
+            statusBadge.classList.add('status-badge', 'running');
+            statusBadge.style.backgroundColor = ''; // Reset inline style
             timerDisplay.textContent = formatTime(data.remainingTime);
             wasTournamentRunning = true;
-            celebrationShown = false; // Reset celebration flag when tournament starts
+            celebrationShown = false;
+
+            // Change Start button to Update button
+            const startBtn = document.querySelector('#start-form button[type="submit"]');
+            if (startBtn) {
+                if (startBtn.textContent !== 'Update Tournament') {
+                    startBtn.textContent = 'Update Tournament';
+                    startBtn.classList.remove('btn-success');
+                    startBtn.classList.add('btn-primary');
+
+                    // Pre-fill form with current config if available
+                    if (data.config) {
+                        const allowVariantsCheckbox = document.getElementById('allow-variants');
+                        if (allowVariantsCheckbox) allowVariantsCheckbox.checked = data.config.allowVariants;
+
+                        const variantPanel = document.getElementById('variant-selection');
+                        if (variantPanel) variantPanel.style.display = data.config.allowVariants ? 'block' : 'none';
+
+                        if (data.config.allowedVariants) {
+                            ['freestyle', 'kungfu', 'crazyhouse', 'kingofthehill', 'atomic'].forEach(v => {
+                                const cb = document.getElementById(`allow-${v}`);
+                                if (cb) cb.checked = data.config.allowedVariants.includes(v);
+                            });
+                        }
+                    }
+                }
+            }
         } else {
-            statusBadge.textContent = 'Not Started';
-            statusBadge.classList.remove('running');
-            timerDisplay.textContent = '';
+            // Check if tournament is Finished or just Not Started
+            if (data.startTime && data.durationLimit > 0) {
+                statusBadge.textContent = 'Finished';
+                statusBadge.className = 'status-badge';
+                statusBadge.style.backgroundColor = '#f97316'; // Orange
+                timerDisplay.textContent = '00:00';
+            } else {
+                statusBadge.textContent = 'Not Started';
+                statusBadge.classList.remove('running');
+                statusBadge.style.backgroundColor = ''; // Reset
+                timerDisplay.textContent = '';
+            }
+
+            // Reset Start Button
+            const startBtn = document.querySelector('#start-form button[type="submit"]');
+            if (startBtn) {
+                startBtn.textContent = 'Start Tournament';
+                startBtn.classList.add('btn-success');
+                startBtn.classList.remove('btn-primary');
+            }
 
             // Detect tournament end transition
             if (wasTournamentRunning && !celebrationShown && data.players.length >= 2) {
@@ -782,10 +827,10 @@ statusInterval = setInterval(updateStatus, 1000);
 // Reset tournament handler
 if (resetBtn) {
     resetBtn.addEventListener('click', async () => {
-        // Removed confirmation for easier testing/usage
-        // if (!confirm('Are you sure you want to reset the tournament? This will clear all players and games.')) {
-        //    return;
-        // }
+        // Confirmation dialog to prevent accidental resets
+        if (!confirm('Reset tournament? This will clear all players and games.')) {
+            return;
+        }
 
         try {
             const response = await fetch(`${API_URL}/api/reset`, {

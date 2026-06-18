@@ -100,7 +100,7 @@ async function updateGameState() {
     try {
         const response = await fetch(`/api/game/${gameId}`);
         if (!response.ok) {
-            console.error('Failed to fetch game state:', response.status);
+            console.error('[GAME] Failed to fetch game state:', response.status);
             // Game was likely terminated server-side (tournament ended)
             // Treat this as game over: close tab and return to tournament
             if (!gameEnded) {
@@ -112,7 +112,8 @@ async function updateGameState() {
                 // Notify tournament tab and close
                 gameChannel.postMessage({ type: 'GAME_CLOSED', gameId: gameId });
                 setTimeout(() => {
-                    window.close();
+                    // window.close() often fails if script didn't open window
+                    window.location.href = 'index.html';
                 }, 1500);
             }
             return;
@@ -234,8 +235,8 @@ function renderGame() {
     // Render Crazyhouse pockets
     renderPockets();
 
-    // Check if game is over
-    if (gameState.isGameOver) {
+    // Check if game is over (only trigger once)
+    if (gameState.isGameOver && !gameEnded) {
         handleGameOver();
     }
 
@@ -276,6 +277,7 @@ function renderGame() {
 
 // Initialize the board DOM once (called only on first render)
 function initBoard() {
+    console.log('[BOARD] initBoard called');
     chessboard.innerHTML = '';
 
     // Respect current flip state when creating squares
@@ -446,7 +448,6 @@ function updateBoard(forceRefresh = false) {
 
     // Force full refresh if requested (e.g., returning from history view)
     if (forceRefresh) {
-        console.log('[NAV] updateBoard: Force refresh - clearing previous state');
         previousBoardState = null;
     }
 
@@ -507,21 +508,44 @@ function updateBoard(forceRefresh = false) {
                 }
             }
 
-            // Update last-move highlight
-            if (isLastMoveSquare) {
+            // Update last-move highlight - only change if needed
+            const hasLastMove = square.classList.contains('last-move');
+            if (isLastMoveSquare && !hasLastMove) {
                 square.classList.add('last-move');
-            } else {
+            } else if (!isLastMoveSquare && hasLastMove) {
                 square.classList.remove('last-move');
             }
 
-            // Update valid move indicators
-            const existingIndicator = square.querySelector('.valid-move-indicator');
-            if (hasValidMove && !existingIndicator) {
-                const indicator = document.createElement('div');
-                indicator.className = 'valid-move-indicator';
-                square.appendChild(indicator);
-            } else if (!hasValidMove && existingIndicator) {
-                existingIndicator.remove();
+            // Preserve selected square highlight - only change if needed
+            const isSelectedSquare = selectedSquare && selectedSquare.x === x && selectedSquare.y === y;
+            const hasSelected = square.classList.contains('selected');
+            if (isSelectedSquare && !hasSelected) {
+                square.classList.add('selected');
+            } else if (!isSelectedSquare && hasSelected) {
+                square.classList.remove('selected');
+            }
+
+            // Update valid move indicators - only change if needed
+            const existingMarker = square.querySelector('.valid-move-marker');
+            const hasValidMoveClass = square.classList.contains('valid-move');
+
+            if (hasValidMove) {
+                if (!hasValidMoveClass) {
+                    square.classList.add('valid-move');
+                }
+                if (!existingMarker) {
+                    const marker = document.createElement('div');
+                    marker.className = 'valid-move-marker';
+                    square.appendChild(marker);
+                }
+            } else {
+                if (hasValidMoveClass) {
+                    square.classList.remove('valid-move');
+                }
+                if (existingMarker) existingMarker.remove();
+                // Also remove old class if present
+                const oldIndicator = square.querySelector('.valid-move-indicator');
+                if (oldIndicator) oldIndicator.remove();
             }
 
             // King of the Hill: Highlight center squares
@@ -583,7 +607,8 @@ function reorderSquaresForFlip() {
 
     for (let y = startY; y !== endY; y += stepY) {
         for (let x = startX; x !== endX; x += stepX) {
-            const square = document.getElementById(`square-${x}-${y}`);
+            const squareId = `square-${x}-${y}`;
+            const square = squares.find(el => el.id === squareId);
             if (square) {
                 chessboard.appendChild(square);
             }
@@ -808,12 +833,15 @@ function clearSelection() {
     selectedDropPiece = null;
     validMoves = []; // Clear valid moves
 
-    // Clear visual styles
-    document.querySelectorAll('.square').forEach(sq => {
-        sq.classList.remove('selected', 'last-move');
+    // Clear visual styles for selection only (not last-move - that's handled by updateBoard)
+    document.querySelectorAll('.square.selected').forEach(sq => {
+        sq.classList.remove('selected');
+    });
+    document.querySelectorAll('.valid-move-marker').forEach(m => m.remove());
+    document.querySelectorAll('.square.valid-move').forEach(sq => {
+        sq.classList.remove('valid-move');
     });
 
-    updateBoard(); // Use diffing update, not full rebuild
     renderPockets();
 }
 
@@ -840,16 +868,18 @@ async function fetchValidMoves(x, y, skipFullRender = false) {
 
 // Update valid move indicators without full re-render (for drag support)
 function updateMoveIndicators() {
-    // Remove existing indicators first
-    document.querySelectorAll('.valid-move-indicator').forEach(el => el.remove());
+    // Remove existing markers and classes
+    document.querySelectorAll('.valid-move-marker, .valid-move-indicator').forEach(el => el.remove());
+    document.querySelectorAll('.square.valid-move').forEach(sq => sq.classList.remove('valid-move'));
 
     // Add new ones
     validMoves.forEach(move => {
         const square = document.querySelector(`.square[data-x="${move.x}"][data-y="${move.y}"]`);
         if (square) {
-            const indicator = document.createElement('div');
-            indicator.className = 'valid-move-indicator';
-            square.appendChild(indicator);
+            square.classList.add('valid-move');
+            const marker = document.createElement('div');
+            marker.className = 'valid-move-marker';
+            square.appendChild(marker);
         }
     });
 }
@@ -1075,33 +1105,252 @@ async function handleGameOver() {
         console.error('Error fetching updated scores:', error);
     }
 
-    // Auto-redirect to tournament after 5 seconds
-    const countdownDiv = document.createElement('div');
-    countdownDiv.className = 'countdown-message';
-    countdownDiv.style.marginTop = '15px';
-    countdownDiv.style.color = 'var(--text-muted)';
-    gameResult.appendChild(countdownDiv);
+    // Show celebration modal
+    showCelebration();
+}
 
-    let countdown = 5;
-    countdownDiv.textContent = `This tab will close in ${countdown}s...`;
+// Show celebration modal
+function showCelebration() {
+    console.log("Triggering showCelebration");
+    const modal = document.getElementById('celebration-modal');
+    const title = document.getElementById('celebration-title');
+    const details = document.getElementById('celebration-details');
+    const closeBtn = document.getElementById('celebration-close-btn');
 
+    if (!modal || !title || !details) {
+        console.error("Missing celebration elements:", { modal, title, details });
+        return;
+    }
+
+    // Set Header based on termination reason
+    if (gameState.winner) {
+        // Determine who viewing is
+        const viewerWon = gameState.winner.toLowerCase() === currentPlayerName.toLowerCase();
+
+        // Set title based on termination type
+        switch (gameState.termination) {
+            case 'checkmate':
+                title.textContent = viewerWon ? 'Checkmate! You Win!' : 'Checkmate!';
+                break;
+            case 'resignation':
+                title.textContent = viewerWon ? 'Opponent Resigned!' : 'You Resigned';
+                break;
+            case 'timeout':
+                title.textContent = viewerWon ? 'Opponent Timed Out!' : 'Time Out!';
+                break;
+            case 'atomic_explosion':
+            case 'king_capture':
+                title.textContent = viewerWon ? 'King Destroyed! You Win!' : 'King Destroyed!';
+                break;
+            case 'koth':
+                title.textContent = viewerWon ? 'King of the Hill!' : 'Opponent Reached the Hill!';
+                break;
+            default:
+                title.textContent = viewerWon ? 'Victory!' : `${gameState.winner} Wins!`;
+        }
+    } else {
+        // No winner = draw
+        switch (gameState.termination) {
+            case 'stalemate':
+                title.textContent = 'Stalemate!';
+                break;
+            case 'draw_agreement':
+                title.textContent = 'Draw Agreed';
+                break;
+            default:
+                title.textContent = 'Game Drawn';
+        }
+    }
+
+    title.className = 'celebration-title'; // Ensure animation class
+
+    // Auto-close after 20 seconds (gives players plenty of time to review results)
+    const AUTO_CLOSE_SECONDS = 20;
+    let closeCountdown = AUTO_CLOSE_SECONDS;
+
+    // Create countdown display element
+    const countdownEl = document.createElement('div');
+    countdownEl.id = 'close-countdown';
+    countdownEl.className = 'close-countdown';
+    countdownEl.style.cssText = 'text-align: center; margin-top: 15px; font-size: 0.9rem; color: #888;';
+    countdownEl.textContent = `Auto-close in ${closeCountdown}s...`;
+
+    // Insert after celebration-details
+    details.parentNode.insertBefore(countdownEl, details.nextSibling);
+
+    // Countdown timer
     const countdownInterval = setInterval(() => {
-        countdown--;
-        if (countdown > 0) {
-            countdownDiv.textContent = `This tab will close in ${countdown}s...`;
-        } else {
+        closeCountdown--;
+        if (closeCountdown <= 0) {
             clearInterval(countdownInterval);
-
-            // Notify tournament tab that game is closing
             gameChannel.postMessage({ type: 'GAME_CLOSED', gameId: gameId });
-
-            // Close the tab (works if opened via window.open with named window)
-            window.close();
-
-            // If window.close() doesn't work (not opened by script), show message
-            countdownDiv.textContent = 'You can close this tab now.';
+            window.location.href = 'index.html';
+        } else {
+            countdownEl.textContent = `Auto-close in ${closeCountdown}s...`;
+            if (closeCountdown <= 5) {
+                countdownEl.style.color = '#ff6b6b';
+            }
         }
     }, 1000);
+
+    // Prepare player data for ranking
+    const p1 = {
+        name: gameState.player1,
+        isMe: gameState.player1.toLowerCase() === currentPlayerName.toLowerCase(),
+        time: gameState.whiteTimeRemaining,
+        color: 'White'
+    };
+    const p2 = {
+        name: gameState.player2,
+        isMe: gameState.player2.toLowerCase() === currentPlayerName.toLowerCase(),
+        time: gameState.blackTimeRemaining,
+        color: 'Black'
+    };
+
+    let ranked = [];
+    if (gameState.winner) {
+        if (gameState.winner === p1.name) {
+            ranked = [p1, p2];
+        } else {
+            ranked = [p2, p1];
+        }
+    } else {
+        // Draw - sort by time remaining? Or just P1/P2
+        ranked = [p1, p2];
+    }
+
+    // Generate Cards
+    let html = '';
+
+    // 1. Winner / First Place
+    const winner = ranked[0];
+    const winnerTimeObj = formatTimeMsObj(winner.time);
+    const winnerTimeText = `${winnerTimeObj} left`;
+
+    html += `
+        <div class="result-card gold">
+            <span class="result-medal">${gameState.winner ? '🥇' : '🤝'}</span>
+            <div class="result-info">
+                <div class="result-name">${formatPlayerName(winner.name)}</div>
+                <div class="result-position">${gameState.winner ? 'Winner' : 'Draw'}</div>
+            </div>
+            <span class="result-score">${winnerTimeText}</span>
+        </div>
+    `;
+
+    // 2. Loser / Second Place
+    const loser = ranked[1];
+    const loserTimeObj = formatTimeMsObj(loser.time);
+    const loserTimeText = `${loserTimeObj} left`;
+
+    html += `
+        <div class="result-card silver">
+            <span class="result-medal">${gameState.winner ? '🥈' : '🤝'}</span>
+            <div class="result-info">
+                <div class="result-name">${formatPlayerName(loser.name)}</div>
+                <div class="result-position">${gameState.winner ? 'Runner Up' : 'Draw'}</div>
+            </div>
+            <span class="result-score">${loserTimeText}</span>
+        </div>
+    `;
+
+    // 3. Stats Footer
+    const moveCount = Math.ceil((gameState.moveHistory ? gameState.moveHistory.length : 0) / 2);
+    const duration = formatTime(gameState.duration || 0);
+
+    html += `
+        <div class="result-card bronze">
+            <span class="result-medal">📊</span>
+            <div class="result-info">
+                <div class="result-name">Game Stats</div>
+                <div class="result-position">${moveCount} moves • ${duration} duration</div>
+            </div>
+        </div>
+    `;
+
+    details.innerHTML = html;
+
+    // Show with animation (requires display:flex then class add)
+    modal.style.display = 'flex';
+    // Small delay to allow browser to register display:flex before adding opacity class
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 50);
+
+    // Trigger confetti
+    createConfetti();
+
+    // Periodic confetti blasts
+    const confettiInterval = setInterval(createConfetti, 3000);
+
+    // Setup close button
+    closeBtn.onclick = () => {
+        clearInterval(confettiInterval);
+        clearInterval(countdownInterval);
+        gameChannel.postMessage({ type: 'GAME_CLOSED', gameId: gameId });
+        window.close();
+    };
+}
+
+// Helper: Format milliseconds to mm:ss string
+function formatTimeMsObj(ms) {
+    if (ms < 0) ms = 0;
+    const minutes = Math.floor(ms / 60000);
+    const seconds = Math.floor((ms % 60000) / 1000);
+    return `${minutes}m ${seconds}s`;
+}
+
+// Helper: Format player name
+function formatPlayerName(name) {
+    if (name && name.toLowerCase() === currentPlayerName.toLowerCase()) {
+        return `${name} (You)`;
+    }
+    return name;
+}
+
+// Helper: Format milliseconds to mm:ss
+function formatTimeMs(ms) {
+    if (ms < 0) ms = 0;
+    const minutes = Math.floor(ms / 60000);
+    const seconds = Math.floor((ms % 60000) / 1000);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+// Helper: Format duration (seconds/minutes)
+function formatTime(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    if (minutes > 0) return `${minutes}m ${seconds}s`;
+    return `${seconds}s`;
+}
+
+// Create confetti animation
+function createConfetti() {
+    const container = document.getElementById('confetti-container');
+    if (!container) return;
+
+    container.innerHTML = '';
+    const colors = ['gold', 'orange', 'blue', 'green', 'pink', 'purple'];
+    const shapes = ['square', 'circle', 'rect'];
+
+    for (let i = 0; i < 150; i++) {
+        const confetti = document.createElement('div');
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+
+        confetti.className = `confetti ${color} ${shape}`;
+        confetti.style.left = Math.random() * 100 + '%';
+
+        // Randomize duration for more natural feel (matches tournament)
+        const duration = 3 + Math.random() * 2;
+        confetti.style.animationDuration = `${duration}s`;
+
+        confetti.style.animationDelay = Math.random() * 2 + 's';
+        confetti.style.opacity = Math.random();
+
+        container.appendChild(confetti);
+    }
 }
 
 // Resign
@@ -1801,8 +2050,8 @@ function renderHistoricalBoard(moveIndex) {
 function buildBoardAtMove(moveIndex) {
     if (!gameState) return null;
 
-    // Start with the initial board setup
-    const board = createInitialBoard();
+    // Start with the initial board setup - use variant and startPosId for Chess960
+    const board = createInitialBoard(gameState.variant, gameState.startPosId);
 
     // Apply moves up to (but not including) moveIndex
     for (let i = 0; i < moveIndex && i < gameState.moveHistory.length; i++) {
@@ -1813,18 +2062,73 @@ function buildBoardAtMove(moveIndex) {
     return board;
 }
 
-// Create an initial chess board (standard position)
-function createInitialBoard() {
+// Get Chess960 position from ID (Scharnagl's method)
+function get960Position(id) {
+    const pieceArr = new Array(8).fill(null);
+
+    // 1. Place Bishops
+    const lightSquares = [1, 3, 5, 7];
+    const darkSquares = [0, 2, 4, 6];
+
+    const r1 = id % 4;
+    const q1 = Math.floor(id / 4);
+
+    const r2 = q1 % 4;
+    const q2 = Math.floor(q1 / 4);
+
+    pieceArr[lightSquares[r1]] = 'bishop';
+    pieceArr[darkSquares[r2]] = 'bishop';
+
+    // 2. Place Queen
+    const r3 = q2 % 6;
+    const q3 = Math.floor(q2 / 6);
+
+    let empty = pieceArr.map((p, i) => p === null ? i : -1).filter(i => i !== -1);
+    pieceArr[empty[r3]] = 'queen';
+
+    // 3. Place Knights (10 combinations for 2 knights in 5 slots)
+    const knightConfigs = [
+        [0, 1], [0, 2], [0, 3], [0, 4],
+        [1, 2], [1, 3], [1, 4],
+        [2, 3], [2, 4],
+        [3, 4]
+    ];
+
+    const kConfig = knightConfigs[q3];
+    empty = pieceArr.map((p, i) => p === null ? i : -1).filter(i => i !== -1);
+
+    pieceArr[empty[kConfig[0]]] = 'knight';
+    pieceArr[empty[kConfig[1]]] = 'knight';
+
+    // 4. Place Rooks and King (remaining 3 slots: Rook, King, Rook)
+    empty = pieceArr.map((p, i) => p === null ? i : -1).filter(i => i !== -1);
+    pieceArr[empty[0]] = 'rook';
+    pieceArr[empty[1]] = 'king';
+    pieceArr[empty[2]] = 'rook';
+
+    return pieceArr;
+}
+
+// Create an initial chess board (supports standard and Chess960 positions)
+function createInitialBoard(variant, startPosId) {
     const board = Array(8).fill(null).map(() => Array(8).fill(null));
 
-    // Setup pawns
+    // Setup pawns (same for all variants)
     for (let x = 0; x < 8; x++) {
         board[x][1] = { type: 'pawn', isWhite: false };
         board[x][6] = { type: 'pawn', isWhite: true };
     }
 
     // Setup back rows
-    const backRow = ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'];
+    let backRow;
+    if (variant === 'freestyle' && startPosId !== undefined && startPosId !== null) {
+        // Chess960: Use the position ID to get the correct piece arrangement
+        backRow = get960Position(startPosId);
+    } else {
+        // Standard chess position
+        backRow = ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'];
+    }
+
     for (let x = 0; x < 8; x++) {
         board[x][0] = { type: backRow[x], isWhite: false };
         board[x][7] = { type: backRow[x], isWhite: true };
@@ -1833,41 +2137,83 @@ function createInitialBoard() {
     return board;
 }
 
+
 // Apply a single move to a board state
 function applyMoveToBoard(board, move) {
+    // Handle Crazyhouse drop moves
+    if (move.drop) {
+        const isWhite = move.player && gameState ?
+            (move.player.toLowerCase() === gameState.player1?.toLowerCase()) : true;
+        board[move.x][move.y] = { type: move.pieceType, isWhite };
+        return;
+    }
+
     if (move.castling) {
-        // Handle castling
+        // Handle castling (supports Chess960 via rookStartX)
         const rank = move.startY;
         const isKingside = move.castling === 'kingside';
 
-        // Move king
-        const king = board[move.startX][rank];
-        board[move.startX][rank] = null;
-        board[move.endX][rank] = king;
-
-        // Move rook
-        const rookFromX = isKingside ? 7 : 0;
+        // Use rookStartX from move history if available (Chess960), fall back to standard
+        const rookFromX = move.rookStartX !== undefined ? move.rookStartX : (isKingside ? 7 : 0);
         const rookToX = isKingside ? 5 : 3;
+
+        // Get pieces before clearing
+        const king = board[move.startX][rank];
         const rook = board[rookFromX][rank];
+
+        // Clear both starting squares first (handles cases where king/rook overlap destinations)
+        board[move.startX][rank] = null;
         board[rookFromX][rank] = null;
+
+        // Place pieces at destinations
+        board[move.endX][rank] = king;
         board[rookToX][rank] = rook;
     } else if (move.enPassant) {
         // Handle en passant
         const piece = board[move.startX][move.startY];
         board[move.startX][move.startY] = null;
         board[move.endX][move.endY] = piece;
-        // Remove captured pawn
+        // Remove captured pawn (same file as destination, same rank as start)
         board[move.endX][move.startY] = null;
+    } else if (move.atomic) {
+        // Handle atomic moves (captures cause explosions)
+        const piece = board[move.startX][move.startY];
+        const targetPiece = board[move.endX][move.endY];
+        board[move.startX][move.startY] = null;
+
+        if (targetPiece) {
+            // Capture occurred — explosion!
+            // Remove the capturing piece (it explodes too)
+            board[move.endX][move.endY] = null;
+
+            // Remove all adjacent non-pawn pieces
+            for (let dx = -1; dx <= 1; dx++) {
+                for (let dy = -1; dy <= 1; dy++) {
+                    if (dx === 0 && dy === 0) continue;
+                    const nx = move.endX + dx;
+                    const ny = move.endY + dy;
+                    if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
+                        const adj = board[nx][ny];
+                        if (adj && adj.type !== 'pawn') {
+                            board[nx][ny] = null;
+                        }
+                    }
+                }
+            }
+        } else {
+            // Non-capture atomic move — just move the piece normally
+            board[move.endX][move.endY] = piece;
+        }
     } else {
         // Normal move
         const piece = board[move.startX][move.startY];
         board[move.startX][move.startY] = null;
         board[move.endX][move.endY] = piece;
 
-        // Handle promotion (simplified - always queen if reaching back rank)
+        // Handle promotion
         if (piece && piece.type === 'pawn') {
             if ((piece.isWhite && move.endY === 0) || (!piece.isWhite && move.endY === 7)) {
-                piece.type = 'queen'; // Default promotion to queen in history view
+                piece.type = move.promotionPiece || 'queen';
             }
         }
     }

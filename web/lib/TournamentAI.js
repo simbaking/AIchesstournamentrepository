@@ -49,10 +49,17 @@ class TournamentAI {
         const variantMult = this.tournament.getVariantMultiplier(estimatedDuration, variant);
 
         // ELO consideration - calculate win/draw/loss probabilities
+        // Standard ELO expected score
         const eloDiff = player.getElo() - opponent.getElo();
-        const winProbability = 1 / (1 + Math.pow(10, -eloDiff / 400)); // Standard ELO formula
-        const lossProbability = 1 / (1 + Math.pow(10, eloDiff / 400));
-        const drawProbability = 1 - winProbability - lossProbability;
+        const expectedScore = 1 / (1 + Math.pow(10, -eloDiff / 400));
+
+        // Realistic draw probability (~15% base, adjusted by ELO difference)
+        // Closer ratings = higher draw chance
+        const drawProbability = Math.max(0.05, 0.20 - Math.abs(eloDiff) / 2000);
+
+        // Distribute remaining probability between win/loss based on expected score
+        const winProbability = expectedScore * (1 - drawProbability);
+        const lossProbability = (1 - expectedScore) * (1 - drawProbability);
 
         // Calculate expected points for each outcome (including variant boost!)
         // WIN: duration × 3 × rankMult × opponentMult × durationMult × variantMult
