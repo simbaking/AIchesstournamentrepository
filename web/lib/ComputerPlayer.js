@@ -544,9 +544,9 @@ class ComputerPlayer {
                 const calcStart = Date.now();
                 this.simpleEngine.getMinimaxMove(fen, (result) => {
                     const calcTime = Date.now() - calcStart;
-                    const waitTime = calcTime * 5000;
+                    const waitTime = calcTime * 50000;
 
-                    console.log(`[COMPUTER] Level 0 (minimax), calc took ${calcTime}ms, waiting ${waitTime}ms (5000x)`);
+                    console.log(`[COMPUTER] Level 0 (minimax), calc took ${calcTime}ms, waiting ${waitTime}ms (50000x)`);
 
                     setTimeout(() => {
                         callback(result);
