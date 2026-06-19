@@ -544,10 +544,9 @@ class ComputerPlayer {
                 const calcStart = Date.now();
                 this.simpleEngine.getMinimaxMove(fen, (result) => {
                     const calcTime = Date.now() - calcStart;
-                    // Cap waitTime at 3 seconds to prevent the game from freezing indefinitely
-                    const waitTime = Math.min(calcTime * 50000, 3000);
+                    const waitTime = calcTime * 50; // Changed from 50000 to 50 so it waits ~1 second instead of 16.6 minutes
 
-                    console.log(`[COMPUTER] Level 0 (minimax), calc took ${calcTime}ms, waiting ${waitTime}ms (capped at 3s)`);
+                    console.log(`[COMPUTER] Level 0 (minimax), calc took ${calcTime}ms, waiting ${waitTime}ms (50x)`);
 
                     setTimeout(() => {
                         callback(result);
