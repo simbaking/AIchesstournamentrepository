@@ -188,7 +188,7 @@ class TournamentAI {
         // 50% chance to use preferred order, 50% chance random
         if (Math.random() < 0.5) {
             // Prioritize variants based on computer capabilities
-            const preferredOrder = ['freestyle', 'crazyhouse', 'kungfu']; // Removed KOTH from top priority list
+            const preferredOrder = ['freestyle', 'crazyhouse', 'kungfu', 'atomic']; // Removed KOTH from top priority list
 
             // Check KOTH explicitly with reduced probability
             if (variants.includes('kingofthehill') && Math.random() < kothProb) {

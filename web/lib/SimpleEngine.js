@@ -60,7 +60,7 @@ class SimpleEngine {
     /**
      * Check if the king of given color is in check
      */
-    isKingInCheck(board, isWhite) {
+    isKingInCheck(board, isWhite, variant = 'standard') {
         // Find king
         let kingX = -1, kingY = -1;
         for (let y = 0; y < 8; y++) {
@@ -78,6 +78,23 @@ class SimpleEngine {
         if (kingX === -1) {
             console.log(`[SimpleEngine] isKingInCheck: King not found for ${isWhite ? 'White' : 'Black'}!`);
             return true; // Should not happen, but assume check if no king
+        }
+
+        if (variant === 'atomic') {
+            let oppKingX = -1, oppKingY = -1;
+            for (let y = 0; y < 8; y++) {
+                for (let x = 0; x < 8; x++) {
+                    const p = board.getPiece(x, y);
+                    if (p && p.type === 'king' && p.isWhite !== isWhite) {
+                        oppKingX = x; oppKingY = y; break;
+                    }
+                }
+                if (oppKingX !== -1) break;
+            }
+            if (oppKingX !== -1) {
+                const dist = Math.max(Math.abs(kingX - oppKingX), Math.abs(kingY - oppKingY));
+                if (dist <= 1) return false; // Kings are adjacent, neither is in check in atomic
+            }
         }
 
         // Check if any opponent piece can attack the king
@@ -98,9 +115,9 @@ class SimpleEngine {
     /**
      * Get all legal moves for the current player (legacy wrapper)
      */
-    getLegalMoves(fen) {
+    getLegalMoves(fen, variant = 'standard') {
         const { board, isWhiteTurn } = this.parseFEN(fen);
-        const moves = this.getLegalMovesForBoard(board, isWhiteTurn);
+        const moves = this.getLegalMovesForBoard(board, isWhiteTurn, variant);
 
         // Convert to format expected by consumers of getLegalMoves
         return moves.map(m => {
@@ -113,7 +130,7 @@ class SimpleEngine {
     /**
      * Get legal moves for a board state, filtering out moves that leave king in check
      */
-    getLegalMovesForBoard(board, isWhiteTurn) {
+    getLegalMovesForBoard(board, isWhiteTurn, variant = 'standard') {
         const moves = [];
 
         for (let startY = 0; startY < 8; startY++) {
@@ -124,26 +141,46 @@ class SimpleEngine {
                 for (let endY = 0; endY < 8; endY++) {
                     for (let endX = 0; endX < 8; endX++) {
                         if (piece.isValidMove(board, startX, startY, endX, endY)) {
+                            const target = board.getPiece(endX, endY);
+                            if (variant === 'atomic' && piece.type === 'king' && target) continue;
+
                             // Check for promotion
                             const isPromotion = piece.type === 'pawn' && (
                                 (piece.isWhite && endY === 0) ||
                                 (!piece.isWhite && endY === 7)
                             );
 
+                            const checkLegality = (testBoard) => {
+                                if (variant === 'atomic') {
+                                    let ownKingFound = false, oppKingFound = false;
+                                    for (let y = 0; y < 8; y++) {
+                                        for (let x = 0; x < 8; x++) {
+                                            const p = testBoard.getPiece(x, y);
+                                            if (p && p.type === 'king') {
+                                                if (p.isWhite === isWhiteTurn) ownKingFound = true;
+                                                else oppKingFound = true;
+                                            }
+                                        }
+                                    }
+                                    if (!ownKingFound) return false;
+                                    if (!oppKingFound) return true;
+                                }
+                                return !this.isKingInCheck(testBoard, isWhiteTurn, variant);
+                            };
+
                             if (isPromotion) {
                                 // Generate all 4 promotion options
                                 ['queen', 'rook', 'bishop', 'knight'].forEach(promo => {
-                                    // Verify move correctness with promotion
                                     const move = { startX, startY, endX, endY, promotion: promo };
-                                    const testBoard = this.makeMove(board, move);
-                                    if (!this.isKingInCheck(testBoard, isWhiteTurn)) {
+                                    const testBoard = this.makeMove(board, move, variant);
+                                    if (checkLegality(testBoard)) {
                                         moves.push(move);
                                     }
                                 });
                             } else {
                                 // Standard move
-                                const testBoard = this.makeMove(board, { startX, startY, endX, endY });
-                                if (!this.isKingInCheck(testBoard, isWhiteTurn)) {
+                                const testBoard = this.makeMove(board, { startX, startY, endX, endY }, variant);
+                                if (checkLegality(testBoard)) {
                                     moves.push({ startX, startY, endX, endY });
                                 }
                             }
@@ -161,50 +198,91 @@ class SimpleEngine {
     /**
      * Make a move on a board (returns new board)
      */
-    makeMove(board, move) {
+    makeMove(board, move, variant = 'standard') {
         const newBoard = new Board();
         // Deep copy the board
         for (let y = 0; y < 8; y++) {
             for (let x = 0; x < 8; x++) {
                 const piece = board.getPiece(x, y);
                 if (piece) {
-                    // Board grid is [x][y]
                     newBoard.grid[x][y] = new Piece(piece.isWhite, piece.type);
                 }
             }
         }
 
-        // Make the move
         const piece = newBoard.getPiece(move.startX, move.startY);
+        const capturedPiece = newBoard.getPiece(move.endX, move.endY);
 
-        // Handle promotion
         if (move.promotion) {
             piece.type = move.promotion;
         }
 
-        newBoard.setPiece(move.endX, move.endY, piece);
-        newBoard.setPiece(move.startX, move.startY, null);
+        if (variant === 'atomic' && capturedPiece) {
+            // Explosion
+            newBoard.setPiece(move.startX, move.startY, null);
+            newBoard.setPiece(move.endX, move.endY, null); // Capturing piece and captured piece are destroyed
+            
+            // Destroy adjacent pieces (except pawns)
+            for (let dx = -1; dx <= 1; dx++) {
+                for (let dy = -1; dy <= 1; dy++) {
+                    if (dx === 0 && dy === 0) continue;
+                    const nx = move.endX + dx;
+                    const ny = move.endY + dy;
+                    if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
+                        const adjPiece = newBoard.getPiece(nx, ny);
+                        if (adjPiece && adjPiece.type !== 'pawn') {
+                            newBoard.setPiece(nx, ny, null);
+                        }
+                    }
+                }
+            }
+        } else {
+            newBoard.setPiece(move.endX, move.endY, piece);
+            newBoard.setPiece(move.startX, move.startY, null);
+        }
 
         return newBoard;
     }
 
-    evaluateBoard(board) {
+    evaluateBoard(board, variant = 'standard') {
         let score = 0;
+        let whiteKing = null;
+        let blackKing = null;
+
         for (let y = 0; y < 8; y++) {
             for (let x = 0; x < 8; x++) {
                 const piece = board.getPiece(x, y);
                 if (piece) {
+                    if (piece.type === 'king') {
+                        if (piece.isWhite) whiteKing = {x, y};
+                        else blackKing = {x, y};
+                    }
                     const value = this.pieceValues[piece.type] || 0;
                     score += piece.isWhite ? value : -value;
                 }
             }
         }
+
+        if (variant === 'atomic') {
+            if (!whiteKing) return -20000;
+            if (!blackKing) return 20000;
+        }
+
+        if (variant === 'kingofthehill') {
+            if (whiteKing && (whiteKing.x === 3 || whiteKing.x === 4) && (whiteKing.y === 3 || whiteKing.y === 4)) {
+                return 20000; // White wins
+            }
+            if (blackKing && (blackKing.x === 3 || blackKing.x === 4) && (blackKing.y === 3 || blackKing.y === 4)) {
+                return -20000; // Black wins
+            }
+        }
+
         return score;
     }
 
-    minimax(board, depth, alpha, beta, isMaximizingPlayer, isWhiteTurn) {
+    minimax(board, depth, alpha, beta, isMaximizingPlayer, isWhiteTurn, variant = 'standard') {
         if (depth === 0) {
-            const evalScore = this.evaluateBoard(board);
+            const evalScore = this.evaluateBoard(board, variant);
             // If isWhiteTurn is true, positive score is good for White (Maximizing)
             // If isWhiteTurn is false, negative score is good for Black (Maximizing)
             // But minimax usually assumes MaximizingPlayer wants Positive score.
@@ -246,19 +324,19 @@ class SimpleEngine {
         // So root call handles Min/Max logic.
         // Recursive calls?
 
-        const moves = this.getLegalMovesForBoard(board, isMaximizingPlayer); // isMaximizingPlayer works as isWhite?
+        const moves = this.getLegalMovesForBoard(board, isMaximizingPlayer, variant); // isMaximizingPlayer works as isWhite?
 
         if (moves.length === 0) {
             // Checkmate or Stalemate?
             // Simplified: return static eval
-            return this.evaluateBoard(board);
+            return this.evaluateBoard(board, variant);
         }
 
         if (isMaximizingPlayer) { // White
             let maxEval = -Infinity;
             for (const move of moves) {
-                const newBoard = this.makeMove(board, move);
-                const evalVal = this.minimax(newBoard, depth - 1, alpha, beta, false, false);
+                const newBoard = this.makeMove(board, move, variant);
+                const evalVal = this.minimax(newBoard, depth - 1, alpha, beta, false, false, variant);
                 maxEval = Math.max(maxEval, evalVal);
                 alpha = Math.max(alpha, evalVal);
                 if (beta <= alpha) break;
@@ -267,8 +345,8 @@ class SimpleEngine {
         } else { // Black
             let minEval = Infinity;
             for (const move of moves) {
-                const newBoard = this.makeMove(board, move);
-                const evalVal = this.minimax(newBoard, depth - 1, alpha, beta, true);
+                const newBoard = this.makeMove(board, move, variant);
+                const evalVal = this.minimax(newBoard, depth - 1, alpha, beta, true, true, variant);
                 minEval = Math.min(minEval, evalVal);
                 beta = Math.min(beta, evalVal);
                 if (beta <= alpha) break;
@@ -279,13 +357,13 @@ class SimpleEngine {
     /**
      * Level -1: Get purely random move
      */
-    getRandomMove(fen, callback) {
+    getRandomMove(fen, callback, variant = 'standard') {
         try {
             const { board, isWhiteTurn } = this.parseFEN(fen);
-            const moves = this.getLegalMovesForBoard(board, isWhiteTurn);
+            const moves = this.getLegalMovesForBoard(board, isWhiteTurn, variant);
 
             // Debug logging
-            const inCheck = this.isKingInCheck(board, isWhiteTurn);
+            const inCheck = this.isKingInCheck(board, isWhiteTurn, variant);
             console.log(`[SimpleEngine] getRandomMove: ${isWhiteTurn ? 'White' : 'Black'} to move, inCheck=${inCheck}, legalMoves=${moves.length}`);
 
             if (moves.length === 0) {
@@ -310,10 +388,10 @@ class SimpleEngine {
     /**
      * Level 0: Get best move using 2-ply minimax
      */
-    getMinimaxMove(fen, callback, depth = 2) {
+    getMinimaxMove(fen, callback, depth = 2, variant = 'standard') {
         try {
             const { board, isWhiteTurn } = this.parseFEN(fen);
-            const moves = this.getLegalMovesForBoard(board, isWhiteTurn);
+            const moves = this.getLegalMovesForBoard(board, isWhiteTurn, variant);
 
             if (moves.length === 0) {
                 callback({ move: null, evaluation: 0 });
@@ -330,8 +408,8 @@ class SimpleEngine {
             let bestEval = isWhiteTurn ? -Infinity : Infinity;
 
             for (const move of moves) {
-                const newBoard = this.makeMove(board, move);
-                const evaluation = this.minimax(newBoard, depth - 1, -Infinity, Infinity, !isWhiteTurn, !isWhiteTurn);
+                const newBoard = this.makeMove(board, move, variant);
+                const evaluation = this.minimax(newBoard, depth - 1, -Infinity, Infinity, !isWhiteTurn, !isWhiteTurn, variant);
 
                 if (isWhiteTurn) {
                     if (evaluation > bestEval) {
@@ -521,7 +599,7 @@ class SimpleEngine {
             const allMoves = [...regularMoves, ...drops];
 
             if (allMoves.length === 0) {
-                const inCheck = this.isKingInCheck(board, isWhiteTurn);
+                const inCheck = this.isKingInCheck(board, isWhiteTurn, variant);
                 callback({ move: null, evaluation: inCheck ? -10000 : 0 });
                 return;
             }
@@ -550,7 +628,7 @@ class SimpleEngine {
 
             // Score regular moves with minimax
             for (const move of regularMoves) {
-                const newBoard = this.makeMove(board, move);
+                const newBoard = this.makeMove(board, move, variant);
                 const score = this.minimax(newBoard, 1, -Infinity, Infinity, !isWhiteTurn, !isWhiteTurn);
 
                 if ((isWhiteTurn && score > bestScore) || (!isWhiteTurn && score < bestScore)) {

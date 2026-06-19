@@ -543,7 +543,7 @@ class ComputerPlayer {
                 console.log(`[COMPUTER] Level -1 (random), thinking for ${thinkDelay}ms (base + 1s bonus)`);
 
                 setTimeout(() => {
-                    this.simpleEngine.getRandomMove(fen, callback);
+                    this.simpleEngine.getRandomMove(fen, callback, variant);
                 }, thinkDelay);
             } else {
                 // Level 0: time the actual minimax calculation, then wait 5000x that duration
@@ -557,7 +557,7 @@ class ComputerPlayer {
                     setTimeout(() => {
                         callback(result);
                     }, waitTime);
-                }, 2);
+                }, 2, variant);
             }
             return;
         }
