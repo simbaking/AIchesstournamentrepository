@@ -1601,13 +1601,19 @@ class ChessGame {
                         }
                         const bestMove = selectedMove.move;
 
-                        // Add artificial thinking delay: 5x the consistency time that
-                        // higher-level computers use for their thinking threshold
-                        // Formula: max(50, floor(remainingTime / divisor)) * 5
-                        const divisor = (this.variant === 'kungfu') ? 1000 : 250;
-                        const consistencyTime = Math.max(50, Math.floor(currentTimeRemaining / divisor));
-                        const thinkDelay = consistencyTime * 5;
-                        console.log(`[COMPUTER] Level ${computer.level}: Selected move ${bestMove}, thinking for ${thinkDelay}ms (consistency=${consistencyTime}ms × 5)`);
+                        // Add artificial thinking delay.
+                        // Level -1 (random): proportional delay + 1s bonus, matching ComputerPlayer.js formula.
+                        // Level 0: proportional to remaining time to simulate a "slow" player.
+                        let thinkDelay;
+                        if (computer.level === -1) {
+                            const divisor = (this.variant === 'kungfu') ? 1000 : 250;
+                            thinkDelay = Math.max(100, Math.floor(currentTimeRemaining / divisor) * 2) + 1000;
+                        } else {
+                            const divisor = (this.variant === 'kungfu') ? 1000 : 250;
+                            const consistencyTime = Math.max(50, Math.floor(currentTimeRemaining / divisor));
+                            thinkDelay = consistencyTime * 5;
+                        }
+                        console.log(`[COMPUTER] Level ${computer.level}: Selected move ${bestMove}, thinking for ${thinkDelay}ms`);
 
                         setTimeout(() => {
                             if (this.isGameOver) return;
