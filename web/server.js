@@ -572,9 +572,9 @@ app.post('/api/reset', (req, res) => {
     tournament.reset();
     activeGames.clear();
 
-    if (tournamentMonitorInterval) clearInterval(tournamentMonitorInterval);
-    if (autoMatchmakingInterval) clearInterval(autoMatchmakingInterval);
-    if (timeoutMonitorInterval) clearInterval(timeoutMonitorInterval);
+    if (tournamentMonitorInterval) { clearInterval(tournamentMonitorInterval); tournamentMonitorInterval = null; }
+    if (autoMatchmakingInterval) { clearInterval(autoMatchmakingInterval); autoMatchmakingInterval = null; }
+    if (timeoutMonitorInterval) { clearInterval(timeoutMonitorInterval); timeoutMonitorInterval = null; }
 
     console.log('Tournament reset via API');
     res.json({ success: true, message: 'Tournament reset successfully' });
@@ -613,8 +613,8 @@ app.post('/api/clear-scores', (req, res) => {
     tournament.isRunning = false;
     activeGames.clear();
 
-    if (tournamentMonitorInterval) clearInterval(tournamentMonitorInterval);
-    if (autoMatchmakingInterval) clearInterval(autoMatchmakingInterval);
+    if (tournamentMonitorInterval) { clearInterval(tournamentMonitorInterval); tournamentMonitorInterval = null; }
+    if (autoMatchmakingInterval) { clearInterval(autoMatchmakingInterval); autoMatchmakingInterval = null; }
 
     console.log('Scores cleared via API, players kept');
     res.json({ success: true, message: 'Scores cleared successfully' });
@@ -653,8 +653,8 @@ app.post('/api/start', (req, res) => {
     tournament.startTournament(durationMs, variantsAllowed, specificVariants);
 
     // Start tournament monitor to end games when tournament expires
-    if (tournamentMonitorInterval) clearInterval(tournamentMonitorInterval);
-    if (autoMatchmakingInterval) clearInterval(autoMatchmakingInterval);
+    if (tournamentMonitorInterval) { clearInterval(tournamentMonitorInterval); tournamentMonitorInterval = null; }
+    if (autoMatchmakingInterval) { clearInterval(autoMatchmakingInterval); autoMatchmakingInterval = null; }
 
     tournamentMonitorInterval = setInterval(() => {
         const isRunning = tournament.checkIsRunning();
@@ -709,12 +709,20 @@ app.post('/api/start', (req, res) => {
     // Timeout Monitor: Check for flagged games every second
     if (timeoutMonitorInterval) clearInterval(timeoutMonitorInterval);
     timeoutMonitorInterval = setInterval(() => {
-        if (activeGames.size > 0) {
-            for (const [gameId, game] of activeGames.entries()) {
-                if (!game.isGameOver) {
-                    game.checkTimeout();
+        try {
+            if (activeGames.size > 0) {
+                for (const [gameId, game] of activeGames.entries()) {
+                    if (!game.isGameOver) {
+                        try {
+                            game.checkTimeout();
+                        } catch (err) {
+                            console.error(`[TIMEOUT MONITOR] Error checking timeout for game ${gameId}:`, err);
+                        }
+                    }
                 }
             }
+        } catch (e) {
+            console.error('[TIMEOUT MONITOR] Global error:', e);
         }
     }, 1000);
 
@@ -937,6 +945,10 @@ app.post('/api/offers/create', (req, res) => {
 
     if (player.isBusy()) {
         return res.status(400).json({ error: 'Player is currently in a game' });
+    }
+
+    if (gameOffers.some(o => o.player === player1)) {
+        return res.status(400).json({ error: 'Player already has a pending offer' });
     }
 
     // enforce variant restrictions - check against specific allowed variants

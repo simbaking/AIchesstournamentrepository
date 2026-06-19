@@ -1,250 +1,5 @@
-// Chess piece classes
-class Piece {
-    constructor(isWhite, type) {
-        this.isWhite = isWhite;
-        this.type = type;
-    }
-
-    getSymbol() {
-        const symbols = {
-            'king': this.isWhite ? 'K' : 'k',
-            'queen': this.isWhite ? 'Q' : 'q',
-            'rook': this.isWhite ? 'R' : 'r',
-            'bishop': this.isWhite ? 'B' : 'b',
-            'knight': this.isWhite ? 'N' : 'n',
-            'pawn': this.isWhite ? 'P' : 'p'
-        };
-        return symbols[this.type];
-    }
-
-    getUnicode() {
-        const symbols = {
-            'king': this.isWhite ? '♔' : '♚',
-            'queen': this.isWhite ? '♕' : '♛',
-            'rook': this.isWhite ? '♖' : '♜',
-            'bishop': this.isWhite ? '♗' : '♝',
-            'knight': this.isWhite ? '♘' : '♞',
-            'pawn': this.isWhite ? '♙' : '♟'
-        };
-        return symbols[this.type];
-    }
-
-    isPathClear(board, startX, startY, endX, endY) {
-        const dx = Math.sign(endX - startX);
-        const dy = Math.sign(endY - startY);
-
-        let x = startX + dx;
-        let y = startY + dy;
-
-        while (x !== endX || y !== endY) {
-            if (board.getPiece(x, y)) {
-                return false;
-            }
-            x += dx;
-            y += dy;
-        }
-        return true;
-    }
-
-    isValidMove(board, startX, startY, endX, endY) {
-        // Check if destination has same color piece
-        const destPiece = board.getPiece(endX, endY);
-        if (destPiece && destPiece.isWhite === this.isWhite) {
-            return false;
-        }
-
-        switch (this.type) {
-            case 'king':
-                return Math.abs(startX - endX) <= 1 && Math.abs(startY - endY) <= 1;
-
-            case 'queen':
-                if (startX === endX || startY === endY || Math.abs(startX - endX) === Math.abs(startY - endY)) {
-                    return this.isPathClear(board, startX, startY, endX, endY);
-                }
-                return false;
-
-            case 'rook':
-                if (startX === endX || startY === endY) {
-                    return this.isPathClear(board, startX, startY, endX, endY);
-                }
-                return false;
-
-            case 'bishop':
-                if (Math.abs(startX - endX) === Math.abs(startY - endY)) {
-                    return this.isPathClear(board, startX, startY, endX, endY);
-                }
-                return false;
-
-            case 'knight':
-                const dx = Math.abs(startX - endX);
-                const dy = Math.abs(startY - endY);
-                return dx * dy === 2;
-
-            case 'pawn':
-                const direction = this.isWhite ? -1 : 1;
-                // Forward move
-                if (startX === endX && endY === startY + direction && !destPiece) {
-                    return true;
-                }
-                // Initial 2 square move
-                if (startX === endX && endY === startY + 2 * direction && !destPiece) {
-                    if ((this.isWhite && startY === 6) || (!this.isWhite && startY === 1)) {
-                        // Check if path is clear (the square in between)
-                        return !board.getPiece(startX, startY + direction);
-                    }
-                }
-                // Capture diagonally
-                if (Math.abs(startX - endX) === 1 && endY === startY + direction && destPiece) {
-                    return true;
-                }
-                return false;
-
-            default:
-                return false;
-        }
-    }
-}
-
-// Chess board
-class Board {
-    constructor() {
-        this.grid = Array(8).fill(null).map(() => Array(8).fill(null));
-        this.setupBoard();
-    }
-
-    setupBoard() {
-        // Black pieces (top)
-        this.grid[0][0] = new Piece(false, 'rook');
-        this.grid[1][0] = new Piece(false, 'knight');
-        this.grid[2][0] = new Piece(false, 'bishop');
-        this.grid[3][0] = new Piece(false, 'queen');
-        this.grid[4][0] = new Piece(false, 'king');
-        this.grid[5][0] = new Piece(false, 'bishop');
-        this.grid[6][0] = new Piece(false, 'knight');
-        this.grid[7][0] = new Piece(false, 'rook');
-        for (let i = 0; i < 8; i++) {
-            this.grid[i][1] = new Piece(false, 'pawn');
-        }
-
-        // White pieces (bottom)
-        this.grid[0][7] = new Piece(true, 'rook');
-        this.grid[1][7] = new Piece(true, 'knight');
-        this.grid[2][7] = new Piece(true, 'bishop');
-        this.grid[3][7] = new Piece(true, 'queen');
-        this.grid[4][7] = new Piece(true, 'king');
-        this.grid[5][7] = new Piece(true, 'bishop');
-        this.grid[6][7] = new Piece(true, 'knight');
-        this.grid[7][7] = new Piece(true, 'rook');
-        for (let i = 0; i < 8; i++) {
-            this.grid[i][6] = new Piece(true, 'pawn');
-        }
-    }
-
-    setup960Board(whitePieces) {
-        // Clear board
-        this.grid = Array(8).fill(null).map(() => Array(8).fill(null));
-
-        // Setup Pawns
-        for (let i = 0; i < 8; i++) {
-            this.grid[i][1] = new Piece(false, 'pawn');
-            this.grid[i][6] = new Piece(true, 'pawn');
-        }
-
-        // Setup Back Ranks
-        for (let i = 0; i < 8; i++) {
-            // White pieces
-            this.grid[i][7] = new Piece(true, whitePieces[i]);
-            // Black pieces (mirrored)
-            this.grid[i][0] = new Piece(false, whitePieces[i]);
-        }
-    }
-
-    getPiece(x, y) {
-        if (x < 0 || x > 7 || y < 0 || y > 7) return null;
-        return this.grid[x][y];
-    }
-
-    setPiece(x, y, piece) {
-        this.grid[x][y] = piece;
-    }
-
-    movePiece(startX, startY, endX, endY, promotionPiece = 'queen') {
-        const piece = this.getPiece(startX, startY);
-        if (!piece) return { success: false, message: 'No piece at start position' };
-
-        if (!piece.isValidMove(this, startX, startY, endX, endY)) {
-            return { success: false, message: 'Invalid move' };
-        }
-
-        const capturedPiece = this.getPiece(endX, endY);
-        this.grid[endX][endY] = piece;
-        this.grid[startX][startY] = null;
-
-        // Pawn Promotion
-        if (piece.type === 'pawn') {
-            if ((piece.isWhite && endY === 0) || (!piece.isWhite && endY === 7)) {
-                piece.type = promotionPiece;
-                piece.wasPromoted = true; // Track for Crazyhouse (reverts to pawn when captured)
-            }
-        }
-
-        return {
-            success: true,
-            captured: capturedPiece ? {
-                type: capturedPiece.type,
-                isWhite: capturedPiece.isWhite
-            } : null
-        };
-    }
-
-    toFEN(isWhiteTurn) {
-        let fen = '';
-        for (let y = 0; y < 8; y++) {
-            let emptyCount = 0;
-            for (let x = 0; x < 8; x++) {
-                const piece = this.grid[x][y];
-                if (piece) {
-                    if (emptyCount > 0) {
-                        fen += emptyCount;
-                        emptyCount = 0;
-                    }
-                    fen += piece.getSymbol();
-                } else {
-                    emptyCount++;
-                }
-            }
-            if (emptyCount > 0) {
-                fen += emptyCount;
-            }
-            if (y < 7) fen += '/';
-        }
-
-        fen += isWhiteTurn ? ' w ' : ' b ';
-        fen += '- - 0 1'; // Default castling, en passant, clocks
-        return fen;
-    }
-
-    toJSON() {
-        return this.grid.map(row => row.map(piece => {
-            if (!piece) return null;
-            return {
-                type: piece.type,
-                isWhite: piece.isWhite,
-                symbol: piece.getSymbol(),
-                unicode: piece.getUnicode()
-            };
-        }));
-    }
-
-    static fromJSON(data) {
-        const board = new Board();
-        board.grid = data.map(row => row.map(pieceData => {
-            if (!pieceData) return null;
-            return new Piece(pieceData.isWhite, pieceData.type);
-        }));
-        return board;
-    }
-}
+const Piece = require('./core/Piece');
+const Board = require('./core/Board');
 
 // Chess game manager
 class ChessGame {
@@ -265,16 +20,23 @@ class ChessGame {
 
         console.log(`[ChessGame] Constructor called with variant: "${variant}", startPos: "${startPos}", cooldown: ${cooldownSeconds}s`);
 
-        if (this.variant === 'freestyle') {
-            console.log('[ChessGame] Freestyle mode detected, generating 960 position...');
-            const position = this.generate960Position(startPos);
-            console.log('[ChessGame] Generated position:', position);
-            this.board.setup960Board(position);
-            console.log('[ChessGame] Board setup complete with 960 position');
-        } else {
-            console.log('[ChessGame] Standard mode, using setupBoard()');
-            this.board.setupBoard();
+        const Standard = require('./variants/Standard');
+        const Atomic = require('./variants/Atomic');
+        const Crazyhouse = require('./variants/Crazyhouse');
+        const KungFu = require('./variants/KungFu');
+        const KingOfTheHill = require('./variants/KingOfTheHill');
+        const Chess960 = require('./variants/Chess960');
+
+        switch (this.variant) {
+            case 'atomic': this.variantStrategy = new Atomic(this); break;
+            case 'crazyhouse': this.variantStrategy = new Crazyhouse(this); break;
+            case 'kungfu': this.variantStrategy = new KungFu(this); break;
+            case 'kingofthehill': this.variantStrategy = new KingOfTheHill(this); break;
+            case 'freestyle': this.variantStrategy = new Chess960(this); break;
+            default: this.variantStrategy = new Standard(this); break;
         }
+
+        this.variantStrategy.setupBoard();
 
         this.isWhiteTurn = true;
         this.startTime = Date.now();
@@ -323,11 +85,6 @@ class ChessGame {
         this.blackKingsideRookMoved = false;
         this.blackQueensideRookMoved = false;
 
-        // Store initial rook positions for 960 validation
-        if (this.variant === 'freestyle') {
-            this.findInitialRookPositions();
-        }
-
         // En passant tracking
         this.lastMove = null; // Stores {startX, startY, endX, endY, piece}
 
@@ -338,40 +95,6 @@ class ChessGame {
         // Crazyhouse reserves (pocket) - pieces that can be dropped
         this.whiteReserve = []; // Pieces white can drop (captured from black)
         this.blackReserve = []; // Pieces black can drop (captured from white)
-    }
-
-    findInitialRookPositions() {
-        // Find rooks relative to king for 960 castling rights
-        // In 960, "Kingside" is the rook to the right of the king, "Queenside" to the left.
-        // We need to store their starting FILES.
-
-        const getRooks = (isWhite) => {
-            const row = isWhite ? 7 : 0;
-            let kingFile = -1;
-            for (let i = 0; i < 8; i++) {
-                const p = this.board.getPiece(i, row);
-                if (p && p.type === 'king') kingFile = i;
-            }
-
-            // Find rook to the left (queenside) and right (kingside)
-            // Note: In 960, there is always one rook to left and one to right.
-            let qsRookFile = -1;
-            let ksRookFile = -1;
-
-            for (let i = 0; i < 8; i++) {
-                const p = this.board.getPiece(i, row);
-                if (p && p.type === 'rook' && p.isWhite === isWhite) {
-                    if (i < kingFile) qsRookFile = i;
-                    else if (i > kingFile) ksRookFile = i;
-                }
-            }
-            return { ks: ksRookFile, qs: qsRookFile };
-        };
-
-        const w = getRooks(true);
-        const b = getRooks(false);
-        this.whiteRookFiles = w;
-        this.blackRookFiles = b;
     }
 
     get960Position(id) {
@@ -468,13 +191,8 @@ class ChessGame {
                     this.computerPlayers.white = new ComputerPlayer(level);
                     this.computerPlayers.whiteIsShared = false;
                 }
-                // Enable Chess960 mode for Freestyle games
-                if (this.variant === 'freestyle') {
-                    setTimeout(() => {
-                        if (this.computerPlayers.white) {
-                            this.computerPlayers.white.setChess960Mode(true);
-                        }
-                    }, 300); // Wait for Stockfish to initialize
+                if (this.variantStrategy.setupComputerPlayer) {
+                    this.variantStrategy.setupComputerPlayer(this.computerPlayers.white);
                 }
             } else {
                 this.computerPlayers.white = null;
@@ -493,13 +211,8 @@ class ChessGame {
                     this.computerPlayers.black = new ComputerPlayer(level);
                     this.computerPlayers.blackIsShared = false;
                 }
-                // Enable Chess960 mode for Freestyle games
-                if (this.variant === 'freestyle') {
-                    setTimeout(() => {
-                        if (this.computerPlayers.black) {
-                            this.computerPlayers.black.setChess960Mode(true);
-                        }
-                    }, 300); // Wait for Stockfish to initialize
+                if (this.variantStrategy.setupComputerPlayer) {
+                    this.variantStrategy.setupComputerPlayer(this.computerPlayers.black);
                 }
             } else {
                 this.computerPlayers.black = null;
@@ -511,15 +224,9 @@ class ChessGame {
     startGame() {
         console.log(`startGame called. White: ${this.whitePlayerType}, Black: ${this.blackPlayerType}, Variant: ${this.variant}`);
 
-        // Kung Fu Chess: Start continuous move loops for computer players
-        if (this.variant === 'kungfu') {
-            if (this.whitePlayerType === 'computer' && this.computerPlayers.white) {
-                this.startKungFuComputerLoop('white');
-            }
-            if (this.blackPlayerType === 'computer' && this.computerPlayers.black) {
-                this.startKungFuComputerLoop('black');
-            }
-            return;
+        if (this.variantStrategy.startGameHook) {
+            const handled = this.variantStrategy.startGameHook();
+            if (handled) return;
         }
 
         // Standard chess: Wait for all Stockfish workers to be ready before scheduling
@@ -625,179 +332,22 @@ class ChessGame {
         setTimeout(makeNextMove, initialDelay);
     }
 
-    // Check if a move is a castling attempt
     isCastlingMove(startX, startY, endX, endY) {
+        if (this.variantStrategy.isCastlingMove) {
+            return this.variantStrategy.isCastlingMove(startX, startY, endX, endY);
+        }
+        // Default fallback (Standard)
         const piece = this.board.getPiece(startX, startY);
         if (!piece || piece.type !== 'king') return false;
-
-        // Must be on the same rank
         if (startY !== endY) return false;
-
-        if (this.variant === 'standard') {
-            return Math.abs(endX - startX) === 2;
-        } else {
-            // In 960, castling is indicated by King capturing own Rook
-            const target = this.board.getPiece(endX, endY);
-            if (target && target.type === 'rook' && target.isWhite === piece.isWhite) {
-                return true;
-            }
-            // Also support standard-like click behavior: moving King to G or C file
-            // BUT only if it's more than 1 square away (to avoid treating normal
-            // king moves like f1->g1 as castling)
-            const isKingsideDest = (endX === 6);
-            const isQueensideDest = (endX === 2);
-            if ((isKingsideDest || isQueensideDest) && Math.abs(endX - startX) > 1) return true;
-
-            return false;
-        }
+        return Math.abs(endX - startX) === 2;
     }
 
-    // Check if castling is legal
     canCastle(isWhite, isKingside) {
-        if (this.variant === 'freestyle') {
-            if (isWhite && this.whiteKingMoved) return false;
-            if (!isWhite && this.blackKingMoved) return false;
-
-            const files = isWhite ? this.whiteRookFiles : this.blackRookFiles;
-            const rookFile = isKingside ? files.ks : files.qs;
-            if (rookFile === -1) return false;
-
-            if (isWhite && isKingside && this.whiteKingsideRookMoved) return false;
-            if (isWhite && !isKingside && this.whiteQueensideRookMoved) return false;
-            if (!isWhite && isKingside && this.blackKingsideRookMoved) return false;
-            if (!isWhite && !isKingside && this.blackQueensideRookMoved) return false;
-
-            const rank = isWhite ? 7 : 0;
-            const kingFile = this.getKingFile(isWhite, rank);
-
-            // 960 Castling destinations
-            const destKingX = isKingside ? 6 : 2;
-            const destRookX = isKingside ? 5 : 3;
-
-            // ALL squares that the king and rook travel through (and land on)
-            // must be empty, except for the king and rook themselves.
-            // This covers: king start..dest, rook start..dest, and everything in between.
-            const allMin = Math.min(kingFile, rookFile, destKingX, destRookX);
-            const allMax = Math.max(kingFile, rookFile, destKingX, destRookX);
-            for (let i = allMin; i <= allMax; i++) {
-                if (i === kingFile || i === rookFile) continue; // King and rook are expected
-                const p = this.board.getPiece(i, rank);
-                if (p) return false; // Any other piece blocks castling
-            }
-
-            // King must not be in check, pass through check, or end in check.
-            const checkStart = Math.min(kingFile, destKingX);
-            const checkEnd = Math.max(kingFile, destKingX);
-            for (let i = checkStart; i <= checkEnd; i++) {
-                if (this.isSquareAttacked(i, rank, !isWhite)) return false;
-            }
-
-            return true;
-
-        } else {
-            // Standard Logic ...
-            if (isWhite && this.whiteKingMoved) return false;
-            if (!isWhite && this.blackKingMoved) return false;
-
-            // Check if rook has moved
-            if (isWhite && isKingside && this.whiteKingsideRookMoved) return false;
-            if (isWhite && !isKingside && this.whiteQueensideRookMoved) return false;
-            if (!isWhite && isKingside && this.blackKingsideRookMoved) return false;
-            if (!isWhite && !isKingside && this.blackQueensideRookMoved) return false;
-
-            const rank = isWhite ? 7 : 0;
-            const kingX = 4;
-            const rookX = isKingside ? 7 : 0;
-
-            // Check if king is in its starting position
-            const king = this.board.getPiece(kingX, rank);
-            if (!king || king.type !== 'king' || king.isWhite !== isWhite) return false;
-
-            // Check if rook is in its starting position
-            const rook = this.board.getPiece(rookX, rank);
-            if (!rook || rook.type !== 'rook' || rook.isWhite !== isWhite) return false;
-
-            // Check if path is clear
-            const start = Math.min(kingX, rookX) + 1;
-            const end = Math.max(kingX, rookX);
-            for (let x = start; x < end; x++) {
-                if (this.board.getPiece(x, rank)) return false;
-            }
-
-            // Check if king is in check
-            if (this.isKingInCheck(isWhite)) return false;
-
-            // Check if king passes through check
-            const direction = isKingside ? 1 : -1;
-            for (let i = 1; i <= 2; i++) {
-                const testX = kingX + (i * direction);
-                // Simulate king at this position
-                this.board.setPiece(testX, rank, king);
-                this.board.setPiece(kingX, rank, null);
-                const inCheck = this.isKingInCheck(isWhite);
-                // Restore
-                this.board.setPiece(kingX, rank, king);
-                this.board.setPiece(testX, rank, null);
-
-                if (inCheck) return false;
-            }
-
-            return true;
+        if (this.variantStrategy.canCastle) {
+            return this.variantStrategy.canCastle(isWhite, isKingside);
         }
-    }
-
-    // ==================== ATOMIC CHESS METHODS ====================
-
-    // Get all adjacent squares (8 surrounding squares)
-    getAdjacentSquares(x, y) {
-        const adjacent = [];
-        for (let dx = -1; dx <= 1; dx++) {
-            for (let dy = -1; dy <= 1; dy++) {
-                if (dx === 0 && dy === 0) continue;
-                const nx = x + dx;
-                const ny = y + dy;
-                if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
-                    adjacent.push({ x: nx, y: ny });
-                }
-            }
-        }
-        return adjacent;
-    }
-
-    // Perform an atomic explosion at the given square
-    // Returns { explodedPieces: [], kingExploded: 'white'|'black'|null }
-    performExplosion(x, y, capturingPieceIsWhite) {
-        const explodedPieces = [];
-        let kingExploded = null;
-
-        // Explode the capturing piece (already at destination after move)
-        const capturingPiece = this.board.getPiece(x, y);
-        if (capturingPiece) {
-            explodedPieces.push({ ...capturingPiece, x, y, role: 'capturer' });
-            this.board.setPiece(x, y, null);
-        }
-
-        // Explode all adjacent pieces (except pawns)
-        const adjacent = this.getAdjacentSquares(x, y);
-        for (const sq of adjacent) {
-            const piece = this.board.getPiece(sq.x, sq.y);
-            if (piece) {
-                // Pawns are immune to explosions (unless directly captured)
-                if (piece.type === 'pawn') continue;
-
-                explodedPieces.push({ ...piece, x: sq.x, y: sq.y, role: 'collateral' });
-
-                // Check if a king was exploded
-                if (piece.type === 'king') {
-                    kingExploded = piece.isWhite ? 'white' : 'black';
-                }
-
-                this.board.setPiece(sq.x, sq.y, null);
-            }
-        }
-
-        console.log(`[ATOMIC] Explosion at (${x},${y}): ${explodedPieces.length} pieces destroyed, kingExploded=${kingExploded}`);
-        return { explodedPieces, kingExploded };
+        return false;
     }
 
 
@@ -898,6 +448,11 @@ class ChessGame {
             game.setPlayerType('black', 'computer', data.computerLevels.black);
         }
 
+        // Restore any running computers
+        if (!game.isGameOver) {
+            game.scheduleNextComputerMove();
+        }
+
         return game;
     }
 
@@ -909,6 +464,38 @@ class ChessGame {
 
         const targetPiece = this.board.getPiece(endX, endY);
         return targetPiece !== null; // King is trying to capture something
+    }
+
+    wouldExplodeOwnKing(startX, startY, endX, endY) {
+        // Simulate move
+        const piece = this.board.getPiece(startX, startY);
+        const capturedPiece = this.board.getPiece(endX, endY);
+        
+        this.board.setPiece(endX, endY, piece);
+        this.board.setPiece(startX, startY, null);
+        
+        let explodesKing = false;
+        if (capturedPiece) {
+            // Check adjacent squares of endX, endY for own king
+            const adjacent = this.getAdjacentSquares(endX, endY);
+            for (const sq of adjacent) {
+                const adjPiece = this.board.getPiece(sq.x, sq.y);
+                if (adjPiece && adjPiece.type === 'king' && adjPiece.isWhite === piece.isWhite) {
+                    explodesKing = true;
+                    break;
+                }
+            }
+            // Check if the moving piece itself is the king (capturer explodes)
+            if (piece.type === 'king') {
+                explodesKing = true;
+            }
+        }
+        
+        // Undo move
+        this.board.setPiece(startX, startY, piece);
+        this.board.setPiece(endX, endY, capturedPiece);
+        
+        return explodesKing;
     }
 
 
@@ -925,8 +512,9 @@ class ChessGame {
             return { success: false, error: `Player ${player} is not in this game (players: ${this.player1}, ${this.player2})` };
         }
 
-        if (this.variant !== 'kungfu' && isWhite !== this.isWhiteTurn) {
-            return { success: false, error: 'Not your turn' };
+        const turnError = this.variantStrategy.checkTurn(isWhite);
+        if (turnError) {
+            return { success: false, error: turnError };
         }
 
         const piece = this.board.getPiece(fromFile, fromRank);
@@ -938,13 +526,10 @@ class ChessGame {
             return { success: false, error: 'Cannot move opponent piece' };
         }
 
-        // 2. Cooldown Check (Kung Fu Only)
-        if (this.variant === 'kungfu') {
-            const key = `${fromFile},${fromRank}`;
-            const cooldown = this.cooldowns.get(key);
-            if (cooldown && Date.now() < cooldown) {
-                return { success: false, error: 'Piece is on cooldown' };
-            }
+        // 2. Custom validation hook for variants (Atomic, KungFu cooldowns, etc.)
+        if (this.variantStrategy.validateMove) {
+            const error = this.variantStrategy.validateMove(fromFile, fromRank, toFile, toRank, isWhite);
+            if (error) return { success: false, error };
         }
 
         // 3. Move Legality
@@ -966,29 +551,16 @@ class ChessGame {
             }
         }
 
-        // Note: King-in-check validation is handled inside executeMove()
 
-        // ATOMIC: King cannot capture (would explode itself)
-        if (this.variant === 'atomic' && this.isAtomicKingCapture(fromFile, fromRank, toFile, toRank)) {
-            return { success: false, error: 'In Atomic Chess, kings cannot capture' };
-        }
-
-        // ATOMIC: Cannot make a move that would explode own king
-        if (this.variant === 'atomic' && this.wouldExplodeOwnKing(fromFile, fromRank, toFile, toRank)) {
-            return { success: false, error: 'Move would explode your own king' };
-        }
 
         // 4. Execute Move
         const targetPiece = this.board.getPiece(toFile, toRank);
 
-        // Handle King Capture (Kung Fu Win Condition)
-        if (this.variant === 'kungfu' && targetPiece && targetPiece.type === 'king') {
-            this.board.movePiece(fromFile, fromRank, toFile, toRank);
-            this.isGameOver = true;
-            this.winner = isWhite ? this.player1 : this.player2;
-            this.termination = 'king_capture';
-            this.onGameOver({ winner: this.winner, reason: 'king_capture' });
-            return { success: true, isGameOver: true, winner: this.winner };
+        // Handle special King Capture (Kung Fu Win Condition)
+        if (this.variantStrategy.handleKingCapture) {
+            if (this.variantStrategy.handleKingCapture(fromFile, fromRank, toFile, toRank, targetPiece, isWhite)) {
+                return { success: true, isGameOver: true, winner: this.winner };
+            }
         }
 
         // Standard execution — pass validated castling side to executeMove
@@ -1001,9 +573,8 @@ class ChessGame {
         }
 
         // 5. Post-Move Updates
-        if (this.variant === 'kungfu') {
-            const destKey = `${toFile},${toRank}`;
-            this.cooldowns.set(destKey, Date.now() + this.cooldownMs);
+        if (this.variantStrategy.onMoveSuccess) {
+            this.variantStrategy.onMoveSuccess(fromFile, fromRank, toFile, toRank, isWhite);
         }
         // Note: Turn toggle is handled in executeMove(), not here
 
@@ -1020,108 +591,15 @@ class ChessGame {
      * @returns {object} Result with success flag and message
      */
     dropPiece(pieceType, x, y, playerName) {
-        // Only allowed in Crazyhouse
-        if (this.variant !== 'crazyhouse') {
-            return { success: false, message: 'Drop moves only allowed in Crazyhouse' };
+        if (!this.variantStrategy.supportsDrops()) {
+            return { success: false, message: 'Drop moves not supported in this variant' };
         }
 
-        if (this.isGameOver) {
-            return { success: false, message: 'Game is over' };
+        if (this.variantStrategy.dropPiece) {
+            return this.variantStrategy.dropPiece(pieceType, x, y, playerName);
         }
 
-        // Determine if player is white or black
-        const isWhite = playerName === this.player1;
-        const isBlack = playerName === this.player2;
-
-        if (!isWhite && !isBlack) {
-            return { success: false, message: 'Unknown player' };
-        }
-
-        // Check if it's the player's turn
-        if ((isWhite && !this.isWhiteTurn) || (isBlack && this.isWhiteTurn)) {
-            return { success: false, message: 'Not your turn' };
-        }
-
-        // Get the appropriate reserve
-        const reserve = isWhite ? this.whiteReserve : this.blackReserve;
-
-        // Check if piece exists in reserve
-        const pieceIndex = reserve.indexOf(pieceType);
-        if (pieceIndex === -1) {
-            return { success: false, message: `No ${pieceType} in reserve` };
-        }
-
-        // Check if target square is empty
-        if (this.board.getPiece(x, y) !== null) {
-            return { success: false, message: 'Target square is not empty' };
-        }
-
-        // Pawn restrictions: can't drop on 1st or 8th rank
-        if (pieceType === 'pawn') {
-            if (y === 0 || y === 7) {
-                return { success: false, message: 'Pawns cannot be dropped on the first or eighth rank' };
-            }
-        }
-
-        // Remove from reserve
-        reserve.splice(pieceIndex, 1);
-
-        // Place piece on board
-        const newPiece = new Piece(isWhite, pieceType);
-        this.board.setPiece(x, y, newPiece);
-
-        // Check if this leaves own king in check (shouldn't happen but validate)
-        if (this.isKingInCheck(isWhite)) {
-            // Undo drop
-            this.board.setPiece(x, y, null);
-            reserve.push(pieceType);
-            return { success: false, message: 'Drop would leave king in check' };
-        }
-
-        // Record the drop move
-        const dropNotation = `${pieceType.charAt(0).toUpperCase()}@${String.fromCharCode(97 + x)}${8 - y}`;
-        this.moveHistory.push({
-            drop: true,
-            pieceType,
-            x,
-            y,
-            player: playerName,
-            notation: dropNotation
-        });
-
-        // Toggle turn
-        this.isWhiteTurn = !this.isWhiteTurn;
-        this.lastMoveTime = Date.now();
-
-        // Check for checkmate or stalemate
-        const nextPlayerIsWhite = this.isWhiteTurn;
-
-        if (this.isCheckmate(nextPlayerIsWhite)) {
-            this.isGameOver = true;
-            this.winner = nextPlayerIsWhite ? this.player2 : this.player1;
-            this.termination = 'checkmate';
-            console.log(`Checkmate by drop! ${this.winner} wins!`);
-            if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'checkmate' });
-            this.cleanup();
-            return { success: true, gameOver: true, winner: this.winner, reason: 'checkmate' };
-        }
-
-        if (this.isStalemate(nextPlayerIsWhite)) {
-            this.isGameOver = true;
-            this.winner = null;
-            this.termination = 'stalemate';
-            console.log('Stalemate after drop! Game is a draw.');
-            if (this.onGameOver) this.onGameOver({ winner: null, reason: 'stalemate' });
-            this.cleanup();
-            return { success: true, gameOver: true, winner: null, reason: 'stalemate' };
-        }
-
-        // Schedule computer move if next player is computer
-        if (!this.isGameOver) {
-            this.scheduleComputerMove();
-        }
-
-        return { success: true, gameOver: false };
+        return { success: false, message: 'Drop logic not implemented for this variant' };
     }
 
     getKingFile(isWhite, rank) {
@@ -1247,9 +725,8 @@ class ChessGame {
         if (castlingSide) {
             const isCastlingKingside = castlingSide === 'kingside';
 
-            if (this.variant === 'freestyle') {
-                const files = piece.isWhite ? this.whiteRookFiles : this.blackRookFiles;
-                rookStartX = isCastlingKingside ? files.ks : files.qs;
+            if (this.variantStrategy.getRookStartX) {
+                rookStartX = this.variantStrategy.getRookStartX(piece.isWhite, isCastlingKingside);
             } else {
                 rookStartX = isCastlingKingside ? 7 : 0;
             }
@@ -1324,16 +801,21 @@ class ChessGame {
                 if (capturedPawnForEnPassant) {
                     if (piece.isWhite) {
                         this.capturedByWhite.push({ type: 'pawn', isWhite: false });
-                        // Crazyhouse: Add pawn to white's reserve (can drop it)
-                        if (this.variant === 'crazyhouse') {
-                            this.whiteReserve.push('pawn');
+                        if (this.variantStrategy.onPieceCaptured) {
+                            this.variantStrategy.onPieceCaptured(capturedPawnForEnPassant, true);
                         }
                     } else {
                         this.capturedByBlack.push({ type: 'pawn', isWhite: true });
-                        // Crazyhouse: Add pawn to black's reserve (can drop it)
-                        if (this.variant === 'crazyhouse') {
-                            this.blackReserve.push('pawn');
+                        if (this.variantStrategy.onPieceCaptured) {
+                            this.variantStrategy.onPieceCaptured(capturedPawnForEnPassant, false);
                         }
+                    }
+                }
+
+                if (this.variantStrategy.executeCapture) {
+                    const captureResult = this.variantStrategy.executeCapture(startX, startY, endX, endY, piece, capturedPawnForEnPassant);
+                    if (captureResult.handled && captureResult.gameOver) {
+                        return captureResult;
                     }
                 }
 
@@ -1355,68 +837,21 @@ class ChessGame {
                     return result;
                 }
 
-                // ATOMIC: Handle explosion if this is a capture
-                if (this.variant === 'atomic' && capturedPiece) {
-                    // Perform the explosion at the capture square
-                    const explosion = this.performExplosion(endX, endY, piece.isWhite);
-
-                    // Track all exploded pieces as captures
-                    for (const exploded of explosion.explodedPieces) {
-                        if (exploded.isWhite !== piece.isWhite) {
-                            // Enemy piece exploded - record as capture by attacker
-                            if (piece.isWhite) {
-                                this.capturedByWhite.push({ type: exploded.type, isWhite: false });
-                            } else {
-                                this.capturedByBlack.push({ type: exploded.type, isWhite: true });
-                            }
+                // Handle capture extensions (like atomic explosions)
+                let handledByVariant = false;
+                if (capturedPiece && this.variantStrategy.executeCapture) {
+                    const captureResult = this.variantStrategy.executeCapture(startX, startY, endX, endY, piece, capturedPiece);
+                    if (captureResult.handled) {
+                        handledByVariant = true;
+                        if (captureResult.gameOver) {
+                            return captureResult;
                         }
                     }
+                }
 
-                    // Also add the originally captured piece
-                    if (piece.isWhite) {
-                        this.capturedByWhite.push({ type: capturedPiece.type, isWhite: false });
-                    } else {
-                        this.capturedByBlack.push({ type: capturedPiece.type, isWhite: true });
-                    }
-
-                    // Check if enemy king was exploded - WIN!
-                    if (explosion.kingExploded) {
-                        const winnerIsWhite = explosion.kingExploded === 'black';
-                        this.isGameOver = true;
-                        this.winner = winnerIsWhite ? this.player1 : this.player2;
-                        this.termination = 'atomic_explosion';
-                        console.log(`[ATOMIC] ${explosion.kingExploded} king exploded! ${this.winner} wins!`);
-
-                        // Record move and trigger game over
-                        this.moveHistory.push({
-                            startX, startY, endX, endY,
-                            player: this.getCurrentPlayer(),
-                            atomic: true,
-                            explosionSquare: { x: endX, y: endY }
-                        });
-
-                        if (this.onGameOver) {
-                            this.onGameOver({ winner: this.winner, reason: 'atomic_explosion' });
-                        }
-                        this.cleanup();
-                        return {
-                            success: true,
-                            gameOver: true,
-                            winner: this.winner,
-                            reason: 'atomic_explosion'
-                        };
-                    }
-
-                    // Record the atomic move
-                    this.moveHistory.push({
-                        startX, startY, endX, endY,
-                        player: this.getCurrentPlayer(),
-                        atomic: true,
-                        explosionSquare: { x: endX, y: endY }
-                    });
-                } else {
+                if (!handledByVariant) {
                     // Non-atomic or non-capture: standard check handling
-                    if (this.variant !== 'atomic' && this.isKingInCheck(piece.isWhite)) {
+                    if (this.variantStrategy.isKingSafetyEnforced() && this.isKingInCheck(piece.isWhite)) {
                         // Undo move
                         this.board.setPiece(startX, startY, piece);
                         this.board.setPiece(endX, endY, capturedPiece);
@@ -1427,18 +862,13 @@ class ChessGame {
                     if (capturedPiece) {
                         if (piece.isWhite) {
                             this.capturedByWhite.push({ type: capturedPiece.type, isWhite: false });
-                            // Crazyhouse: Add to reserve (promoted pieces revert to pawns)
-                            if (this.variant === 'crazyhouse') {
-                                // If it was a promoted piece, it becomes a pawn
-                                const reserveType = capturedPiece.wasPromoted ? 'pawn' : capturedPiece.type;
-                                this.whiteReserve.push(reserveType);
+                            if (this.variantStrategy.onPieceCaptured) {
+                                this.variantStrategy.onPieceCaptured(capturedPiece, true); // true means captured by White
                             }
                         } else {
                             this.capturedByBlack.push({ type: capturedPiece.type, isWhite: true });
-                            // Crazyhouse: Add to reserve (promoted pieces revert to pawns)
-                            if (this.variant === 'crazyhouse') {
-                                const reserveType = capturedPiece.wasPromoted ? 'pawn' : capturedPiece.type;
-                                this.blackReserve.push(reserveType);
+                            if (this.variantStrategy.onPieceCaptured) {
+                                this.variantStrategy.onPieceCaptured(capturedPiece, false); // false means captured by Black
                             }
                         }
                     }
@@ -1510,8 +940,7 @@ class ChessGame {
             }
         }
 
-        // Kung Fu: No turn toggling, no checkmate/stalemate (win by king capture)
-        if (this.variant === 'kungfu') {
+        if (this.variantStrategy.shouldToggleTurn && !this.variantStrategy.shouldToggleTurn()) {
             this.lastMoveTime = Date.now();
             return { success: true, gameOver: false };
         }
@@ -1519,40 +948,41 @@ class ChessGame {
         this.isWhiteTurn = !this.isWhiteTurn;
         this.lastMoveTime = Date.now(); // Reset timer for next player
 
-        // King of the Hill: Check if the player who just moved has king on center
-        // (Check BEFORE toggling turn, but we already toggled, so check opposite)
         const playerWhoMoved = !this.isWhiteTurn; // The player who just moved
-        if (this.variant === 'kingofthehill' && this.isKingOnHill(playerWhoMoved)) {
+        const victoryReason = this.variantStrategy.checkVictoryCondition ? this.variantStrategy.checkVictoryCondition(playerWhoMoved) : null;
+        if (victoryReason) {
             this.isGameOver = true;
             this.winner = playerWhoMoved ? this.player1 : this.player2;
-            this.termination = 'koth';
-            console.log(`King of the Hill! ${this.winner} wins by reaching the center!`);
-            if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'koth' });
+            this.termination = victoryReason;
+            console.log(`Victory condition met! ${this.winner} wins by ${victoryReason}!`);
+            if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: victoryReason });
             this.cleanup();
-            return { success: true, gameOver: true, winner: this.winner, reason: 'koth' };
+            return { success: true, gameOver: true, winner: this.winner, reason: victoryReason };
         }
 
         // Check for checkmate or stalemate for the next player
-        const nextPlayerIsWhite = this.isWhiteTurn;
+        if (!this.variantStrategy.shouldCheckGameEnd || this.variantStrategy.shouldCheckGameEnd()) {
+            const nextPlayerIsWhite = this.isWhiteTurn;
 
-        if (this.isCheckmate(nextPlayerIsWhite)) {
-            this.isGameOver = true;
-            this.winner = nextPlayerIsWhite ? this.player2 : this.player1;
-            this.termination = 'checkmate';
-            console.log(`Checkmate! ${this.winner} wins!`);
-            if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'checkmate' });
-            this.cleanup();
-            return { success: true, gameOver: true, winner: this.winner, reason: 'checkmate' };
-        }
+            if (this.isCheckmate(nextPlayerIsWhite)) {
+                this.isGameOver = true;
+                this.winner = nextPlayerIsWhite ? this.player2 : this.player1;
+                this.termination = 'checkmate';
+                console.log(`Checkmate! ${this.winner} wins!`);
+                if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'checkmate' });
+                this.cleanup();
+                return { success: true, gameOver: true, winner: this.winner, reason: 'checkmate' };
+            }
 
-        if (this.isStalemate(nextPlayerIsWhite)) {
-            this.isGameOver = true;
-            this.winner = null; // Draw
-            this.termination = 'stalemate';
-            console.log('Stalemate! Game is a draw.');
-            if (this.onGameOver) this.onGameOver({ winner: null, reason: 'stalemate' });
-            this.cleanup();
-            return { success: true, gameOver: true, winner: null, reason: 'stalemate' };
+            if (this.isStalemate(nextPlayerIsWhite)) {
+                this.isGameOver = true;
+                this.winner = null; // Draw
+                this.termination = 'stalemate';
+                console.log('Stalemate! Game is a draw.');
+                if (this.onGameOver) this.onGameOver({ winner: null, reason: 'stalemate' });
+                this.cleanup();
+                return { success: true, gameOver: true, winner: null, reason: 'stalemate' };
+            }
         }
 
         // Check if next player is computer
@@ -1635,7 +1065,7 @@ class ChessGame {
                     // This ensures consistent move validation with the actual game state
                     // EXCEPTION: Crazyhouse needs to use getCrazyhouseMove for drops!
                     const isLowLevel = computer.level === -1 || computer.level === 0;
-                    const isCrazyhouseLowLevel = isLowLevel && this.variant === 'crazyhouse';
+                    const isCrazyhouseLowLevel = isLowLevel && this.variantStrategy.supportsDrops();
 
                     if (isLowLevel && !isCrazyhouseLowLevel) {
                         const legalMoves = this.getLegalMoves();
@@ -1663,10 +1093,10 @@ class ChessGame {
                         // Level 0: proportional to remaining time to simulate a "slow" player.
                         let thinkDelay;
                         if (computer.level === -1) {
-                            const divisor = (this.variant === 'kungfu') ? 1000 : 250;
+                            const divisor = this.variantStrategy.hasCooldowns() ? 1000 : 250;
                             thinkDelay = Math.max(100, Math.floor(currentTimeRemaining / divisor) * 2) + 1000;
                         } else {
-                            const divisor = (this.variant === 'kungfu') ? 1000 : 250;
+                            const divisor = this.variantStrategy.hasCooldowns() ? 1000 : 250;
                             const consistencyTime = Math.max(50, Math.floor(currentTimeRemaining / divisor));
                             thinkDelay = consistencyTime * 5;
                         }
@@ -1702,7 +1132,7 @@ class ChessGame {
 
                     // For other levels, use the standard computer.getBestMove flow
                     // OR for Crazyhouse, use getCrazyhouseMove which understands drops
-                    const isCrazyhouse = this.variant === 'crazyhouse';
+                    const isCrazyhouse = this.variantStrategy.supportsDrops();
                     const reserve = isCrazyhouse ?
                         (this.isWhiteTurn ? this.whiteReserve : this.blackReserve) : [];
 
@@ -1964,27 +1394,7 @@ class ChessGame {
         return false;
     }
 
-    /**
-     * King of the Hill: Check if king is on a center "hill" square
-     * Center squares are d4, d5, e4, e5 (coordinates: x=3-4, y=3-4)
-     */
-    isKingOnHill(isWhite) {
-        // Find the king's position
-        for (let y = 0; y < 8; y++) {
-            for (let x = 0; x < 8; x++) {
-                const piece = this.board.getPiece(x, y);
-                if (piece && piece.type === 'king' && piece.isWhite === isWhite) {
-                    // Check if king is on center squares: d4(3,4), d5(3,3), e4(4,4), e5(4,3)
-                    // x: d=3, e=4; y: rank 4=4, rank 5=3
-                    if ((x === 3 || x === 4) && (y === 3 || y === 4)) {
-                        return true;
-                    }
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
+
 
     // Get all legal moves for a player (simplified - doesn't check for moving into check)
     hasLegalMoves(isWhite) {
@@ -2052,7 +1462,7 @@ class ChessGame {
                     let isLegal = true;
 
                     // Standard check: would move leave king in check?
-                    if (this.variant !== 'atomic') {
+                    if (this.variantStrategy.isKingSafetyEnforced()) {
                         if (this.isKingInCheck(piece.isWhite)) {
                             isLegal = false;
                         }
@@ -2062,16 +1472,9 @@ class ChessGame {
                     this.board.grid[x][y] = piece;
                     this.board.grid[endX][endY] = capturedPiece;
 
-                    // ATOMIC: Additional filters
-                    if (this.variant === 'atomic' && isLegal) {
-                        // King cannot capture in atomic
-                        if (piece.type === 'king' && capturedPiece) {
-                            isLegal = false;
-                        }
-                        // Cannot make capture that would explode own king
-                        if (capturedPiece && this.wouldExplodeOwnKing(x, y, endX, endY)) {
-                            isLegal = false;
-                        }
+                    // Variants: Additional filters
+                    if (isLegal && this.variantStrategy.filterLegalMove) {
+                        isLegal = this.variantStrategy.filterLegalMove(x, y, endX, endY, piece, capturedPiece);
                     }
 
                     if (isLegal) {
@@ -2086,21 +1489,18 @@ class ChessGame {
             const rank = piece.isWhite ? 7 : 0;
             // Only check castling if king is on its starting rank
             if (y === rank) {
-                // Freestyle (960) requires allowing King to drop on Rook if it's already on dest square
-                const files = piece.isWhite ? this.whiteRookFiles : this.blackRookFiles;
-                
                 // Kingside castling (target: g-file = x:6)
                 if (this.canCastle(piece.isWhite, true)) {
                     moves.push({ x: 6, y: rank });
-                    if (this.variant === 'freestyle' && files && files.ks !== -1) {
-                        moves.push({ x: files.ks, y: rank });
+                    if (this.variantStrategy.getAdditionalCastlingMoves) {
+                        moves.push(...this.variantStrategy.getAdditionalCastlingMoves(piece.isWhite, true, rank));
                     }
                 }
                 // Queenside castling (target: c-file = x:2)
                 if (this.canCastle(piece.isWhite, false)) {
                     moves.push({ x: 2, y: rank });
-                    if (this.variant === 'freestyle' && files && files.qs !== -1) {
-                        moves.push({ x: files.qs, y: rank });
+                    if (this.variantStrategy.getAdditionalCastlingMoves) {
+                        moves.push(...this.variantStrategy.getAdditionalCastlingMoves(piece.isWhite, false, rank));
                     }
                 }
             }

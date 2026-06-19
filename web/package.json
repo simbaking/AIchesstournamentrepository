@@ -13,6 +13,8 @@
   "dependencies": {
     "axios": "^1.13.2",
     "express": "^5.1.0",
+    "ffish": "^0.7.9",
+    "ffish-es6": "^0.7.9",
     "pngjs": "^7.0.0",
     "sharp": "^0.34.5"
   }

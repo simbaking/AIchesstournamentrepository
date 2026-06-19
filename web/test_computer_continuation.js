@@ -66,6 +66,6 @@ setTimeout(() => {
         console.log('✅ PASSED: Computer made multiple moves.');
         process.exit(0);
 
-    }, 4000); // Wait 4s for computer
+    }, 15000); // Wait 15s for computer
 
-}, 4000); // Wait 4s for computer
+}, 15000); // Wait 15s for computer

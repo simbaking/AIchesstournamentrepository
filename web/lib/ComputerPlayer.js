@@ -276,9 +276,15 @@ class ComputerPlayer {
 
                 callback({ move, evaluation: this.lastEvaluation });
 
-                // START MULTI-MOVE PONDERING
-                console.log(`[COMPUTER] Starting multi-move ponder...`);
-                this.startMultiPondering(this.currentFen, move);
+                if (this.pendingRequest) {
+                    const req = this.pendingRequest;
+                    this.pendingRequest = null;
+                    this.getBestMove(req.fen, req.callback, req.remainingTimeMs, req.variant);
+                } else {
+                    // START MULTI-MOVE PONDERING
+                    console.log(`[COMPUTER] Starting multi-move ponder...`);
+                    this.startMultiPondering(this.currentFen, move);
+                }
             }
         }
     }
@@ -622,8 +628,10 @@ class ComputerPlayer {
         console.log(`[COMPUTER] Level ${this.level}, remaining: ${remainingTimeMs}ms, consistency: ${consistencyTime}ms`);
 
         if (this.pendingCallback) {
-            console.error('[COMPUTER] Overwriting pending callback! Previous search was never completed.');
-            try { this.pendingCallback({ move: null, evaluation: 0 }); } catch (e) { /* ignore */ }
+            console.error('[COMPUTER] Overlapping request! Queuing new request and stopping current search.');
+            this.pendingRequest = { fen, callback, remainingTimeMs, variant };
+            this.sendCommand('stop');
+            return;
         }
         this.pendingCallback = callback;
         this.thinkingStartTime = Date.now();
