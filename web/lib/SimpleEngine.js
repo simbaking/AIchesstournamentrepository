@@ -75,7 +75,10 @@ class SimpleEngine {
             if (kingX !== -1) break;
         }
 
-        if (kingX === -1) return true; // Should not happen, but assume check if no king
+        if (kingX === -1) {
+            console.log(`[SimpleEngine] isKingInCheck: King not found for ${isWhite ? 'White' : 'Black'}!`);
+            return true; // Should not happen, but assume check if no king
+        }
 
         // Check if any opponent piece can attack the king
         for (let y = 0; y < 8; y++) {
@@ -150,6 +153,8 @@ class SimpleEngine {
             }
         }
 
+        console.log(`[SimpleEngine] getLegalMovesForBoard: found ${moves.length} moves for ${isWhiteTurn ? 'White' : 'Black'} from board:`);
+        // console.log(moves);
         return moves;
     }
 

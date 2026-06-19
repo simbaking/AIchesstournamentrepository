@@ -544,9 +544,10 @@ class ComputerPlayer {
                 const calcStart = Date.now();
                 this.simpleEngine.getMinimaxMove(fen, (result) => {
                     const calcTime = Date.now() - calcStart;
-                    const waitTime = calcTime * 50000;
+                    // Cap waitTime at 3 seconds to prevent the game from freezing indefinitely
+                    const waitTime = Math.min(calcTime * 50000, 3000);
 
-                    console.log(`[COMPUTER] Level 0 (minimax), calc took ${calcTime}ms, waiting ${waitTime}ms (50000x)`);
+                    console.log(`[COMPUTER] Level 0 (minimax), calc took ${calcTime}ms, waiting ${waitTime}ms (capped at 3s)`);
 
                     setTimeout(() => {
                         callback(result);
@@ -557,13 +558,27 @@ class ComputerPlayer {
         }
 
         // Stockfish for level 1+
+        // If the worker isn't ready yet, retry for up to 2 s before falling back.
+        // This handles the race between game start and async Stockfish initialisation.
         if (!this.isReady || !this.worker) {
-            console.log('[COMPUTER] Not ready, using SimpleEngine fallback');
-            const SimpleEngine = require('./SimpleEngine');
-            const engine = new SimpleEngine();
-            engine.getMinimaxMove(fen, callback, 2);
+            const MAX_WAIT_ATTEMPTS = 20;
+            const waitAttempt = (this._waitReadyAttempts || 0) + 1;
+            this._waitReadyAttempts = waitAttempt;
+
+            if (waitAttempt <= MAX_WAIT_ATTEMPTS) {
+                console.log(`[COMPUTER] Not ready yet (attempt ${waitAttempt}/${MAX_WAIT_ATTEMPTS}), retrying in 100ms...`);
+                setTimeout(() => this.getBestMove(fen, callback, remainingTimeMs, variant), 100);
+            } else {
+                // Give up waiting — use SimpleEngine as a one-time fallback
+                this._waitReadyAttempts = 0;
+                console.warn('[COMPUTER] Worker never became ready — falling back to SimpleEngine');
+                const SimpleEngine = require('./SimpleEngine');
+                const engine = new SimpleEngine();
+                engine.getMinimaxMove(fen, callback, 2);
+            }
             return;
         }
+        this._waitReadyAttempts = 0;  // Reset counter once ready
 
         // Check ponder cache - see if we already analyzed a response to this position
         // If found, seed the consistency check with the pondered response (helps reach consensus faster)
@@ -663,7 +678,7 @@ class ComputerPlayer {
             this.simpleEngine = new SimpleEngine();
         }
 
-        console.log(`[COMPUTER] Crazyhouse move request, level ${this.level}, reserve: [${(reserve || []).join(', ')}]`);
+        console.log(`[COMPUTER] Crazyhouse move request, level ${this.level}, reserve: [${(reserve || []).join(', ')}], FEN: ${fen}`);
 
         // Use SimpleEngine's Crazyhouse-aware move selection
         this.simpleEngine.getCrazyhouseMove(fen, reserve || [], callback, this.level);
@@ -675,6 +690,34 @@ class ComputerPlayer {
 
     terminateProcess() {
         this.terminateWorker();
+    }
+
+    /**
+     * Reset all per-game state so this engine can be safely reused for a new game.
+     * Does NOT terminate the worker — the Stockfish thread stays alive and warm.
+     */
+    resetForNewGame() {
+        // Stop any ongoing search or ponder
+        if (this.isPondering || this.pendingCallback) {
+            this.sendCommand('stop');
+        }
+        this.clearPonderState();
+        this.pendingCallback = null;
+        this.pendingRequest = null;
+        this.moveHistory = [];
+        this.thinkingStartTime = 0;
+        this.lastEvaluation = 0;
+        this.currentPvMove = null;
+        this.lastPvMove = null;
+        this.pvStableSince = 0;
+        this.pvLastUpdate = 0;
+        this.moveTimeAccumulator = null;
+        this.currentConsistencyTime = 0;
+        this.currentFen = null;
+        this._waitReadyAttempts = 0;
+        if (this.safetyTimeout) { clearTimeout(this.safetyTimeout); this.safetyTimeout = null; }
+        if (this.ponderStopTimeout) { clearTimeout(this.ponderStopTimeout); this.ponderStopTimeout = null; }
+        console.log('[COMPUTER] Engine reset for new game — worker remains alive');
     }
 }
 

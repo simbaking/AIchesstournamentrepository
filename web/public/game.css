@@ -80,16 +80,16 @@
 }
 
 .player.active.time-scramble {
-    animation: scramble-pulse 0.7s ease-in-out infinite;
-    border-color: #ef4444;
+    animation: scramble-pulse 0.7s ease-in-out infinite !important;
+    border-color: #ef4444 !important;
 }
 
 .player.active.time-scramble .timer-display {
-    animation: scramble-timer-flash 0.7s ease-in-out infinite;
-    background: rgba(127, 29, 29, 0.5);
+    animation: scramble-timer-flash 0.7s ease-in-out infinite !important;
+    background: rgba(127, 29, 29, 0.5) !important;
 }
 
-.turn-indicator.time-scramble {
+#turn-indicator.time-scramble {
     animation: scramble-indicator-flash 0.7s ease-in-out infinite;
     font-size: 1.4rem;
     letter-spacing: 0.02em;
@@ -99,7 +99,7 @@
     font-size: 2rem;
 }
 
-.turn-indicator {
+#turn-indicator {
     text-align: center;
     font-size: 1.25rem;
     font-weight: 700;

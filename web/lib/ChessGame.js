@@ -452,12 +452,22 @@ class ChessGame {
         return this.get960Position(id);
     }
 
-    setPlayerType(color, type, level = 10) {
+    setPlayerType(color, type, level = 10, injectedEngine = null) {
         if (color === 'white') {
             this.whitePlayerType = type;
             if (type === 'computer') {
                 const ComputerPlayer = require('./ComputerPlayer');
-                this.computerPlayers.white = new ComputerPlayer(level);
+                if (injectedEngine) {
+                    // Use the player's persistent, already-warm engine.
+                    // Mark it shared so cleanup() doesn't terminate it.
+                    injectedEngine.resetForNewGame();
+                    this.computerPlayers.white = injectedEngine;
+                    this.computerPlayers.whiteIsShared = true;
+                    console.log(`[PLAYER] White using persistent engine (level ${level}) — already warm`);
+                } else {
+                    this.computerPlayers.white = new ComputerPlayer(level);
+                    this.computerPlayers.whiteIsShared = false;
+                }
                 // Enable Chess960 mode for Freestyle games
                 if (this.variant === 'freestyle') {
                     setTimeout(() => {
@@ -468,12 +478,21 @@ class ChessGame {
                 }
             } else {
                 this.computerPlayers.white = null;
+                this.computerPlayers.whiteIsShared = false;
             }
         } else if (color === 'black') {
             this.blackPlayerType = type;
             if (type === 'computer') {
                 const ComputerPlayer = require('./ComputerPlayer');
-                this.computerPlayers.black = new ComputerPlayer(level);
+                if (injectedEngine) {
+                    injectedEngine.resetForNewGame();
+                    this.computerPlayers.black = injectedEngine;
+                    this.computerPlayers.blackIsShared = true;
+                    console.log(`[PLAYER] Black using persistent engine (level ${level}) — already warm`);
+                } else {
+                    this.computerPlayers.black = new ComputerPlayer(level);
+                    this.computerPlayers.blackIsShared = false;
+                }
                 // Enable Chess960 mode for Freestyle games
                 if (this.variant === 'freestyle') {
                     setTimeout(() => {
@@ -484,6 +503,7 @@ class ChessGame {
                 }
             } else {
                 this.computerPlayers.black = null;
+                this.computerPlayers.blackIsShared = false;
             }
         }
     }
@@ -502,9 +522,37 @@ class ChessGame {
             return;
         }
 
-        // Standard chess: If white is a computer, trigger the first move
-        // Standard chess: Check if the first player (White) is a computer and schedule move
-        this.scheduleComputerMove();
+        // Standard chess: Wait for all Stockfish workers to be ready before scheduling
+        // the first move. Stockfish initialises asynchronously, so calling
+        // scheduleComputerMove() immediately can hit an unready worker and silently freeze.
+        this._waitForComputersReady(() => {
+            if (!this.isGameOver) {
+                this.scheduleComputerMove();
+            }
+        });
+    }
+
+    /**
+     * Poll until all computer players that need Stockfish have isReady === true,
+     * then invoke callback. Gives up after ~3 s and fires anyway (SimpleEngine fallback
+     * in getBestMove will handle it).
+     */
+    _waitForComputersReady(callback, attempts = 0) {
+        const MAX_ATTEMPTS = 30;  // 30 × 100 ms = 3 s max wait
+        const POLL_INTERVAL = 100;
+
+        const whiteOk = !this.computerPlayers.white || this.computerPlayers.white.isReady;
+        const blackOk = !this.computerPlayers.black || this.computerPlayers.black.isReady;
+
+        if (whiteOk && blackOk) {
+            console.log(`[COMPUTER] All workers ready after ${attempts * POLL_INTERVAL}ms — scheduling first move`);
+            callback();
+        } else if (attempts >= MAX_ATTEMPTS) {
+            console.warn(`[COMPUTER] Workers not ready after ${MAX_ATTEMPTS * POLL_INTERVAL}ms — scheduling anyway (fallback will handle it)`);
+            callback();
+        } else {
+            setTimeout(() => this._waitForComputersReady(callback, attempts + 1), POLL_INTERVAL);
+        }
     }
 
     // Kung Fu Chess: Continuous computer move loop
@@ -1100,7 +1148,16 @@ class ChessGame {
                         tempRemoved = originalPieceAtTarget;
                     }
 
-                    const isValid = p.isValidMove(this.board, rx, ry, x, y);
+                    let isValid = false;
+                    if (p.type === 'pawn') {
+                        // Pawns attack diagonally 1 square, regardless of what's on the target square
+                        const direction = p.isWhite ? -1 : 1;
+                        if (Math.abs(rx - x) === 1 && ry + direction === y) {
+                            isValid = true;
+                        }
+                    } else {
+                        isValid = p.isValidMove(this.board, rx, ry, x, y);
+                    }
 
                     // Restore the piece if it was temporarily removed
                     if (tempRemoved) {
@@ -2029,13 +2086,22 @@ class ChessGame {
             const rank = piece.isWhite ? 7 : 0;
             // Only check castling if king is on its starting rank
             if (y === rank) {
+                // Freestyle (960) requires allowing King to drop on Rook if it's already on dest square
+                const files = piece.isWhite ? this.whiteRookFiles : this.blackRookFiles;
+                
                 // Kingside castling (target: g-file = x:6)
                 if (this.canCastle(piece.isWhite, true)) {
                     moves.push({ x: 6, y: rank });
+                    if (this.variant === 'freestyle' && files && files.ks !== -1) {
+                        moves.push({ x: files.ks, y: rank });
+                    }
                 }
                 // Queenside castling (target: c-file = x:2)
                 if (this.canCastle(piece.isWhite, false)) {
                     moves.push({ x: 2, y: rank });
+                    if (this.variant === 'freestyle' && files && files.qs !== -1) {
+                        moves.push({ x: files.qs, y: rank });
+                    }
                 }
             }
         }
@@ -2213,12 +2279,29 @@ class ChessGame {
 
     cleanup() {
         if (this.computerPlayers.white) {
-            console.log('[GAME] Terminating White Computer');
-            this.computerPlayers.white.quit();
+            if (this.computerPlayers.whiteIsShared) {
+                // Persistent engine — stop any ongoing search/ponder but keep the worker alive
+                console.log('[GAME] Stopping White engine search (shared — worker stays alive)');
+                if (this.computerPlayers.white.isPondering || this.computerPlayers.white.pendingCallback) {
+                    this.computerPlayers.white.sendCommand('stop');
+                }
+                this.computerPlayers.white.clearPonderState && this.computerPlayers.white.clearPonderState();
+            } else {
+                console.log('[GAME] Terminating White Computer');
+                this.computerPlayers.white.quit();
+            }
         }
         if (this.computerPlayers.black) {
-            console.log('[GAME] Terminating Black Computer');
-            this.computerPlayers.black.quit();
+            if (this.computerPlayers.blackIsShared) {
+                console.log('[GAME] Stopping Black engine search (shared — worker stays alive)');
+                if (this.computerPlayers.black.isPondering || this.computerPlayers.black.pendingCallback) {
+                    this.computerPlayers.black.sendCommand('stop');
+                }
+                this.computerPlayers.black.clearPonderState && this.computerPlayers.black.clearPonderState();
+            } else {
+                console.log('[GAME] Terminating Black Computer');
+                this.computerPlayers.black.quit();
+            }
         }
     }
 }

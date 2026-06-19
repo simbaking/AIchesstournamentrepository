@@ -169,8 +169,10 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
 
     game.getTournamentTimeRemaining = () => tournament.getRemainingTime();
 
-    if (p1.isComputerPlayer()) game.setPlayerType('white', 'computer', p1.getLevel());
-    if (p2.isComputerPlayer()) game.setPlayerType('black', 'computer', p2.getLevel());
+    // Use each player's persistent engine (already warm) instead of creating a
+    // brand-new ComputerPlayer per game, which would trigger a Stockfish boot delay.
+    if (p1.isComputerPlayer()) game.setPlayerType('white', 'computer', p1.getLevel(), p1.getEngine());
+    if (p2.isComputerPlayer()) game.setPlayerType('black', 'computer', p2.getLevel(), p2.getEngine());
 
     activeGames.set(gameId, game);
 
@@ -178,7 +180,7 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
     p2.setBusy(true, gameId);
 
     const hasComputer = p1.isComputerPlayer() || p2.isComputerPlayer();
-    if (hasComputer && (variant === 'kungfu' || p1.isComputerPlayer())) {
+    if (hasComputer) {
         console.log(`Starting game ${gameId} (variant: ${variant}, computers: W=${p1.isComputerPlayer()}, B=${p2.isComputerPlayer()})`);
         game.startGame();
     }

@@ -510,9 +510,9 @@ function updateBoard(forceRefresh = false) {
 
             // Update piece if changed
             if (pieceChanged) {
-                // Remove existing piece image
-                const existingPiece = square.querySelector('.piece');
-                if (existingPiece) existingPiece.remove();
+                // Remove existing piece images
+                const existingPieces = square.querySelectorAll('.piece');
+                existingPieces.forEach(p => p.remove());
 
                 // Add new piece if present
                 if (piece) {

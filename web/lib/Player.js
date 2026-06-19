@@ -13,8 +13,31 @@ class Player {
         if (isComputer) {
             const ComputerPlayer = require('./ComputerPlayer');
             this.elo = ComputerPlayer.getElo(level);
+            // Each CPU player gets a persistent engine that lives for the whole
+            // tournament — no per-game boot delay.
+            this._engine = new ComputerPlayer(level);
+            console.log(`[PLAYER] Persistent engine created for ${name} (level ${level})`);
         } else {
             this.elo = 400; // Human players start at 400 ELO
+            this._engine = null;
+        }
+    }
+
+    /**
+     * Return the persistent engine for this CPU player.
+     * Always the same instance — Stockfish stays warm between games.
+     */
+    getEngine() {
+        return this._engine;
+    }
+
+    /**
+     * Permanently shut down the engine (call on tournament reset / server shutdown).
+     */
+    destroyEngine() {
+        if (this._engine) {
+            this._engine.quit();
+            this._engine = null;
         }
     }
 
