@@ -606,6 +606,8 @@
     padding: 0.25rem;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 0.25rem;
+    /* Prevent browser scroll-anchor jump when content changes */
+    overflow-anchor: none;
 }
 
 .captured-piece {
@@ -1222,35 +1224,70 @@
 
 /* Evaluation Bar */
 .eval-bar-container {
-    width: 24px;
-    background-color: #404040;
-    border-radius: 4px;
+    width: 32px;
+    background-color: #1a1a2e;
+    border-radius: 6px;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    border: 1px solid #222;
+    border: 2px solid #333;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
+    flex-shrink: 0;
 }
 
 .eval-bar-fill {
     width: 100%;
-    background-color: #f0f0f0;
+    /* Top half = black (dark), grows from bottom where white is */
+    background: linear-gradient(to top, #f0f0f0 0%, #e0e0e0 100%);
     height: 50%;
-    transition: height 0.5s ease-in-out, background-color 0.5s;
+    transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0 0 4px 4px;
 }
 
 .eval-bar-text {
     position: absolute;
     width: 100%;
     text-align: center;
-    font-size: 10px;
-    font-weight: bold;
-    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
     z-index: 2;
-    background: rgba(0,0,0,0.5);
-    padding: 2px 0;
+    /* Dark pill so text is always readable regardless of position */
+    color: #fff;
+    background: rgba(0, 0, 0, 0.65);
+    padding: 2px 1px;
+    border-radius: 2px;
+}
+
+/* White label at bottom */
+.eval-bar-container::after {
+    content: 'W';
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    font-weight: 700;
+    color: rgba(0,0,0,0.5);
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Black label at top */
+.eval-bar-container::before {
+    content: 'B';
+    position: absolute;
+    top: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.4);
+    pointer-events: none;
+    z-index: 3;
 }

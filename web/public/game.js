@@ -160,8 +160,15 @@ async function updateGameState() {
             window.fastPollingEnabled = true;
         }
 
+        // Only restart the client-side timer when the active side changes.
+        // Restarting every poll causes a stutter/flicker in the timer display.
+        const newActiveSide = gameState.isWhiteTurn ? 'white' : 'black';
+        if (newActiveSide !== window._lastActiveSide || !timerInterval) {
+            window._lastActiveSide = newActiveSide;
+            startClientTimer();
+        }
+
         renderGame();
-        startClientTimer();
 
         // Fetch tournament status for timer
         updateTournamentTimer();
@@ -181,10 +188,13 @@ function renderGame() {
     whitePlayerName.textContent = gameState.player1 + (gameState.player1Elo ? ` (${gameState.player1Elo})` : '') + p1You;
     blackPlayerName.textContent = gameState.player2 + (gameState.player2Elo ? ` (${gameState.player2Elo})` : '') + p2You;
 
-    // Update variant badge
+    // Update variant badge (only when variant actually changes to avoid reflow)
     const variantBadgeEl = document.getElementById('game-variant-badge');
     if (variantBadgeEl) {
-        variantBadgeEl.innerHTML = getVariantBadge(gameState.variant);
+        const newBadge = getVariantBadge(gameState.variant);
+        if (variantBadgeEl.innerHTML !== newBadge) {
+            variantBadgeEl.innerHTML = newBadge;
+        }
     }
 
     // Kung Fu Chess: Hide timers and update turn indicator
@@ -264,11 +274,12 @@ function renderGame() {
         handleGameOver();
     }
 
-    // Update last updated time
-    const now = new Date();
-    const timeString = now.toLocaleTimeString();
-    document.getElementById('game-timer').textContent = `Last update: ${timeString}`;
-    document.getElementById('game-timer').style.fontSize = '1rem';
+    // Update last updated time (game-timer is hidden; skip fontSize to avoid reflow)
+    const gameTimerEl = document.getElementById('game-timer');
+    if (gameTimerEl && gameTimerEl.style.display !== 'none') {
+        const now = new Date();
+        gameTimerEl.textContent = `Last update: ${now.toLocaleTimeString()}`;
+    }
 
     // Debug log
     console.log('State updated:', {
@@ -304,30 +315,46 @@ function renderEvalBar() {
     const textEl = document.getElementById('eval-bar-text');
     if (!fillEl || !textEl || !gameState) return;
 
-    const evalVal = gameState.evaluation || 0;
-    
+    // gameState.evaluation is in centipawns (positive = white advantage).
+    // Use nullish coalescing so a real 0 stays 0 (not masked by || 0).
+    const evalVal = gameState.evaluation ?? 0;
+
     let percentage = 50;
-    let text = '0.00';
-    
+    let text;
+
+    // Mate scores (±30000 range from the material+PST evaluator or Stockfish)
     if (evalVal >= 9000) {
-        percentage = 100;
-        text = 'M' + (10000 - evalVal);
+        percentage = 98;
+        text = evalVal >= 30000 ? 'M#' : 'M' + (10000 - evalVal);
     } else if (evalVal <= -9000) {
-        percentage = 0;
-        text = '-M' + (10000 + evalVal);
+        percentage = 2;
+        text = evalVal <= -30000 ? '-M#' : '-M' + (10000 + evalVal);
     } else {
-        const clamped = Math.max(-1000, Math.min(1000, evalVal));
-        percentage = 50 + (clamped / 1000) * 50;
-        text = (evalVal > 0 ? '+' : '') + (evalVal / 100).toFixed(2);
+        // Use a ±600 centipawn scale so the bar reacts visibly to typical advantages.
+        // A 6-pawn advantage (huge) fills the bar; fine positions show clear lean.
+        const SCALE = 600;
+        const clamped = Math.max(-SCALE, Math.min(SCALE, evalVal));
+        percentage = 50 + (clamped / SCALE) * 48; // ±48% so never fully hidden
+        const pawns = Math.abs(evalVal / 100).toFixed(2);
+        if (evalVal > 0) text = '+' + pawns;
+        else if (evalVal < 0) text = '−' + pawns;
+        else text = '0.00';
     }
 
-    fillEl.style.height = `${percentage}%`;
-    textEl.textContent = text;
-    
-    if (percentage > 50) {
-        textEl.style.color = '#333';
-    } else {
-        textEl.style.color = '#eee';
+    // Round to avoid triggering sub-pixel repaints on every frame
+    percentage = Math.round(percentage * 10) / 10;
+
+    const newHeight = `${percentage}%`;
+    if (fillEl.style.height !== newHeight) {
+        fillEl.style.height = newHeight;
+    }
+    if (textEl.textContent !== text) {
+        textEl.textContent = text;
+    }
+
+    const newColor = percentage > 50 ? '#222' : '#eee';
+    if (textEl.style.color !== newColor) {
+        textEl.style.color = newColor;
     }
 }
 
@@ -1687,26 +1714,35 @@ function renderMaterial() {
     const blackCapturedDiv = document.getElementById('black-captured');
     const materialAdvDiv = document.getElementById('material-advantage');
 
-    // Render captured pieces for white (pieces that white captured, so they're black pieces)
-    whiteCapturedDiv.innerHTML = gameState.capturedByWhite
+    // Only write innerHTML when captured pieces actually changed (prevents layout reflow / scroll jump)
+    const newWhiteHtml = gameState.capturedByWhite
         .map(p => getPieceImgHtml(p.type, false, 18))
         .join('');
+    if (whiteCapturedDiv.innerHTML !== newWhiteHtml) {
+        whiteCapturedDiv.innerHTML = newWhiteHtml;
+    }
 
-    // Render captured pieces for black (pieces that black captured, so they're white pieces)
-    blackCapturedDiv.innerHTML = gameState.capturedByBlack
+    const newBlackHtml = gameState.capturedByBlack
         .map(p => getPieceImgHtml(p.type, true, 18))
         .join('');
+    if (blackCapturedDiv.innerHTML !== newBlackHtml) {
+        blackCapturedDiv.innerHTML = newBlackHtml;
+    }
 
     // Calculate material advantage
     const advantage = calculateMaterialDifference();
 
     // Display material advantage
+    let newAdvHtml;
     if (advantage > 0) {
-        materialAdvDiv.innerHTML = `<span style="color: var(--primary);">White +${advantage}</span>`;
+        newAdvHtml = `<span style="color: var(--primary);">White +${advantage}</span>`;
     } else if (advantage < 0) {
-        materialAdvDiv.innerHTML = `<span style="color: var(--accent);">Black +${Math.abs(advantage)}</span>`;
+        newAdvHtml = `<span style="color: var(--accent);">Black +${Math.abs(advantage)}</span>`;
     } else {
-        materialAdvDiv.innerHTML = '<span style="color: var(--text-muted);">Equal</span>';
+        newAdvHtml = '<span style="color: var(--text-muted);">Equal</span>';
+    }
+    if (materialAdvDiv.innerHTML !== newAdvHtml) {
+        materialAdvDiv.innerHTML = newAdvHtml;
     }
 }
 
@@ -1719,34 +1755,36 @@ function renderPockets() {
     const blackPiecesSpan = document.getElementById('black-pocket-pieces');
 
     if (!isCrazyhouse || !whitePocketDiv || !blackPocketDiv) {
-        if (whitePocketDiv) whitePocketDiv.style.display = 'none';
-        if (blackPocketDiv) blackPocketDiv.style.display = 'none';
+        if (whitePocketDiv && whitePocketDiv.style.display !== 'none') whitePocketDiv.style.display = 'none';
+        if (blackPocketDiv && blackPocketDiv.style.display !== 'none') blackPocketDiv.style.display = 'none';
         return;
     }
 
     // Show pocket areas
-    whitePocketDiv.style.display = 'flex';
-    blackPocketDiv.style.display = 'flex';
+    if (whitePocketDiv.style.display !== 'flex') whitePocketDiv.style.display = 'flex';
+    if (blackPocketDiv.style.display !== 'flex') blackPocketDiv.style.display = 'flex';
 
-    // Render white's pocket pieces
+    // Render white's pocket pieces (only when changed)
     const whiteReserve = gameState.whiteReserve || [];
-    whitePiecesSpan.innerHTML = whiteReserve.length === 0
+    const newWhitePocket = whiteReserve.length === 0
         ? '<span style="color: var(--text-muted);">empty</span>'
         : whiteReserve.map((type, idx) =>
             `<span class="pocket-piece ${selectedDropPiece?.color === 'white' && selectedDropPiece?.type === type ? 'selected' : ''}" 
                    data-type="${type}" data-color="white" 
                    onclick="selectDropPiece('${type}', 'white')">${getPieceImgHtml(type, true, 24)}</span>`
         ).join('');
+    if (whitePiecesSpan.innerHTML !== newWhitePocket) whitePiecesSpan.innerHTML = newWhitePocket;
 
-    // Render black's pocket pieces
+    // Render black's pocket pieces (only when changed)
     const blackReserve = gameState.blackReserve || [];
-    blackPiecesSpan.innerHTML = blackReserve.length === 0
+    const newBlackPocket = blackReserve.length === 0
         ? '<span style="color: var(--text-muted);">empty</span>'
         : blackReserve.map((type, idx) =>
             `<span class="pocket-piece ${selectedDropPiece?.color === 'black' && selectedDropPiece?.type === type ? 'selected' : ''}" 
                    data-type="${type}" data-color="black" 
                    onclick="selectDropPiece('${type}', 'black')">${getPieceImgHtml(type, false, 24)}</span>`
         ).join('');
+    if (blackPiecesSpan.innerHTML !== newBlackPocket) blackPiecesSpan.innerHTML = newBlackPocket;
 }
 
 // Select a piece from pocket for dropping
@@ -1880,14 +1918,16 @@ function updateMobilePlayerBars() {
 
         // Captured pieces - White's captures shown on White's bar (captured black pieces)
         if (mobilePlayerCaptured && gameState.capturedByWhite) {
-            mobilePlayerCaptured.innerHTML = gameState.capturedByWhite
+            const newHtml = gameState.capturedByWhite
                 .map(p => getPieceImgHtml(p.type, false, 16))
                 .join('');
+            if (mobilePlayerCaptured.innerHTML !== newHtml) mobilePlayerCaptured.innerHTML = newHtml;
         }
         if (mobileOpponentCaptured && gameState.capturedByBlack) {
-            mobileOpponentCaptured.innerHTML = gameState.capturedByBlack
+            const newHtml = gameState.capturedByBlack
                 .map(p => getPieceImgHtml(p.type, true, 16))
                 .join('');
+            if (mobileOpponentCaptured.innerHTML !== newHtml) mobileOpponentCaptured.innerHTML = newHtml;
         }
 
         // Timers
@@ -1929,14 +1969,16 @@ function updateMobilePlayerBars() {
 
         // Captured pieces - Black's captures shown on Black's bar (captured white pieces)
         if (mobilePlayerCaptured && gameState.capturedByBlack) {
-            mobilePlayerCaptured.innerHTML = gameState.capturedByBlack
+            const newHtml = gameState.capturedByBlack
                 .map(p => getPieceImgHtml(p.type, true, 16))
                 .join('');
+            if (mobilePlayerCaptured.innerHTML !== newHtml) mobilePlayerCaptured.innerHTML = newHtml;
         }
         if (mobileOpponentCaptured && gameState.capturedByWhite) {
-            mobileOpponentCaptured.innerHTML = gameState.capturedByWhite
+            const newHtml = gameState.capturedByWhite
                 .map(p => getPieceImgHtml(p.type, false, 16))
                 .join('');
+            if (mobileOpponentCaptured.innerHTML !== newHtml) mobileOpponentCaptured.innerHTML = newHtml;
         }
 
         // Timers

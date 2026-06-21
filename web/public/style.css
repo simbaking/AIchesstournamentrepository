@@ -44,6 +44,8 @@ body {
     color: var(--text);
     min-height: 100vh;
     padding: 2rem;
+    /* Prevent browser overscroll bounce from compounding visual flicker */
+    overscroll-behavior: none;
 }
 
 /* Lion logo */
