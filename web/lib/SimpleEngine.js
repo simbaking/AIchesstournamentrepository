@@ -190,8 +190,7 @@ class SimpleEngine {
             }
         }
 
-        console.log(`[SimpleEngine] getLegalMovesForBoard: found ${moves.length} moves for ${isWhiteTurn ? 'White' : 'Black'} from board:`);
-        // console.log(moves);
+        // console.log(`[SimpleEngine] getLegalMovesForBoard: found ${moves.length} moves for ${isWhiteTurn ? 'White' : 'Black'}`);
         return moves;
     }
 
