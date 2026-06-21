@@ -357,11 +357,6 @@ function renderEvalBar() {
     if (textEl.textContent !== text) {
         textEl.textContent = text;
     }
-
-    const newColor = percentage > 50 ? '#222' : '#eee';
-    if (textEl.style.color !== newColor) {
-        textEl.style.color = newColor;
-    }
 }
 
 // Convert board state array to FEN
@@ -1559,14 +1554,21 @@ returnBtn.addEventListener('click', () => {
 
 // Flip board logic
 function updateBoardOrientation() {
-    const gameInfoDiv = document.querySelector('.info-card .game-info');
+    const evalBarContainer = document.getElementById('eval-bar-container');
+    if (evalBarContainer) {
+        if (isFlipped) {
+            evalBarContainer.classList.add('flipped');
+        } else {
+            evalBarContainer.classList.remove('flipped');
+        }
+    }
+
+    const gameInfoDiv = document.getElementById('game-info');
     const blackPlayerDiv = document.querySelector('.player.black-player');
     const whitePlayerDiv = document.querySelector('.player.white-player');
-    const gameStatusDiv = document.querySelector('.game-status');
+    const gameStatusDiv = document.getElementById('game-status');
 
-    // Check if all elements exist and are children of gameInfoDiv
     if (!gameInfoDiv || !blackPlayerDiv || !whitePlayerDiv || !gameStatusDiv) {
-        console.warn('updateBoardOrientation: Missing required elements');
         return;
     }
 
@@ -1583,11 +1585,6 @@ function updateBoardOrientation() {
         if (whitePlayerDiv.nextSibling !== gameStatusDiv) {
             gameInfoDiv.insertBefore(gameStatusDiv, whitePlayerDiv.nextSibling);
         }
-        
-        const evalBarContainer = document.getElementById('eval-bar-container');
-        if (evalBarContainer) {
-            evalBarContainer.classList.add('flipped');
-        }
     } else {
         // Normal: black on top
         if (gameInfoDiv.firstChild !== blackPlayerDiv) {
@@ -1595,11 +1592,6 @@ function updateBoardOrientation() {
         }
         if (blackPlayerDiv.nextSibling !== gameStatusDiv) {
             gameInfoDiv.insertBefore(gameStatusDiv, blackPlayerDiv.nextSibling);
-        }
-        
-        const evalBarContainer = document.getElementById('eval-bar-container');
-        if (evalBarContainer) {
-            evalBarContainer.classList.remove('flipped');
         }
     }
 }
