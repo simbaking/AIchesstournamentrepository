@@ -28,12 +28,6 @@ class ComputerPlayer {
         this.simpleEngine = null;
         this.chess960Mode = false;  // Chess960 (Freestyle) mode flag
 
-        // Use SimpleEngine for level -1 and 0
-        if (level === -1 || level === 0) {
-            const SimpleEngine = require('./SimpleEngine');
-            this.simpleEngine = new SimpleEngine();
-            this.isReady = true;
-        } else {
         // Use SimpleEngine for level -1 and -0.5
         if (level === -1 || level === -0.5) {
             const SimpleEngine = require('./SimpleEngine');
