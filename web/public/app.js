@@ -844,9 +844,12 @@ if (gameForm) {
     });
 }
 
-// Initialize
-updateStatus();
-statusInterval = setInterval(updateStatus, 1000);
+// Initialize only after the page has fully loaded
+// This prevents the browser from thinking the page is still loading (tab spinner)
+window.addEventListener('load', () => {
+    updateStatus();
+    statusInterval = setInterval(updateStatus, 1000);
+});
 
 // Reset tournament handler
 if (resetBtn) {

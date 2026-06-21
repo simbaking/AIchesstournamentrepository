@@ -1700,9 +1700,13 @@ async function updateTournamentTimer() {
     }
 }
 
-// Initialize
-updateGameState();
-updateInterval = setInterval(updateGameState, 1000);
+// Initialize only after the page has fully loaded
+// This prevents the browser from thinking the page is still loading (tab spinner)
+// if the fetch requests take time or overlap.
+window.addEventListener('load', () => {
+    updateGameState();
+    updateInterval = setInterval(updateGameState, 1000);
+});
 
 // Material values for pieces
 const MATERIAL_VALUES = {
