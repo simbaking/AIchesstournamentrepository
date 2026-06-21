@@ -8644,3 +8644,612 @@ Ending game game_108: cpu1 (60000ms) vs cpu3 (60000ms). Winner: Draw
 Game game_108 ended. Winner: null, Reason: tournament_timeout
 Draw! cpu1 gets 190854 ms (×0.96 rank ×1.00 duration)
 cpu3 gets 151093 ms (×0.76 rank ×1.00 duration)
+[GLOBAL_ANALYZER] Initialized (material+PST evaluator)
+[STATE_LOAD] Loading tournament state...
+[STATE_LOAD] File timestamp: 2026-06-21T01:48:13.231Z
+[STATE_LOAD] Tournament isRunning: true
+[STATE_LOAD] StartTime: 2026-06-21T01:32:51.424Z
+[STATE_LOAD] Duration limit: 60.0 minutes
+[STATE_LOAD] Elapsed since start: 15.4 minutes
+[STATE_LOAD] Remaining time: 44.6 minutes
+[PLAYER] Persistent engine created for cpu-1 (level -1)
+[PLAYER] Persistent engine created for cpu-0.5 (level -0.5)
+[COMPUTER] Initializing Stockfish level 0
+[PLAYER] Persistent engine created for cpu0 (level 0)
+[COMPUTER] Initializing Stockfish level 0.5
+[PLAYER] Persistent engine created for cpu0.5 (level 0.5)
+[ChessGame] Constructor called with variant: "freestyle", startPos: "random", cooldown: 10s
+[Chess960] Freestyle mode detected, generating 960 position...
+[Chess960] Generated position: [
+  'rook',   'queen',
+  'bishop', 'knight',
+  'knight', 'bishop',
+  'king',   'rook'
+]
+[Chess960] Board setup complete with 960 position
+Failed to load state: TypeError: game.scheduleNextComputerMove is not a function
+    at ChessGame.fromJSON (/Users/chang/git/AIchesstournamentrepository/web/lib/ChessGame.js:453:18)
+    at loadState (/Users/chang/git/AIchesstournamentrepository/web/server.js:304:40)
+    at Object.<anonymous> (/Users/chang/git/AIchesstournamentrepository/web/server.js:347:1)
+    at Module._compile (node:internal/modules/cjs/loader:1254:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1308:10)
+    at Module.load (node:internal/modules/cjs/loader:1117:32)
+    at Module._load (node:internal/modules/cjs/loader:958:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+    at node:internal/main/run_main_module:23:47
+[STARTUP] Tournament is running, starting monitor intervals...
+
+╔══════════════════════════════════════════════════════════════╗
+║           Chess Tournament Server Started!                   ║
+╚══════════════════════════════════════════════════════════════╝
+
+Local:    http://localhost:3000
+
+LAN Access (for other devices on same WiFi):
+          http://192.168.1.71:3000
+
+Share these URLs with other players!
+
+────────────────────────────────────────────────────────────────
+[SF_WORKER] Starting...
+[SF_WORKER] Starting...
+[COMPUTER] Setting UCI_Chess960 to true
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[COMPUTER] Stockfish ready
+[SF_WORKER] Stockfish loaded
+[SF_WORKER] Ready
+[COMPUTER] Stockfish ready
+[SF_WORKER] Stockfish loaded
+[SF_WORKER] Ready
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MONITOR] Running: true, Remaining: 44.4m, ActiveGames: 0, Offers: 1
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MONITOR] Running: true, Remaining: 44.3m, ActiveGames: 0, Offers: 1
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MONITOR] Running: true, Remaining: 43.6m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MONITOR] Running: true, Remaining: 41.9m, ActiveGames: 0, Offers: 1
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MONITOR] Running: true, Remaining: 41.4m, ActiveGames: 0, Offers: 1
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MONITOR] Running: true, Remaining: 41.3m, ActiveGames: 0, Offers: 1
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MONITOR] Running: true, Remaining: 41.0m, ActiveGames: 0, Offers: 1
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MONITOR] Running: true, Remaining: 40.7m, ActiveGames: 0, Offers: 1
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[Matchmaking] 0 idle computers, 1 active offers, 1 available players
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
+[MATCHMAKING] Processing 1 offers. Computers: cpu-1(busy=true), cpu-0.5(busy=true), cpu0(busy=false), cpu0.5(busy=true)
+[MATCHMAKING] Offer 6 from cpu0: 0 valid bots
