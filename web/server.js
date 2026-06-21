@@ -486,9 +486,11 @@ if (tournament.checkIsRunning()) {
                 console.log(`[MATCHMAKING] Processing ${gameOffers.length} offers. Computers: ${players.filter(p => p.isComputerPlayer()).map(p => `${p.getName()}(busy=${p.isBusy()})`).join(', ')}`);
             }
 
-            for (let i = gameOffers.length - 1; i >= 0; i--) {
-                const offer = gameOffers[i];
-                if (!offer) continue;
+            // Iterate over a copy to safely modify the original array
+            const currentOffers1 = [...gameOffers];
+            for (const offer of currentOffers1) {
+                // Skip if already removed
+                if (!gameOffers.some(o => o.id === offer.id)) continue;
 
                 const offerAge = now - offer.timestamp;
                 if (offerAge < HUMAN_PRIORITY_DELAY) {
@@ -499,7 +501,7 @@ if (tournament.checkIsRunning()) {
                 const creator = tournament.getPlayerByName(offer.player);
                 if (!creator || creator.isBusy()) {
                     console.log(`[MATCHMAKING] Removing offer ${offer.id}: creator busy`);
-                    gameOffers.splice(i, 1);
+                    gameOffers = gameOffers.filter(o => o.id !== offer.id);
                     continue;
                 }
 
@@ -518,6 +520,7 @@ if (tournament.checkIsRunning()) {
                     const ai = new TournamentAI(tournament);
 
                     for (const bot of validBots) {
+                        if (bot.isBusy()) continue; // extra safety check
                         const evalResult = ai.evaluateOffer(offer, bot);
                         console.log(`[MATCHMAKING] ${bot.getName()} eval: shouldAccept=${evalResult.shouldAccept}, reason=${evalResult.reason}`);
 
@@ -528,13 +531,7 @@ if (tournament.checkIsRunning()) {
                                 console.error(`[MATCHMAKING ERROR] Failed: ${result.error}`);
                                 continue;
                             }
-                            gameOffers.splice(i, 1);
-                            for (let j = gameOffers.length - 1; j >= 0; j--) {
-                                const o = gameOffers[j];
-                                if (o && (o.player === offer.player || o.player === bot.getName())) {
-                                    gameOffers.splice(j, 1);
-                                }
-                            }
+                            gameOffers = gameOffers.filter(o => o.player !== offer.player && o.player !== bot.getName());
                             break;
                         }
                     }
@@ -841,50 +838,54 @@ app.post('/api/start', (req, res) => {
                 console.log(`[MATCHMAKING] Processing ${gameOffers.length} offers. Computers: ${players.filter(p => p.isComputerPlayer()).map(p => `${p.getName()}(busy=${p.isBusy()})`).join(', ')}`);
             }
 
-            // Iterate backwards to allow removal
-            for (let i = gameOffers.length - 1; i >= 0; i--) {
-                const offer = gameOffers[i];
+            // Iterate over a copy to safely modify the original array
+            const currentOffers2 = [...gameOffers];
+            for (const offer of currentOffers2) {
+                // Safety check to ensure it wasn't processed/removed
+                if (!gameOffers.some(o => o.id === offer.id)) continue;
 
-                // Safety check
-                if (!offer) continue;
-
+                // Human Priority Delay: Computers wait before accepting to give humans a chance
                 const offerAge = now - offer.timestamp;
-
-                // Check delay - give humans priority
                 if (offerAge < HUMAN_PRIORITY_DELAY) {
                     console.log(`[MATCHMAKING] Offer ${offer.id} from ${offer.player} waiting (${Math.round(offerAge / 1000)}s/${HUMAN_PRIORITY_DELAY / 1000}s)`);
                     continue;
                 }
 
-                // Check if creator is still free
                 const creator = tournament.getPlayerByName(offer.player);
                 if (!creator || creator.isBusy()) {
-                    // Remove stale offer if creator is busy
                     console.log(`[MATCHMAKING] Removing offer ${offer.id}: creator ${offer.player} is busy or not found`);
-                    gameOffers.splice(i, 1);
+                    gameOffers = gameOffers.filter(o => o.id !== offer.id);
                     continue;
                 }
 
-                // Find valid bot acceptors
+                // Find computers that can accept this offer
                 const validBots = players.filter(p => {
+                    // Must be a computer, not busy, and not the offer creator
                     if (!p.isComputerPlayer() || p.isBusy() || p.getName() === offer.player) return false;
 
-                    // Check targets
+                    // If offer is targeted, must be the target
                     if (offer.targets && offer.targets.length > 0 && !offer.targets.includes('Any')) {
                         return offer.targets.includes(p.getName());
                     }
-                    return true; // Open to all
+
+                    return true;
                 });
 
-                console.log(`[MATCHMAKING] Offer ${offer.id} from ${offer.player}: ${validBots.length} valid bots available`);
+                if (Math.random() < 0.1) {
+                    console.log(`[MATCHMAKING] Offer ${offer.id} from ${offer.player}: ${validBots.length} valid bots`);
+                }
 
                 if (validBots.length > 0) {
+                    // Shuffle available bots
                     validBots.sort(() => Math.random() - 0.5);
+
+                    // Re-instantiate AI to evaluate (lightweight)
                     const ai = new TournamentAI(tournament);
 
                     for (const bot of validBots) {
+                        if (bot.isBusy()) continue; // extra safety check
                         const evalResult = ai.evaluateOffer(offer, bot);
-                        console.log(`[MATCHMAKING] Evaluating ${bot.getName()} for offer from ${offer.player}: shouldAccept=${evalResult.shouldAccept}, reason=${evalResult.reason}`);
+                        // console.log(`[MATCHMAKING] Evaluating ${bot.getName()} for offer from ${offer.player}: shouldAccept=${evalResult.shouldAccept}, reason=${evalResult.reason}`);
 
                         if (evalResult.shouldAccept) {
                             console.log(`Auto-accept: ${bot.getName()} accepting offer from ${offer.player} (Reason: ${evalResult.reason})`);
@@ -892,17 +893,12 @@ app.post('/api/start', (req, res) => {
                             const result = createGame(offer.player, bot.getName(), offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
                             if (!result.success) {
                                 console.error(`[MATCHMAKING ERROR] Failed to create game: ${result.error}`);
-                                continue;
+                                continue; // Try next bot if this failed
                             }
-                            gameOffers.splice(i, 1);
 
                             // Remove other offers from these players
-                            for (let j = gameOffers.length - 1; j >= 0; j--) {
-                                const o = gameOffers[j];
-                                if (o && (o.player === offer.player || o.player === bot.getName())) {
-                                    gameOffers.splice(j, 1);
-                                }
-                            }
+                            gameOffers = gameOffers.filter(o => o.player !== offer.player && o.player !== bot.getName());
+
                             break; // Offer taken
                         }
                     }
