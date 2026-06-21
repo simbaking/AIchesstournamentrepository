@@ -98,11 +98,11 @@ class Player {
     }
 
     setElo(newElo) {
-        this.elo = newElo;
+        this.elo = Math.max(1, newElo);
     }
 
     adjustElo(change) {
-        this.elo += change;
+        this.elo = Math.max(1, this.elo + change);
     }
 
     toString() {
