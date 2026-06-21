@@ -1,66 +1,66 @@
 {
-  "timestamp": 1781910621743,
+  "timestamp": 1782004798985,
   "tournament": {
     "players": [
       {
         "name": "hwan",
-        "score": 4982301,
+        "score": 0,
         "isComputer": false,
         "level": null,
         "busy": false,
         "activeGameId": null,
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
-        "elo": 526
+        "elo": -330
       },
       {
-        "name": "cpu1",
-        "score": 2239308,
-        "isComputer": true,
-        "level": 1,
-        "busy": false,
-        "activeGameId": null,
-        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
-        "clientIP": "127.0.0.1",
-        "elo": 800
-      },
-      {
-        "name": "cpu0",
-        "score": 7100791,
-        "isComputer": true,
-        "level": 0,
-        "busy": false,
-        "activeGameId": null,
-        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
-        "clientIP": "127.0.0.1",
-        "elo": 400
-      },
-      {
-        "name": "cpu0........2",
-        "score": 641963,
-        "isComputer": true,
-        "level": 0,
-        "busy": false,
-        "activeGameId": null,
-        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
-        "clientIP": "127.0.0.1",
-        "elo": 400
-      },
-      {
-        "name": "cpu-1",
-        "score": 5008692,
+        "name": "cpu-1........1",
+        "score": 2001097,
         "isComputer": true,
         "level": -1,
-        "busy": false,
-        "activeGameId": null,
+        "busy": true,
+        "activeGameId": "game_7",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 200
+      },
+      {
+        "name": "cpu-1..........2",
+        "score": 9211118,
+        "isComputer": true,
+        "level": -1,
+        "busy": true,
+        "activeGameId": "game_7",
+        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
+        "clientIP": "127.0.0.1",
+        "elo": 200
+      },
+      {
+        "name": "cpu-1.........3",
+        "score": 0,
+        "isComputer": true,
+        "level": -1,
+        "busy": true,
+        "activeGameId": "game_2",
+        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
+        "clientIP": "127.0.0.1",
+        "elo": 200
+      },
+      {
+        "name": "cpu0",
+        "score": 0,
+        "isComputer": true,
+        "level": 0,
+        "busy": true,
+        "activeGameId": "game_2",
+        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
+        "clientIP": "127.0.0.1",
+        "elo": 400
       }
     ],
-    "isRunning": false,
-    "startTime": 1781904603836,
-    "durationLimit": 3600000,
+    "isRunning": true,
+    "startTime": 1782000448500,
+    "durationLimit": 7200000,
     "allowVariants": true,
     "allowedVariants": [
       "standard",
@@ -71,6 +71,4075 @@
       "atomic"
     ]
   },
-  "activeGames": [],
+  "activeGames": [
+    {
+      "gameId": "game_2",
+      "player1": "cpu0",
+      "player2": "cpu-1.........3",
+      "player1Elo": 400,
+      "player2Elo": 200,
+      "variant": "freestyle",
+      "startPos": "random",
+      "startPosId": 882,
+      "cooldownMs": 10000,
+      "timeControlMs": 900000,
+      "incrementMs": 10000,
+      "timeStages": [],
+      "startTime": 1782000462515,
+      "isWhiteTurn": true,
+      "whiteTimeRemaining": 506189,
+      "blackTimeRemaining": 1081717,
+      "lastMoveTime": 1782004794729,
+      "board": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "king",
+            "isWhite": true,
+            "symbol": "K",
+            "unicode": "♔"
+          },
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "king",
+            "isWhite": false,
+            "symbol": "k",
+            "unicode": "♚"
+          }
+        ]
+      ],
+      "moveHistory": [
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 7,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 7,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 4,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 7,
+          "startY": 4,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 7,
+          "endX": 1,
+          "endY": 6,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 7,
+          "startY": 6,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 7,
+          "startY": 7,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 7,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 3,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 7,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 0,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 7,
+          "endX": 3,
+          "endY": 6,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 7,
+          "endX": 0,
+          "endY": 7,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 3,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 3,
+          "endY": 7,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 2,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 6,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 6,
+          "endX": 0,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 4,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 4,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 7,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 0,
+          "endY": 7,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 4,
+          "startY": 7,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 7,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 5,
+          "startY": 7,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 1,
+          "endY": 6,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 7,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 4,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 5,
+          "endX": 3,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 7,
+          "endX": 3,
+          "endY": 6,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 4,
+          "endY": 7,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 4,
+          "startY": 7,
+          "endX": 5,
+          "endY": 7,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 5,
+          "startY": 7,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 2,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 3,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 5,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 4,
+          "endX": 2,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 6,
+          "startY": 3,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 6,
+          "endX": 4,
+          "endY": 7,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 5,
+          "endY": 7,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 7,
+          "endX": 7,
+          "endY": 7,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 7,
+          "startY": 4,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 7,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 7,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 7,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 4,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 7,
+          "endY": 7,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 4,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 4,
+          "startY": 2,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 7,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 4,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1.........3",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 7,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 7,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 7,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 3,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 4,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 2,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 4,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 2,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 0,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 5,
+          "endX": 1,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 5,
+          "endX": 3,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 4,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 5,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 3,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 3,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 7,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 3,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 4,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 6,
+          "endY": 7,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 7,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 4,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 6,
+          "endY": 7,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 6,
+          "endY": 7,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 7,
+          "endY": 7,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 7,
+          "endX": 7,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 6,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 4,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 3,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 4,
+          "endY": 5,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 5,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 6,
+          "endY": 7,
+          "player": "cpu-1.........3"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 7,
+          "endY": 7,
+          "player": "cpu-1.........3"
+        }
+      ],
+      "capturedByWhite": [
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "rook",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "bishop",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "rook",
+          "isWhite": false
+        },
+        {
+          "type": "queen",
+          "isWhite": false
+        },
+        {
+          "type": "knight",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "bishop",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "knight",
+          "isWhite": false
+        },
+        {
+          "type": "queen",
+          "isWhite": false
+        }
+      ],
+      "capturedByBlack": [
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "knight",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "bishop",
+          "isWhite": true
+        },
+        {
+          "type": "queen",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "rook",
+          "isWhite": true
+        },
+        {
+          "type": "knight",
+          "isWhite": true
+        },
+        {
+          "type": "rook",
+          "isWhite": true
+        },
+        {
+          "type": "bishop",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        }
+      ],
+      "whitePlayerType": "computer",
+      "blackPlayerType": "computer",
+      "isComputerThinking": {
+        "white": true,
+        "black": false
+      },
+      "isGameOver": false,
+      "winner": null,
+      "termination": null,
+      "whiteKingMoved": true,
+      "blackKingMoved": true,
+      "whiteKingsideRookMoved": false,
+      "whiteQueensideRookMoved": false,
+      "blackKingsideRookMoved": false,
+      "blackQueensideRookMoved": false,
+      "lastMove": {
+        "startX": 6,
+        "startY": 7,
+        "endX": 7,
+        "endY": 7,
+        "piece": "king"
+      },
+      "computerLevels": {
+        "white": 0,
+        "black": -1
+      }
+    },
+    {
+      "gameId": "game_7",
+      "player1": "cpu-1..........2",
+      "player2": "cpu-1........1",
+      "player1Elo": 200,
+      "player2Elo": 200,
+      "variant": "standard",
+      "startPos": "random",
+      "startPosId": null,
+      "cooldownMs": 10000,
+      "timeControlMs": 600000,
+      "incrementMs": 5000,
+      "timeStages": [],
+      "startTime": 1782004295204,
+      "isWhiteTurn": true,
+      "whiteTimeRemaining": 569912,
+      "blackTimeRemaining": 570134,
+      "lastMoveTime": 1782004795189,
+      "board": [
+        [
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          {
+            "type": "king",
+            "isWhite": false,
+            "symbol": "k",
+            "unicode": "♚"
+          },
+          null,
+          null,
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          },
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          }
+        ],
+        [
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          },
+          null,
+          null,
+          {
+            "type": "queen",
+            "isWhite": true,
+            "symbol": "Q",
+            "unicode": "♕"
+          },
+          null,
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          }
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          },
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "type": "queen",
+            "isWhite": false,
+            "symbol": "q",
+            "unicode": "♛"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null
+        ],
+        [
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          {
+            "type": "king",
+            "isWhite": true,
+            "symbol": "K",
+            "unicode": "♔"
+          },
+          null
+        ]
+      ],
+      "moveHistory": [
+        {
+          "startX": 1,
+          "startY": 7,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 7,
+          "endY": 3,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 2,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 7,
+          "startY": 6,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 0,
+          "startY": 6,
+          "endX": 0,
+          "endY": 5,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 0,
+          "startY": 5,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 0,
+          "endY": 5,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 7,
+          "startY": 0,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 0,
+          "startY": 7,
+          "endX": 1,
+          "endY": 7,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 4,
+          "endY": 5,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 3,
+          "startY": 7,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 1,
+          "startY": 7,
+          "endX": 1,
+          "endY": 6,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 7,
+          "startY": 4,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 5,
+          "startY": 7,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 3,
+          "startY": 4,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 4,
+          "startY": 7,
+          "endX": 5,
+          "endY": 7,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 4,
+          "startY": 2,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 3,
+          "startY": 5,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 5,
+          "startY": 7,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 7,
+          "endY": 0,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 7,
+          "startY": 7,
+          "endX": 7,
+          "endY": 6,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 7,
+          "endY": 7,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 7,
+          "startY": 0,
+          "endX": 7,
+          "endY": 1,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 7,
+          "startY": 7,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 0,
+          "startY": 5,
+          "endX": 1,
+          "endY": 7,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 7,
+          "startY": 6,
+          "endX": 7,
+          "endY": 7,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 7,
+          "startY": 7,
+          "endX": 3,
+          "endY": 7,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 3,
+          "startY": 7,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 7,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu-1........1"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 7,
+          "endY": 6,
+          "player": "cpu-1..........2"
+        },
+        {
+          "startX": 6,
+          "startY": 3,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1........1"
+        }
+      ],
+      "capturedByWhite": [
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "bishop",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "knight",
+          "isWhite": false
+        }
+      ],
+      "capturedByBlack": [
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        }
+      ],
+      "whitePlayerType": "computer",
+      "blackPlayerType": "computer",
+      "isComputerThinking": {
+        "white": true,
+        "black": false
+      },
+      "isGameOver": false,
+      "winner": null,
+      "termination": null,
+      "whiteKingMoved": true,
+      "blackKingMoved": true,
+      "whiteKingsideRookMoved": true,
+      "whiteQueensideRookMoved": true,
+      "blackKingsideRookMoved": true,
+      "blackQueensideRookMoved": false,
+      "lastMove": {
+        "startX": 6,
+        "startY": 3,
+        "endX": 4,
+        "endY": 1,
+        "piece": "queen"
+      },
+      "computerLevels": {
+        "white": -1,
+        "black": -1
+      }
+    }
+  ],
   "gameOffers": []
 }
