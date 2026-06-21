@@ -139,12 +139,8 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
             if (p2End) p2End.setBusy(false);
             if (game.cleanup) game.cleanup();
 
-            // Delay game deletion to give clients time to see the final game state
-            // The celebration modal shows for 20 seconds, so we keep the game for 30 seconds
-            setTimeout(() => {
-                activeGames.delete(gameId);
-                console.log(`Game ${gameId} removed from active games after delay`);
-            }, 30000);
+            activeGames.delete(gameId);
+            console.log(`Game ${gameId} removed from active games immediately`);
 
             // Save state immediately after game end
             saveState();
