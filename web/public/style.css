@@ -46,6 +46,7 @@ body {
     padding: 2rem;
     /* Prevent browser overscroll bounce from compounding visual flicker */
     overscroll-behavior: none;
+    overflow-anchor: none;
 }
 
 /* Lion logo */

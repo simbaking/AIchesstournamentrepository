@@ -1151,6 +1151,7 @@
     padding: 0.5rem;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 0.5rem;
+    overflow-anchor: none;
 }
 
 .nav-btn {
@@ -1225,7 +1226,7 @@
 /* Evaluation Bar */
 .eval-bar-container {
     width: 32px;
-    background-color: #1a1a2e;
+    background-color: #000;
     border-radius: 6px;
     position: relative;
     overflow: hidden;
@@ -1239,8 +1240,8 @@
 
 .eval-bar-fill {
     width: 100%;
-    /* Top half = black (dark), grows from bottom where white is */
-    background: linear-gradient(to top, #f0f0f0 0%, #e0e0e0 100%);
+    /* Bottom = white, grows upward. Container background = black */
+    background: #ffffff;
     height: 50%;
     transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 0 0 4px 4px;
