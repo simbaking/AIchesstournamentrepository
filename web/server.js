@@ -403,6 +403,26 @@ if (tournament.checkIsRunning()) {
             const remainingTime = tournament.getRemainingTime();
             const players = tournament.getPlayers();
 
+            // Self-healing: clear busy state if player is not in any active game
+            for (const p of players) {
+                if (p.isBusy()) {
+                    const activeGameId = p.getActiveGameId();
+                    if (!activeGameId || !activeGames.has(activeGameId)) {
+                        let gameFound = false;
+                        for (const [id, game] of activeGames.entries()) {
+                            if (game.player1 === p.getName() || game.player2 === p.getName()) {
+                                gameFound = true;
+                                break;
+                            }
+                        }
+                        if (!gameFound) {
+                            console.log(`[Self-Healing] Clearing stuck busy state for ${p.getName()}`);
+                            p.setBusy(false);
+                        }
+                    }
+                }
+            }
+
             // Find idle computers
             const idleComputers = players.filter(p =>
                 p.isComputerPlayer() &&
@@ -735,6 +755,26 @@ app.post('/api/start', (req, res) => {
 
             const remainingTime = tournament.getRemainingTime();
             const players = tournament.getPlayers();
+
+            // Self-healing: clear busy state if player is not in any active game
+            for (const p of players) {
+                if (p.isBusy()) {
+                    const activeGameId = p.getActiveGameId();
+                    if (!activeGameId || !activeGames.has(activeGameId)) {
+                        let gameFound = false;
+                        for (const [id, game] of activeGames.entries()) {
+                            if (game.player1 === p.getName() || game.player2 === p.getName()) {
+                                gameFound = true;
+                                break;
+                            }
+                        }
+                        if (!gameFound) {
+                            console.log(`[Self-Healing] Clearing stuck busy state for ${p.getName()}`);
+                            p.setBusy(false);
+                        }
+                    }
+                }
+            }
 
             // 1. Offer Creation Logic
             // Find idle computers who don't have an active offer
