@@ -1292,3 +1292,22 @@
     pointer-events: none;
     z-index: 3;
 }
+
+/* Flipped state (black on bottom) */
+.eval-bar-container.flipped {
+    justify-content: flex-start;
+}
+
+.eval-bar-container.flipped .eval-bar-fill {
+    border-radius: 4px 4px 0 0;
+}
+
+.eval-bar-container.flipped::after {
+    bottom: auto;
+    top: 3px;
+}
+
+.eval-bar-container.flipped::before {
+    top: auto;
+    bottom: 3px;
+}
