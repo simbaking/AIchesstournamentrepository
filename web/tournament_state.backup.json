@@ -1,10 +1,10 @@
 {
-  "timestamp": 1782071770517,
+  "timestamp": 1782076761518,
   "tournament": {
     "players": [
       {
         "name": "hwan",
-        "score": 4686368,
+        "score": 0,
         "isComputer": false,
         "level": null,
         "busy": false,
@@ -15,7 +15,7 @@
       },
       {
         "name": "cpu-1",
-        "score": 2929768,
+        "score": 0,
         "isComputer": true,
         "level": -1,
         "busy": false,
@@ -26,7 +26,7 @@
       },
       {
         "name": "cpu-0.5",
-        "score": 5026509,
+        "score": 0,
         "isComputer": true,
         "level": -0.5,
         "busy": false,
@@ -37,7 +37,7 @@
       },
       {
         "name": "cpu0",
-        "score": 1629275,
+        "score": 0,
         "isComputer": true,
         "level": 0,
         "busy": false,
@@ -48,7 +48,7 @@
       },
       {
         "name": "cpu0.5",
-        "score": 3520289,
+        "score": 0,
         "isComputer": true,
         "level": 0.5,
         "busy": false,
@@ -59,7 +59,7 @@
       },
       {
         "name": "Lil jit",
-        "score": 2956403,
+        "score": 0,
         "isComputer": false,
         "level": null,
         "busy": false,
@@ -70,7 +70,7 @@
       },
       {
         "name": "cpu1",
-        "score": 7265026,
+        "score": 0,
         "isComputer": true,
         "level": 1,
         "busy": false,
@@ -81,7 +81,7 @@
       },
       {
         "name": "cpu2",
-        "score": 2425923,
+        "score": 0,
         "isComputer": true,
         "level": 2,
         "busy": false,
@@ -92,7 +92,7 @@
       },
       {
         "name": "cpu3",
-        "score": 5832487,
+        "score": 0,
         "isComputer": true,
         "level": 3,
         "busy": false,
