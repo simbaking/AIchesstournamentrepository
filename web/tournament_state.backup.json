@@ -1,65 +1,65 @@
 {
-  "timestamp": 1782011294074,
+  "timestamp": 1782012672326,
   "tournament": {
     "players": [
       {
         "name": "hwan",
-        "score": 259142,
+        "score": 0,
         "isComputer": false,
         "level": null,
-        "busy": false,
-        "activeGameId": null,
+        "busy": true,
+        "activeGameId": "game_5",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 276
       },
       {
         "name": "cpu-1",
-        "score": 691566,
+        "score": 0,
         "isComputer": true,
         "level": -1,
         "busy": true,
-        "activeGameId": "game_13",
+        "activeGameId": "game_5",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 200
       },
       {
         "name": "cpu-0.5",
-        "score": 1355827,
+        "score": 751820,
         "isComputer": true,
         "level": -0.5,
         "busy": true,
-        "activeGameId": "game_10",
+        "activeGameId": "game_6",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 300
       },
       {
         "name": "cpu0",
-        "score": 139005,
+        "score": 2187588,
         "isComputer": true,
         "level": 0,
         "busy": true,
-        "activeGameId": "game_10",
+        "activeGameId": "game_6",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 400
       },
       {
         "name": "cpu0.5",
-        "score": 944986,
+        "score": 0,
         "isComputer": true,
         "level": 0.5,
-        "busy": true,
-        "activeGameId": "game_13",
+        "busy": false,
+        "activeGameId": null,
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 600
       }
     ],
     "isRunning": true,
-    "startTime": 1782010524717,
+    "startTime": 1782011375502,
     "durationLimit": 3600000,
     "allowVariants": true,
     "allowedVariants": [
@@ -73,31 +73,68 @@
   },
   "activeGames": [
     {
-      "gameId": "game_4",
-      "player1": "cpu0",
+      "gameId": "game_3",
+      "player1": "cpu-0.5",
       "player2": "cpu-1",
-      "player1Elo": 400,
+      "player1Elo": 300,
       "player2Elo": 200,
-      "variant": "kingofthehill",
+      "variant": "standard",
       "startPos": "random",
       "startPosId": null,
       "cooldownMs": 10000,
       "timeControlMs": 600000,
-      "incrementMs": 5000,
+      "incrementMs": 15000,
       "timeStages": [],
-      "startTime": 1782010535734,
-      "isWhiteTurn": true,
-      "whiteTimeRemaining": 377388,
-      "blackTimeRemaining": 566729,
-      "lastMoveTime": 1782011291643,
+      "startTime": 1782011386525,
+      "isWhiteTurn": false,
+      "whiteTimeRemaining": 2437948,
+      "blackTimeRemaining": 1338398,
+      "lastMoveTime": 1782012665272,
       "board": [
         [
           null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
           {
             "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
           },
           {
             "type": "pawn",
@@ -107,37 +144,10 @@
           },
           null,
           null,
-          null,
-          {
-            "type": "rook",
-            "isWhite": true,
-            "symbol": "R",
-            "unicode": "♖"
-          },
           null
         ],
         [
           null,
-          null,
-          null,
-          null,
-          {
-            "type": "queen",
-            "isWhite": false,
-            "symbol": "q",
-            "unicode": "♛"
-          },
-          null,
-          null,
-          null
-        ],
-        [
-          {
-            "type": "rook",
-            "isWhite": false,
-            "symbol": "r",
-            "unicode": "♜"
-          },
           {
             "type": "king",
             "isWhite": false,
@@ -146,96 +156,21 @@
           },
           null,
           null,
-          null,
-          {
-            "type": "knight",
-            "isWhite": true,
-            "symbol": "N",
-            "unicode": "♘"
-          },
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
-          null,
-          null,
-          {
-            "type": "bishop",
-            "isWhite": false,
-            "symbol": "b",
-            "unicode": "♝"
-          },
           {
             "type": "king",
             "isWhite": true,
             "symbol": "K",
             "unicode": "♔"
-          }
-        ],
-        [
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
           },
           null,
-          {
-            "type": "bishop",
-            "isWhite": true,
-            "symbol": "B",
-            "unicode": "♗"
-          },
           null,
           null
         ],
         [
           null,
           null,
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
           null,
           null,
-          {
-            "type": "knight",
-            "isWhite": true,
-            "symbol": "N",
-            "unicode": "♘"
-          },
-          null,
-          {
-            "type": "bishop",
-            "isWhite": true,
-            "symbol": "B",
-            "unicode": "♗"
-          }
-        ],
-        [
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
           null,
           null,
           null,
@@ -244,363 +179,50 @@
         [
           null,
           null,
-          {
-            "type": "knight",
-            "isWhite": false,
-            "symbol": "n",
-            "unicode": "♞"
-          },
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
           {
             "type": "pawn",
             "isWhite": true,
             "symbol": "P",
             "unicode": "♙"
           },
+          null,
+          null,
           null,
           null
         ]
       ],
       "moveHistory": [
         {
-          "startX": 0,
-          "startY": 6,
-          "endX": 0,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 5,
-          "startY": 6,
-          "endX": 5,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 5,
-          "startY": 4,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 2,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 3,
-          "startY": 6,
-          "endX": 3,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 0,
-          "endY": 2,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 7,
-          "startY": 6,
-          "endX": 7,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 1,
-          "endX": 5,
-          "endY": 2,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 3,
-          "startY": 5,
-          "endX": 3,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 2,
-          "endY": 2,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 1,
-          "startY": 6,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 1,
-          "endX": 7,
-          "endY": 2,
-          "player": "cpu-1"
-        },
-        {
           "startX": 1,
           "startY": 7,
           "endX": 0,
           "endY": 5,
-          "player": "cpu0"
+          "player": "cpu-0.5"
         },
         {
-          "startX": 3,
+          "startX": 6,
           "startY": 1,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 0,
-          "startY": 4,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 4,
-          "startY": 7,
-          "endX": 3,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 4,
-          "endY": 3,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 4,
-          "startY": 6,
-          "endX": 4,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 2,
-          "endX": 7,
-          "endY": 3,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 3,
-          "startY": 7,
           "endX": 6,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 0,
-          "endX": 4,
-          "endY": 1,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 4,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 3,
-          "endX": 7,
-          "endY": 4,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 3,
-          "startY": 6,
-          "endX": 3,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 2,
-          "endX": 0,
-          "endY": 3,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 4,
-          "startY": 6,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 0,
-          "endX": 3,
-          "endY": 0,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 6,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 6,
-          "startY": 5,
-          "endX": 4,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 3,
-          "startY": 5,
-          "endX": 4,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 3,
           "endY": 2,
           "player": "cpu-1"
         },
         {
-          "startX": 4,
-          "startY": 6,
-          "endX": 3,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 3,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 4,
-          "startY": 3,
-          "endX": 4,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 0,
+          "startX": 6,
           "startY": 7,
-          "endX": 0,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 2,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 2,
-          "startY": 7,
-          "endX": 3,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 3,
-          "startY": 6,
-          "endX": 2,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 0,
           "endX": 7,
-          "endY": 3,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 4,
-          "startY": 0,
-          "endX": 5,
-          "endY": 1,
-          "player": "cpu0"
+          "endY": 5,
+          "player": "cpu-0.5"
         },
         {
           "startX": 1,
@@ -610,81 +232,391 @@
           "player": "cpu-1"
         },
         {
-          "startX": 5,
-          "startY": 1,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 6,
-          "startY": 7,
-          "endX": 5,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 5,
-          "endY": 4,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 7,
-          "startY": 7,
-          "endX": 7,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 4,
-          "endX": 7,
-          "endY": 6,
-          "player": "cpu-1"
-        },
-        {
           "startX": 0,
-          "startY": 5,
+          "startY": 7,
           "endX": 1,
           "endY": 7,
-          "player": "cpu0"
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
         },
         {
           "startX": 7,
+          "startY": 7,
+          "endX": 6,
+          "endY": 7,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 7,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
           "startY": 6,
-          "endX": 5,
-          "endY": 4,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 6,
+          "endY": 1,
           "player": "cpu-1"
         },
         {
           "startX": 2,
-          "startY": 5,
-          "endX": 4,
-          "endY": 7,
-          "player": "cpu0"
+          "startY": 7,
+          "endX": 1,
+          "endY": 6,
+          "player": "cpu-0.5"
         },
         {
-          "startX": 5,
-          "startY": 3,
+          "startX": 7,
+          "startY": 0,
           "endX": 7,
           "endY": 2,
           "player": "cpu-1"
         },
         {
           "startX": 3,
+          "startY": 7,
+          "endX": 2,
+          "endY": 7,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 7,
+          "endX": 3,
+          "endY": 7,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 3,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 6,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 7,
+          "endX": 2,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 6,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 7,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 6,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 7,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
           "startY": 4,
           "endX": 2,
           "endY": 3,
-          "player": "cpu0"
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 7,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 7,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 7,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 3,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 7,
+          "endY": 0,
+          "player": "cpu-0.5",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 0,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5",
+          "promotionPiece": "queen"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 4,
+          "endX": 7,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 0,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 2,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-0.5"
         },
         {
           "startX": 1,
@@ -694,43 +626,911 @@
           "player": "cpu-1"
         },
         {
+          "startX": 7,
+          "startY": 6,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
           "startX": 3,
           "startY": 5,
-          "endX": 4,
-          "endY": 6,
-          "player": "cpu0"
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 7,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu-0.5"
         },
         {
           "startX": 5,
-          "startY": 4,
-          "endX": 4,
+          "startY": 1,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 3,
           "endY": 3,
           "player": "cpu-1"
         },
         {
           "startX": 4,
-          "startY": 7,
-          "endX": 1,
+          "startY": 4,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 6,
           "endY": 4,
-          "player": "cpu0"
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 4,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 2,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 4,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 5,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 4,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 7,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 3,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
         },
         {
           "startX": 2,
           "startY": 3,
           "endX": 1,
-          "endY": 2,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 4,
+          "endY": 1,
           "player": "cpu-1"
         },
         {
           "startX": 1,
+          "startY": 3,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
           "startY": 4,
-          "endX": 2,
-          "endY": 5,
-          "player": "cpu0"
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-1"
         },
         {
           "startX": 5,
+          "startY": 5,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
           "startY": 0,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 5,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 4,
+          "endX": 7,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 5,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
           "endX": 3,
           "endY": 2,
           "player": "cpu-1"
@@ -739,22 +1539,8 @@
           "startX": 2,
           "startY": 5,
           "endX": 0,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 2,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 4,
-          "startY": 6,
-          "endX": 3,
-          "endY": 7,
-          "player": "cpu0"
+          "endY": 4,
+          "player": "cpu-0.5"
         },
         {
           "startX": 3,
@@ -764,229 +1550,462 @@
           "player": "cpu-1"
         },
         {
-          "startX": 2,
-          "startY": 6,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 3,
-          "endX": 4,
-          "endY": 2,
-          "player": "cpu-1"
-        },
-        {
           "startX": 0,
-          "startY": 6,
-          "endX": 5,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 2,
-          "endX": 4,
-          "endY": 4,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 0,
-          "startY": 3,
+          "startY": 4,
           "endX": 2,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 4,
-          "endX": 4,
-          "endY": 2,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 4,
-          "startY": 5,
-          "endX": 4,
-          "endY": 4,
-          "player": "cpu0"
+          "endY": 3,
+          "player": "cpu-0.5"
         },
         {
           "startX": 2,
           "startY": 1,
-          "endX": 7,
-          "endY": 6,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 1,
-          "endX": 6,
-          "endY": 3,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 4,
-          "startY": 4,
-          "endX": 4,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 6,
-          "endX": 5,
-          "endY": 4,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 5,
-          "startY": 6,
-          "endX": 0,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 4,
-          "endX": 3,
-          "endY": 6,
+          "endX": 2,
+          "endY": 0,
           "player": "cpu-1"
         },
         {
           "startX": 1,
-          "startY": 5,
+          "startY": 4,
           "endX": 1,
-          "endY": 4,
-          "player": "cpu0"
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu-1"
         },
         {
           "startX": 2,
           "startY": 3,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 2,
-          "startY": 5,
           "endX": 3,
-          "endY": 4,
-          "player": "cpu0"
+          "endY": 5,
+          "player": "cpu-0.5"
         },
         {
           "startX": 1,
-          "startY": 2,
+          "startY": 0,
           "endX": 2,
           "endY": 1,
           "player": "cpu-1"
         },
         {
-          "startX": 6,
-          "startY": 4,
-          "endX": 7,
+          "startX": 3,
+          "startY": 5,
+          "endX": 4,
           "endY": 3,
-          "player": "cpu0"
+          "player": "cpu-0.5"
         },
         {
-          "startX": 4,
-          "startY": 2,
+          "startX": 2,
+          "startY": 1,
           "endX": 2,
           "endY": 0,
           "player": "cpu-1"
         },
         {
-          "startX": 3,
-          "startY": 4,
-          "endX": 6,
-          "endY": 7,
-          "player": "cpu0"
+          "startX": 1,
+          "startY": 5,
+          "endX": 0,
+          "endY": 5,
+          "player": "cpu-0.5"
         },
         {
           "startX": 2,
           "startY": 0,
-          "endX": 6,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 5,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 5,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 5,
+          "endX": 5,
           "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 0,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 5,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 5,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 5,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 4,
+          "endY": 1,
           "player": "cpu-1"
         },
         {
           "startX": 1,
           "startY": 3,
-          "endX": 0,
-          "endY": 2,
-          "player": "cpu0"
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu-0.5"
         },
         {
-          "startX": 0,
-          "startY": 0,
-          "endX": 2,
+          "startX": 4,
+          "startY": 1,
+          "endX": 5,
           "endY": 0,
           "player": "cpu-1"
         },
         {
-          "startX": 1,
-          "startY": 7,
-          "endX": 2,
+          "startX": 2,
+          "startY": 4,
+          "endX": 3,
           "endY": 5,
-          "player": "cpu0"
+          "player": "cpu-0.5"
         },
         {
-          "startX": 6,
-          "startY": 4,
-          "endX": 1,
-          "endY": 4,
+          "startX": 5,
+          "startY": 0,
+          "endX": 6,
+          "endY": 0,
           "player": "cpu-1"
         },
         {
-          "startX": 6,
-          "startY": 7,
-          "endX": 5,
-          "endY": 6,
-          "player": "cpu0"
+          "startX": 3,
+          "startY": 5,
+          "endX": 4,
+          "endY": 5,
+          "player": "cpu-0.5"
         },
         {
-          "startX": 1,
-          "startY": 4,
-          "endX": 4,
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 5,
+          "endX": 5,
           "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
           "player": "cpu-1"
         },
         {
           "startX": 5,
-          "startY": 6,
-          "endX": 4,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
           "startY": 4,
-          "endX": 1,
+          "endX": 4,
           "endY": 4,
-          "player": "cpu-1"
+          "player": "cpu-0.5"
         }
       ],
       "capturedByWhite": [
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
         {
           "type": "knight",
           "isWhite": false
@@ -996,15 +2015,59 @@
           "isWhite": false
         },
         {
+          "type": "knight",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
           "type": "bishop",
+          "isWhite": false
+        },
+        {
+          "type": "queen",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "rook",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "bishop",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
           "isWhite": false
         }
       ],
       "capturedByBlack": [
-        {
-          "type": "pawn",
-          "isWhite": true
-        },
         {
           "type": "pawn",
           "isWhite": true
@@ -1024,13 +2087,37 @@
         {
           "type": "pawn",
           "isWhite": true
+        },
+        {
+          "type": "queen",
+          "isWhite": true
+        },
+        {
+          "type": "bishop",
+          "isWhite": true
+        },
+        {
+          "type": "rook",
+          "isWhite": true
+        },
+        {
+          "type": "knight",
+          "isWhite": true
+        },
+        {
+          "type": "bishop",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
         }
       ],
       "whitePlayerType": "computer",
       "blackPlayerType": "computer",
       "isComputerThinking": {
-        "white": true,
-        "black": false
+        "white": false,
+        "black": true
       },
       "isGameOver": false,
       "winner": null,
@@ -1042,36 +2129,66 @@
       "blackKingsideRookMoved": true,
       "blackQueensideRookMoved": true,
       "lastMove": {
-        "startX": 4,
+        "startX": 5,
         "startY": 4,
-        "endX": 1,
+        "endX": 4,
         "endY": 4,
-        "piece": "queen"
+        "piece": "king"
       },
       "computerLevels": {
-        "white": 0,
+        "white": -0.5,
         "black": -1
       }
     },
     {
-      "gameId": "game_10",
-      "player1": "cpu-0.5",
-      "player2": "cpu0",
-      "player1Elo": 300,
-      "player2Elo": 400,
-      "variant": "standard",
+      "gameId": "game_5",
+      "player1": "cpu-1",
+      "player2": "hwan",
+      "player1Elo": 200,
+      "player2Elo": 276,
+      "variant": "freestyle",
       "startPos": "random",
-      "startPosId": null,
+      "startPosId": 359,
       "cooldownMs": 10000,
-      "timeControlMs": 600000,
+      "timeControlMs": 1800000,
       "incrementMs": 0,
       "timeStages": [],
-      "startTime": 1782011071691,
+      "startTime": 1782011618779,
       "isWhiteTurn": false,
-      "whiteTimeRemaining": 570297,
-      "blackTimeRemaining": 408718,
-      "lastMoveTime": 1782011292685,
+      "whiteTimeRemaining": 1724198,
+      "blackTimeRemaining": 1417010,
+      "lastMoveTime": 1782012077573,
       "board": [
+        [
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          }
+        ],
         [
           {
             "type": "rook",
@@ -1088,6 +2205,7 @@
           null,
           null,
           null,
+          null,
           {
             "type": "bishop",
             "isWhite": true,
@@ -1095,37 +2213,11 @@
             "unicode": "♗"
           },
           {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          null
-        ],
-        [
-          null,
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
-          null,
-          {
-            "type": "knight",
-            "isWhite": true,
-            "symbol": "N",
-            "unicode": "♘"
-          },
-          {
             "type": "rook",
             "isWhite": true,
             "symbol": "R",
             "unicode": "♖"
-          },
-          null,
-          null,
-          null
+          }
         ],
         [
           {
@@ -1134,31 +2226,6 @@
             "symbol": "b",
             "unicode": "♝"
           },
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          {
-            "type": "queen",
-            "isWhite": true,
-            "symbol": "Q",
-            "unicode": "♕"
-          },
-          null,
-          null
-        ],
-        [
-          {
-            "type": "knight",
-            "isWhite": true,
-            "symbol": "N",
-            "unicode": "♘"
-          },
           {
             "type": "pawn",
             "isWhite": false,
@@ -1168,13 +2235,13 @@
           null,
           null,
           null,
+          null,
           {
             "type": "pawn",
             "isWhite": true,
             "symbol": "P",
             "unicode": "♙"
           },
-          null,
           null
         ],
         [
@@ -1184,69 +2251,39 @@
             "symbol": "k",
             "unicode": "♚"
           },
-          null,
-          null,
           {
             "type": "pawn",
             "isWhite": false,
             "symbol": "p",
             "unicode": "♟"
           },
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
+          null,
+          null,
+          null,
+          null,
           {
             "type": "king",
             "isWhite": true,
             "symbol": "K",
             "unicode": "♔"
           },
-          {
-            "type": "bishop",
-            "isWhite": true,
-            "symbol": "B",
-            "unicode": "♗"
-          },
           null
         ],
         [
           {
-            "type": "bishop",
+            "type": "rook",
             "isWhite": false,
-            "symbol": "b",
-            "unicode": "♝"
+            "symbol": "r",
+            "unicode": "♜"
           },
+          null,
+          null,
           {
             "type": "pawn",
             "isWhite": false,
             "symbol": "p",
             "unicode": "♟"
           },
-          null,
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          null
-        ],
-        [
-          {
-            "type": "knight",
-            "isWhite": false,
-            "symbol": "n",
-            "unicode": "♞"
-          },
-          null,
-          null,
-          null,
           null,
           null,
           {
@@ -1263,12 +2300,6 @@
           }
         ],
         [
-          {
-            "type": "rook",
-            "isWhite": false,
-            "symbol": "r",
-            "unicode": "♜"
-          },
           null,
           {
             "type": "pawn",
@@ -1276,6 +2307,264 @@
             "symbol": "p",
             "unicode": "♟"
           },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "queen",
+            "isWhite": true,
+            "symbol": "Q",
+            "unicode": "♕"
+          }
+        ],
+        [
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          }
+        ],
+        [
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          }
+        ]
+      ],
+      "moveHistory": [
+        {
+          "startX": 0,
+          "startY": 6,
+          "endX": 0,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 3,
+          "player": "hwan"
+        },
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 1,
+          "endY": 4,
+          "player": "hwan"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 5,
+          "endY": 4,
+          "player": "hwan"
+        },
+        {
+          "startX": 2,
+          "startY": 7,
+          "endX": 1,
+          "endY": 6,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 3,
+          "endY": 6,
+          "player": "hwan"
+        },
+        {
+          "startX": 3,
+          "startY": 7,
+          "endX": 3,
+          "endY": 6,
+          "player": "cpu-1"
+        }
+      ],
+      "capturedByWhite": [
+        {
+          "type": "queen",
+          "isWhite": false
+        }
+      ],
+      "capturedByBlack": [
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        }
+      ],
+      "whitePlayerType": "computer",
+      "blackPlayerType": "human",
+      "isComputerThinking": {
+        "white": false,
+        "black": false
+      },
+      "isGameOver": false,
+      "winner": null,
+      "termination": null,
+      "whiteKingMoved": true,
+      "blackKingMoved": false,
+      "whiteKingsideRookMoved": false,
+      "whiteQueensideRookMoved": false,
+      "blackKingsideRookMoved": false,
+      "blackQueensideRookMoved": false,
+      "lastMove": {
+        "startX": 3,
+        "startY": 7,
+        "endX": 3,
+        "endY": 6,
+        "piece": "king"
+      },
+      "computerLevels": {
+        "white": -1,
+        "black": null
+      }
+    },
+    {
+      "gameId": "game_6",
+      "player1": "cpu-0.5",
+      "player2": "cpu0",
+      "player1Elo": 300,
+      "player2Elo": 400,
+      "variant": "freestyle",
+      "startPos": "random",
+      "startPosId": 328,
+      "cooldownMs": 10000,
+      "timeControlMs": 600000,
+      "incrementMs": 30000,
+      "timeStages": [],
+      "startTime": 1782012062242,
+      "isWhiteTurn": false,
+      "whiteTimeRemaining": 1574900,
+      "blackTimeRemaining": 1037813,
+      "lastMoveTime": 1782012659545,
+      "board": [
+        [
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          },
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          },
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
           null,
           null,
           {
@@ -1286,270 +2575,455 @@
           },
           null,
           null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null
+        ],
+        [
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          },
+          null
+        ],
+        [
+          {
+            "type": "king",
+            "isWhite": false,
+            "symbol": "k",
+            "unicode": "♚"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          null,
+          null,
+          {
+            "type": "king",
+            "isWhite": true,
+            "symbol": "K",
+            "unicode": "♔"
+          },
+          null,
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null
         ]
       ],
       "moveHistory": [
         {
-          "startX": 1,
+          "startX": 0,
           "startY": 7,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 7,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 6,
           "endX": 2,
           "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 7,
+          "endX": 2,
+          "endY": 6,
           "player": "cpu-0.5"
         },
         {
           "startX": 6,
           "startY": 1,
           "endX": 6,
-          "endY": 3,
+          "endY": 2,
           "player": "cpu0"
         },
         {
-          "startX": 6,
-          "startY": 7,
+          "startX": 5,
+          "startY": 6,
           "endX": 5,
           "endY": 5,
           "player": "cpu-0.5"
         },
         {
-          "startX": 2,
+          "startX": 4,
           "startY": 1,
-          "endX": 2,
+          "endX": 4,
           "endY": 3,
           "player": "cpu0"
         },
         {
-          "startX": 0,
+          "startX": 4,
           "startY": 7,
-          "endX": 1,
-          "endY": 7,
-          "player": "cpu-0.5"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 7,
-          "endX": 6,
-          "endY": 7,
+          "endX": 5,
+          "endY": 6,
           "player": "cpu-0.5"
         },
         {
           "startX": 1,
-          "startY": 2,
-          "endX": 2,
+          "startY": 0,
+          "endX": 0,
           "endY": 1,
           "player": "cpu0"
         },
         {
-          "startX": 4,
+          "startX": 0,
           "startY": 6,
-          "endX": 4,
-          "endY": 4,
+          "endX": 0,
+          "endY": 5,
           "player": "cpu-0.5"
         },
         {
-          "startX": 1,
+          "startX": 2,
           "startY": 0,
-          "endX": 2,
-          "endY": 2,
+          "endX": 0,
+          "endY": 0,
           "player": "cpu0"
         },
         {
-          "startX": 4,
+          "startX": 1,
           "startY": 7,
-          "endX": 4,
+          "endX": 0,
           "endY": 6,
           "player": "cpu-0.5"
         },
         {
-          "startX": 4,
+          "startX": 3,
           "startY": 0,
-          "endX": 3,
-          "endY": 0,
+          "endX": 5,
+          "endY": 2,
           "player": "cpu0"
         },
         {
           "startX": 5,
-          "startY": 5,
-          "endX": 6,
-          "endY": 3,
-          "player": "cpu-0.5"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 0,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
           "startY": 6,
           "endX": 1,
-          "endY": 4,
+          "endY": 2,
           "player": "cpu-0.5"
         },
         {
-          "startX": 0,
-          "startY": 3,
-          "endX": 0,
-          "endY": 2,
+          "startX": 5,
+          "startY": 2,
+          "endX": 5,
+          "endY": 5,
           "player": "cpu0"
         },
         {
-          "startX": 3,
+          "startX": 6,
           "startY": 6,
-          "endX": 3,
+          "endX": 5,
           "endY": 5,
           "player": "cpu-0.5"
         },
         {
           "startX": 0,
           "startY": 0,
-          "endX": 1,
+          "endX": 3,
           "endY": 0,
           "player": "cpu0"
         },
         {
-          "startX": 3,
-          "startY": 7,
-          "endX": 3,
-          "endY": 6,
+          "startX": 1,
+          "startY": 2,
+          "endX": 0,
+          "endY": 1,
           "player": "cpu-0.5"
         },
         {
-          "startX": 2,
-          "startY": 2,
-          "endX": 3,
-          "endY": 4,
+          "startX": 5,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
           "player": "cpu0"
         },
         {
-          "startX": 4,
-          "startY": 6,
+          "startX": 0,
+          "startY": 1,
           "endX": 4,
           "endY": 5,
           "player": "cpu-0.5"
         },
         {
-          "startX": 3,
-          "startY": 4,
-          "endX": 4,
+          "startX": 4,
+          "startY": 1,
+          "endX": 5,
           "endY": 2,
           "player": "cpu0"
         },
         {
-          "startX": 2,
+          "startX": 5,
           "startY": 7,
-          "endX": 0,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 7,
           "endY": 5,
           "player": "cpu-0.5"
         },
         {
-          "startX": 2,
-          "startY": 3,
-          "endX": 1,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 7,
-          "endX": 1,
-          "endY": 4,
-          "player": "cpu-0.5"
-        },
-        {
-          "startX": 0,
-          "startY": 2,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 5,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu-0.5"
-        },
-        {
-          "startX": 1,
+          "startX": 6,
           "startY": 0,
-          "endX": 0,
+          "endX": 5,
           "endY": 0,
           "player": "cpu0"
         },
         {
           "startX": 6,
-          "startY": 3,
-          "endX": 4,
-          "endY": 2,
+          "startY": 7,
+          "endX": 6,
+          "endY": 6,
           "player": "cpu-0.5"
         },
         {
           "startX": 3,
           "startY": 0,
-          "endX": 4,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 2,
-          "endX": 3,
-          "endY": 0,
-          "player": "cpu-0.5"
-        },
-        {
-          "startX": 7,
-          "startY": 1,
-          "endX": 7,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 7,
-          "endX": 4,
-          "endY": 6,
-          "player": "cpu-0.5"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 1,
+          "endX": 0,
           "endY": 0,
           "player": "cpu0"
         },
         {
           "startX": 2,
           "startY": 6,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 7,
           "endX": 2,
-          "endY": 4,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 5,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 4,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 6,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 0,
+          "endY": 0,
           "player": "cpu-0.5"
         },
         {
           "startX": 4,
-          "startY": 1,
-          "endX": 4,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 6,
           "endY": 3,
           "player": "cpu0"
         },
         {
           "startX": 7,
-          "startY": 6,
+          "startY": 4,
           "endX": 7,
-          "endY": 5,
+          "endY": 3,
           "player": "cpu-0.5"
         },
         {
-          "startX": 1,
+          "startX": 5,
           "startY": 0,
           "endX": 0,
           "endY": 0,
@@ -1557,19 +3031,141 @@
         },
         {
           "startX": 3,
+          "startY": 5,
+          "endX": 7,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 2,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
           "startY": 6,
-          "endX": 2,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 3,
+          "endX": 1,
           "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 6,
+          "endX": 0,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 3,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 4,
+          "endX": 0,
+          "endY": 3,
           "player": "cpu-0.5"
         }
       ],
       "capturedByWhite": [
         {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
+          "type": "knight",
           "isWhite": false
         },
         {
@@ -1577,13 +3173,45 @@
           "isWhite": false
         },
         {
-          "type": "knight",
+          "type": "bishop",
+          "isWhite": false
+        },
+        {
+          "type": "rook",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "rook",
           "isWhite": false
         }
       ],
       "capturedByBlack": [
         {
           "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "bishop",
+          "isWhite": true
+        },
+        {
+          "type": "queen",
           "isWhite": true
         }
       ],
@@ -1598,352 +3226,35 @@
       "termination": null,
       "whiteKingMoved": true,
       "blackKingMoved": true,
-      "whiteKingsideRookMoved": true,
-      "whiteQueensideRookMoved": true,
+      "whiteKingsideRookMoved": false,
+      "whiteQueensideRookMoved": false,
       "blackKingsideRookMoved": false,
       "blackQueensideRookMoved": true,
       "lastMove": {
-        "startX": 3,
-        "startY": 6,
-        "endX": 2,
-        "endY": 5,
-        "piece": "queen"
+        "startX": 1,
+        "startY": 4,
+        "endX": 0,
+        "endY": 3,
+        "piece": "pawn"
       },
       "computerLevels": {
         "white": -0.5,
         "black": 0
       }
-    },
-    {
-      "gameId": "game_13",
-      "player1": "cpu-1",
-      "player2": "cpu0.5",
-      "player1Elo": 200,
-      "player2Elo": 600,
-      "variant": "atomic",
-      "startPos": "random",
-      "startPosId": null,
-      "cooldownMs": 10000,
-      "timeControlMs": 600000,
-      "incrementMs": 30000,
-      "timeStages": [],
-      "startTime": 1782011254019,
-      "isWhiteTurn": false,
-      "whiteTimeRemaining": 672014,
-      "blackTimeRemaining": 659940,
-      "lastMoveTime": 1782011272065,
-      "board": [
-        [
-          {
-            "type": "rook",
-            "isWhite": false,
-            "symbol": "r",
-            "unicode": "♜"
-          },
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
-          null,
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          {
-            "type": "rook",
-            "isWhite": true,
-            "symbol": "R",
-            "unicode": "♖"
-          }
-        ],
-        [
-          {
-            "type": "knight",
-            "isWhite": false,
-            "symbol": "n",
-            "unicode": "♞"
-          },
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
-          null,
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          {
-            "type": "knight",
-            "isWhite": true,
-            "symbol": "N",
-            "unicode": "♘"
-          }
-        ],
-        [
-          null,
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
-          null,
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          {
-            "type": "bishop",
-            "isWhite": true,
-            "symbol": "B",
-            "unicode": "♗"
-          }
-        ],
-        [
-          {
-            "type": "queen",
-            "isWhite": false,
-            "symbol": "q",
-            "unicode": "♛"
-          },
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
-          {
-            "type": "knight",
-            "isWhite": true,
-            "symbol": "N",
-            "unicode": "♘"
-          },
-          null,
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          null
-        ],
-        [
-          {
-            "type": "king",
-            "isWhite": false,
-            "symbol": "k",
-            "unicode": "♚"
-          },
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          {
-            "type": "bishop",
-            "isWhite": false,
-            "symbol": "b",
-            "unicode": "♝"
-          },
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
-          null,
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          null
-        ],
-        [
-          {
-            "type": "knight",
-            "isWhite": false,
-            "symbol": "n",
-            "unicode": "♞"
-          },
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          null,
-          null
-        ],
-        [
-          {
-            "type": "rook",
-            "isWhite": false,
-            "symbol": "r",
-            "unicode": "♜"
-          },
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
-          null,
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          {
-            "type": "rook",
-            "isWhite": true,
-            "symbol": "R",
-            "unicode": "♖"
-          }
-        ]
-      ],
-      "moveHistory": [
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 6,
-          "endY": 5,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu0.5"
-        },
-        {
-          "startX": 6,
-          "startY": 7,
-          "endX": 5,
-          "endY": 5,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu0.5"
-        },
-        {
-          "startX": 5,
-          "startY": 5,
-          "endX": 3,
-          "endY": 4,
-          "player": "cpu-1"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 4,
-          "endY": 6,
-          "player": "cpu0.5",
-          "atomic": true,
-          "explosionSquare": {
-            "x": 4,
-            "y": 6
-          }
-        }
-      ],
-      "capturedByWhite": [],
-      "capturedByBlack": [
-        {
-          "type": "queen",
-          "isWhite": true
-        },
-        {
-          "type": "king",
-          "isWhite": true
-        },
-        {
-          "type": "bishop",
-          "isWhite": true
-        },
-        {
-          "type": "pawn",
-          "isWhite": true
-        }
-      ],
-      "whitePlayerType": "computer",
-      "blackPlayerType": "computer",
-      "isComputerThinking": {
-        "white": false,
-        "black": true
-      },
-      "isGameOver": true,
-      "winner": "cpu0.5",
-      "termination": "atomic_explosion",
-      "whiteKingMoved": false,
-      "blackKingMoved": false,
-      "whiteKingsideRookMoved": false,
-      "whiteQueensideRookMoved": false,
-      "blackKingsideRookMoved": false,
-      "blackQueensideRookMoved": false,
-      "lastMove": {
-        "startX": 5,
-        "startY": 5,
-        "endX": 3,
-        "endY": 4,
-        "piece": "knight"
-      },
-      "computerLevels": {
-        "white": -1,
-        "black": 0.5
-      }
     }
   ],
-  "gameOffers": []
+  "gameOffers": [
+    {
+      "id": 13,
+      "player": "cpu0.5",
+      "elo": 600,
+      "timeControl": 5,
+      "increment": 10,
+      "variant": "standard",
+      "targets": [
+        "Any"
+      ],
+      "timestamp": 1782012059238
+    }
+  ]
 }
