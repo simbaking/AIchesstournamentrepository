@@ -575,7 +575,7 @@ registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = playerNameInput.value.trim();
     const isComputer = isComputerCheckbox.checked;
-    const level = isComputer ? parseInt(computerLevelSelect.value) : null;
+    const level = isComputer ? parseFloat(computerLevelSelect.value) : null;
 
     // Client-side check for existing human registration on this device
     if (!isComputer && myPlayerName) {
