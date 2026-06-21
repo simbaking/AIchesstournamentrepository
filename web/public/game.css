@@ -108,6 +108,9 @@
     border-radius: 0.5rem;
     margin-bottom: 0.5rem;
     transition: font-size 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .game-timer {
@@ -720,7 +723,7 @@
         padding: 0;
         margin: 0;
         background: var(--primary);
-        min-height: 100vh;
+        min-height: 100svh;
         display: flex;
         flex-direction: column;
         overflow-y: auto;
@@ -947,9 +950,9 @@
     }
 
     .chessboard {
-        /* Calculate available height: 100vh minus header(50px), 2 player bars(~80px each), 
-           tournament bar(~45px), action bar(~70px), and some padding = ~325px */
-        --available-height: calc(100vh - 325px);
+        /* Calculate available height: 100svh minus header(50px), 2 player bars(~80px each), 
+           and some padding (~40px) = roughly calc(100svh - 325px) */
+        --available-height: calc(100svh - 325px);
         /* Use smaller of viewport width or available height for square size */
         --square-size: min(calc(100vw / 8), calc(var(--available-height) / 8));
         grid-template-columns: repeat(8, var(--square-size));
