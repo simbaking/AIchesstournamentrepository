@@ -29,19 +29,27 @@ class ComputerPlayer {
         this.chess960Mode = false;  // Chess960 (Freestyle) mode flag
 
         // Use SimpleEngine for level -1 and 0
-        if (level <= 0) {
+        if (level === -1 || level === 0) {
             const SimpleEngine = require('./SimpleEngine');
             this.simpleEngine = new SimpleEngine();
             this.isReady = true;
         } else {
-            // Use Stockfish for levels 1-20
+        // Use SimpleEngine for level -1 and -0.5
+        if (level === -1 || level === -0.5) {
+            const SimpleEngine = require('./SimpleEngine');
+            this.simpleEngine = new SimpleEngine();
+            this.isReady = true;
+        } else {
+            // Use Stockfish for levels 0-20
             this.init();
         }
     }
 
     static getElo(level) {
         if (level === -1) return 200;
+        if (level === -0.5) return 300;
         if (level === 0) return 400;
+        if (level === 0.5) return 600;
         // Stockfish levels 1-20 -> ELO 800-3080
         return 800 + (Math.max(1, Math.min(20, level)) - 1) * 120;
     }
@@ -178,6 +186,28 @@ class ComputerPlayer {
             }
         }
 
+        if (this.level === 0 && text.startsWith('info') && text.includes('multipv')) {
+            const pvMatch = text.match(/ pv (\w+)/);
+            let evalScore = 0;
+            const cpMatch = text.match(/score cp (-?\d+)/);
+            if (cpMatch) evalScore = parseInt(cpMatch[1]);
+            const mateMatch = text.match(/score mate (-?\d+)/);
+            if (mateMatch) {
+                const mateIn = parseInt(mateMatch[1]);
+                evalScore = mateIn > 0 ? 10000 - mateIn : -10000 - mateIn;
+            }
+            if (pvMatch) {
+                const move = pvMatch[1];
+                if (!this.multiPvEvals) this.multiPvEvals = [];
+                const existing = this.multiPvEvals.find(m => m.move === move);
+                if (existing) {
+                    existing.eval = evalScore;
+                } else {
+                    this.multiPvEvals.push({ move, eval: evalScore });
+                }
+            }
+        }
+
         // Track current best move during search - CUMULATIVE TIME tracking
         // Each move accumulates time as "best", first to reach 5x consistency wins
         if (text.startsWith('info') && text.includes(' pv ')) {
@@ -230,7 +260,41 @@ class ComputerPlayer {
         // Parse bestmove
         if (text.startsWith('bestmove')) {
             const parts = text.split(' ');
-            const move = parts[1];
+            let move = parts[1];
+
+            if (this.level === 0 && this.multiPvEvals && this.multiPvEvals.length > 0) {
+                const buckets = {
+                    mate: [],
+                    high: [],     // 200+
+                    medium: [],   // 100 to 200
+                    low: [],      // 50 to 100
+                    balanced: [], // 0 to 50
+                    negative: []  // < 0
+                };
+                for (const m of this.multiPvEvals) {
+                    const val = m.eval;
+                    if (val >= 9000 || val <= -9000) buckets.mate.push(m);
+                    else if (val >= 200) buckets.high.push(m);
+                    else if (val >= 100) buckets.medium.push(m);
+                    else if (val >= 50) buckets.low.push(m);
+                    else if (val >= 0) buckets.balanced.push(m);
+                    else buckets.negative.push(m);
+                }
+                const candidateBuckets = [];
+                if (buckets.balanced.length > 0) candidateBuckets.push(buckets.balanced);
+                if (buckets.low.length > 0) candidateBuckets.push(buckets.low);
+                if (buckets.medium.length > 0) candidateBuckets.push(buckets.medium);
+                if (buckets.high.length > 0) candidateBuckets.push(buckets.high);
+                if (buckets.mate.length > 0) candidateBuckets.push(buckets.mate);
+                
+                if (candidateBuckets.length > 0) {
+                    const chosenBucket = candidateBuckets[Math.floor(Math.random() * candidateBuckets.length)];
+                    const chosenMove = chosenBucket[Math.floor(Math.random() * chosenBucket.length)];
+                    move = chosenMove.move;
+                    this.lastEvaluation = chosenMove.eval;
+                }
+                this.sendCommand('setoption name MultiPV value 1'); // reset
+            }
 
             // Check for ponder move
             const ponderIndex = parts.indexOf('ponder');
@@ -532,9 +596,8 @@ class ComputerPlayer {
             return;
         }
 
-        // Use SimpleEngine only for level -1 and 0 (or if forced)
-        // Fix: Don't let SimpleEngine block Stockfish for higher levels just because it exists
-        if (this.simpleEngine && (this.level <= 0)) {
+        // Use SimpleEngine only for level -1 and -0.5
+        if (this.simpleEngine && (this.level === -1 || this.level === -0.5)) {
             if (this.level === -1) {
                 // Level -1: keep original proportional delay + 1 extra second
                 const divisor = (variant === 'kungfu') ? 1000 : 250;
@@ -546,13 +609,13 @@ class ComputerPlayer {
                     this.simpleEngine.getRandomMove(fen, callback, variant);
                 }, thinkDelay);
             } else {
-                // Level 0: time the actual minimax calculation, then wait 5000x that duration
+                // Level -0.5: Use SimpleEngine (minimax depth 2, basically material counting)
                 const calcStart = Date.now();
                 this.simpleEngine.getMinimaxMove(fen, (result) => {
                     const calcTime = Date.now() - calcStart;
-                    const waitTime = calcTime * 50; // Changed from 50000 to 50 so it waits ~1 second instead of 16.6 minutes
+                    const waitTime = calcTime * 50; 
 
-                    console.log(`[COMPUTER] Level 0 (minimax), calc took ${calcTime}ms, waiting ${waitTime}ms (50x)`);
+                    console.log(`[COMPUTER] Level -0.5 (minimax), calc took ${calcTime}ms, waiting ${waitTime}ms (50x)`);
 
                     setTimeout(() => {
                         callback(result);
@@ -562,7 +625,7 @@ class ComputerPlayer {
             return;
         }
 
-        // Stockfish for level 1+
+        // Stockfish for level 0+
         // If the worker isn't ready yet, retry for up to 2 s before falling back.
         // This handles the race between game start and async Stockfish initialisation.
         if (!this.isReady || !this.worker) {
@@ -652,9 +715,17 @@ class ComputerPlayer {
             this.sendCommand(`setoption name UCI_Variant value ${uciVariant}`);
         }
 
-        // Send position and start INFINITE search (we'll stop when consistent)
+        // Send position and start search
         this.sendCommand(`position fen ${fen}`);
-        this.sendCommand('go infinite');
+        if (this.level === 0.5) {
+            this.sendCommand('go depth 1');
+        } else if (this.level === -0.5) {
+            this.multiPvEvals = [];
+            this.sendCommand('setoption name MultiPV value 200');
+            this.sendCommand('go depth 1');
+        } else {
+            this.sendCommand('go infinite');
+        }
 
         // Bug 1 fix: Safety timeout — if Stockfish never responds (e.g. checkmate position),
         // fire the callback with null after 15s so scheduleComputerMove can retry

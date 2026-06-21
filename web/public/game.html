@@ -120,7 +120,11 @@
                 </div>
 
                 <!-- The Chessboard -->
-                <div class="board-container">
+                <div class="board-container" style="display: flex; flex-direction: row; align-items: stretch; gap: 10px;">
+                    <div id="eval-bar-container" class="eval-bar-container">
+                        <div id="eval-bar-fill" class="eval-bar-fill"></div>
+                        <span id="eval-bar-text" class="eval-bar-text">0.00</span>
+                    </div>
                     <div id="chessboard" class="chessboard"></div>
                 </div>
 

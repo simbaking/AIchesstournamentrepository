@@ -239,6 +239,8 @@ function renderGame() {
         updateTimerDisplay(blackTimer, gameState.blackTimeRemaining);
     }
 
+    renderEvalBar();
+
     // Render board (with diffing to prevent flicker)
     // Skip if viewing history - don't overwrite the historical view
     if (!boardInitialized) {
@@ -293,10 +295,43 @@ function renderGame() {
 
     // Update navigation UI if not viewing history
     if (typeof updateNavigationUI === 'function' && typeof isViewingHistory === 'function' && !isViewingHistory()) {
-        updateNavigationUI();
+        updateMoveNavigation();
     }
 }
 
+function renderEvalBar() {
+    const fillEl = document.getElementById('eval-bar-fill');
+    const textEl = document.getElementById('eval-bar-text');
+    if (!fillEl || !textEl || !gameState) return;
+
+    const evalVal = gameState.evaluation || 0;
+    
+    let percentage = 50;
+    let text = '0.00';
+    
+    if (evalVal >= 9000) {
+        percentage = 100;
+        text = 'M' + (10000 - evalVal);
+    } else if (evalVal <= -9000) {
+        percentage = 0;
+        text = '-M' + (10000 + evalVal);
+    } else {
+        const clamped = Math.max(-1000, Math.min(1000, evalVal));
+        percentage = 50 + (clamped / 1000) * 50;
+        text = (evalVal > 0 ? '+' : '') + (evalVal / 100).toFixed(2);
+    }
+
+    fillEl.style.height = `${percentage}%`;
+    textEl.textContent = text;
+    
+    if (percentage > 50) {
+        textEl.style.color = '#333';
+    } else {
+        textEl.style.color = '#eee';
+    }
+}
+
+// Convert board state array to FEN
 // Initialize the board DOM once (called only on first render)
 function initBoard() {
     console.log('[BOARD] initBoard called');

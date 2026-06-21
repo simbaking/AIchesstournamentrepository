@@ -4,6 +4,7 @@ const Tournament = require('./lib/Tournament');
 const { ChessGame } = require('./lib/ChessGame');
 const ComputerPlayer = require('./lib/ComputerPlayer');
 const TournamentAI = require('./lib/TournamentAI');
+const GlobalAnalyzer = require('./lib/GlobalAnalyzer');
 
 // Global error handlers - prevent crashes from unhandled errors
 process.on('uncaughtException', (err) => {
@@ -41,6 +42,7 @@ const tournament = new Tournament();
 
 // Active games storage
 const activeGames = new Map();
+GlobalAnalyzer.setGamesMap(activeGames);
 let gameIdCounter = 1;
 let tournamentMonitorInterval = null;
 let autoMatchmakingInterval = null;
