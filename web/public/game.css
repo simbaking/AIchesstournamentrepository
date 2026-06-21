@@ -1225,7 +1225,7 @@
 
 /* Evaluation Bar */
 .eval-bar-container {
-    width: 32px;
+    width: 44px;
     background-color: #000;
     border-radius: 6px;
     position: relative;
@@ -1251,7 +1251,7 @@
     position: absolute;
     width: 100%;
     text-align: center;
-    font-size: 9px;
+    font-size: 13px;
     font-weight: 800;
     letter-spacing: -0.5px;
     top: 50%;
@@ -1271,7 +1271,7 @@
     bottom: 3px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 8px;
+    font-size: 11px;
     font-weight: 700;
     color: #fff;
     mix-blend-mode: difference;
@@ -1286,7 +1286,7 @@
     top: 3px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 8px;
+    font-size: 11px;
     font-weight: 700;
     color: #fff;
     mix-blend-mode: difference;
