@@ -1,5 +1,5 @@
 {
-  "timestamp": 1782008511283,
+  "timestamp": 1782009189786,
   "tournament": {
     "players": [
       {
@@ -7,8 +7,8 @@
         "score": 0,
         "isComputer": false,
         "level": null,
-        "busy": false,
-        "activeGameId": null,
+        "busy": true,
+        "activeGameId": "game_5",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 243
@@ -19,18 +19,18 @@
         "isComputer": true,
         "level": -1,
         "busy": true,
-        "activeGameId": "game_13",
+        "activeGameId": "game_5",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 200
       },
       {
         "name": "cpu-0.5",
-        "score": 0,
+        "score": 149096,
         "isComputer": true,
         "level": -0.5,
         "busy": true,
-        "activeGameId": "game_13",
+        "activeGameId": "game_10",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 300
@@ -41,25 +41,25 @@
         "isComputer": true,
         "level": 0,
         "busy": true,
-        "activeGameId": "game_12",
+        "activeGameId": "game_7",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 400
       },
       {
         "name": "cpu0.5",
-        "score": 0,
+        "score": 532626,
         "isComputer": true,
         "level": 0.5,
         "busy": true,
-        "activeGameId": "game_12",
+        "activeGameId": "game_10",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 600
       }
     ],
     "isRunning": true,
-    "startTime": 1782008252009,
+    "startTime": 1782008848058,
     "durationLimit": 3600000,
     "allowVariants": true,
     "allowedVariants": [
@@ -71,22 +71,1334 @@
       "atomic"
     ]
   },
-  "activeGames": [],
-  "gameOffers": [
+  "activeGames": [
     {
-      "id": 1,
-      "player": "hwan",
-      "elo": 243,
-      "timeControl": 30,
-      "increment": 0,
-      "timeStages": [],
-      "targets": [
-        "Any"
-      ],
-      "timestamp": 1782008253836,
+      "gameId": "game_5",
+      "player1": "cpu-1",
+      "player2": "hwan",
+      "player1Elo": 200,
+      "player2Elo": 243,
       "variant": "freestyle",
       "startPos": "random",
-      "cooldown": 10
+      "startPosId": 173,
+      "cooldownMs": 10000,
+      "timeControlMs": 1800000,
+      "incrementMs": 0,
+      "timeStages": [],
+      "startTime": 1782008865074,
+      "isWhiteTurn": false,
+      "whiteTimeRemaining": 1769311,
+      "blackTimeRemaining": 1767548,
+      "lastMoveTime": 1782008928215,
+      "board": [
+        [
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          }
+        ],
+        [
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          }
+        ],
+        [
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          }
+        ],
+        [
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          }
+        ],
+        [
+          {
+            "type": "king",
+            "isWhite": false,
+            "symbol": "k",
+            "unicode": "♚"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "king",
+            "isWhite": true,
+            "symbol": "K",
+            "unicode": "♔"
+          }
+        ],
+        [
+          {
+            "type": "queen",
+            "isWhite": false,
+            "symbol": "q",
+            "unicode": "♛"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "queen",
+            "isWhite": true,
+            "symbol": "Q",
+            "unicode": "♕"
+          }
+        ],
+        [
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          }
+        ],
+        [
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          }
+        ]
+      ],
+      "moveHistory": [
+        {
+          "startX": 7,
+          "startY": 6,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "hwan"
+        },
+        {
+          "startX": 0,
+          "startY": 6,
+          "endX": 0,
+          "endY": 5,
+          "player": "cpu-1"
+        }
+      ],
+      "capturedByWhite": [],
+      "capturedByBlack": [],
+      "whitePlayerType": "computer",
+      "blackPlayerType": "human",
+      "isComputerThinking": {
+        "white": false,
+        "black": false
+      },
+      "isGameOver": false,
+      "winner": null,
+      "termination": null,
+      "whiteKingMoved": false,
+      "blackKingMoved": false,
+      "whiteKingsideRookMoved": false,
+      "whiteQueensideRookMoved": false,
+      "blackKingsideRookMoved": false,
+      "blackQueensideRookMoved": false,
+      "lastMove": {
+        "startX": 0,
+        "startY": 6,
+        "endX": 0,
+        "endY": 5,
+        "piece": "pawn"
+      },
+      "computerLevels": {
+        "white": -1,
+        "black": null
+      }
+    },
+    {
+      "gameId": "game_7",
+      "player1": "cpu0",
+      "player2": "cpu0.5",
+      "player1Elo": 400,
+      "player2Elo": 600,
+      "variant": "standard",
+      "startPos": "random",
+      "startPosId": null,
+      "cooldownMs": 10000,
+      "timeControlMs": 600000,
+      "incrementMs": 30000,
+      "timeStages": [],
+      "startTime": 1782008903109,
+      "isWhiteTurn": false,
+      "whiteTimeRemaining": 749636,
+      "blackTimeRemaining": 839873,
+      "lastMoveTime": 1782009023605,
+      "board": [
+        [
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          }
+        ],
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          {
+            "type": "king",
+            "isWhite": true,
+            "symbol": "K",
+            "unicode": "♔"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          }
+        ],
+        [
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          }
+        ],
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "queen",
+            "isWhite": true,
+            "symbol": "Q",
+            "unicode": "♕"
+          }
+        ],
+        [
+          {
+            "type": "king",
+            "isWhite": false,
+            "symbol": "k",
+            "unicode": "♚"
+          },
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "queen",
+            "isWhite": false,
+            "symbol": "q",
+            "unicode": "♛"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          }
+        ],
+        [
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          }
+        ],
+        [
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          }
+        ]
+      ],
+      "moveHistory": [
+        {
+          "startX": 0,
+          "startY": 6,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 7,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 4,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 5,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 3,
+          "endX": 4,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 5,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu0"
+        }
+      ],
+      "capturedByWhite": [
+        {
+          "type": "bishop",
+          "isWhite": false
+        }
+      ],
+      "capturedByBlack": [
+        {
+          "type": "pawn",
+          "isWhite": true
+        }
+      ],
+      "whitePlayerType": "computer",
+      "blackPlayerType": "computer",
+      "isComputerThinking": {
+        "white": false,
+        "black": true
+      },
+      "isGameOver": false,
+      "winner": null,
+      "termination": null,
+      "whiteKingMoved": true,
+      "blackKingMoved": false,
+      "whiteKingsideRookMoved": false,
+      "whiteQueensideRookMoved": false,
+      "blackKingsideRookMoved": false,
+      "blackQueensideRookMoved": false,
+      "lastMove": {
+        "startX": 2,
+        "startY": 3,
+        "endX": 1,
+        "endY": 3,
+        "piece": "king"
+      },
+      "computerLevels": {
+        "white": 0,
+        "black": 0.5
+      }
+    },
+    {
+      "gameId": "game_10",
+      "player1": "cpu-0.5",
+      "player2": "cpu0.5",
+      "player1Elo": 300,
+      "player2Elo": 600,
+      "variant": "standard",
+      "startPos": "random",
+      "startPosId": null,
+      "cooldownMs": 10000,
+      "timeControlMs": 600000,
+      "incrementMs": 0,
+      "timeStages": [],
+      "startTime": 1782009075541,
+      "isWhiteTurn": true,
+      "whiteTimeRemaining": 573609,
+      "blackTimeRemaining": 588929,
+      "lastMoveTime": 1782009113009,
+      "board": [
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          {
+            "type": "queen",
+            "isWhite": false,
+            "symbol": "q",
+            "unicode": "♛"
+          },
+          null,
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          }
+        ],
+        [
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "king",
+            "isWhite": true,
+            "symbol": "K",
+            "unicode": "♔"
+          },
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          }
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "type": "king",
+            "isWhite": false,
+            "symbol": "k",
+            "unicode": "♚"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          null,
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          },
+          null
+        ],
+        [
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null
+        ]
+      ],
+      "moveHistory": [
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 7,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 7,
+          "endX": 1,
+          "endY": 7,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 7,
+          "endX": 6,
+          "endY": 7,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 7,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 7,
+          "endX": 5,
+          "endY": 7,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 7,
+          "endX": 3,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 4,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 7,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 5,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 3,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 4,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 3,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 6,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 6,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 4,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 2,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0.5"
+        }
+      ],
+      "capturedByWhite": [
+        {
+          "type": "bishop",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        }
+      ],
+      "capturedByBlack": [
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "rook",
+          "isWhite": true
+        },
+        {
+          "type": "knight",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "queen",
+          "isWhite": true
+        }
+      ],
+      "whitePlayerType": "computer",
+      "blackPlayerType": "computer",
+      "isComputerThinking": {
+        "white": true,
+        "black": false
+      },
+      "isGameOver": false,
+      "winner": null,
+      "termination": null,
+      "whiteKingMoved": true,
+      "blackKingMoved": true,
+      "whiteKingsideRookMoved": true,
+      "whiteQueensideRookMoved": true,
+      "blackKingsideRookMoved": false,
+      "blackQueensideRookMoved": true,
+      "lastMove": {
+        "startX": 0,
+        "startY": 0,
+        "endX": 2,
+        "endY": 0,
+        "piece": "rook"
+      },
+      "computerLevels": {
+        "white": -0.5,
+        "black": 0.5
+      }
     }
-  ]
+  ],
+  "gameOffers": []
 }
