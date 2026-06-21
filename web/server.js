@@ -135,13 +135,14 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
         } catch (e) {
             console.error(`Error recording game result for game ${gameId}:`, e);
         } finally {
-            if (p1End) p1End.setBusy(false);
-            if (p2End) p2End.setBusy(false);
             if (game.cleanup) game.cleanup();
 
             // Delay game deletion to give clients time to see the final game state
             // The celebration modal shows for 20 seconds, so we keep the game for 30 seconds
+            // We also keep players busy during this time so they don't immediately start another game
             setTimeout(() => {
+                if (p1End) p1End.setBusy(false);
+                if (p2End) p2End.setBusy(false);
                 activeGames.delete(gameId);
                 console.log(`Game ${gameId} removed from active games after delay`);
             }, 30000);
@@ -287,12 +288,13 @@ function loadState() {
                     } catch (e) {
                         console.error(`Error recording game result for game ${gameData.gameId}:`, e);
                     } finally {
-                        if (p1End) p1End.setBusy(false);
-                        if (p2End) p2End.setBusy(false);
                         if (game.cleanup) game.cleanup();
 
                         // Delay game deletion to give clients time to see the final game state
+                        // We also keep players busy during this time so they don't immediately start another game
                         setTimeout(() => {
+                            if (p1End) p1End.setBusy(false);
+                            if (p2End) p2End.setBusy(false);
                             activeGames.delete(gameData.gameId);
                             console.log(`Game ${gameData.gameId} removed from active games after delay`);
                         }, 30000);
@@ -307,11 +309,17 @@ function loadState() {
                 // Set Computer Player Instances (done inside fromJSON partially, but verify here?)
                 // fromJSON calls setPlayerType, which creates new ComputerPlayer instances.
 
+                if (game.isGameOver) {
+                    // Do not add to activeGames or set players busy if game is already completed
+                    console.log(`Skipping already completed game ${game.gameId} during restore`);
+                    continue;
+                }
+
                 activeGames.set(game.gameId, game);
 
                 // Re-bind players
-                const p1 = tournament.getPlayerByName(game.player1);
-                const p2 = tournament.getPlayerByName(game.player2);
+                const p1 = tournament.tournament ? tournament.getPlayerByName(game.player1) : tournament.getPlayerByName(game.player1);
+                const p2 = tournament.tournament ? tournament.getPlayerByName(game.player2) : tournament.getPlayerByName(game.player2);
                 if (p1) p1.setBusy(true, game.gameId);
                 if (p2) p2.setBusy(true, game.gameId);
 
