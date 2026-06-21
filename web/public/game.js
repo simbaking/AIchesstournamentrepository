@@ -578,22 +578,37 @@ function updateBoard(forceRefresh = false) {
 
             // Update piece if changed
             if (pieceChanged) {
-                // Remove existing piece images
                 const existingPieces = square.querySelectorAll('.piece');
-                existingPieces.forEach(p => p.remove());
 
-                // Add new piece if present
                 if (piece) {
-                    const pieceImg = document.createElement('img');
-                    pieceImg.className = 'piece';
                     const color = piece.isWhite ? 'white' : 'black';
-                    pieceImg.src = `pieces/${color}-${piece.type}.png`;
-                    pieceImg.alt = `${color} ${piece.type}`;
-                    pieceImg.draggable = true;
-                    pieceImg.addEventListener('dragstart', (e) => handleDragStart(e, x, y));
-                    square.appendChild(pieceImg);
+                    const src = `pieces/${color}-${piece.type}.png`;
+                    const alt = `${color} ${piece.type}`;
+
+                    if (existingPieces.length > 0) {
+                        // Recycle the first existing piece element
+                        const pieceImg = existingPieces[0];
+                        if (pieceImg.src !== src) pieceImg.src = src;
+                        if (pieceImg.alt !== alt) pieceImg.alt = alt;
+                        
+                        // Remove any accidental duplicates
+                        for (let i = 1; i < existingPieces.length; i++) {
+                            existingPieces[i].remove();
+                        }
+                    } else {
+                        // Create a new piece element
+                        const pieceImg = document.createElement('img');
+                        pieceImg.className = 'piece';
+                        pieceImg.src = src;
+                        pieceImg.alt = alt;
+                        pieceImg.draggable = true;
+                        pieceImg.addEventListener('dragstart', (e) => handleDragStart(e, x, y));
+                        square.appendChild(pieceImg);
+                    }
                     square.classList.add('has-piece');
                 } else {
+                    // Square became empty, remove all piece images
+                    existingPieces.forEach(p => p.remove());
                     square.classList.remove('has-piece');
                 }
             }
