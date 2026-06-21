@@ -95,8 +95,12 @@ function showMessage(text, type = 'success') {
     }, 3000);
 }
 
+let isFetchingState = false;
+
 // Fetch game state
 async function updateGameState() {
+    if (isFetchingState) return;
+    isFetchingState = true;
     try {
         const response = await fetch(`/api/game/${gameId}`);
         if (!response.ok) {
@@ -176,6 +180,8 @@ async function updateGameState() {
         console.error('Error fetching game state:', error);
         // Don't stop polling - just log the error and continue
         // The next poll will try again
+    } finally {
+        isFetchingState = false;
     }
 }
 
@@ -640,23 +646,33 @@ function updateBoard(forceRefresh = false) {
             }
 
             // Update cooldown visualization (Kung Fu Chess)
-            const existingCooldown = square.querySelector('.cooldown-progress');
-            if (existingCooldown) existingCooldown.remove();
-            square.classList.remove('cooldown');
-
             if (gameState.cooldowns) {
                 const key = `${x},${y}`;
                 const cooldownEnd = gameState.cooldowns[key];
                 if (cooldownEnd > Date.now()) {
-                    square.classList.add('cooldown');
+                    if (!square.classList.contains('cooldown')) {
+                        square.classList.add('cooldown');
+                    }
                     const remainingMs = cooldownEnd - Date.now();
                     const totalMs = gameState.cooldownMs || 10000;
                     const progressPercent = Math.min(100, (remainingMs / totalMs) * 100);
-                    const progressEl = document.createElement('div');
-                    progressEl.className = 'cooldown-progress';
+                    
+                    let progressEl = square.querySelector('.cooldown-progress');
+                    if (!progressEl) {
+                        progressEl = document.createElement('div');
+                        progressEl.className = 'cooldown-progress';
+                        square.appendChild(progressEl);
+                    }
                     progressEl.style.height = `${progressPercent}%`;
-                    square.appendChild(progressEl);
+                } else {
+                    square.classList.remove('cooldown');
+                    const existingCooldown = square.querySelector('.cooldown-progress');
+                    if (existingCooldown) existingCooldown.remove();
                 }
+            } else {
+                square.classList.remove('cooldown');
+                const existingCooldown = square.querySelector('.cooldown-progress');
+                if (existingCooldown) existingCooldown.remove();
             }
         }
     }
