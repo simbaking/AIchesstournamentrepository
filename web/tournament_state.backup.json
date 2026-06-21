@@ -1,5 +1,5 @@
 {
-  "timestamp": 1782021943797,
+  "timestamp": 1782047900395,
   "tournament": {
     "players": [
       {
@@ -11,55 +11,55 @@
         "activeGameId": null,
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
-        "elo": -70
+        "elo": -74
       },
       {
         "name": "cpu-1",
-        "score": 2850638,
+        "score": 294502,
         "isComputer": true,
         "level": -1,
-        "busy": false,
-        "activeGameId": null,
+        "busy": true,
+        "activeGameId": "game_9",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 200
       },
       {
         "name": "cpu-0.5",
-        "score": 12830923,
+        "score": 322444,
         "isComputer": true,
         "level": -0.5,
-        "busy": false,
-        "activeGameId": null,
+        "busy": true,
+        "activeGameId": "game_7",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 300
       },
       {
         "name": "cpu0",
-        "score": 5387206,
+        "score": 633623,
         "isComputer": true,
         "level": 0,
-        "busy": false,
-        "activeGameId": null,
+        "busy": true,
+        "activeGameId": "game_9",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 400
       },
       {
         "name": "cpu0.5",
-        "score": 6785951,
+        "score": 399006,
         "isComputer": true,
         "level": 0.5,
-        "busy": false,
-        "activeGameId": null,
+        "busy": true,
+        "activeGameId": "game_7",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 600
       }
     ],
-    "isRunning": false,
-    "startTime": 1782013137504,
+    "isRunning": true,
+    "startTime": 1782047288497,
     "durationLimit": 3600000,
     "allowVariants": true,
     "allowedVariants": [
@@ -71,6 +71,1403 @@
       "atomic"
     ]
   },
-  "activeGames": [],
+  "activeGames": [
+    {
+      "gameId": "game_7",
+      "player1": "cpu0.5",
+      "player2": "cpu-0.5",
+      "player1Elo": 600,
+      "player2Elo": 300,
+      "variant": "freestyle",
+      "startPos": "random",
+      "startPosId": 264,
+      "cooldownMs": 10000,
+      "timeControlMs": 600000,
+      "incrementMs": 15000,
+      "timeStages": [],
+      "startTime": 1782047592809,
+      "isWhiteTurn": true,
+      "whiteTimeRemaining": 809587,
+      "blackTimeRemaining": 802430,
+      "lastMoveTime": 1782047600796,
+      "board": [
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          {
+            "type": "king",
+            "isWhite": false,
+            "symbol": "k",
+            "unicode": "♚"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null
+        ],
+        [
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "king",
+            "isWhite": true,
+            "symbol": "K",
+            "unicode": "♔"
+          }
+        ],
+        [
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "queen",
+            "isWhite": false,
+            "symbol": "q",
+            "unicode": "♛"
+          }
+        ],
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          }
+        ],
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          }
+        ]
+      ],
+      "moveHistory": [
+        {
+          "startX": 2,
+          "startY": 6,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 7,
+          "endX": 7,
+          "endY": 1,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 0,
+          "endX": 7,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 6,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 7,
+          "endY": 6,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 2,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 6,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 2,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 7,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 4,
+          "endX": 7,
+          "endY": 7,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 7,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 6,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 7,
+          "endY": 1,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 7,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 4,
+          "endX": 4,
+          "endY": 7,
+          "player": "cpu-0.5"
+        }
+      ],
+      "capturedByWhite": [
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "knight",
+          "isWhite": false
+        },
+        {
+          "type": "rook",
+          "isWhite": false
+        }
+      ],
+      "capturedByBlack": [
+        {
+          "type": "bishop",
+          "isWhite": true
+        },
+        {
+          "type": "queen",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "rook",
+          "isWhite": true
+        },
+        {
+          "type": "bishop",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "rook",
+          "isWhite": true
+        }
+      ],
+      "whitePlayerType": "computer",
+      "blackPlayerType": "computer",
+      "isComputerThinking": {
+        "white": true,
+        "black": false
+      },
+      "isGameOver": false,
+      "winner": null,
+      "termination": null,
+      "whiteKingMoved": false,
+      "blackKingMoved": true,
+      "whiteKingsideRookMoved": false,
+      "whiteQueensideRookMoved": false,
+      "blackKingsideRookMoved": true,
+      "blackQueensideRookMoved": false,
+      "lastMove": {
+        "startX": 7,
+        "startY": 4,
+        "endX": 4,
+        "endY": 7,
+        "piece": "queen"
+      },
+      "computerLevels": {
+        "white": 0.5,
+        "black": -0.5
+      }
+    },
+    {
+      "gameId": "game_9",
+      "player1": "cpu-1",
+      "player2": "cpu0",
+      "player1Elo": 200,
+      "player2Elo": 400,
+      "variant": "freestyle",
+      "startPos": "random",
+      "startPosId": 458,
+      "cooldownMs": 10000,
+      "timeControlMs": 180000,
+      "incrementMs": 0,
+      "timeStages": [],
+      "startTime": 1782047697906,
+      "isWhiteTurn": false,
+      "whiteTimeRemaining": 85476,
+      "blackTimeRemaining": 72503,
+      "lastMoveTime": 1782047899965,
+      "board": [
+        [
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null
+        ],
+        [
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          }
+        ],
+        [
+          null,
+          {
+            "type": "king",
+            "isWhite": false,
+            "symbol": "k",
+            "unicode": "♚"
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "king",
+            "isWhite": true,
+            "symbol": "K",
+            "unicode": "♔"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          null,
+          null,
+          {
+            "type": "queen",
+            "isWhite": false,
+            "symbol": "q",
+            "unicode": "♛"
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          null
+        ],
+        [
+          {
+            "type": "queen",
+            "isWhite": true,
+            "symbol": "Q",
+            "unicode": "♕"
+          },
+          null,
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          null
+        ]
+      ],
+      "moveHistory": [
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 7,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 6,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 4,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 7,
+          "endY": 6,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 5,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 7,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 7,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 7,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 4,
+          "endY": 7,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 7,
+          "endX": 1,
+          "endY": 7,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 7,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 2,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 7,
+          "endX": 2,
+          "endY": 7,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 6,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 0,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 4,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 5,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 7,
+          "endX": 3,
+          "endY": 7,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 7,
+          "endX": 2,
+          "endY": 7,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 4,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 7,
+          "endX": 3,
+          "endY": 7,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 7,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 5,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 2,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 7,
+          "endX": 0,
+          "endY": 7,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 0,
+          "endX": 7,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 4,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 5,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 7,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 7,
+          "endX": 2,
+          "endY": 7,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 3,
+          "endY": 6,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 7,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 6,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 3,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 5,
+          "endX": 0,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 7,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 7,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 3,
+          "endY": 6,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu-1"
+        }
+      ],
+      "capturedByWhite": [
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "knight",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "bishop",
+          "isWhite": false
+        },
+        {
+          "type": "rook",
+          "isWhite": false
+        }
+      ],
+      "capturedByBlack": [
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "bishop",
+          "isWhite": true
+        },
+        {
+          "type": "knight",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "knight",
+          "isWhite": true
+        }
+      ],
+      "whitePlayerType": "computer",
+      "blackPlayerType": "computer",
+      "isComputerThinking": {
+        "white": false,
+        "black": true
+      },
+      "isGameOver": false,
+      "winner": null,
+      "termination": null,
+      "whiteKingMoved": true,
+      "blackKingMoved": true,
+      "whiteKingsideRookMoved": true,
+      "whiteQueensideRookMoved": true,
+      "blackKingsideRookMoved": true,
+      "blackQueensideRookMoved": true,
+      "lastMove": {
+        "startX": 3,
+        "startY": 6,
+        "endX": 1,
+        "endY": 4,
+        "piece": "bishop"
+      },
+      "computerLevels": {
+        "white": -1,
+        "black": 0
+      }
+    }
+  ],
   "gameOffers": []
 }
