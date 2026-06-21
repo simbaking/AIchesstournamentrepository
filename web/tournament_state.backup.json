@@ -1,21 +1,21 @@
 {
-  "timestamp": 1782063764724,
+  "timestamp": 1782071770517,
   "tournament": {
     "players": [
       {
         "name": "hwan",
-        "score": 2487109,
+        "score": 4686368,
         "isComputer": false,
         "level": null,
         "busy": false,
         "activeGameId": null,
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
-        "elo": 451
+        "elo": 711
       },
       {
         "name": "cpu-1",
-        "score": 11097328,
+        "score": 2929768,
         "isComputer": true,
         "level": -1,
         "busy": false,
@@ -26,7 +26,7 @@
       },
       {
         "name": "cpu-0.5",
-        "score": 4512215,
+        "score": 5026509,
         "isComputer": true,
         "level": -0.5,
         "busy": false,
@@ -37,7 +37,7 @@
       },
       {
         "name": "cpu0",
-        "score": 1160103,
+        "score": 1629275,
         "isComputer": true,
         "level": 0,
         "busy": false,
@@ -48,7 +48,7 @@
       },
       {
         "name": "cpu0.5",
-        "score": 5049550,
+        "score": 3520289,
         "isComputer": true,
         "level": 0.5,
         "busy": false,
@@ -56,10 +56,54 @@
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 600
+      },
+      {
+        "name": "Lil jit",
+        "score": 2956403,
+        "isComputer": false,
+        "level": null,
+        "busy": false,
+        "activeGameId": null,
+        "browserId": "b808e4f4-6a4c-4b4d-a52d-9ee95215d0c3",
+        "clientIP": "10.74.43.33",
+        "elo": 607
+      },
+      {
+        "name": "cpu1",
+        "score": 7265026,
+        "isComputer": true,
+        "level": 1,
+        "busy": false,
+        "activeGameId": null,
+        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
+        "clientIP": "127.0.0.1",
+        "elo": 800
+      },
+      {
+        "name": "cpu2",
+        "score": 2425923,
+        "isComputer": true,
+        "level": 2,
+        "busy": false,
+        "activeGameId": null,
+        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
+        "clientIP": "127.0.0.1",
+        "elo": 920
+      },
+      {
+        "name": "cpu3",
+        "score": 5832487,
+        "isComputer": true,
+        "level": 3,
+        "busy": false,
+        "activeGameId": null,
+        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
+        "clientIP": "127.0.0.1",
+        "elo": 1040
       }
     ],
     "isRunning": false,
-    "startTime": 1782048447909,
+    "startTime": 1782067533725,
     "durationLimit": 3600000,
     "allowVariants": true,
     "allowedVariants": [
