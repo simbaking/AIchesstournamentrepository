@@ -1625,7 +1625,8 @@ class ChessGame {
             whiteReserve: this.whiteReserve,
             blackReserve: this.blackReserve,
             player1Elo: this.player1Elo,
-            player2Elo: this.player2Elo
+            player2Elo: this.player2Elo,
+            evaluation: this.evaluation || 0
         };
     }
 

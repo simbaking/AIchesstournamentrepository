@@ -73,7 +73,9 @@ isComputerCheckbox.addEventListener('change', () => {
 // Calculate Elo (mirrors ComputerPlayer.js)
 function getElo(level) {
     if (level === -1) return 200;  // Random moves
+    if (level === -0.5) return 300;
     if (level === 0) return 400;   // Simple minimax
+    if (level === 0.5) return 600;
     return 800 + (Math.max(1, Math.min(20, level)) - 1) * 120;
 }
 
@@ -87,11 +89,20 @@ function populateComputerLevels() {
     randomOption.textContent = 'Level -1 (200) - Random';
     computerLevelSelect.appendChild(randomOption);
 
-    // Add Level 0 (Beginner)
-    const beginnerOption = document.createElement('option');
-    beginnerOption.value = 0;
-    beginnerOption.textContent = 'Level 0 (400) - Beginner';
-    computerLevelSelect.appendChild(beginnerOption);
+    const minusHalfOption = document.createElement('option');
+    minusHalfOption.value = -0.5;
+    minusHalfOption.textContent = 'Level -0.5 (300) - Two Move';
+    computerLevelSelect.appendChild(minusHalfOption);
+
+    const zeroOption = document.createElement('option');
+    zeroOption.value = 0;
+    zeroOption.textContent = 'Level 0 (400) - Pseudo Random';
+    computerLevelSelect.appendChild(zeroOption);
+
+    const halfOption = document.createElement('option');
+    halfOption.value = 0.5;
+    halfOption.textContent = 'Level 0.5 (600) - Two Move Stockfish';
+    computerLevelSelect.appendChild(halfOption);
 
     // Add Levels 1-20
     for (let i = 1; i <= 20; i++) {
@@ -99,12 +110,7 @@ function populateComputerLevels() {
         const option = document.createElement('option');
         option.value = i;
 
-        let label = `Level ${i} (${elo})`;
-        if (i === 1) label += ' - Novice';
-        if (i === 5) label += ' - Intermediate';
-        if (i === 10) label += ' - Advanced';
-        if (i === 15) label += ' - Strong';
-        if (i === 20) label += ' - Expert';
+        let label = `Level ${i} (${elo}) - Stockfish`;
 
         option.textContent = label;
         if (i === 10) option.selected = true;

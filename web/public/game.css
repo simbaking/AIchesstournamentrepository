@@ -1219,3 +1219,38 @@
         min-width: 50px;
     }
 }
+
+/* Evaluation Bar */
+.eval-bar-container {
+    width: 24px;
+    background-color: #404040;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border: 1px solid #222;
+}
+
+.eval-bar-fill {
+    width: 100%;
+    background-color: #f0f0f0;
+    height: 50%;
+    transition: height 0.5s ease-in-out, background-color 0.5s;
+}
+
+.eval-bar-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #fff;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 2;
+    background: rgba(0,0,0,0.5);
+    padding: 2px 0;
+}
