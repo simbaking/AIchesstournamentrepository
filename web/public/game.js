@@ -56,6 +56,15 @@ window.addEventListener('beforeunload', () => {
 // Touch drag state for mobile
 let touchDragState = null; // { startX, startY, pieceEl, ghostEl }
 
+// Helper to prevent rapid layout thrashing from innerHTML assignments
+function safeUpdateHtml(el, newHtml) {
+    if (!el) return;
+    if (el._lastHtml !== newHtml) {
+        el.innerHTML = newHtml;
+        el._lastHtml = newHtml;
+    }
+}
+
 // Get variant badge HTML
 function getVariantBadge(variant) {
     if (!variant || variant === 'standard') {
@@ -198,9 +207,7 @@ function renderGame() {
     const variantBadgeEl = document.getElementById('game-variant-badge');
     if (variantBadgeEl) {
         const newBadge = getVariantBadge(gameState.variant);
-        if (variantBadgeEl.innerHTML !== newBadge) {
-            variantBadgeEl.innerHTML = newBadge;
-        }
+        safeUpdateHtml(variantBadgeEl, newBadge);
     }
 
     // Kung Fu Chess: Hide timers and update turn indicator
@@ -322,29 +329,18 @@ function renderEvalBar() {
     if (!fillEl || !textEl || !gameState) return;
 
     // gameState.evaluation is in centipawns (positive = white advantage).
-    // Use nullish coalescing so a real 0 stays 0 (not masked by || 0).
     const evalVal = gameState.evaluation ?? 0;
 
     let percentage = 50;
-    let text;
+    const SCALE = 600;
+    const clamped = Math.max(-SCALE, Math.min(SCALE, evalVal));
 
-    // Mate scores (±30000 range from the material+PST evaluator or Stockfish)
     if (evalVal >= 9000) {
         percentage = 98;
-        text = evalVal >= 30000 ? 'M#' : 'M' + (10000 - evalVal);
     } else if (evalVal <= -9000) {
         percentage = 2;
-        text = evalVal <= -30000 ? '-M#' : '-M' + (10000 + evalVal);
     } else {
-        // Use a ±600 centipawn scale so the bar reacts visibly to typical advantages.
-        // A 6-pawn advantage (huge) fills the bar; fine positions show clear lean.
-        const SCALE = 600;
-        const clamped = Math.max(-SCALE, Math.min(SCALE, evalVal));
         percentage = 50 + (clamped / SCALE) * 48; // ±48% so never fully hidden
-        const pawns = Math.abs(evalVal / 100).toFixed(2);
-        if (evalVal > 0) text = '+' + pawns;
-        else if (evalVal < 0) text = '−' + pawns;
-        else text = '0.00';
     }
 
     // Round to avoid triggering sub-pixel repaints on every frame
@@ -354,6 +350,22 @@ function renderEvalBar() {
     if (fillEl.style.height !== newHeight) {
         fillEl.style.height = newHeight;
     }
+
+    // Invert displayed text for Black's perspective
+    let displayVal = isFlipped ? -evalVal : evalVal;
+    let text;
+
+    if (displayVal >= 9000) {
+        text = displayVal >= 30000 ? 'M#' : 'M' + (10000 - displayVal);
+    } else if (displayVal <= -9000) {
+        text = displayVal <= -30000 ? '-M#' : '-M' + (10000 + displayVal);
+    } else {
+        const pawns = Math.abs(displayVal / 100).toFixed(2);
+        if (displayVal > 0) text = '+' + pawns;
+        else if (displayVal < 0) text = '−' + pawns;
+        else text = '0.00';
+    }
+
     if (textEl.textContent !== text) {
         textEl.textContent = text;
     }
@@ -1675,14 +1687,6 @@ function startClientTimer() {
     }, 100);
 }
 
-// Format time helper
-function formatTime(ms) {
-    const totalSeconds = Math.max(0, Math.floor(ms / 1000));
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-}
-
 // Update tournament timer
 async function updateTournamentTimer() {
     try {
@@ -1755,9 +1759,7 @@ function renderMaterial() {
     const newWhiteHtml = gameState.capturedByWhite
         .map(p => getPieceImgHtml(p.type, false, 18))
         .join('');
-    if (whiteCapturedDiv.innerHTML !== newWhiteHtml) {
-        whiteCapturedDiv.innerHTML = newWhiteHtml;
-    }
+    safeUpdateHtml(whiteCapturedDiv, newWhiteHtml);
 
     const newBlackHtml = gameState.capturedByBlack
         .map(p => getPieceImgHtml(p.type, true, 18))
@@ -1778,9 +1780,7 @@ function renderMaterial() {
     } else {
         newAdvHtml = '<span style="color: var(--text-muted);">Equal</span>';
     }
-    if (materialAdvDiv.innerHTML !== newAdvHtml) {
-        materialAdvDiv.innerHTML = newAdvHtml;
-    }
+    safeUpdateHtml(materialAdvDiv, newAdvHtml);
 }
 
 // Render Crazyhouse pocket pieces
@@ -1810,7 +1810,7 @@ function renderPockets() {
                    data-type="${type}" data-color="white" 
                    onclick="selectDropPiece('${type}', 'white')">${getPieceImgHtml(type, true, 24)}</span>`
         ).join('');
-    if (whitePiecesSpan.innerHTML !== newWhitePocket) whitePiecesSpan.innerHTML = newWhitePocket;
+    safeUpdateHtml(whitePiecesSpan, newWhitePocket);
 
     // Render black's pocket pieces (only when changed)
     const blackReserve = gameState.blackReserve || [];
@@ -1821,7 +1821,7 @@ function renderPockets() {
                    data-type="${type}" data-color="black" 
                    onclick="selectDropPiece('${type}', 'black')">${getPieceImgHtml(type, false, 24)}</span>`
         ).join('');
-    if (blackPiecesSpan.innerHTML !== newBlackPocket) blackPiecesSpan.innerHTML = newBlackPocket;
+    safeUpdateHtml(blackPiecesSpan, newBlackPocket);
 }
 
 // Select a piece from pocket for dropping
@@ -1958,13 +1958,13 @@ function updateMobilePlayerBars() {
             const newHtml = gameState.capturedByWhite
                 .map(p => getPieceImgHtml(p.type, false, 16))
                 .join('');
-            if (mobilePlayerCaptured.innerHTML !== newHtml) mobilePlayerCaptured.innerHTML = newHtml;
+            safeUpdateHtml(mobilePlayerCaptured, newHtml);
         }
         if (mobileOpponentCaptured && gameState.capturedByBlack) {
             const newHtml = gameState.capturedByBlack
                 .map(p => getPieceImgHtml(p.type, true, 16))
                 .join('');
-            if (mobileOpponentCaptured.innerHTML !== newHtml) mobileOpponentCaptured.innerHTML = newHtml;
+            safeUpdateHtml(mobileOpponentCaptured, newHtml);
         }
 
         // Timers
@@ -2009,13 +2009,13 @@ function updateMobilePlayerBars() {
             const newHtml = gameState.capturedByBlack
                 .map(p => getPieceImgHtml(p.type, true, 16))
                 .join('');
-            if (mobilePlayerCaptured.innerHTML !== newHtml) mobilePlayerCaptured.innerHTML = newHtml;
+            safeUpdateHtml(mobilePlayerCaptured, newHtml);
         }
         if (mobileOpponentCaptured && gameState.capturedByWhite) {
             const newHtml = gameState.capturedByWhite
                 .map(p => getPieceImgHtml(p.type, false, 16))
                 .join('');
-            if (mobileOpponentCaptured.innerHTML !== newHtml) mobileOpponentCaptured.innerHTML = newHtml;
+            safeUpdateHtml(mobileOpponentCaptured, newHtml);
         }
 
         // Timers

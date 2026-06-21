@@ -42,7 +42,7 @@ body {
     /* 60% orange, 25% blue, 15% gold */
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary) 60%, var(--accent) 60%, var(--accent) 85%, var(--gold) 85%, var(--gold) 100%);
     color: var(--text);
-    min-height: 100vh;
+    min-height: 100svh;
     padding: 2rem;
     /* Prevent browser overscroll bounce from compounding visual flicker */
     overscroll-behavior: none;
