@@ -1552,6 +1552,11 @@ function updateBoardOrientation() {
         if (whitePlayerDiv.nextSibling !== gameStatusDiv) {
             gameInfoDiv.insertBefore(gameStatusDiv, whitePlayerDiv.nextSibling);
         }
+        
+        const evalBarContainer = document.getElementById('eval-bar-container');
+        if (evalBarContainer) {
+            evalBarContainer.classList.add('flipped');
+        }
     } else {
         // Normal: black on top
         if (gameInfoDiv.firstChild !== blackPlayerDiv) {
@@ -1559,6 +1564,11 @@ function updateBoardOrientation() {
         }
         if (blackPlayerDiv.nextSibling !== gameStatusDiv) {
             gameInfoDiv.insertBefore(gameStatusDiv, blackPlayerDiv.nextSibling);
+        }
+        
+        const evalBarContainer = document.getElementById('eval-bar-container');
+        if (evalBarContainer) {
+            evalBarContainer.classList.remove('flipped');
         }
     }
 }
