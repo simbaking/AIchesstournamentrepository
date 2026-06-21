@@ -10,10 +10,11 @@ const API_URL = '';
  *   user even when game state updates mid-poll.
  */
 function setHTML(el, html) {
-    if (!el || el.innerHTML === html) return; // nothing changed – skip
+    if (!el || el._lastHtml === html) return; // nothing changed – skip
     const sx = window.scrollX;
     const sy = window.scrollY;
     el.innerHTML = html;
+    el._lastHtml = html;
     window.scrollTo(sx, sy); // restore before browser gets a chance to repaint
 }
 
