@@ -1,5 +1,5 @@
 {
-  "timestamp": 1782004795159,
+  "timestamp": 1782005442403,
   "tournament": {
     "players": [
       {
@@ -11,56 +11,56 @@
         "activeGameId": null,
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
-        "elo": -330
+        "elo": 400
       },
       {
-        "name": "cpu-1........1",
-        "score": 2001097,
+        "name": "cpu-1",
+        "score": 304661,
         "isComputer": true,
         "level": -1,
         "busy": true,
-        "activeGameId": "game_7",
+        "activeGameId": "game_6",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 200
       },
       {
-        "name": "cpu-1..........2",
-        "score": 9211118,
-        "isComputer": true,
-        "level": -1,
-        "busy": true,
-        "activeGameId": "game_7",
-        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
-        "clientIP": "127.0.0.1",
-        "elo": 200
-      },
-      {
-        "name": "cpu-1.........3",
-        "score": 0,
-        "isComputer": true,
-        "level": -1,
-        "busy": true,
-        "activeGameId": "game_2",
-        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
-        "clientIP": "127.0.0.1",
-        "elo": 200
-      },
-      {
-        "name": "cpu0",
-        "score": 0,
+        "name": "cpu-0.5",
+        "score": 275029,
         "isComputer": true,
         "level": 0,
         "busy": true,
-        "activeGameId": "game_2",
+        "activeGameId": "game_5",
+        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
+        "clientIP": "127.0.0.1",
+        "elo": 400
+      },
+      {
+        "name": "cpu0",
+        "score": 93211,
+        "isComputer": true,
+        "level": 0,
+        "busy": true,
+        "activeGameId": "game_5",
+        "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
+        "clientIP": "127.0.0.1",
+        "elo": 400
+      },
+      {
+        "name": "cpu0.5",
+        "score": 294442,
+        "isComputer": true,
+        "level": 0,
+        "busy": true,
+        "activeGameId": "game_6",
         "browserId": "35958cbc-8d52-4563-b277-3c71bd8cfe64",
         "clientIP": "127.0.0.1",
         "elo": 400
       }
     ],
     "isRunning": true,
-    "startTime": 1782000448500,
-    "durationLimit": 7200000,
+    "startTime": 1782005226447,
+    "durationLimit": 300000,
     "allowVariants": true,
     "allowedVariants": [
       "standard",
@@ -73,3192 +73,194 @@
   },
   "activeGames": [
     {
-      "gameId": "game_2",
-      "player1": "cpu0",
-      "player2": "cpu-1.........3",
+      "gameId": "game_4",
+      "player1": "cpu0.5",
+      "player2": "cpu-1",
       "player1Elo": 400,
-      "player2Elo": 200,
-      "variant": "freestyle",
-      "startPos": "random",
-      "startPosId": 882,
-      "cooldownMs": 10000,
-      "timeControlMs": 900000,
-      "incrementMs": 10000,
-      "timeStages": [],
-      "startTime": 1782000462515,
-      "isWhiteTurn": true,
-      "whiteTimeRemaining": 506189,
-      "blackTimeRemaining": 1081717,
-      "lastMoveTime": 1782004794729,
-      "board": [
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "type": "king",
-            "isWhite": true,
-            "symbol": "K",
-            "unicode": "♔"
-          },
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "type": "king",
-            "isWhite": false,
-            "symbol": "k",
-            "unicode": "♚"
-          }
-        ]
-      ],
-      "moveHistory": [
-        {
-          "startX": 5,
-          "startY": 6,
-          "endX": 5,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 1,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 6,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 1,
-          "endX": 7,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 6,
-          "startY": 7,
-          "endX": 5,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 4,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 5,
-          "startY": 5,
-          "endX": 7,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 0,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 7,
-          "endX": 3,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 3,
-          "endX": 5,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 4,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 7,
-          "startY": 4,
-          "endX": 6,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 7,
-          "endX": 1,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 7,
-          "startY": 6,
-          "endX": 7,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 3,
-          "endX": 0,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 2,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 6,
-          "startY": 2,
-          "endX": 4,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 3,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 7,
-          "startY": 7,
-          "endX": 5,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 0,
-          "endX": 3,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 4,
-          "startY": 3,
-          "endX": 3,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 2,
-          "endX": 2,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 5,
-          "startY": 6,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 2,
-          "endX": 3,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 2,
-          "endX": 7,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 5,
-          "endX": 1,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 2,
-          "endX": 7,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 6,
-          "endX": 3,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 0,
-          "endX": 5,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 3,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 3,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 1,
-          "endX": 7,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 4,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 2,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 4,
-          "startY": 3,
-          "endX": 5,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 0,
-          "endX": 6,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 7,
-          "endX": 3,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 0,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 3,
-          "endX": 1,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 7,
-          "endX": 0,
-          "endY": 7,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 3,
-          "endX": 7,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 4,
-          "startY": 6,
-          "endX": 4,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 6,
-          "endX": 3,
-          "endY": 7,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 3,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 3,
-          "endX": 0,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 5,
-          "startY": 2,
-          "endX": 6,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 7,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 4,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 4,
-          "endX": 2,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 6,
-          "endX": 1,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 4,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 6,
-          "endX": 3,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 6,
-          "endX": 0,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 4,
-          "endX": 5,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 6,
-          "startY": 1,
-          "endX": 7,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 3,
-          "endX": 2,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 4,
-          "endX": 2,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 7,
-          "startY": 2,
-          "endX": 5,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 4,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 7,
-          "endX": 5,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 2,
-          "endX": 5,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 4,
-          "endX": 0,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 5,
-          "startY": 2,
-          "endX": 4,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 6,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 5,
-          "endX": 0,
-          "endY": 7,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 6,
-          "startY": 1,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 6,
-          "endX": 4,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 4,
-          "startY": 7,
-          "endX": 4,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 7,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 3,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 4,
-          "endX": 3,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 5,
-          "startY": 7,
-          "endX": 7,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 2,
-          "endX": 0,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 4,
-          "startY": 6,
-          "endX": 1,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 0,
-          "endX": 7,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 6,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 4,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 6,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 1,
-          "endX": 5,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 5,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 0,
-          "endX": 4,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 3,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 3,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 5,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 5,
-          "endX": 3,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 5,
-          "startY": 2,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 4,
-          "endX": 5,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 2,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 7,
-          "endX": 3,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 3,
-          "endX": 4,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 7,
-          "startY": 5,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 4,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 6,
-          "endX": 4,
-          "endY": 7,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 6,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 4,
-          "startY": 7,
-          "endX": 5,
-          "endY": 7,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 2,
-          "endX": 6,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 5,
-          "startY": 7,
-          "endX": 5,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 2,
-          "endX": 3,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 5,
-          "startY": 6,
-          "endX": 6,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 3,
-          "endX": 5,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 6,
-          "startY": 5,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 2,
-          "endX": 5,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 6,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 5,
-          "endX": 5,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 5,
-          "endX": 0,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 4,
-          "endX": 2,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 6,
-          "startY": 3,
-          "endX": 5,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 1,
-          "endX": 6,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 5,
-          "startY": 4,
-          "endX": 5,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 6,
-          "endX": 4,
-          "endY": 7,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 5,
-          "startY": 5,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 6,
-          "endX": 5,
-          "endY": 7,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 7,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 7,
-          "endX": 7,
-          "endY": 7,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 7,
-          "startY": 4,
-          "endX": 6,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 7,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 0,
-          "startY": 4,
-          "endX": 0,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 2,
-          "endX": 5,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 3,
-          "endX": 0,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 7,
-          "endX": 5,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 6,
-          "startY": 5,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 2,
-          "endX": 6,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 2,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 6,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 3,
-          "endY": 1,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 6,
-          "startY": 5,
-          "endX": 5,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 3,
-          "endY": 4,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 5,
-          "startY": 5,
-          "endX": 6,
-          "endY": 6,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 2,
-          "endX": 7,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 5,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 4,
-          "endX": 3,
-          "endY": 0,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 5,
-          "startY": 5,
-          "endX": 4,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 4,
-          "endY": 1,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 4,
-          "startY": 4,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 5,
-          "endY": 1,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 4,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 1,
-          "endX": 5,
-          "endY": 2,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 4,
-          "startY": 4,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 1,
-          "endX": 6,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 3,
-          "endX": 4,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 2,
-          "endX": 7,
-          "endY": 2,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 4,
-          "startY": 4,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 2,
-          "endX": 7,
-          "endY": 7,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 4,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 0,
-          "endX": 6,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 4,
-          "startY": 2,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 7,
-          "endX": 7,
-          "endY": 4,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 4,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 4,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 4,
-          "startY": 3,
-          "endX": 3,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 5,
-          "endY": 4,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 3,
-          "startY": 2,
-          "endX": 4,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 4,
-          "endX": 2,
-          "endY": 4,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 3,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 4,
-          "endX": 4,
-          "endY": 6,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 3,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 1,
-          "endX": 7,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 6,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 3,
-          "endY": 1,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 3,
-          "endX": 3,
-          "endY": 1,
-          "player": "cpu-1.........3",
-          "promotionPiece": "queen"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 3,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 2,
-          "endX": 7,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 1,
-          "endX": 6,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 3,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 0,
-          "endX": 5,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 2,
-          "endX": 2,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 0,
-          "endX": 5,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 2,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 1,
-          "endX": 6,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 2,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 1,
-          "endX": 5,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 3,
-          "endX": 2,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 1,
-          "endX": 5,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 2,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 0,
-          "endX": 4,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 3,
-          "endX": 2,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 5,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 4,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 1,
-          "endX": 6,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 3,
-          "endX": 2,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 1,
-          "endX": 7,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 2,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 2,
-          "endX": 6,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 3,
-          "endX": 0,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 2,
-          "endX": 7,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 3,
-          "endX": 0,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 2,
-          "endX": 6,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 2,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 2,
-          "endX": 6,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 2,
-          "endX": 2,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 1,
-          "endX": 5,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 2,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 0,
-          "endX": 4,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 4,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 0,
-          "endX": 3,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 4,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 0,
-          "endX": 5,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 1,
-          "endX": 6,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 1,
-          "endX": 7,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 2,
-          "endX": 7,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 2,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 1,
-          "endX": 6,
-          "endY": 0,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 0,
-          "endX": 7,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 2,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 1,
-          "endX": 6,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 3,
-          "endX": 0,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 1,
-          "endX": 6,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 3,
-          "endX": 0,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 2,
-          "endX": 7,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 4,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 2,
-          "endX": 6,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 5,
-          "endX": 0,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 3,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 4,
-          "endX": 0,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 4,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 3,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 2,
-          "endX": 3,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 3,
-          "endX": 0,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 2,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 2,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 3,
-          "endX": 4,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 3,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 0,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 3,
-          "endX": 3,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 2,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 2,
-          "endX": 4,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 2,
-          "endX": 0,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 2,
-          "endX": 4,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 2,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 3,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 3,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 3,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 2,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 3,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 0,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 4,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 2,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 3,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 3,
-          "endX": 1,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 4,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 3,
-          "endX": 0,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 4,
-          "endX": 0,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 5,
-          "endX": 1,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 6,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 5,
-          "endX": 1,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 4,
-          "endX": 0,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 3,
-          "endX": 0,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 0,
-          "startY": 2,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 3,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 2,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 4,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 3,
-          "endX": 1,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 3,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 4,
-          "endX": 2,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 5,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 1,
-          "startY": 5,
-          "endX": 2,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 2,
-          "startY": 4,
-          "endX": 3,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 5,
-          "endX": 3,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 3,
-          "startY": 6,
-          "endX": 4,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 5,
-          "endX": 5,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 4,
-          "endX": 6,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 3,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 6,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 3,
-          "endX": 5,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 2,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 6,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 2,
-          "endX": 7,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 2,
-          "endX": 6,
-          "endY": 2,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 2,
-          "endX": 7,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 2,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 3,
-          "endX": 7,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 2,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 4,
-          "endX": 7,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 2,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 5,
-          "endX": 6,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 6,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 5,
-          "endX": 5,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 4,
-          "endX": 6,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 5,
-          "endX": 6,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 7,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 5,
-          "endX": 6,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 5,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 6,
-          "endX": 6,
-          "endY": 7,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 0,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 7,
-          "endX": 6,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 2,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 7,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 3,
-          "endX": 1,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 5,
-          "endX": 6,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 4,
-          "endX": 2,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 5,
-          "endX": 6,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 4,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 6,
-          "endY": 7,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 3,
-          "endX": 3,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 7,
-          "endX": 5,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 4,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 6,
-          "endX": 6,
-          "endY": 7,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 3,
-          "endX": 1,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 7,
-          "endX": 5,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 2,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 6,
-          "endX": 6,
-          "endY": 7,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 7,
-          "endX": 7,
-          "endY": 7,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 7,
-          "endX": 7,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 6,
-          "endX": 6,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 5,
-          "endX": 6,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 6,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 0,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 5,
-          "endX": 5,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 0,
-          "endX": 0,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 5,
-          "endX": 5,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 6,
-          "endX": 6,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 5,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 7,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 3,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 4,
-          "endX": 7,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 3,
-          "startY": 2,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 5,
-          "endX": 6,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 5,
-          "endX": 7,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu0"
-        },
-        {
-          "startX": 7,
-          "startY": 5,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 0,
-          "endY": 2,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 6,
-          "endY": 3,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 2,
-          "endX": 0,
-          "endY": 3,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 3,
-          "endX": 5,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 3,
-          "endX": 1,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 4,
-          "endX": 4,
-          "endY": 4,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 4,
-          "endX": 0,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 4,
-          "endX": 4,
-          "endY": 5,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 4,
-          "endX": 1,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 4,
-          "startY": 5,
-          "endX": 5,
-          "endY": 6,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 1,
-          "startY": 4,
-          "endX": 0,
-          "endY": 4,
-          "player": "cpu0"
-        },
-        {
-          "startX": 5,
-          "startY": 6,
-          "endX": 6,
-          "endY": 7,
-          "player": "cpu-1.........3"
-        },
-        {
-          "startX": 0,
-          "startY": 4,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu0"
-        },
-        {
-          "startX": 6,
-          "startY": 7,
-          "endX": 7,
-          "endY": 7,
-          "player": "cpu-1.........3"
-        }
-      ],
-      "capturedByWhite": [
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "rook",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "bishop",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "rook",
-          "isWhite": false
-        },
-        {
-          "type": "queen",
-          "isWhite": false
-        },
-        {
-          "type": "knight",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "bishop",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "knight",
-          "isWhite": false
-        },
-        {
-          "type": "queen",
-          "isWhite": false
-        }
-      ],
-      "capturedByBlack": [
-        {
-          "type": "pawn",
-          "isWhite": true
-        },
-        {
-          "type": "knight",
-          "isWhite": true
-        },
-        {
-          "type": "pawn",
-          "isWhite": true
-        },
-        {
-          "type": "pawn",
-          "isWhite": true
-        },
-        {
-          "type": "pawn",
-          "isWhite": true
-        },
-        {
-          "type": "pawn",
-          "isWhite": true
-        },
-        {
-          "type": "bishop",
-          "isWhite": true
-        },
-        {
-          "type": "queen",
-          "isWhite": true
-        },
-        {
-          "type": "pawn",
-          "isWhite": true
-        },
-        {
-          "type": "rook",
-          "isWhite": true
-        },
-        {
-          "type": "knight",
-          "isWhite": true
-        },
-        {
-          "type": "rook",
-          "isWhite": true
-        },
-        {
-          "type": "bishop",
-          "isWhite": true
-        },
-        {
-          "type": "pawn",
-          "isWhite": true
-        },
-        {
-          "type": "pawn",
-          "isWhite": true
-        }
-      ],
-      "whitePlayerType": "computer",
-      "blackPlayerType": "computer",
-      "isComputerThinking": {
-        "white": true,
-        "black": false
-      },
-      "isGameOver": false,
-      "winner": null,
-      "termination": null,
-      "whiteKingMoved": true,
-      "blackKingMoved": true,
-      "whiteKingsideRookMoved": false,
-      "whiteQueensideRookMoved": false,
-      "blackKingsideRookMoved": false,
-      "blackQueensideRookMoved": false,
-      "lastMove": {
-        "startX": 6,
-        "startY": 7,
-        "endX": 7,
-        "endY": 7,
-        "piece": "king"
-      },
-      "computerLevels": {
-        "white": 0,
-        "black": -1
-      }
-    },
-    {
-      "gameId": "game_7",
-      "player1": "cpu-1..........2",
-      "player2": "cpu-1........1",
-      "player1Elo": 200,
       "player2Elo": 200,
       "variant": "standard",
       "startPos": "random",
       "startPosId": null,
       "cooldownMs": 10000,
-      "timeControlMs": 600000,
-      "incrementMs": 5000,
+      "timeControlMs": 60000,
+      "incrementMs": 0,
       "timeStages": [],
-      "startTime": 1782004295204,
-      "isWhiteTurn": false,
-      "whiteTimeRemaining": 569912,
-      "blackTimeRemaining": 570704,
-      "lastMoveTime": 1782004789618,
+      "startTime": 1782005347713,
+      "isWhiteTurn": true,
+      "whiteTimeRemaining": 30765,
+      "blackTimeRemaining": 16712,
+      "lastMoveTime": 1782005420250,
       "board": [
+        [
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          }
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          null
+        ],
+        [
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          },
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          }
+        ],
+        [
+          null,
+          null,
+          null,
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          {
+            "type": "king",
+            "isWhite": false,
+            "symbol": "k",
+            "unicode": "♚"
+          },
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          {
+            "type": "queen",
+            "isWhite": false,
+            "symbol": "q",
+            "unicode": "♛"
+          },
+          {
+            "type": "king",
+            "isWhite": true,
+            "symbol": "K",
+            "unicode": "♔"
+          }
+        ],
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          },
+          null
+        ],
         [
           {
             "type": "rook",
@@ -3280,26 +282,579 @@
             "unicode": "♙"
           },
           null,
-          null,
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          },
           null,
           null
-        ],
+        ]
+      ],
+      "moveHistory": [
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 6,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 5,
+          "endX": 1,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 7,
+          "endX": 0,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 5,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 7,
+          "endX": 2,
+          "endY": 7,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 4,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 7,
+          "endX": 5,
+          "endY": 6,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 0,
+          "endX": 5,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 7,
+          "endX": 1,
+          "endY": 6,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 2,
+          "endY": 7,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 7,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 6,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 3,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 4,
+          "endY": 7,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 2,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 2,
+          "startY": 7,
+          "endX": 1,
+          "endY": 6,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 1,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 7,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 3,
+          "endX": 5,
+          "endY": 2,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 7,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 5,
+          "endX": 2,
+          "endY": 7,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 6,
+          "endX": 0,
+          "endY": 4,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 4,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 5,
+          "endX": 7,
+          "endY": 6,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 2,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 1,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 6,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 3,
+          "startY": 4,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 3,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 7,
+          "endX": 0,
+          "endY": 5,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 7,
+          "startY": 4,
+          "endX": 7,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 3,
+          "endY": 6,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 0,
+          "endY": 1,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 7,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 0,
+          "startY": 5,
+          "endX": 2,
+          "endY": 6,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 4,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu-1"
+        }
+      ],
+      "capturedByWhite": [
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "bishop",
+          "isWhite": false
+        },
+        {
+          "type": "bishop",
+          "isWhite": false
+        }
+      ],
+      "capturedByBlack": [
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "queen",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "rook",
+          "isWhite": true
+        }
+      ],
+      "whitePlayerType": "computer",
+      "blackPlayerType": "computer",
+      "isComputerThinking": {
+        "white": false,
+        "black": false
+      },
+      "isGameOver": true,
+      "winner": "cpu-1",
+      "termination": "checkmate",
+      "whiteKingMoved": true,
+      "blackKingMoved": false,
+      "whiteKingsideRookMoved": true,
+      "whiteQueensideRookMoved": false,
+      "blackKingsideRookMoved": true,
+      "blackQueensideRookMoved": true,
+      "lastMove": {
+        "startX": 6,
+        "startY": 4,
+        "endX": 4,
+        "endY": 6,
+        "piece": "queen"
+      },
+      "computerLevels": {
+        "white": 0,
+        "black": -1
+      }
+    },
+    {
+      "gameId": "game_5",
+      "player1": "cpu-0.5",
+      "player2": "cpu0",
+      "player1Elo": 400,
+      "player2Elo": 400,
+      "variant": "standard",
+      "startPos": "random",
+      "startPosId": null,
+      "cooldownMs": 10000,
+      "timeControlMs": 60000,
+      "incrementMs": 0,
+      "timeStages": [],
+      "startTime": 1782005387781,
+      "isWhiteTurn": false,
+      "whiteTimeRemaining": 32668,
+      "blackTimeRemaining": 33338,
+      "lastMoveTime": 1782005441782,
+      "board": [
         [
+          null,
+          null,
+          null,
           {
-            "type": "king",
+            "type": "pawn",
             "isWhite": false,
-            "symbol": "k",
-            "unicode": "♚"
+            "symbol": "p",
+            "unicode": "♟"
           },
-          null,
           null,
           {
-            "type": "bishop",
+            "type": "knight",
             "isWhite": true,
-            "symbol": "B",
-            "unicode": "♗"
+            "symbol": "N",
+            "unicode": "♘"
           },
-          null,
           {
             "type": "pawn",
             "isWhite": true,
@@ -3311,6 +866,727 @@
             "isWhite": true,
             "symbol": "R",
             "unicode": "♖"
+          }
+        ],
+        [
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "queen",
+            "isWhite": false,
+            "symbol": "q",
+            "unicode": "♛"
+          },
+          null,
+          null,
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "king",
+            "isWhite": true,
+            "symbol": "K",
+            "unicode": "♔"
+          },
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          }
+        ],
+        [
+          {
+            "type": "king",
+            "isWhite": false,
+            "symbol": "k",
+            "unicode": "♚"
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          null,
+          null,
+          {
+            "type": "queen",
+            "isWhite": true,
+            "symbol": "Q",
+            "unicode": "♕"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          }
+        ]
+      ],
+      "moveHistory": [
+        {
+          "startX": 1,
+          "startY": 6,
+          "endX": 1,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 1,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 6,
+          "endX": 2,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 4,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 0,
+          "endX": 7,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 4,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 6,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 7,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 5,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 0,
+          "endX": 2,
+          "endY": 0,
+          "player": "cpu0",
+          "castling": "queenside",
+          "rookStartX": 0
+        },
+        {
+          "startX": 5,
+          "startY": 4,
+          "endX": 4,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 6,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 1,
+          "endX": 4,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 1,
+          "startY": 7,
+          "endX": 0,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 1,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 7,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 0,
+          "endX": 3,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 7,
+          "startY": 6,
+          "endX": 7,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 5,
+          "endX": 2,
+          "endY": 7,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 0,
+          "endX": 6,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 0,
+          "endY": 0,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 1,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 0,
+          "startY": 0,
+          "endX": 2,
+          "endY": 2,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 1,
+          "endX": 6,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 2,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 4,
+          "startY": 3,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 6,
+          "startY": 7,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 7,
+          "startY": 2,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 3,
+          "endX": 3,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 1,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 5,
+          "endX": 3,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 3,
+          "endX": 0,
+          "endY": 2,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 2,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 2,
+          "startY": 0,
+          "endX": 3,
+          "endY": 1,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 3,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 1,
+          "startY": 1,
+          "endX": 6,
+          "endY": 6,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 7,
+          "endX": 3,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 2,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 6,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 6,
+          "endX": 7,
+          "endY": 7,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 4,
+          "endX": 2,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 6,
+          "startY": 3,
+          "endX": 6,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 2,
+          "startY": 6,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 3,
+          "startY": 1,
+          "endX": 4,
+          "endY": 0,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 3,
+          "endX": 6,
+          "endY": 3,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 2,
+          "endX": 2,
+          "endY": 4,
+          "player": "cpu0"
+        },
+        {
+          "startX": 5,
+          "startY": 7,
+          "endX": 4,
+          "endY": 6,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 3,
+          "startY": 4,
+          "endX": 5,
+          "endY": 5,
+          "player": "cpu-0.5"
+        },
+        {
+          "startX": 0,
+          "startY": 1,
+          "endX": 0,
+          "endY": 3,
+          "player": "cpu0"
+        },
+        {
+          "startX": 4,
+          "startY": 6,
+          "endX": 3,
+          "endY": 7,
+          "player": "cpu-0.5"
+        }
+      ],
+      "capturedByWhite": [
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "pawn",
+          "isWhite": false
+        },
+        {
+          "type": "knight",
+          "isWhite": false
+        }
+      ],
+      "capturedByBlack": [
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "pawn",
+          "isWhite": true
+        },
+        {
+          "type": "rook",
+          "isWhite": true
+        }
+      ],
+      "whitePlayerType": "computer",
+      "blackPlayerType": "computer",
+      "isComputerThinking": {
+        "white": false,
+        "black": true
+      },
+      "isGameOver": false,
+      "winner": null,
+      "termination": null,
+      "whiteKingMoved": true,
+      "blackKingMoved": true,
+      "whiteKingsideRookMoved": false,
+      "whiteQueensideRookMoved": false,
+      "blackKingsideRookMoved": false,
+      "blackQueensideRookMoved": false,
+      "lastMove": {
+        "startX": 4,
+        "startY": 6,
+        "endX": 3,
+        "endY": 7,
+        "piece": "bishop"
+      },
+      "computerLevels": {
+        "white": 0,
+        "black": 0
+      }
+    },
+    {
+      "gameId": "game_6",
+      "player1": "cpu-1",
+      "player2": "cpu0.5",
+      "player1Elo": 200,
+      "player2Elo": 400,
+      "variant": "standard",
+      "startPos": "random",
+      "startPosId": null,
+      "cooldownMs": 10000,
+      "timeControlMs": 60000,
+      "incrementMs": 0,
+      "timeStages": [],
+      "startTime": 1782005430852,
+      "isWhiteTurn": true,
+      "whiteTimeRemaining": 54135,
+      "blackTimeRemaining": 55337,
+      "lastMoveTime": 1782005441382,
+      "board": [
+        [
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          {
+            "type": "rook",
+            "isWhite": true,
+            "symbol": "R",
+            "unicode": "♖"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
           },
           {
             "type": "knight",
@@ -3326,21 +1602,21 @@
             "symbol": "b",
             "unicode": "♝"
           },
-          null,
-          null,
           {
-            "type": "queen",
-            "isWhite": true,
-            "symbol": "Q",
-            "unicode": "♕"
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
           },
-          null,
           {
             "type": "knight",
-            "isWhite": true,
-            "symbol": "N",
-            "unicode": "♘"
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
           },
+          null,
+          null,
+          null,
           {
             "type": "pawn",
             "isWhite": true,
@@ -3355,7 +1631,138 @@
           }
         ],
         [
+          {
+            "type": "queen",
+            "isWhite": false,
+            "symbol": "q",
+            "unicode": "♛"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
           null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "queen",
+            "isWhite": true,
+            "symbol": "Q",
+            "unicode": "♕"
+          }
+        ],
+        [
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "king",
+            "isWhite": true,
+            "symbol": "K",
+            "unicode": "♔"
+          }
+        ],
+        [
+          {
+            "type": "bishop",
+            "isWhite": false,
+            "symbol": "b",
+            "unicode": "♝"
+          },
+          {
+            "type": "king",
+            "isWhite": false,
+            "symbol": "k",
+            "unicode": "♚"
+          },
+          null,
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          null,
+          null,
+          {
+            "type": "bishop",
+            "isWhite": true,
+            "symbol": "B",
+            "unicode": "♗"
+          }
+        ],
+        [
+          {
+            "type": "knight",
+            "isWhite": false,
+            "symbol": "n",
+            "unicode": "♞"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "pawn",
+            "isWhite": true,
+            "symbol": "P",
+            "unicode": "♙"
+          },
+          {
+            "type": "knight",
+            "isWhite": true,
+            "symbol": "N",
+            "unicode": "♘"
+          }
+        ],
+        [
+          {
+            "type": "rook",
+            "isWhite": false,
+            "symbol": "r",
+            "unicode": "♜"
+          },
+          {
+            "type": "pawn",
+            "isWhite": false,
+            "symbol": "p",
+            "unicode": "♟"
+          },
           null,
           null,
           null,
@@ -3371,766 +1778,94 @@
             "symbol": "R",
             "unicode": "♖"
           },
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
-          null,
-          {
-            "type": "pawn",
-            "isWhite": true,
-            "symbol": "P",
-            "unicode": "♙"
-          },
-          null
-        ],
-        [
-          {
-            "type": "knight",
-            "isWhite": false,
-            "symbol": "n",
-            "unicode": "♞"
-          },
-          {
-            "type": "rook",
-            "isWhite": false,
-            "symbol": "r",
-            "unicode": "♜"
-          },
-          null,
-          {
-            "type": "queen",
-            "isWhite": false,
-            "symbol": "q",
-            "unicode": "♛"
-          },
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          {
-            "type": "pawn",
-            "isWhite": false,
-            "symbol": "p",
-            "unicode": "♟"
-          },
-          null,
-          null,
-          {
-            "type": "king",
-            "isWhite": true,
-            "symbol": "K",
-            "unicode": "♔"
-          },
           null
         ]
       ],
       "moveHistory": [
         {
+          "startX": 7,
+          "startY": 6,
+          "endX": 7,
+          "endY": 5,
+          "player": "cpu-1"
+        },
+        {
           "startX": 1,
-          "startY": 7,
+          "startY": 0,
           "endX": 2,
-          "endY": 5,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 6,
-          "startY": 1,
-          "endX": 6,
-          "endY": 3,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 2,
-          "startY": 5,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 7,
-          "startY": 1,
-          "endX": 7,
-          "endY": 3,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 1,
-          "startY": 6,
-          "endX": 1,
-          "endY": 5,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 4,
           "endY": 2,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 7,
-          "startY": 6,
-          "endX": 7,
-          "endY": 5,
-          "player": "cpu-1..........2"
+          "player": "cpu0.5"
         },
         {
           "startX": 5,
-          "startY": 0,
-          "endX": 3,
-          "endY": 2,
-          "player": "cpu-1........1"
+          "startY": 6,
+          "endX": 5,
+          "endY": 4,
+          "player": "cpu-1"
+        },
+        {
+          "startX": 5,
+          "startY": 1,
+          "endX": 5,
+          "endY": 3,
+          "player": "cpu0.5"
         },
         {
           "startX": 0,
           "startY": 6,
           "endX": 0,
           "endY": 5,
-          "player": "cpu-1..........2"
+          "player": "cpu-1"
         },
         {
-          "startX": 3,
-          "startY": 2,
+          "startX": 4,
+          "startY": 0,
           "endX": 5,
-          "endY": 4,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 0,
-          "startY": 5,
-          "endX": 0,
-          "endY": 4,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 6,
-          "startY": 0,
-          "endX": 4,
           "endY": 1,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 1,
-          "startY": 3,
-          "endX": 0,
-          "endY": 5,
-          "player": "cpu-1..........2"
+          "player": "cpu0.5"
         },
         {
           "startX": 7,
-          "startY": 0,
-          "endX": 6,
-          "endY": 0,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 0,
           "startY": 7,
-          "endX": 1,
-          "endY": 7,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 4,
-          "startY": 6,
-          "endX": 4,
-          "endY": 5,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 2,
-          "endY": 2,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 7,
-          "startY": 5,
           "endX": 7,
-          "endY": 4,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 2,
-          "startY": 2,
-          "endX": 3,
-          "endY": 4,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 3,
-          "startY": 7,
-          "endX": 4,
           "endY": 6,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 3,
-          "endY": 1,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 1,
-          "startY": 7,
-          "endX": 1,
-          "endY": 6,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 6,
-          "startY": 0,
-          "endX": 6,
-          "endY": 2,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 3,
-          "startY": 6,
-          "endX": 3,
-          "endY": 5,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 4,
-          "startY": 6,
-          "endX": 5,
-          "endY": 5,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 0,
-          "startY": 1,
-          "endX": 0,
-          "endY": 2,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 6,
-          "startY": 7,
-          "endX": 4,
-          "endY": 6,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 2,
-          "startY": 3,
-          "endX": 2,
-          "endY": 4,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 7,
-          "startY": 4,
-          "endX": 6,
-          "endY": 3,
-          "player": "cpu-1..........2"
+          "player": "cpu-1"
         },
         {
           "startX": 1,
           "startY": 1,
           "endX": 1,
-          "endY": 3,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 5,
-          "startY": 5,
-          "endX": 4,
-          "endY": 4,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 2,
           "endY": 2,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 4,
-          "startY": 6,
-          "endX": 5,
-          "endY": 4,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 6,
-          "startY": 2,
-          "endX": 6,
-          "endY": 0,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 4,
-          "startY": 4,
-          "endX": 4,
-          "endY": 3,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 2,
-          "startY": 4,
-          "endX": 2,
-          "endY": 5,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 5,
-          "startY": 7,
-          "endX": 4,
-          "endY": 6,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 2,
-          "startY": 2,
-          "endX": 3,
-          "endY": 2,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 3,
-          "startY": 4,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 4,
-          "startY": 3,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 7,
-          "endY": 2,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 4,
-          "startY": 7,
-          "endX": 5,
-          "endY": 7,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 4,
-          "startY": 2,
-          "endX": 4,
-          "endY": 3,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 3,
-          "startY": 5,
-          "endX": 3,
-          "endY": 4,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 4,
-          "startY": 0,
-          "endX": 3,
-          "endY": 1,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 0,
-          "startY": 4,
-          "endX": 0,
-          "endY": 3,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 2,
-          "endY": 1,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 5,
-          "startY": 7,
-          "endX": 6,
-          "endY": 6,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 6,
-          "startY": 0,
-          "endX": 7,
-          "endY": 0,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 7,
-          "startY": 7,
-          "endX": 7,
-          "endY": 6,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 2,
-          "endY": 2,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 7,
-          "endY": 5,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 3,
-          "startY": 2,
-          "endX": 4,
-          "endY": 1,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 3,
-          "startY": 3,
-          "endX": 7,
-          "endY": 7,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 7,
-          "startY": 0,
-          "endX": 7,
-          "endY": 1,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 7,
-          "startY": 7,
-          "endX": 3,
-          "endY": 3,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 2,
-          "startY": 0,
-          "endX": 3,
-          "endY": 1,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 4,
-          "startY": 6,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 2,
-          "startY": 1,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 3,
-          "startY": 3,
-          "endX": 4,
-          "endY": 3,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 6,
-          "endY": 4,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 7,
-          "startY": 5,
-          "endX": 6,
-          "endY": 6,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 7,
-          "startY": 2,
-          "endX": 6,
-          "endY": 0,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 4,
-          "startY": 3,
-          "endX": 2,
-          "endY": 3,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 5,
-          "startY": 4,
-          "endX": 4,
-          "endY": 6,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 6,
-          "startY": 4,
-          "endX": 3,
-          "endY": 1,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 0,
-          "startY": 5,
-          "endX": 1,
-          "endY": 7,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 3,
-          "startY": 1,
-          "endX": 2,
-          "endY": 0,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 4,
-          "startY": 6,
-          "endX": 2,
-          "endY": 5,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 1,
-          "startY": 0,
-          "endX": 1,
-          "endY": 1,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 1,
-          "startY": 3,
-          "endX": 2,
-          "endY": 2,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 1,
-          "startY": 1,
-          "endX": 1,
-          "endY": 0,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 2,
-          "startY": 2,
-          "endX": 1,
-          "endY": 3,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 7,
-          "startY": 1,
-          "endX": 6,
-          "endY": 1,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 7,
-          "startY": 6,
-          "endX": 7,
-          "endY": 7,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 5,
-          "startY": 1,
-          "endX": 5,
-          "endY": 3,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 7,
-          "startY": 7,
-          "endX": 3,
-          "endY": 7,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 5,
-          "startY": 3,
-          "endX": 5,
-          "endY": 4,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 3,
-          "startY": 7,
-          "endX": 3,
-          "endY": 5,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 4,
-          "startY": 1,
-          "endX": 3,
-          "endY": 0,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 6,
-          "startY": 6,
-          "endX": 6,
-          "endY": 7,
-          "player": "cpu-1..........2"
-        },
-        {
-          "startX": 3,
-          "startY": 0,
-          "endX": 6,
-          "endY": 3,
-          "player": "cpu-1........1"
-        },
-        {
-          "startX": 6,
-          "startY": 7,
-          "endX": 7,
-          "endY": 6,
-          "player": "cpu-1..........2"
+          "player": "cpu0.5"
         }
       ],
-      "capturedByWhite": [
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "bishop",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "pawn",
-          "isWhite": false
-        },
-        {
-          "type": "knight",
-          "isWhite": false
-        }
-      ],
-      "capturedByBlack": [
-        {
-          "type": "pawn",
-          "isWhite": true
-        },
-        {
-          "type": "pawn",
-          "isWhite": true
-        }
-      ],
+      "capturedByWhite": [],
+      "capturedByBlack": [],
       "whitePlayerType": "computer",
       "blackPlayerType": "computer",
       "isComputerThinking": {
-        "white": false,
-        "black": true
+        "white": true,
+        "black": false
       },
       "isGameOver": false,
       "winner": null,
       "termination": null,
-      "whiteKingMoved": true,
+      "whiteKingMoved": false,
       "blackKingMoved": true,
       "whiteKingsideRookMoved": true,
-      "whiteQueensideRookMoved": true,
-      "blackKingsideRookMoved": true,
+      "whiteQueensideRookMoved": false,
+      "blackKingsideRookMoved": false,
       "blackQueensideRookMoved": false,
       "lastMove": {
-        "startX": 6,
-        "startY": 7,
-        "endX": 7,
-        "endY": 6,
-        "piece": "king"
+        "startX": 1,
+        "startY": 1,
+        "endX": 1,
+        "endY": 2,
+        "piece": "pawn"
       },
       "computerLevels": {
         "white": -1,
-        "black": -1
+        "black": 0
       }
     }
   ],
