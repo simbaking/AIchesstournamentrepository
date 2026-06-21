@@ -304,9 +304,9 @@ function renderGame() {
         drawOfferCard.style.display = 'none';
     }
 
-    // Update navigation UI if not viewing history
-    if (typeof updateNavigationUI === 'function' && typeof isViewingHistory === 'function' && !isViewingHistory()) {
-        updateMoveNavigation();
+    // Update navigation UI (always keep button states current)
+    if (typeof updateNavigationUI === 'function') {
+        updateNavigationUI();
     }
 }
 
@@ -1580,9 +1580,9 @@ function updateTimerDisplay(element, ms) {
 
     const parts = [];
     if (hours > 0) parts.push(`${hours}h`);
-    if (minutes > 0 || hours > 0) parts.push(`${minutes}m`);
-    parts.push(`${seconds}s`);
-    parts.push(`${milliseconds}ms`);
+    if (minutes > 0 || hours > 0) parts.push(`${minutes.toString().padStart(2, '0')}m`);
+    parts.push(`${seconds.toString().padStart(2, '0')}s`);
+    parts.push(`${milliseconds.toString().padStart(3, '0')}ms`);
 
     element.textContent = parts.join(' ');
 
