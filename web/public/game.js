@@ -351,18 +351,17 @@ function renderEvalBar() {
         fillEl.style.height = newHeight;
     }
 
-    // Invert displayed text for Black's perspective
-    let displayVal = isFlipped ? -evalVal : evalVal;
+    // Text always displays absolute engine eval (White advantage = positive)
     let text;
 
-    if (displayVal >= 9000) {
-        text = displayVal >= 30000 ? 'M#' : 'M' + (10000 - displayVal);
-    } else if (displayVal <= -9000) {
-        text = displayVal <= -30000 ? '-M#' : '-M' + (10000 + displayVal);
+    if (evalVal >= 9000) {
+        text = evalVal >= 30000 ? 'M#' : 'M' + (10000 - evalVal);
+    } else if (evalVal <= -9000) {
+        text = evalVal <= -30000 ? '-M#' : '-M' + (10000 + evalVal);
     } else {
-        const pawns = Math.abs(displayVal / 100).toFixed(2);
-        if (displayVal > 0) text = '+' + pawns;
-        else if (displayVal < 0) text = '−' + pawns;
+        const pawns = Math.abs(evalVal / 100).toFixed(2);
+        if (evalVal > 0) text = '+' + pawns;
+        else if (evalVal < 0) text = '−' + pawns;
         else text = '0.00';
     }
 
