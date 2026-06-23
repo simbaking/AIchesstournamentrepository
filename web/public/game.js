@@ -1093,6 +1093,11 @@ function handleDragStart(e, x, y) {
     e.dataTransfer.setData('text/plain', JSON.stringify({ x, y }));
     e.dataTransfer.effectAllowed = 'move';
 
+    // Add dragging classes
+    const square = document.getElementById(`square-${x}-${y}`);
+    if (square) square.classList.add('dragging');
+    document.body.classList.add('is-dragging');
+
     // Fetch valid moves and show dots, BUT do not re-render (skipFullRender=true)
     fetchValidMoves(x, y, true);
 }
@@ -1122,6 +1127,7 @@ function handleDragEnd(e) {
     document.querySelectorAll('.square').forEach(sq => {
         sq.classList.remove('dragging', 'drag-over');
     });
+    document.body.classList.remove('is-dragging');
 }
 
 async function handleDrop(e, x, y) {
@@ -1131,6 +1137,7 @@ async function handleDrop(e, x, y) {
     document.querySelectorAll('.square').forEach(sq => {
         sq.classList.remove('dragging', 'drag-over');
     });
+    document.body.classList.remove('is-dragging');
 
     const data = e.dataTransfer.getData('text/plain');
     if (!data) return;

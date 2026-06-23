@@ -1705,7 +1705,7 @@ class ChessGame {
             return { success: false, error: 'No draw offer to accept' };
         }
         this.isGameOver = true;
-        this.winner = 'draw';
+        this.winner = null; // null represents a draw
         this.termination = 'draw_agreement';
         console.log('Draw accepted');
         if (this.onGameOver) {

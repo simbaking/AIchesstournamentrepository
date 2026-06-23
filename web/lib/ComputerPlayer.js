@@ -77,7 +77,9 @@ class ComputerPlayer {
                 console.error('[COMPUTER] Worker error:', err.message);
             });
 
+            const myWorker = this.worker;
             this.worker.on('exit', (code) => {
+                if (this.worker !== myWorker) return;
                 if (code !== 0 && !this.isTerminating) {
                     console.error(`[COMPUTER] Worker exited ${code}, restarting...`);
                     // Safeguard: fire any pending callbacks to prevent the engine from freezing
@@ -749,8 +751,8 @@ class ComputerPlayer {
         const uciVariant = this.getUciVariant(variant);
         if (uciVariant !== 'chess') {
             console.log(`[COMPUTER] Setting UCI_Variant to ${uciVariant}`);
-            this.sendCommand(`setoption name UCI_Variant value ${uciVariant}`);
         }
+        this.sendCommand(`setoption name UCI_Variant value ${uciVariant}`);
 
         // Send position and start search
         this.sendCommand(`position fen ${fen}`);

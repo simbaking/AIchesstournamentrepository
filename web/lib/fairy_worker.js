@@ -24,8 +24,7 @@ try {
         },
         printErr: function(text) {
             console.error('[FAIRY_ERR]', text);
-        },
-        noExitRuntime: true
+        }
     };
     
     global.Module = config;
@@ -34,6 +33,14 @@ try {
         global.fetch = originalFetch;
         engineInstance = instance;
         console.log('[FAIRY_WORKER] Fairy-Stockfish loaded');
+        
+        // Emscripten fairy-stockfish requires addMessageListener to receive output
+        if (instance.addMessageListener) {
+            instance.addMessageListener((msg) => {
+                if (parentPort) parentPort.postMessage({ type: 'stockfish', data: msg });
+            });
+        }
+        
         if (parentPort) parentPort.postMessage({ type: 'ready' });
     }).catch(e => {
         global.fetch = originalFetch;
