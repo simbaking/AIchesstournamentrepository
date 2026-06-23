@@ -22,7 +22,13 @@ class SimpleEngine {
      */
     parseFEN(fen) {
         const parts = fen.split(' ');
-        const boardStr = parts[0];
+        let boardStr = parts[0];
+        
+        // Strip out Crazyhouse reserve brackets if present
+        if (boardStr.includes('[')) {
+            boardStr = boardStr.split('[')[0];
+        }
+
         const isWhiteTurn = parts[1] === 'w';
 
         const board = new Board();
@@ -274,6 +280,20 @@ class SimpleEngine {
             if (blackKing && (blackKing.x === 3 || blackKing.x === 4) && (blackKing.y === 3 || blackKing.y === 4)) {
                 return -20000; // Black wins
             }
+            
+            // Reward king proximity to the center
+            const getCenterDist = (king) => {
+                if (!king) return 10;
+                const dx = Math.min(Math.abs(king.x - 3), Math.abs(king.x - 4));
+                const dy = Math.min(Math.abs(king.y - 3), Math.abs(king.y - 4));
+                return Math.max(dx, dy); // Chebyshev distance
+            };
+            const wDist = getCenterDist(whiteKing);
+            const bDist = getCenterDist(blackKing);
+            
+            const kothScoreMap = {0: 20000, 1: 500, 2: 200, 3: 50, 4: 0};
+            score += (kothScoreMap[wDist] || 0);
+            score -= (kothScoreMap[bDist] || 0);
         }
 
         return score;

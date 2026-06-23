@@ -156,17 +156,10 @@ gameChannel.onmessage = (event) => {
     }
 };
 
-// Open game window with unique name (prevents duplicate tabs)
+// Open game window (now navigates in the same tab)
 function openGameWindow(url, gameId) {
-    // Use named window - if a window with this name exists, it will be reused
-    const windowName = 'chess_game_' + gameId;
-    const childWindow = window.open(url, windowName);
-
-    if (childWindow) {
-        childWindow.focus(); // Bring to front if already exists
-    }
-
-    return childWindow;
+    window.location.href = url;
+    return window;
 }
 
 // Toggle variant selection panel based on Allow Variants checkbox
@@ -871,7 +864,7 @@ window.addEventListener('load', () => {
 if (resetBtn) {
     resetBtn.addEventListener('click', async () => {
         // Confirmation dialog to prevent accidental resets
-        if (!confirm('Reset tournament? This will clear all players and games.')) {
+        if (!confirm('Reset tournament? This will clear all games and reset scores, but keep registered players.')) {
             return;
         }
 
@@ -883,14 +876,6 @@ if (resetBtn) {
 
             if (response.ok) {
                 showMessage('Tournament reset successfully', 'success');
-                // Clear local storage
-                localStorage.removeItem(STORAGE_KEY);
-                myPlayerName = null;
-
-                // Re-enable inputs
-                playerNameInput.value = '';
-                isComputerCheckbox.checked = false;
-                computerLevelSelect.disabled = true;
 
                 // Update status immediately
                 updateStatus();

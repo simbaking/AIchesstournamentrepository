@@ -110,7 +110,11 @@ function evaluateBoard(board, variant) {
             const material = PIECE_VALUES[piece.type] || 0;
             const pst = PST[piece.type];
             let positional = 0;
-            if (pst) {
+            
+            if (variant === 'kingofthehill' && piece.type === 'king') {
+                // Skip standard defensive PST for king in KOTH
+                positional = 0;
+            } else if (pst) {
                 // White PST uses y=7→0 mapping (y=7 is white's home rank)
                 // Black PST mirrors vertically
                 const tableY = piece.isWhite ? (7 - y) : y;
@@ -130,6 +134,20 @@ function evaluateBoard(board, variant) {
     if (variant === 'kingofthehill') {
         if (whiteKing && (whiteKing.x === 3 || whiteKing.x === 4) && (whiteKing.y === 3 || whiteKing.y === 4)) return  30000;
         if (blackKing && (blackKing.x === 3 || blackKing.x === 4) && (blackKing.y === 3 || blackKing.y === 4)) return -30000;
+        
+        // Reward king proximity to the center
+        const getCenterDist = (king) => {
+            if (!king) return 10;
+            const dx = Math.min(Math.abs(king.x - 3), Math.abs(king.x - 4));
+            const dy = Math.min(Math.abs(king.y - 3), Math.abs(king.y - 4));
+            return Math.max(dx, dy); // Chebyshev distance
+        };
+        const wDist = getCenterDist(whiteKing);
+        const bDist = getCenterDist(blackKing);
+        
+        const kothScoreMap = {0: 30000, 1: 500, 2: 200, 3: 50, 4: 0};
+        score += (kothScoreMap[wDist] || 0);
+        score -= (kothScoreMap[bDist] || 0);
     }
 
     return score;
@@ -139,7 +157,9 @@ class GlobalAnalyzer {
     constructor() {
         this.activeGames = null;
         this._interval = null;
-        console.log('[GLOBAL_ANALYZER] Initialized (material+PST evaluator)');
+        this.pendingEvals = new Set();
+        this.enginePool = require('./EnginePool');
+        console.log('[GLOBAL_ANALYZER] Initialized with EnginePool');
     }
 
     setGamesMap(gamesMap) {
@@ -150,18 +170,53 @@ class GlobalAnalyzer {
     startLoop() {
         if (this._interval) clearInterval(this._interval);
 
+        // Run loop every 500ms to avoid overwhelming the EnginePool
         this._interval = setInterval(() => {
             if (!this.activeGames) return;
-            for (const game of this.activeGames.values()) {
+            for (const [gameId, game] of this.activeGames.entries()) {
                 if (game.isGameOver) continue;
+                if (this.pendingEvals.has(gameId)) continue; // Throttle per game
+
                 try {
-                    const eval_cp = evaluateBoard(game.board, game.variant);
-                    game.evaluation = eval_cp;
+                    let fen = game.board.toFEN(game.isWhiteTurn);
+                    
+                    // Add pocket to FEN for Crazyhouse
+                    if (game.variantStrategy && game.variantStrategy.supportsDrops()) {
+                        const charMap = { 'pawn': 'P', 'knight': 'N', 'bishop': 'B', 'rook': 'R', 'queen': 'Q' };
+                        let pocket = '';
+                        if (game.whiteReserve) {
+                            for (const p of game.whiteReserve) pocket += charMap[p] || '';
+                        }
+                        if (game.blackReserve) {
+                            for (const p of game.blackReserve) pocket += (charMap[p] || '').toLowerCase();
+                        }
+                        if (pocket.length > 0) {
+                            const parts = fen.split(' ');
+                            parts[0] += `[${pocket}]`;
+                            fen = parts.join(' ');
+                        }
+                    }
+
+                    this.pendingEvals.add(gameId);
+                    
+                    this.enginePool.evaluate(fen, game.variant)
+                        .then(score => {
+                            // Stockfish 'score cp' is from the side-to-move's perspective!
+                            // The Eval Bar expects White's perspective (+ means White is winning).
+                            const whiteScore = game.isWhiteTurn ? score : -score;
+                            game.evaluation = whiteScore;
+                        })
+                        .catch(err => {
+                            // Silently ignore timeout/queue drops
+                        })
+                        .finally(() => {
+                            this.pendingEvals.delete(gameId);
+                        });
                 } catch (e) {
-                    // silently skip if board state is invalid
+                    this.pendingEvals.delete(gameId);
                 }
             }
-        }, 200); // Evaluate all active games every 200ms
+        }, 500);
     }
 }
 
