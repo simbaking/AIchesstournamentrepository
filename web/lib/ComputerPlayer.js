@@ -19,6 +19,7 @@ class ComputerPlayer {
         this.worker = null;
         this.isReady = false;
         this.lastEvaluation = 0;
+        this.lastWdl = { w: 0, d: 0, l: 0 };
         this.pendingCallback = null;
         this.moveHistory = [];  // Track recent moves for consistency check
         this.thinkingStartTime = 0;
@@ -152,6 +153,9 @@ class ComputerPlayer {
             console.log('[COMPUTER] Stockfish ready');
             // Configure Stockfish
             this.sendCommand('uci');
+            this.sendCommand('setoption name UCI_ShowWDL value true');
+            this.sendCommand('setoption name Hash value 16');
+            this.sendCommand('setoption name Threads value 1');
             setTimeout(() => {
                 this.setSkillLevel(this.level);
                 this.isReady = true;
@@ -177,6 +181,14 @@ class ComputerPlayer {
             const match = text.match(/score mate (-?\d+)/);
             if (match) {
                 this.lastEvaluation = parseInt(match[1]) > 0 ? 10000 : -10000;
+            }
+        }
+
+        // Parse WDL (Win, Draw, Loss per mille)
+        if (text.startsWith('info') && text.includes(' wdl ')) {
+            const match = text.match(/ wdl (\d+) (\d+) (\d+)/);
+            if (match) {
+                this.lastWdl = { w: parseInt(match[1]), d: parseInt(match[2]), l: parseInt(match[3]) };
             }
         }
 
@@ -332,7 +344,7 @@ class ComputerPlayer {
 
                 console.log(`[COMPUTER] Move '${move}' confirmed after ${thinkingTime}ms. Playing immediately.`);
 
-                callback({ move, evaluation: this.lastEvaluation });
+                callback({ move, evaluation: this.lastEvaluation, wdl: this.lastWdl });
 
                 if (this.pendingRequest) {
                     const req = this.pendingRequest;

@@ -1005,12 +1005,21 @@ class ChessGame {
 
         const colorName = this.isWhiteTurn ? 'white' : 'black';
 
-        // Bug 4 fix: Cap retries to prevent infinite silent hang
-        const MAX_RETRIES = 50;
+        // Failsafe: Cap retries, but instead of resigning, fallback to a random legal move
+        const MAX_RETRIES = 10;
         if (retryCount >= MAX_RETRIES) {
-            console.error(`[COMPUTER] Max retries (${MAX_RETRIES}) exceeded for ${colorName} — resigning to prevent freeze`);
+            console.error(`[COMPUTER] Max retries (${MAX_RETRIES}) exceeded for ${colorName} — falling back to random move to prevent freeze`);
+            const legalMoves = this.getLegalMoves();
+            if (legalMoves.length > 0) {
+                const fallbackMove = legalMoves[Math.floor(Math.random() * legalMoves.length)].move;
+                const fromFile = fallbackMove.charCodeAt(0) - 97;
+                const fromRank = 8 - parseInt(fallbackMove[1]);
+                const toFile = fallbackMove.charCodeAt(2) - 97;
+                const toRank = 8 - parseInt(fallbackMove[3]);
+                const computerName = this.isWhiteTurn ? this.player1 : this.player2;
+                this.makeMove(fromFile, fromRank, toFile, toRank, computerName);
+            }
             if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
-            this.resign(colorName);
             return;
         }
 
@@ -1160,9 +1169,9 @@ class ChessGame {
 
                             // Handle stockfish errors / no moves found
                             if (!bestMove || bestMove === '(none)') {
-                                console.error(`[COMPUTER] Engine returned ${bestMove ? '(none)' : 'null'} for ${colorName} - resigning`);
-                                if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
-                                this.resign(colorName);
+                                console.error(`[COMPUTER] Engine returned ${bestMove ? '(none)' : 'null'} for ${colorName} - resetting engine and retrying...`);
+                                computer.init(); // Safely restart the engine process
+                                this.scheduleComputerMove(1000, retryCount + 1);
                                 return;
                             }
 
@@ -1187,8 +1196,8 @@ class ChessGame {
                                     if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
                                     this.resign(colorName);
                                     return;
-                                } else if (this.shouldOfferDraw(computerEval, computer.level, myElo, oppElo, myTime, oppTime, this.moveHistory.length / 2)) {
-                                    console.log(`${colorName} computer offering draw (eval: ${computerEval})`);
+                                } else if (this.shouldOfferDraw(computerEval, computer.level, myElo, oppElo, myTime, oppTime, this.moveHistory.length / 2, result.wdl)) {
+                                    console.log(`${colorName} computer offering draw (eval: ${computerEval}, wdl: ${JSON.stringify(result.wdl)})`);
                                     this.offerDraw(colorName);
                                 }
                             }
@@ -1247,12 +1256,33 @@ class ChessGame {
         return evaluation < -500;
     }
 
-    shouldOfferDraw(evaluation, level, myElo, oppElo, myTime, oppTime, moveNumber) {
+    shouldOfferDraw(evaluation, level, myElo, oppElo, myTime, oppTime, moveNumber, wdl) {
         // Don't offer too early
         if (moveNumber < 20) return false;
 
         // Don't offer if already offered recently (simple check to avoid spam, though state is tracked elsewhere)
         if (this.drawOfferedBy) return false;
+
+        // WDL Check: If it's more likely that the position won't go our way (Loss + Draw > Win)
+        // OR if Draw is extremely likely (>50% / 500 per mille)
+        if (wdl && (wdl.l + wdl.d > wdl.w || wdl.d > 500)) {
+            // High chance to offer draw since the engine itself sees a draw/loss as likely
+            if (Math.random() < 0.15) return true;
+        }
+
+        // Favorable but unlikely to convert:
+        // Position is equal or in our favor (evaluation >= -50), but WDL win probability is low
+        // AND we are handicapped by low time, low skill level, or a much stronger opponent.
+        if (evaluation >= -50 && wdl && wdl.w < wdl.d + wdl.l) {
+            const lowTime = this.timeControlMs > 0 && myTime < 30000;
+            const outmatched = oppElo > myElo + 100;
+            const lowLevel = level < 10;
+            
+            if (lowTime || outmatched || lowLevel) {
+                // 20% chance to offer a draw when we recognize we probably can't convert the advantage
+                if (Math.random() < 0.20) return true;
+            }
+        }
 
         // 1. Equal Position (0.00 +/- 50cp)
         // Only offer with low probability to simulate human hesitance
