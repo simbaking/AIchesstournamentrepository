@@ -77,7 +77,9 @@ class ComputerPlayer {
                 console.error('[COMPUTER] Worker error:', err.message);
             });
 
+            const myWorker = this.worker;
             this.worker.on('exit', (code) => {
+                if (this.worker !== myWorker) return;
                 if (code !== 0 && !this.isTerminating) {
                     console.error(`[COMPUTER] Worker exited ${code}, restarting...`);
                     // Safeguard: fire any pending callbacks to prevent the engine from freezing
@@ -747,9 +749,13 @@ class ComputerPlayer {
         // Set UCI_Variant for multi-variant stockfish (atomic, horde, etc.)
         // Must be set BEFORE sending the position
         const uciVariant = this.getUciVariant(variant);
-        if (uciVariant !== 'chess') {
-            console.log(`[COMPUTER] Setting UCI_Variant to ${uciVariant}`);
+        if (this.currentUciVariant !== uciVariant) {
+            if (uciVariant !== 'chess') {
+                console.log(`[COMPUTER] Setting UCI_Variant to ${uciVariant}`);
+            }
             this.sendCommand(`setoption name UCI_Variant value ${uciVariant}`);
+            this.sendCommand('ucinewgame');
+            this.currentUciVariant = uciVariant;
         }
 
         // Send position and start search

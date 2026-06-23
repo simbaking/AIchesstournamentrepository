@@ -74,13 +74,13 @@ class Tournament {
      */
     calculateEloChange(playerElo, opponentElo, actualScore, gameDurationMs) {
         const gameDurationMinutes = gameDurationMs / 60000;
-        const K = 32 * gameDurationMinutes;
+        const K = (32 * gameDurationMinutes) / 50;
 
         // Expected score formula
         const expectedScore = 1 / (1 + Math.pow(10, (opponentElo - playerElo) / 400));
 
         // ELO change
-        return Math.round(K * (actualScore - expectedScore));
+        return K * (actualScore - expectedScore);
     }
 
     /**

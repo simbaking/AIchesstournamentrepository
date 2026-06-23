@@ -1448,6 +1448,12 @@ class ChessGame {
             return false;
         }
 
+        // Variants: some variants redefine check completely (e.g. adjacent kings in Atomic are not in check)
+        if (this.variantStrategy.isKingInCheck) {
+            const variantCheck = this.variantStrategy.isKingInCheck(isWhite, kingX, kingY);
+            if (variantCheck !== null) return variantCheck;
+        }
+
         // Check if any opponent piece can attack the king
         for (let y = 0; y < 8; y++) {
             for (let x = 0; x < 8; x++) {
@@ -1489,6 +1495,11 @@ class ChessGame {
                                 if (this.isKingInCheck(isWhite)) {
                                     isLegal = false;
                                 }
+                            }
+                            
+                            // Variants: Some moves override king safety (e.g. exploding opponent's king in Atomic)
+                            if (!isLegal && this.variantStrategy.overridesKingSafety && this.variantStrategy.overridesKingSafety(startX, startY, endX, endY, piece, capturedPiece)) {
+                                isLegal = true;
                             }
 
                             // Undo the move
@@ -1544,6 +1555,11 @@ class ChessGame {
                         if (this.isKingInCheck(piece.isWhite)) {
                             isLegal = false;
                         }
+                    }
+
+                    // Variants: Some moves override king safety (e.g. exploding opponent's king in Atomic)
+                    if (!isLegal && this.variantStrategy.overridesKingSafety && this.variantStrategy.overridesKingSafety(x, y, endX, endY, piece, capturedPiece)) {
+                        isLegal = true;
                     }
 
                     // Undo move simulation
@@ -1705,7 +1721,7 @@ class ChessGame {
             return { success: false, error: 'No draw offer to accept' };
         }
         this.isGameOver = true;
-        this.winner = 'draw';
+        this.winner = null; // null represents a draw
         this.termination = 'draw_agreement';
         console.log('Draw accepted');
         if (this.onGameOver) {

@@ -50,6 +50,16 @@ class BaseVariant {
         return true; // Return false if illegal
     }
 
+    // Hook to allow moves that would normally be illegal due to king safety (like blowing up the opponent's king in Atomic)
+    overridesKingSafety(startX, startY, endX, endY, piece, capturedPiece) {
+        return false;
+    }
+
+    // Hook to override standard check detection
+    isKingInCheck(isWhite, kingX, kingY) {
+        return null; // Return boolean to override, null to use standard logic
+    }
+
     // Hook for capture execution (like Atomic explosion)
     executeCapture(startX, startY, endX, endY, piece, capturedPiece) {
         return { handled: false };

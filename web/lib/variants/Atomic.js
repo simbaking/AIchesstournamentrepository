@@ -25,6 +25,44 @@ class Atomic extends BaseVariant {
         return true;
     }
 
+    overridesKingSafety(startX, startY, endX, endY, piece, capturedPiece) {
+        if (capturedPiece) {
+            return this.wouldExplodeOpponentKing(startX, startY, endX, endY, piece.isWhite) && !this.wouldExplodeOwnKing(startX, startY, endX, endY);
+        }
+        return false;
+    }
+
+    isKingInCheck(isWhite, kingX, kingY) {
+        // In Atomic chess, if the king is adjacent to the opponent's king, it cannot be in check
+        // because capturing the king would blow up the opponent's own king.
+        const adjacent = this.getAdjacentSquares(kingX, kingY);
+        for (const sq of adjacent) {
+            const piece = this.game.board.getPiece(sq.x, sq.y);
+            if (piece && piece.type === 'king' && piece.isWhite !== isWhite) {
+                return false;
+            }
+        }
+        return null; // Fallback to standard logic
+    }
+
+    wouldExplodeOpponentKing(startX, startY, endX, endY, isWhite) {
+        const capturedPiece = this.game.board.getPiece(endX, endY);
+        if (!capturedPiece) return false;
+        
+        const adjacent = this.getAdjacentSquares(endX, endY);
+        for (const sq of adjacent) {
+            const adjPiece = this.game.board.getPiece(sq.x, sq.y);
+            if (adjPiece && adjPiece.type === 'king' && adjPiece.isWhite !== isWhite) {
+                return true;
+            }
+        }
+        // Direct capture of the king (not normally possible, but logically it's an explosion of the opponent's king)
+        if (capturedPiece.type === 'king' && capturedPiece.isWhite !== isWhite) {
+            return true;
+        }
+        return false;
+    }
+
     isAtomicKingCapture(startX, startY, endX, endY) {
         const piece = this.game.board.getPiece(startX, startY);
         const target = this.game.board.getPiece(endX, endY);

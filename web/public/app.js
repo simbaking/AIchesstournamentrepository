@@ -538,8 +538,6 @@ async function updateActiveGames() {
                     ? `(${game.timeControl}m${game.increment ? '+' + game.increment + 's' : ''})`
                     : '';
 
-                // Duration handled by interval below to prevent DOM thrashing
-                const durationSeconds = Math.max(0, Math.floor((game.duration || 0) / 1000));
 
                 // Format player names
                 const p1Display = formatPlayerName(game.player1) + (game.player1Elo ? ` (${game.player1Elo})` : '');
@@ -567,12 +565,27 @@ async function updateActiveGames() {
                             </span>
                         </div>
                         <div style="font-size: 0.9rem; color: var(--text-muted); width: 100%; display: flex; justify-content: space-between;">
-                            <span>Duration: <span class="active-game-duration" data-duration="${durationSeconds}"></span></span>
+                            <span>Duration: <span class="active-game-duration" id="game-duration-${game.gameId}"></span></span>
                         </div>
                     </div>
                 `;
             }).join('');
             setHTML(activeGamesDiv, newHtml);
+
+            // Update durations directly on DOM elements without triggering setHTML rebuilds
+            data.games.forEach(game => {
+                const el = document.getElementById(`game-duration-${game.gameId}`);
+                if (el) {
+                    const durationSeconds = Math.max(0, Math.floor((game.duration || 0) / 1000));
+                    el.setAttribute('data-duration', durationSeconds);
+                    const minutes = Math.floor(durationSeconds / 60);
+                    const seconds = durationSeconds % 60;
+                    const text = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    if (el.textContent !== text) {
+                        el.textContent = text;
+                    }
+                }
+            });
         }
     } catch (error) {
         console.error('Error updating active games:', error);
