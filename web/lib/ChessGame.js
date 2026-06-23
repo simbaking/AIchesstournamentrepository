@@ -1005,12 +1005,21 @@ class ChessGame {
 
         const colorName = this.isWhiteTurn ? 'white' : 'black';
 
-        // Bug 4 fix: Cap retries to prevent infinite silent hang
-        const MAX_RETRIES = 50;
+        // Failsafe: Cap retries, but instead of resigning, fallback to a random legal move
+        const MAX_RETRIES = 10;
         if (retryCount >= MAX_RETRIES) {
-            console.error(`[COMPUTER] Max retries (${MAX_RETRIES}) exceeded for ${colorName} — resigning to prevent freeze`);
+            console.error(`[COMPUTER] Max retries (${MAX_RETRIES}) exceeded for ${colorName} — falling back to random move to prevent freeze`);
+            const legalMoves = this.getLegalMoves();
+            if (legalMoves.length > 0) {
+                const fallbackMove = legalMoves[Math.floor(Math.random() * legalMoves.length)].move;
+                const fromFile = fallbackMove.charCodeAt(0) - 97;
+                const fromRank = 8 - parseInt(fallbackMove[1]);
+                const toFile = fallbackMove.charCodeAt(2) - 97;
+                const toRank = 8 - parseInt(fallbackMove[3]);
+                const computerName = this.isWhiteTurn ? this.player1 : this.player2;
+                this.makeMove(fromFile, fromRank, toFile, toRank, computerName);
+            }
             if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
-            this.resign(colorName);
             return;
         }
 
@@ -1019,7 +1028,24 @@ class ChessGame {
 
         if (nextPlayerType === 'computer' && computer) {
             console.log(`[DEBUG_MOVE] Triggering computer move! Retry: ${retryCount}`);
-            const fen = this.board.toFEN(this.isWhiteTurn);
+            let fen = this.board.toFEN(this.isWhiteTurn);
+            
+            // Add pocket to FEN for Fairy-Stockfish if Crazyhouse
+            if (this.variantStrategy && this.variantStrategy.supportsDrops()) {
+                const charMap = { 'pawn': 'P', 'knight': 'N', 'bishop': 'B', 'rook': 'R', 'queen': 'Q' };
+                let pocket = '';
+                if (this.whiteReserve) {
+                    for (const p of this.whiteReserve) pocket += charMap[p] || '';
+                }
+                if (this.blackReserve) {
+                    for (const p of this.blackReserve) pocket += (charMap[p] || '').toLowerCase();
+                }
+                if (pocket.length > 0) {
+                    const parts = fen.split(' ');
+                    parts[0] += `[${pocket}]`;
+                    fen = parts.join(' ');
+                }
+            }
             const isComputerWhite = this.isWhiteTurn;
 
             // Use lock to prevent concurrent computer moves for the same player
@@ -1160,9 +1186,9 @@ class ChessGame {
 
                             // Handle stockfish errors / no moves found
                             if (!bestMove || bestMove === '(none)') {
-                                console.error(`[COMPUTER] Engine returned ${bestMove ? '(none)' : 'null'} for ${colorName} - resigning`);
-                                if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
-                                this.resign(colorName);
+                                console.error(`[COMPUTER] Engine returned ${bestMove ? '(none)' : 'null'} for ${colorName} - resetting engine and retrying...`);
+                                computer.init(); // Safely restart the engine process
+                                this.scheduleComputerMove(1000, retryCount + 1);
                                 return;
                             }
 
@@ -1182,13 +1208,13 @@ class ChessGame {
                                 const myTime = isComputerWhite ? this.whiteTimeRemaining : this.blackTimeRemaining;
                                 const oppTime = isComputerWhite ? this.blackTimeRemaining : this.whiteTimeRemaining;
 
-                                if (this.shouldResign(computerEval, computer.level)) {
-                                    console.log(`${colorName} computer resigning (eval: ${computerEval})`);
+                                if (this.shouldResign(computerEval, computer.level, this.getDuration())) {
+                                    console.log(`${colorName} computer resigning (eval: ${computerEval}, duration: ${this.getDuration()}ms)`);
                                     if (this.isComputerThinking) this.isComputerThinking[colorName] = false;
                                     this.resign(colorName);
                                     return;
-                                } else if (this.shouldOfferDraw(computerEval, computer.level, myElo, oppElo, myTime, oppTime, this.moveHistory.length / 2)) {
-                                    console.log(`${colorName} computer offering draw (eval: ${computerEval})`);
+                                } else if (this.shouldOfferDraw(computerEval, computer.level, myElo, oppElo, myTime, oppTime, this.moveHistory.length / 2, result.wdl)) {
+                                    console.log(`${colorName} computer offering draw (eval: ${computerEval}, wdl: ${JSON.stringify(result.wdl)})`);
                                     this.offerDraw(colorName);
                                 }
                             }
@@ -1233,26 +1259,69 @@ class ChessGame {
         }
     }
 
-    shouldResign(evaluation, level) {
-        // Beginners never resign to allow human to practice checkmate
-        if (level < 5) return false;
+    shouldResign(evaluation, level, durationMs) {
+        // If they are winning or roughly even, they shouldn't ever resign
+        if (evaluation >= -150) return false;
 
-        // Mid-level (5-15) resigns if down significant material (Queen ~900cp)
-        if (level <= 15) {
-            return evaluation < -900;
-        }
+        // Calculate base expected duration: TimeControl + (Increment * 40)
+        const baseExpectedMs = this.timeControlMs + (this.incrementMs * 40);
+        if (baseExpectedMs <= 0) return false; // Fallback
 
-        // High-level (16-20) resigns in hopeless positions
-        // -500 is roughly a Rook advantage
-        return evaluation < -500;
+        // The game eval as a loss value (e.g. 500 cp down = 500)
+        const evalLoss = Math.abs(evaluation);
+
+        // Scale the endpoint from 0 to 1.0 at:
+        // baseExpectedMs * (1 + ((1500 - evalLoss) * (1/3000)))
+        const targetDurationMs = baseExpectedMs * (1 + ((1500 - evalLoss) / 3000));
+
+        // Time ratio from 0.0 to 1.0
+        const timeRatio = Math.max(0, Math.min(1.0, durationMs / targetDurationMs));
+
+        // Evaluate how bad the position is to determine the shape of the exponential curve.
+        const minLoss = 150;   // Slightly losing
+        const maxLoss = 1500;  // Completely lost (down a queen and a rook)
+
+        // Calculate where we are on the loss spectrum (0.0 to 1.0)
+        const lossFraction = Math.max(0, Math.min(1.0, (evalLoss - minLoss) / (maxLoss - minLoss)));
+
+        // Map to an exponent between 10 (even/slightly losing) and 1 (very bad/hopeless).
+        // - Exponent 1: A straight line from 0 to 100% over the game duration.
+        // - Exponent 10: A very flat curve that stays near 0% then sharply spikes to 100% at the end.
+        const exponent = 1 + 9 * (1 - lossFraction);
+
+        // Calculate the resignation probability for this specific turn
+        const probability = Math.pow(timeRatio, exponent);
+
+        return Math.random() < probability;
     }
 
-    shouldOfferDraw(evaluation, level, myElo, oppElo, myTime, oppTime, moveNumber) {
+    shouldOfferDraw(evaluation, level, myElo, oppElo, myTime, oppTime, moveNumber, wdl) {
         // Don't offer too early
         if (moveNumber < 20) return false;
 
         // Don't offer if already offered recently (simple check to avoid spam, though state is tracked elsewhere)
         if (this.drawOfferedBy) return false;
+
+        // WDL Check: If it's more likely that the position won't go our way (Loss + Draw > Win)
+        // OR if Draw is extremely likely (>50% / 500 per mille)
+        if (wdl && (wdl.l + wdl.d > wdl.w || wdl.d > 500)) {
+            // High chance to offer draw since the engine itself sees a draw/loss as likely
+            if (Math.random() < 0.15) return true;
+        }
+
+        // Favorable but unlikely to convert:
+        // Position is equal or in our favor (evaluation >= -50), but WDL win probability is low
+        // AND we are handicapped by low time, low skill level, or a much stronger opponent.
+        if (evaluation >= -50 && wdl && wdl.w < wdl.d + wdl.l) {
+            const lowTime = this.timeControlMs > 0 && myTime < 30000;
+            const outmatched = oppElo > myElo + 100;
+            const lowLevel = level < 10;
+            
+            if (lowTime || outmatched || lowLevel) {
+                // 20% chance to offer a draw when we recognize we probably can't convert the advantage
+                if (Math.random() < 0.20) return true;
+            }
+        }
 
         // 1. Equal Position (0.00 +/- 50cp)
         // Only offer with low probability to simulate human hesitance
@@ -1415,13 +1484,22 @@ class ChessGame {
                             this.board.grid[endX][endY] = piece;
                             this.board.grid[startX][startY] = null;
 
-                            const inCheck = this.isKingInCheck(isWhite);
+                            let isLegal = true;
+                            if (this.variantStrategy.isKingSafetyEnforced()) {
+                                if (this.isKingInCheck(isWhite)) {
+                                    isLegal = false;
+                                }
+                            }
 
                             // Undo the move
                             this.board.grid[startX][startY] = piece;
                             this.board.grid[endX][endY] = capturedPiece;
 
-                            if (!inCheck) {
+                            if (isLegal && this.variantStrategy.filterLegalMove) {
+                                isLegal = this.variantStrategy.filterLegalMove(startX, startY, endX, endY, piece, capturedPiece);
+                            }
+
+                            if (isLegal) {
                                 return true; // Found a legal move
                             }
                         }
@@ -1529,14 +1607,23 @@ class ChessGame {
                             this.board.grid[x][y] = null;
                             this.board.grid[targetX][y] = null;
 
-                            const inCheck = this.isKingInCheck(piece.isWhite);
+                            let isLegal = true;
+                            if (this.variantStrategy.isKingSafetyEnforced()) {
+                                if (this.isKingInCheck(piece.isWhite)) {
+                                    isLegal = false;
+                                }
+                            }
 
                             // Undo simulation
                             this.board.grid[x][y] = piece;
                             this.board.grid[targetX][enPassantY] = null;
                             this.board.grid[targetX][y] = capturedPawn;
 
-                            if (!inCheck) {
+                            if (isLegal && this.variantStrategy.filterLegalMove) {
+                                isLegal = this.variantStrategy.filterLegalMove(x, y, targetX, enPassantY, piece, capturedPawn);
+                            }
+
+                            if (isLegal) {
                                 moves.push({ x: targetX, y: enPassantY });
                             }
                         }
@@ -1553,33 +1640,7 @@ class ChessGame {
     }
 
     getValidMoves(startX, startY) {
-        const piece = this.board.getPiece(startX, startY);
-        if (!piece) return [];
-
-        const validMoves = [];
-        for (let y = 0; y < 8; y++) {
-            for (let x = 0; x < 8; x++) {
-                if (startX === x && startY === y) continue;
-
-                if (piece.isValidMove(this.board, startX, startY, x, y)) {
-                    // Simulate move to check for check
-                    const capturedPiece = this.board.getPiece(x, y);
-                    this.board.grid[x][y] = piece;
-                    this.board.grid[startX][startY] = null;
-
-                    const inCheck = this.isKingInCheck(piece.isWhite);
-
-                    // Undo move
-                    this.board.grid[startX][startY] = piece;
-                    this.board.grid[x][y] = capturedPiece;
-
-                    if (!inCheck) {
-                        validMoves.push({ x, y });
-                    }
-                }
-            }
-        }
-        return validMoves;
+        return this.getLegalMovesForPiece(startX, startY);
     }
 
     getState() {

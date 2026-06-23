@@ -592,6 +592,8 @@ app.post('/api/reset', (req, res) => {
 
     tournament.reset();
     activeGames.clear();
+    gameOffers.length = 0;
+
 
     if (tournamentMonitorInterval) { clearInterval(tournamentMonitorInterval); tournamentMonitorInterval = null; }
     if (autoMatchmakingInterval) { clearInterval(autoMatchmakingInterval); autoMatchmakingInterval = null; }

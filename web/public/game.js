@@ -536,6 +536,8 @@ function initBoard() {
         cooldowns: null,
         isFlipped: isFlipped
     };
+
+    updateBoardOrientation();
 }
 
 // Update board by diffing - only update squares that changed
@@ -1558,10 +1560,17 @@ declineDrawBtn.addEventListener('click', async () => {
     }
 });
 
-// Return to tournament (Close window)
+// Return to tournament
 returnBtn.addEventListener('click', () => {
-    window.close();
+    window.location.href = 'index.html';
 });
+
+const actionsReturnBtn = document.getElementById('actions-return-btn');
+if (actionsReturnBtn) {
+    actionsReturnBtn.addEventListener('click', () => {
+        window.location.href = 'index.html';
+    });
+}
 
 // Flip board logic
 function updateBoardOrientation() {
@@ -1574,35 +1583,60 @@ function updateBoardOrientation() {
         }
     }
 
-    const gameInfoDiv = document.getElementById('game-info');
+    const gameInfoDiv = document.querySelector('.info-card .game-info');
     const blackPlayerDiv = document.querySelector('.player.black-player');
     const whitePlayerDiv = document.querySelector('.player.white-player');
-    const gameStatusDiv = document.getElementById('game-status');
+    const gameStatusDiv = document.querySelector('.game-status');
 
-    if (!gameInfoDiv || !blackPlayerDiv || !whitePlayerDiv || !gameStatusDiv) {
-        return;
+    if (gameInfoDiv && blackPlayerDiv && whitePlayerDiv && gameStatusDiv) {
+        gameInfoDiv.style.display = 'flex';
+        gameInfoDiv.style.flexDirection = 'column';
+        if (isFlipped) {
+            // Flipped: White on top, Black on bottom
+            whitePlayerDiv.style.order = 1;
+            gameStatusDiv.style.order = 2;
+            blackPlayerDiv.style.order = 3;
+        } else {
+            // Normal: Black on top, White on bottom
+            blackPlayerDiv.style.order = 1;
+            gameStatusDiv.style.order = 2;
+            whitePlayerDiv.style.order = 3;
+        }
     }
 
-    if (!gameInfoDiv.contains(blackPlayerDiv) || !gameInfoDiv.contains(whitePlayerDiv) || !gameInfoDiv.contains(gameStatusDiv)) {
-        console.warn('updateBoardOrientation: Elements are not children of gameInfoDiv');
-        return;
-    }
+    // Also flip mobile player bars if present
+    const boardArea = document.querySelector('.board-area');
+    const opponentBar = document.querySelector('.mobile-player-bar.opponent-bar');
+    const playerBar = document.querySelector('.mobile-player-bar.player-bar');
+    const mobileTournamentTime = document.querySelector('.mobile-tournament-time');
+    const boardContainer = document.querySelector('.board-container');
+    const moveNavigation = document.querySelector('.move-navigation');
 
-    if (isFlipped) {
-        // When flipped, white should be on top
-        if (gameInfoDiv.firstChild !== whitePlayerDiv) {
-            gameInfoDiv.insertBefore(whitePlayerDiv, gameInfoDiv.firstChild);
-        }
-        if (whitePlayerDiv.nextSibling !== gameStatusDiv) {
-            gameInfoDiv.insertBefore(gameStatusDiv, whitePlayerDiv.nextSibling);
-        }
-    } else {
-        // Normal: black on top
-        if (gameInfoDiv.firstChild !== blackPlayerDiv) {
-            gameInfoDiv.insertBefore(blackPlayerDiv, gameInfoDiv.firstChild);
-        }
-        if (blackPlayerDiv.nextSibling !== gameStatusDiv) {
-            gameInfoDiv.insertBefore(gameStatusDiv, blackPlayerDiv.nextSibling);
+    if (boardArea && opponentBar && playerBar && mobileTournamentTime && boardContainer && moveNavigation) {
+        boardArea.style.display = 'flex';
+        boardArea.style.flexDirection = 'column';
+        mobileTournamentTime.style.order = 2;
+        boardContainer.style.order = 3;
+        moveNavigation.style.order = 4;
+        
+        const isPlayerBlack = currentPlayerName && gameState && gameState.player2.toLowerCase() === currentPlayerName.toLowerCase();
+        
+        if (isFlipped) {
+            if (isPlayerBlack) {
+                playerBar.style.order = 5;
+                opponentBar.style.order = 1;
+            } else {
+                playerBar.style.order = 1;
+                opponentBar.style.order = 5;
+            }
+        } else {
+            if (isPlayerBlack) {
+                playerBar.style.order = 1;
+                opponentBar.style.order = 5;
+            } else {
+                playerBar.style.order = 5;
+                opponentBar.style.order = 1;
+            }
         }
     }
 }
@@ -1763,9 +1797,7 @@ function renderMaterial() {
     const newBlackHtml = gameState.capturedByBlack
         .map(p => getPieceImgHtml(p.type, true, 18))
         .join('');
-    if (blackCapturedDiv.innerHTML !== newBlackHtml) {
-        blackCapturedDiv.innerHTML = newBlackHtml;
-    }
+    safeUpdateHtml(blackCapturedDiv, newBlackHtml);
 
     // Calculate material advantage
     const advantage = calculateMaterialDifference();

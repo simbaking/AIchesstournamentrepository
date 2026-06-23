@@ -26,6 +26,20 @@ const createOfferForm = document.getElementById('create-offer-form');
 const playerNameInput = document.getElementById('player-name');
 const isComputerCheckbox = document.getElementById('is-computer');
 const computerLevelSelect = document.getElementById('computer-level');
+
+// Active games duration updater
+setInterval(() => {
+    document.querySelectorAll('.active-game-duration').forEach(el => {
+        let duration = parseInt(el.getAttribute('data-duration') || '0', 10);
+        // We increment it visually, actual sync happens when server updates the data attribute
+        const totalSeconds = duration;
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        el.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        el.setAttribute('data-duration', duration + 1);
+    });
+}, 1000);
+
 const durationHoursInput = document.getElementById('duration-hours');
 const durationMinutesInput = document.getElementById('duration-minutes');
 const gamePlayer1Select = document.getElementById('game-player1');
@@ -142,17 +156,10 @@ gameChannel.onmessage = (event) => {
     }
 };
 
-// Open game window with unique name (prevents duplicate tabs)
+// Open game window (now navigates in the same tab)
 function openGameWindow(url, gameId) {
-    // Use named window - if a window with this name exists, it will be reused
-    const windowName = 'chess_game_' + gameId;
-    const childWindow = window.open(url, windowName);
-
-    if (childWindow) {
-        childWindow.focus(); // Bring to front if already exists
-    }
-
-    return childWindow;
+    window.location.href = url;
+    return window;
 }
 
 // Toggle variant selection panel based on Allow Variants checkbox
@@ -531,7 +538,8 @@ async function updateActiveGames() {
                     ? `(${game.timeControl}m${game.increment ? '+' + game.increment + 's' : ''})`
                     : '';
 
-                const durationText = formatTime(game.duration || 0);
+                // Duration handled by interval below to prevent DOM thrashing
+                const durationSeconds = Math.max(0, Math.floor((game.duration || 0) / 1000));
 
                 // Format player names
                 const p1Display = formatPlayerName(game.player1) + (game.player1Elo ? ` (${game.player1Elo})` : '');
@@ -559,7 +567,7 @@ async function updateActiveGames() {
                             </span>
                         </div>
                         <div style="font-size: 0.9rem; color: var(--text-muted); width: 100%; display: flex; justify-content: space-between;">
-                            <span>Duration: ${durationText}</span>
+                            <span>Duration: <span class="active-game-duration" data-duration="${durationSeconds}"></span></span>
                         </div>
                     </div>
                 `;
@@ -856,7 +864,7 @@ window.addEventListener('load', () => {
 if (resetBtn) {
     resetBtn.addEventListener('click', async () => {
         // Confirmation dialog to prevent accidental resets
-        if (!confirm('Reset tournament? This will clear all players and games.')) {
+        if (!confirm('Reset tournament? This will clear all games and reset scores, but keep registered players.')) {
             return;
         }
 
@@ -868,14 +876,6 @@ if (resetBtn) {
 
             if (response.ok) {
                 showMessage('Tournament reset successfully', 'success');
-                // Clear local storage
-                localStorage.removeItem(STORAGE_KEY);
-                myPlayerName = null;
-
-                // Re-enable inputs
-                playerNameInput.value = '';
-                isComputerCheckbox.checked = false;
-                computerLevelSelect.disabled = true;
 
                 // Update status immediately
                 updateStatus();

@@ -236,14 +236,15 @@ class Tournament {
     }
 
     reset() {
-        // Reset everything including players
-        this.players = [];
+        // Clear scores but preserve players and their ELOs
+        this.players.forEach(p => p.score = 0);
+        
         this.isRunning = false;
         this.startTime = null;
         this.durationLimit = 0;
         this.allowVariants = true;
-        this.allowedVariants = ['standard', 'freestyle', 'kungfu'];
-        console.log('Tournament reset (all players cleared).');
+        this.allowedVariants = ['standard', 'freestyle', 'kungfu', 'crazyhouse', 'kingofthehill', 'atomic'];
+        console.log('Tournament reset (scores cleared, players preserved).');
     }
     toJSON() {
         return {

@@ -19,6 +19,7 @@ class ComputerPlayer {
         this.worker = null;
         this.isReady = false;
         this.lastEvaluation = 0;
+        this.lastWdl = { w: 0, d: 0, l: 0 };
         this.pendingCallback = null;
         this.moveHistory = [];  // Track recent moves for consistency check
         this.thinkingStartTime = 0;
@@ -35,7 +36,8 @@ class ComputerPlayer {
             this.isReady = true;
         } else {
             // Use Stockfish for levels 0-20
-            this.init();
+            this.currentWorkerVariant = 'standard';
+            this.init('standard');
         }
     }
 
@@ -56,15 +58,17 @@ class ComputerPlayer {
         return this.lastEvaluation || 0;
     }
 
-    init() {
-        console.log(`[COMPUTER] Initializing Stockfish level ${this.level}`);
+    init(workerVariant = 'standard') {
+        this.currentWorkerVariant = workerVariant;
+        console.log(`[COMPUTER] Initializing Stockfish level ${this.level} (worker: ${workerVariant})`);
 
         if (this.worker) {
             this.terminateWorker();
         }
 
         try {
-            const workerPath = path.join(__dirname, 'stockfish_worker.js');
+            const workerScript = workerVariant === 'crazyhouse' ? 'fairy_worker.js' : 'stockfish_worker.js';
+            const workerPath = path.join(__dirname, workerScript);
             this.worker = new Worker(workerPath);
             this.lastHeartbeat = Date.now();
             this.isTerminating = false;
@@ -85,7 +89,7 @@ class ComputerPlayer {
                         try { this.pendingRequest.callback({ move: null, evaluation: 0 }); } catch (e) { /* ignore */ }
                         this.pendingRequest = null;
                     }
-                    setTimeout(() => this.init(), 1000);
+                    setTimeout(() => this.init(this.currentWorkerVariant), 1000);
                 }
             });
 
@@ -110,7 +114,7 @@ class ComputerPlayer {
             if (elapsed > 30000 && !this.isTerminating) {
                 console.error('[COMPUTER] Worker stuck, restarting...');
                 this.terminateWorker(); // Bug 3 fix: terminateWorker now fires pendingCallback
-                setTimeout(() => this.init(), 1000);
+                setTimeout(() => this.init(this.currentWorkerVariant), 1000);
             }
         }, 10000);
     }
@@ -152,6 +156,9 @@ class ComputerPlayer {
             console.log('[COMPUTER] Stockfish ready');
             // Configure Stockfish
             this.sendCommand('uci');
+            this.sendCommand('setoption name UCI_ShowWDL value true');
+            this.sendCommand('setoption name Hash value 16');
+            this.sendCommand('setoption name Threads value 1');
             setTimeout(() => {
                 this.setSkillLevel(this.level);
                 this.isReady = true;
@@ -177,6 +184,14 @@ class ComputerPlayer {
             const match = text.match(/score mate (-?\d+)/);
             if (match) {
                 this.lastEvaluation = parseInt(match[1]) > 0 ? 10000 : -10000;
+            }
+        }
+
+        // Parse WDL (Win, Draw, Loss per mille)
+        if (text.startsWith('info') && text.includes(' wdl ')) {
+            const match = text.match(/ wdl (\d+) (\d+) (\d+)/);
+            if (match) {
+                this.lastWdl = { w: parseInt(match[1]), d: parseInt(match[2]), l: parseInt(match[3]) };
             }
         }
 
@@ -332,7 +347,25 @@ class ComputerPlayer {
 
                 console.log(`[COMPUTER] Move '${move}' confirmed after ${thinkingTime}ms. Playing immediately.`);
 
-                callback({ move, evaluation: this.lastEvaluation });
+                // Parse Fairy-Stockfish Crazyhouse drops (e.g. N@e4 or P@e4)
+                if (move && move.includes('@')) {
+                    const [pieceChar, square] = move.split('@');
+                    const charMap = { 'p': 'pawn', 'n': 'knight', 'b': 'bishop', 'r': 'rook', 'q': 'queen' };
+                    const pieceType = charMap[pieceChar.toLowerCase()];
+                    const x = square.charCodeAt(0) - 97;
+                    const y = 8 - parseInt(square[1]);
+                    
+                    callback({
+                        move,
+                        evaluation: this.lastEvaluation,
+                        wdl: this.lastWdl,
+                        isDrop: true,
+                        pieceType,
+                        x, y
+                    });
+                } else {
+                    callback({ move, evaluation: this.lastEvaluation, wdl: this.lastWdl });
+                }
 
                 if (this.pendingRequest) {
                     const req = this.pendingRequest;
@@ -552,7 +585,7 @@ class ComputerPlayer {
             'koth': 'kingofthehill',
             'racingkings': 'racingkings',
             'kungfu': 'chess',      // Kung Fu uses standard chess evaluation
-            'crazyhouse': 'chess'   // Crazyhouse uses SimpleEngine, but fallback to chess
+            'crazyhouse': 'crazyhouse'
         };
         return variantMap[variant] || 'chess';
     }
@@ -563,6 +596,15 @@ class ComputerPlayer {
      * - Wait thinking_time * 1.0 before returning
      */
     getBestMove(fen, callback, remainingTimeMs = 60000, variant = 'standard') {
+        // Switch worker dynamically if needed
+        const requiredWorker = variant === 'crazyhouse' ? 'crazyhouse' : 'standard';
+        if (this.level > 0 && this.currentWorkerVariant !== requiredWorker) {
+            console.log(`[COMPUTER] Switching worker from ${this.currentWorkerVariant} to ${requiredWorker}`);
+            this.init(requiredWorker);
+            this.pendingRequest = { fen, callback, remainingTimeMs, variant };
+            return;
+        }
+
         // Stop pondering if active
         if (this.isPondering) {
             console.log('[COMPUTER] Stopping ponder to start search');
@@ -745,16 +787,20 @@ class ComputerPlayer {
      * @param {number} remainingTimeMs - Optional remaining time
      */
     getCrazyhouseMove(fen, reserve, callback, remainingTimeMs = 60000) {
-        // Always use SimpleEngine for Crazyhouse (Stockfish doesn't support drops)
-        if (!this.simpleEngine) {
-            const SimpleEngine = require('./SimpleEngine');
-            this.simpleEngine = new SimpleEngine();
+        if (this.level <= 0) {
+            if (!this.simpleEngine) {
+                const SimpleEngine = require('./SimpleEngine');
+                this.simpleEngine = new SimpleEngine();
+            }
+            // Add a small delay for level 0 to simulate thinking
+            setTimeout(() => {
+                this.simpleEngine.getCrazyhouseMove(fen, reserve, callback, this.level);
+            }, 500);
+            return;
         }
 
-        console.log(`[COMPUTER] Crazyhouse move request, level ${this.level}, reserve: [${(reserve || []).join(', ')}], FEN: ${fen}`);
-
-        // Use SimpleEngine's Crazyhouse-aware move selection
-        this.simpleEngine.getCrazyhouseMove(fen, reserve || [], callback, this.level);
+        // For level > 0, delegate to Fairy-Stockfish!
+        this.getBestMove(fen, callback, remainingTimeMs, 'crazyhouse');
     }
 
     quit() {
