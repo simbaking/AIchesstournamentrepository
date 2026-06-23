@@ -26,6 +26,20 @@ const createOfferForm = document.getElementById('create-offer-form');
 const playerNameInput = document.getElementById('player-name');
 const isComputerCheckbox = document.getElementById('is-computer');
 const computerLevelSelect = document.getElementById('computer-level');
+
+// Active games duration updater
+setInterval(() => {
+    document.querySelectorAll('.active-game-duration').forEach(el => {
+        let duration = parseInt(el.getAttribute('data-duration') || '0', 10);
+        // We increment it visually, actual sync happens when server updates the data attribute
+        const totalSeconds = duration;
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        el.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        el.setAttribute('data-duration', duration + 1);
+    });
+}, 1000);
+
 const durationHoursInput = document.getElementById('duration-hours');
 const durationMinutesInput = document.getElementById('duration-minutes');
 const gamePlayer1Select = document.getElementById('game-player1');
@@ -531,7 +545,8 @@ async function updateActiveGames() {
                     ? `(${game.timeControl}m${game.increment ? '+' + game.increment + 's' : ''})`
                     : '';
 
-                const durationText = formatTime(game.duration || 0);
+                // Duration handled by interval below to prevent DOM thrashing
+                const durationSeconds = Math.max(0, Math.floor((game.duration || 0) / 1000));
 
                 // Format player names
                 const p1Display = formatPlayerName(game.player1) + (game.player1Elo ? ` (${game.player1Elo})` : '');
@@ -559,7 +574,7 @@ async function updateActiveGames() {
                             </span>
                         </div>
                         <div style="font-size: 0.9rem; color: var(--text-muted); width: 100%; display: flex; justify-content: space-between;">
-                            <span>Duration: ${durationText}</span>
+                            <span>Duration: <span class="active-game-duration" data-duration="${durationSeconds}"></span></span>
                         </div>
                     </div>
                 `;

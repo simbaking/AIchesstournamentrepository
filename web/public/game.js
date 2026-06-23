@@ -1574,10 +1574,10 @@ function updateBoardOrientation() {
         }
     }
 
-    const gameInfoDiv = document.getElementById('game-info');
+    const gameInfoDiv = document.querySelector('.info-card .game-info');
     const blackPlayerDiv = document.querySelector('.player.black-player');
     const whitePlayerDiv = document.querySelector('.player.white-player');
-    const gameStatusDiv = document.getElementById('game-status');
+    const gameStatusDiv = document.querySelector('.game-status');
 
     if (!gameInfoDiv || !blackPlayerDiv || !whitePlayerDiv || !gameStatusDiv) {
         return;
@@ -1763,9 +1763,7 @@ function renderMaterial() {
     const newBlackHtml = gameState.capturedByBlack
         .map(p => getPieceImgHtml(p.type, true, 18))
         .join('');
-    if (blackCapturedDiv.innerHTML !== newBlackHtml) {
-        blackCapturedDiv.innerHTML = newBlackHtml;
-    }
+    safeUpdateHtml(blackCapturedDiv, newBlackHtml);
 
     // Calculate material advantage
     const advantage = calculateMaterialDifference();
