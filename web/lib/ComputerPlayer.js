@@ -749,10 +749,14 @@ class ComputerPlayer {
         // Set UCI_Variant for multi-variant stockfish (atomic, horde, etc.)
         // Must be set BEFORE sending the position
         const uciVariant = this.getUciVariant(variant);
-        if (uciVariant !== 'chess') {
-            console.log(`[COMPUTER] Setting UCI_Variant to ${uciVariant}`);
+        if (this.currentUciVariant !== uciVariant) {
+            if (uciVariant !== 'chess') {
+                console.log(`[COMPUTER] Setting UCI_Variant to ${uciVariant}`);
+            }
+            this.sendCommand(`setoption name UCI_Variant value ${uciVariant}`);
+            this.sendCommand('ucinewgame');
+            this.currentUciVariant = uciVariant;
         }
-        this.sendCommand(`setoption name UCI_Variant value ${uciVariant}`);
 
         // Send position and start search
         this.sendCommand(`position fen ${fen}`);

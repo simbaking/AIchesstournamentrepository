@@ -1418,7 +1418,11 @@ function showCelebration() {
         clearInterval(confettiInterval);
         clearInterval(countdownInterval);
         gameChannel.postMessage({ type: 'GAME_CLOSED', gameId: gameId });
-        window.close();
+        if (window.opener) {
+            window.close();
+        } else {
+            window.location.href = '/';
+        }
     };
 }
 
