@@ -200,8 +200,8 @@ function renderGame() {
     const p1You = gameState.player1.toLowerCase() === currentPlayerName.toLowerCase() ? ' (You)' : '';
     const p2You = gameState.player2.toLowerCase() === currentPlayerName.toLowerCase() ? ' (You)' : '';
 
-    whitePlayerName.textContent = gameState.player1 + (gameState.player1Elo ? ` (${gameState.player1Elo})` : '') + p1You;
-    blackPlayerName.textContent = gameState.player2 + (gameState.player2Elo ? ` (${gameState.player2Elo})` : '') + p2You;
+    whitePlayerName.textContent = gameState.player1 + (gameState.player1Elo ? ` (${Math.round(gameState.player1Elo)})` : '') + p1You;
+    blackPlayerName.textContent = gameState.player2 + (gameState.player2Elo ? ` (${Math.round(gameState.player2Elo)})` : '') + p2You;
 
     // Update variant badge (only when variant actually changes to avoid reflow)
     const variantBadgeEl = document.getElementById('game-variant-badge');
@@ -1967,12 +1967,13 @@ function updateMobilePlayerBars() {
 
     if (showWhiteOnBottom) {
         // White on bottom (player bar), Black on top (opponent bar)
-        mobilePlayerName.textContent = gameState.player1;
-        mobilePlayerElo.textContent = gameState.player1Elo ? `(${gameState.player1Elo})` : '';
+        mobilePlayerName.textContent = gameState.player1 + p1You;
+        mobilePlayerElo.textContent = gameState.player1Elo ? `(${Math.round(gameState.player1Elo)})` : '';
         if (mobilePlayerColor) mobilePlayerColor.textContent = '(White)';
+        document.getElementById('mobile-player-captured').innerHTML = document.getElementById('white-captured').innerHTML;
 
-        mobileOpponentName.textContent = gameState.player2;
-        mobileOpponentElo.textContent = gameState.player2Elo ? `(${gameState.player2Elo})` : '';
+        mobileOpponentName.textContent = gameState.player2 + p2You;
+        mobileOpponentElo.textContent = gameState.player2Elo ? `(${Math.round(gameState.player2Elo)})` : '';
         if (mobileOpponentColor) mobileOpponentColor.textContent = '(Black)';
 
         // Material advantage
@@ -2018,12 +2019,13 @@ function updateMobilePlayerBars() {
         document.querySelector('.opponent-bar').classList.toggle('active', !gameState.isWhiteTurn);
     } else {
         // Black on bottom (player bar), White on top (opponent bar)
-        mobilePlayerName.textContent = gameState.player2;
-        mobilePlayerElo.textContent = gameState.player2Elo ? `(${gameState.player2Elo})` : '';
+        mobilePlayerName.textContent = gameState.player2 + p2You;
+        mobilePlayerElo.textContent = gameState.player2Elo ? `(${Math.round(gameState.player2Elo)})` : '';
         if (mobilePlayerColor) mobilePlayerColor.textContent = '(Black)';
+        document.getElementById('mobile-player-captured').innerHTML = document.getElementById('black-captured').innerHTML;
 
-        mobileOpponentName.textContent = gameState.player1;
-        mobileOpponentElo.textContent = gameState.player1Elo ? `(${gameState.player1Elo})` : '';
+        mobileOpponentName.textContent = gameState.player1 + p1You;
+        mobileOpponentElo.textContent = gameState.player1Elo ? `(${Math.round(gameState.player1Elo)})` : '';
         if (mobileOpponentColor) mobileOpponentColor.textContent = '(White)';
 
         // Material advantage

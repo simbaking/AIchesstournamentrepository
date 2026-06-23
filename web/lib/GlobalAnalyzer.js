@@ -115,9 +115,10 @@ function evaluateBoard(board, variant) {
                 // Skip standard defensive PST for king in KOTH
                 positional = 0;
             } else if (pst) {
-                // White PST uses y=7→0 mapping (y=7 is white's home rank)
-                // Black PST mirrors vertically
-                const tableY = piece.isWhite ? (7 - y) : y;
+                // PST uses index 0 = Opponent's back rank, index 7 = Home back rank
+                // White's home is y=7, so y maps to tableY directly
+                // Black's home is y=0, so y maps to 7-y
+                const tableY = piece.isWhite ? y : (7 - y);
                 positional = pst[tableY][x];
             }
 

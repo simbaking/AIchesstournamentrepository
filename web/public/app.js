@@ -57,7 +57,7 @@ let statusInterval = null;
 let currentPlayers = [];
 let wasTournamentRunning = false; // Track tournament state for end detection
 let celebrationShown = false; // Prevent multiple celebrations
-let openedGames = new Set(); // Track games already auto-opened for this player
+let openedGames = new Set(JSON.parse(sessionStorage.getItem('openedGames') || '[]')); // Track games already auto-opened for this player
 
 // Local Storage Key
 const STORAGE_KEY = 'chess_tournament_player_name';
@@ -125,7 +125,7 @@ function populateComputerLevels() {
         const option = document.createElement('option');
         option.value = i;
 
-        let label = `Level ${i} (${elo}) - Stockfish`;
+        let label = `Level ${i} (${Math.round(elo)}) - Stockfish`;
 
         option.textContent = label;
         if (i === 10) option.selected = true;
@@ -152,6 +152,7 @@ gameChannel.onmessage = (event) => {
     if (event.data.type === 'GAME_CLOSED') {
         console.log(`Game ${event.data.gameId} closed. Returning focus to tournament tab.`);
         openedGames.delete(event.data.gameId);
+        sessionStorage.setItem('openedGames', JSON.stringify([...openedGames]));
         window.focus();
     }
 };
@@ -293,7 +294,7 @@ async function updateStatus() {
             const sortedPlayers = [...data.players].sort((a, b) => b.score - a.score);
             setHTML(leaderboard, sortedPlayers.map((player, index) => {
                 const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
-                const playerType = player.isComputer ? `🤖 Level ${player.level} (${player.elo})` : `👤 (${player.elo})`;
+                const playerType = player.isComputer ? `🤖 Level ${player.level} (${Math.round(player.elo)})` : `👤 (${Math.round(player.elo)})`;
                 const displayName = formatPlayerName(player.name);
                 const highlightClass = (player.name && myPlayerName && player.name.toLowerCase() === myPlayerName.toLowerCase()) ? 'highlight-me' : '';
 
@@ -341,7 +342,7 @@ function updatePlayerDropdowns(players) {
         }
 
         players.forEach(player => {
-            const playerType = player.isComputer ? ` 🤖 L${player.level} (${player.elo})` : '';
+            const playerType = player.isComputer ? ` 🤖 L${player.level} (${Math.round(player.elo)})` : '';
             const option = document.createElement('option');
             option.value = player.name;
             option.textContent = formatPlayerName(player.name) + playerType;
@@ -401,7 +402,7 @@ function updateOpenOffers(offers) {
         }
 
         const playerDisplay = formatPlayerName(offer.player);
-        const eloDisplay = offer.elo ? `(${offer.elo})` : '';
+        const eloDisplay = offer.elo ? `(${Math.round(offer.elo)})` : '';
 
         // Variant badge
         const variantBadge = getVariantBadge(offer.variant);
@@ -520,6 +521,7 @@ async function updateActiveGames() {
                     // New game involving this player - open it in a new tab
                     console.log(`Auto-opening game ${game.gameId} for player ${myPlayerName}`);
                     openedGames.add(game.gameId);
+                    sessionStorage.setItem('openedGames', JSON.stringify([...openedGames]));
                     openGameWindow(`game.html?gameId=${game.gameId}&player=${encodeURIComponent(myPlayerName)}`, game.gameId);
                 }
             }
@@ -540,8 +542,8 @@ async function updateActiveGames() {
 
 
                 // Format player names
-                const p1Display = formatPlayerName(game.player1) + (game.player1Elo ? ` (${game.player1Elo})` : '');
-                const p2Display = formatPlayerName(game.player2) + (game.player2Elo ? ` (${game.player2Elo})` : '');
+                const p1Display = formatPlayerName(game.player1) + (game.player1Elo ? ` (${Math.round(game.player1Elo)})` : '');
+                const p2Display = formatPlayerName(game.player2) + (game.player2Elo ? ` (${Math.round(game.player2Elo)})` : '');
 
                 // Highlight current player
                 const p1Class = game.currentPlayer === game.player1 && !game.isGameOver ? 'style="font-weight: bold; color: var(--primary);"' : '';

@@ -1316,6 +1316,6 @@
     top: auto;
     bottom: 3px;
 }
-body.is-dragging .piece {
+body.is-dragging .square:not(.dragging) .piece {
     pointer-events: none;
 }
