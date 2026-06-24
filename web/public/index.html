@@ -11,7 +11,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>♟️ Chess Time Attack Tournament (T.A.T.)</h1>
+            <h1>♟️ Chess Time Attack Tournament (T.A.T.) <span class="beta-badge">BETA</span></h1>
             <img src="assets/lion.png" class="logo" alt="Lion logo" />
             <div class="header-actions">
                 <div id="tournament-status" class="status-badge">Not Started</div>
@@ -19,6 +19,13 @@
                 <button id="reset-btn" class="btn btn-danger" style="margin-left: 10px;">Reset
                     Tournament</button>
                 <button id="clear-scores-btn" class="btn btn-warning" style="margin-left: 10px;">Clear Scores</button>
+                <div class="report-dropdown" style="position: relative; margin-left: 10px;">
+                    <button class="btn" onclick="document.getElementById('report-menu').classList.toggle('show')">Report Issue</button>
+                    <div id="report-menu" class="dropdown-content">
+                        <textarea id="issue-text" placeholder="Type any issues you experience..." rows="4"></textarea>
+                        <button class="btn btn-success" onclick="submitIssue()">Submit</button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -186,6 +193,40 @@
     <div id="confetti-container" class="confetti-container"></div>
 
     <script src="app.js"></script>
+    <script>
+        async function submitIssue() {
+            const issueText = document.getElementById('issue-text').value;
+            if (!issueText) return alert('Please enter an issue description.');
+            try {
+                const res = await fetch('/api/report-issue', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ issue: issueText })
+                });
+                if (res.ok) {
+                    alert('Issue reported successfully!');
+                    document.getElementById('issue-text').value = '';
+                    document.getElementById('report-menu').classList.remove('show');
+                } else {
+                    alert('Failed to report issue. Please try again.');
+                }
+            } catch(e) {
+                alert('Error sending issue.');
+            }
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.report-dropdown .btn') && !event.target.closest('#report-menu')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

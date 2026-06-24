@@ -1,4 +1,5 @@
 const express = require('express');
+const nodemailer = require('nodemailer');
 const path = require('path');
 const Tournament = require('./lib/Tournament');
 const { ChessGame } = require('./lib/ChessGame');
@@ -21,10 +22,39 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+
+// Issue Reporting Endpoint
+app.post('/api/report-issue', async (req, res) => {
+    const { issue } = req.body;
+    if (!issue) return res.status(400).json({ error: 'Issue text is required' });
+
+    try {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'changfourafrica@gmail.com',
+                pass: process.env.EMAIL_PASSWORD
+            }
+        });
+
+        const mailOptions = {
+            from: 'changfourafrica@gmail.com',
+            to: 'changfourafrica@gmail.com',
+            subject: 'chess tournament issue',
+            text: `a user of the chess tournament app has had this issue : ${issue}`
+        };
+
+        await transporter.sendMail(mailOptions);
+        res.json({ success: true, message: 'Issue reported successfully.' });
+    } catch (err) {
+        console.error('Error sending issue report:', err);
+        res.status(500).json({ error: 'Failed to send issue report.' });
+    }
+});
 
 // Static files with cache-busting headers (prevents browser caching issues)
 app.use(express.static(path.join(__dirname, 'public'), {

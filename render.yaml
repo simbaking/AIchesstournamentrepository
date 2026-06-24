@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: chess-tournament-tat
+    env: node
+    rootDir: web
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: EMAIL_PASSWORD
+        sync: false

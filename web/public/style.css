@@ -906,3 +906,54 @@ h1 {
         padding: 0.5rem 0.75rem;
     }
 }
+
+/* Beta Badge */
+.beta-badge {
+    background-color: var(--accent-color);
+    color: white;
+    font-size: 0.4em;
+    padding: 3px 6px;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-left: 5px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Report Issue Dropdown */
+.report-dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--bg-color);
+    min-width: 250px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    z-index: 1000;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-content textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 4px;
+    padding: 8px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.dropdown-content button {
+    width: 100%;
+}
+
+.show {
+    display: block;
+}

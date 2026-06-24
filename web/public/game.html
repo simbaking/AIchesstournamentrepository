@@ -12,7 +12,7 @@
     <!-- Mobile Header (visible only on mobile) -->
     <div class="mobile-header">
         <a href="index.html" class="mobile-back">←</a>
-        <span class="mobile-title">♟️ Chess T.A.T.</span>
+        <span class="mobile-title">♟️ Chess T.A.T. <span class="beta-badge" style="font-size: 0.5em; padding: 2px 4px;">BETA</span></span>
         <span id="mobile-variant-badge" class="mobile-variant"></span>
     </div>
 
@@ -22,9 +22,18 @@
     <div class="container">
         <!-- Desktop Header (hidden on mobile) -->
         <header class="desktop-header">
-            <h1>♟️ Chess Game</h1>
+            <h1>♟️ Chess Game <span class="beta-badge">BETA</span></h1>
             <img src="assets/lion.png" class="logo" alt="Lion logo" />
-            <a href="index.html" class="back-link">← Back to Tournament</a>
+            <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+                <a href="index.html" class="back-link">← Back to Tournament</a>
+                <div class="report-dropdown" style="position: relative;">
+                    <button class="btn" onclick="document.getElementById('report-menu').classList.toggle('show')">Report Issue</button>
+                    <div id="report-menu" class="dropdown-content">
+                        <textarea id="issue-text" placeholder="Type any issues you experience..." rows="4"></textarea>
+                        <button class="btn btn-success" onclick="submitIssue()">Submit</button>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <div class="game-layout">
@@ -202,6 +211,40 @@
     </div>
 
     <script src="game.js?v=3"></script>
+    <script>
+        async function submitIssue() {
+            const issueText = document.getElementById('issue-text').value;
+            if (!issueText) return alert('Please enter an issue description.');
+            try {
+                const res = await fetch('/api/report-issue', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ issue: issueText })
+                });
+                if (res.ok) {
+                    alert('Issue reported successfully!');
+                    document.getElementById('issue-text').value = '';
+                    document.getElementById('report-menu').classList.remove('show');
+                } else {
+                    alert('Failed to report issue. Please try again.');
+                }
+            } catch(e) {
+                alert('Error sending issue.');
+            }
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.report-dropdown .btn') && !event.target.closest('#report-menu')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>
