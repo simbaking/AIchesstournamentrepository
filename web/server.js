@@ -1116,6 +1116,7 @@ app.get('/api/game/:gameId', (req, res) => {
 
     // Add tournament time remaining
     gameState.tournamentTimeRemaining = tournament.getRemainingTime();
+    gameState.tournamentIsRunning = tournament.isRunning;
 
     res.json(gameState);
 });

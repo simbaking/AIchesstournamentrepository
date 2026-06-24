@@ -191,11 +191,9 @@ class GlobalAnalyzer {
                         if (game.blackReserve) {
                             for (const p of game.blackReserve) pocket += (charMap[p] || '').toLowerCase();
                         }
-                        if (pocket.length > 0) {
-                            const parts = fen.split(' ');
-                            parts[0] += `[${pocket}]`;
-                            fen = parts.join(' ');
-                        }
+                        const parts = fen.split(' ');
+                        parts[0] += `[${pocket}]`;
+                        fen = parts.join(' ');
                     }
 
                     this.pendingEvals.add(gameId);

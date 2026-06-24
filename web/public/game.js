@@ -1732,26 +1732,35 @@ function startClientTimer() {
 }
 
 // Update tournament timer
-async function updateTournamentTimer() {
-    try {
-        const response = await fetch('/api/status');
-        const data = await response.json();
+function updateTournamentTimer() {
+    if (!gameState) return;
 
-        const tournamentTimerEl = document.getElementById('tournament-timer');
-        if (!tournamentTimerEl) return;
+    const tournamentTimerEl = document.getElementById('tournament-timer');
+    const mobileTournamentTimerEl = document.getElementById('mobile-tournament-timer');
 
-        if (data.isRunning && data.remainingTime > 0) {
-            tournamentTimerEl.textContent = formatTime(data.remainingTime);
-            tournamentTimerEl.style.color = data.remainingTime < 60000 ? '#ff4444' : 'var(--gold)';
-        } else if (data.isRunning) {
-            tournamentTimerEl.textContent = 'Ending...';
-            tournamentTimerEl.style.color = '#ff4444';
-        } else {
-            tournamentTimerEl.textContent = 'Not Running';
-            tournamentTimerEl.style.color = 'var(--text-muted)';
-        }
-    } catch (error) {
-        console.error('Error fetching tournament status:', error);
+    if (!tournamentTimerEl && !mobileTournamentTimerEl) return;
+
+    let timeText = 'Not Running';
+    let color = 'var(--text-muted)';
+
+    const isRunning = gameState.tournamentIsRunning;
+    const remainingTime = gameState.tournamentTimeRemaining || 0;
+
+    if (isRunning && remainingTime > 0) {
+        timeText = formatTimeMs(remainingTime);
+        color = remainingTime < 60000 ? '#ff4444' : 'var(--gold)';
+    } else if (isRunning) {
+        timeText = 'Ending...';
+        color = '#ff4444';
+    }
+
+    if (tournamentTimerEl) {
+        tournamentTimerEl.textContent = timeText;
+        tournamentTimerEl.style.color = color;
+    }
+    if (mobileTournamentTimerEl) {
+        mobileTournamentTimerEl.textContent = timeText;
+        mobileTournamentTimerEl.style.color = color;
     }
 }
 
@@ -2069,13 +2078,6 @@ function updateMobilePlayerBars() {
         // Active player highlight
         document.querySelector('.player-bar').classList.toggle('active', !gameState.isWhiteTurn);
         document.querySelector('.opponent-bar').classList.toggle('active', gameState.isWhiteTurn);
-    }
-
-    // Update tournament timer
-    if (mobileTournamentTimer && gameState.tournamentTimeRemaining !== undefined) {
-        const mins = Math.floor(gameState.tournamentTimeRemaining / 60000);
-        const secs = Math.floor((gameState.tournamentTimeRemaining % 60000) / 1000);
-        mobileTournamentTimer.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
     // Update variant badge

@@ -1040,11 +1040,9 @@ class ChessGame {
                 if (this.blackReserve) {
                     for (const p of this.blackReserve) pocket += (charMap[p] || '').toLowerCase();
                 }
-                if (pocket.length > 0) {
-                    const parts = fen.split(' ');
-                    parts[0] += `[${pocket}]`;
-                    fen = parts.join(' ');
-                }
+                const parts = fen.split(' ');
+                parts[0] += `[${pocket}]`;
+                fen = parts.join(' ');
             }
             const isComputerWhite = this.isWhiteTurn;
 
