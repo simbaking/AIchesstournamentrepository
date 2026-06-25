@@ -3,6 +3,7 @@ services:
     name: chess-tournament-tat
     env: node
     plan: free
+    branch: v0.4
     rootDir: web
     buildCommand: npm install
     startCommand: npm start
