@@ -10,8 +10,8 @@ class Tournament {
         this.allowedVariants = ['standard', 'freestyle', 'kungfu', 'crazyhouse', 'kingofthehill', 'atomic']; // Specific allowed variants
     }
 
-    registerPlayer(name, isComputer = false, level = null, browserId = null, clientIP = null) {
-        this.players.push(new Player(name, isComputer, level, browserId, clientIP));
+    registerPlayer(name, isComputer = false, level = null, browserId = null, clientIP = null, initialElo = null) {
+        this.players.push(new Player(name, isComputer, level, browserId, clientIP, initialElo));
     }
 
     getPlayerByBrowserId(browserId) {

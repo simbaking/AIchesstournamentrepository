@@ -897,10 +897,29 @@ async function handleSquareClick(x, y) {
         }
 
         // 2. Clicked valid move: EXECUTE
-        const isValidMove = validMoves.some(m => m.x === x && m.y === y);
+        let isValidMove = validMoves.some(m => m.x === x && m.y === y);
+        let moveX = x;
+        let moveY = y;
 
-        // Switch selection to own piece
-        if (piece && piece.isWhite === amIWhite) {
+        // Check if this is a click-on-rook-to-castle attempt
+        if (piece && piece.isWhite === amIWhite && piece.type === 'rook') {
+            const selectedPiece = gameState.board[selectedSquare.x][selectedSquare.y];
+            if (selectedPiece && selectedPiece.type === 'king') {
+                // Determine castling direction
+                const isKingside = x > selectedSquare.x;
+                const targetX = isKingside ? 6 : 2;
+                
+                // If the castling destination is a valid move, allow it
+                if (validMoves.some(m => m.x === targetX && m.y === y)) {
+                    isValidMove = true;
+                    moveX = targetX;
+                    moveY = y;
+                }
+            }
+        }
+
+        // Switch selection to own piece, UNLESS it's a valid castling move via clicking the rook
+        if (piece && piece.isWhite === amIWhite && !isValidMove) {
             selectedSquare = { x, y };
             highlightSquare(x, y);
             fetchValidMoves(x, y);
@@ -914,11 +933,11 @@ async function handleSquareClick(x, y) {
 
             if (needsConfirmation) {
                 // Show confirmation modal
-                pendingMove = { startX: selectedSquare.x, startY: selectedSquare.y, endX: x, endY: y };
+                pendingMove = { startX: selectedSquare.x, startY: selectedSquare.y, endX: moveX, endY: moveY };
 
                 // Convert coords to algebraic for display
                 const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-                const target = `${files[x]}${8 - y}`;
+                const target = `${files[moveX]}${8 - moveY}`;
 
                 document.getElementById('confirm-move-target').textContent = target;
                 document.getElementById('confirmation-modal').classList.add('show');
@@ -929,7 +948,7 @@ async function handleSquareClick(x, y) {
             const startX = selectedSquare.x;
             const startY = selectedSquare.y;
             clearSelection();
-            await makeMove(startX, startY, x, y);
+            await makeMove(startX, startY, moveX, moveY);
         } else {
             // Invalid move click -> Deselect
             clearSelection();
@@ -1255,28 +1274,59 @@ function showCelebration() {
     // Set Header based on termination reason
     if (gameState.winner) {
         // Determine who viewing is
-        const viewerWon = gameState.winner.toLowerCase() === currentPlayerName.toLowerCase();
+        const viewerNameLower = (currentPlayerName || '').toLowerCase();
+        const winnerLower = gameState.winner.toLowerCase();
+        const p1Lower = (gameState.player1 || '').toLowerCase();
+        const p2Lower = (gameState.player2 || '').toLowerCase();
+        
+        const isPlayer = viewerNameLower === p1Lower || viewerNameLower === p2Lower;
+        const viewerWon = winnerLower === viewerNameLower;
+        const loserName = gameState.winner === gameState.player1 ? gameState.player2 : gameState.player1;
 
-        // Set title based on termination type
-        switch (gameState.termination) {
-            case 'checkmate':
-                title.textContent = viewerWon ? 'Checkmate! You Win!' : 'Checkmate!';
-                break;
-            case 'resignation':
-                title.textContent = viewerWon ? 'Opponent Resigned!' : 'You Resigned';
-                break;
-            case 'timeout':
-                title.textContent = viewerWon ? 'Opponent Timed Out!' : 'Time Out!';
-                break;
-            case 'atomic_explosion':
-            case 'king_capture':
-                title.textContent = viewerWon ? 'King Destroyed! You Win!' : 'King Destroyed!';
-                break;
-            case 'koth':
-                title.textContent = viewerWon ? 'King of the Hill!' : 'Opponent Reached the Hill!';
-                break;
-            default:
-                title.textContent = viewerWon ? 'Victory!' : `${gameState.winner} Wins!`;
+        if (isPlayer) {
+            // Player view
+            switch (gameState.termination) {
+                case 'checkmate':
+                    title.textContent = viewerWon ? 'Checkmate! You Win!' : 'Checkmate! You Lose!';
+                    break;
+                case 'resignation':
+                    title.textContent = viewerWon ? 'Opponent Resigned!' : 'You Resigned';
+                    break;
+                case 'timeout':
+                    title.textContent = viewerWon ? 'Opponent Timed Out!' : 'Time Out! You Lose!';
+                    break;
+                case 'atomic_explosion':
+                case 'king_capture':
+                    title.textContent = viewerWon ? 'King Destroyed! You Win!' : 'King Destroyed! You Lose!';
+                    break;
+                case 'koth':
+                    title.textContent = viewerWon ? 'King of the Hill! You Win!' : 'Opponent Reached the Hill!';
+                    break;
+                default:
+                    title.textContent = viewerWon ? 'Victory!' : `${gameState.winner} Wins!`;
+            }
+        } else {
+            // Spectator view
+            switch (gameState.termination) {
+                case 'checkmate':
+                    title.textContent = `Checkmate! ${gameState.winner} Wins!`;
+                    break;
+                case 'resignation':
+                    title.textContent = `${loserName} Resigned!`;
+                    break;
+                case 'timeout':
+                    title.textContent = `${loserName} Timed Out!`;
+                    break;
+                case 'atomic_explosion':
+                case 'king_capture':
+                    title.textContent = `King Destroyed! ${gameState.winner} Wins!`;
+                    break;
+                case 'koth':
+                    title.textContent = `${gameState.winner} Reached the Hill!`;
+                    break;
+                default:
+                    title.textContent = `${gameState.winner} Wins!`;
+            }
         }
     } else {
         // No winner = draw

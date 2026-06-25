@@ -711,7 +711,8 @@
     /* Show mobile elements */
     .mobile-header,
     .mobile-player-bar,
-    .mobile-action-bar {
+    .mobile-action-bar,
+    .mobile-tournament-time {
         display: flex;
     }
 

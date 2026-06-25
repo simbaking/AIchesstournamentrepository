@@ -83,6 +83,9 @@ const myBrowserId = getBrowserId();
 // Enable/disable computer level selector
 isComputerCheckbox.addEventListener('change', () => {
     computerLevelSelect.disabled = !isComputerCheckbox.checked;
+    if (typeof updateAuthUI === 'function') {
+        updateAuthUI();
+    }
 });
 
 // Calculate Elo (mirrors ComputerPlayer.js)
@@ -608,9 +611,14 @@ registerForm.addEventListener('submit', async (e) => {
     }
 
     try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (typeof authToken !== 'undefined' && authToken) {
+            headers['Authorization'] = `Bearer ${authToken}`;
+        }
+        
         const response = await fetch(`${API_URL}/api/register`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
             body: JSON.stringify({ name, isComputer, level, browserId: myBrowserId })
         });
 
@@ -1069,3 +1077,164 @@ if (celebrationModal) {
         }
     });
 }
+
+// ================= Auth Logic =================
+let authToken = localStorage.getItem('authToken');
+let authUsername = localStorage.getItem('authUsername');
+let authElo = localStorage.getItem('authElo');
+
+function updateAuthUI() {
+    const loginContainer = document.getElementById('login-form-container');
+    const loggedInContainer = document.getElementById('logged-in-container');
+    
+    if (authToken && authUsername) {
+        loginContainer.style.display = 'none';
+        loggedInContainer.style.display = 'block';
+        document.getElementById('logged-in-username').textContent = authUsername;
+        document.getElementById('logged-in-elo').textContent = authElo || '400';
+        document.getElementById('account-btn').textContent = `👤 ${authUsername}`;
+        
+        // Update registration form if not computer
+        if (!isComputerCheckbox.checked) {
+            playerNameInput.value = authUsername;
+            playerNameInput.readOnly = true;
+        } else {
+            playerNameInput.value = '';
+            playerNameInput.readOnly = false;
+        }
+    } else {
+        loginContainer.style.display = 'block';
+        loggedInContainer.style.display = 'none';
+        document.getElementById('account-btn').textContent = 'Account 👤';
+        
+        playerNameInput.readOnly = false;
+        if (!isComputerCheckbox.checked && playerNameInput.value === authUsername) {
+            playerNameInput.value = '';
+        }
+    }
+}
+
+async function handleSignup() {
+    const usernameInput = document.getElementById('auth-username');
+    const passwordInput = document.getElementById('auth-password');
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+    
+    try {
+        const res = await fetch('/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (data.success) {
+            authToken = data.token;
+            authUsername = data.username;
+            authElo = data.elo;
+            localStorage.setItem('authToken', authToken);
+            localStorage.setItem('authUsername', authUsername);
+            localStorage.setItem('authElo', authElo);
+            updateAuthUI();
+            usernameInput.value = '';
+            passwordInput.value = '';
+            showMessage('Signup successful!', 'success');
+        } else {
+            showMessage(data.error || 'Signup failed', 'error');
+        }
+    } catch (e) {
+        console.error(e);
+        showMessage('Error connecting to server', 'error');
+    }
+}
+
+async function handleLogin() {
+    const usernameInput = document.getElementById('auth-username');
+    const passwordInput = document.getElementById('auth-password');
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+    
+    try {
+        const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (data.success) {
+            authToken = data.token;
+            authUsername = data.username;
+            authElo = data.elo;
+            localStorage.setItem('authToken', authToken);
+            localStorage.setItem('authUsername', authUsername);
+            localStorage.setItem('authElo', authElo);
+            updateAuthUI();
+            usernameInput.value = '';
+            passwordInput.value = '';
+            showMessage('Login successful!', 'success');
+        } else {
+            showMessage(data.error || 'Login failed', 'error');
+        }
+    } catch (e) {
+        console.error(e);
+        showMessage('Error connecting to server', 'error');
+    }
+}
+
+async function handleLogout() {
+    if (authToken) {
+        await fetch('/api/logout', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+    }
+    authToken = null;
+    authUsername = null;
+    authElo = null;
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('authUsername');
+    localStorage.removeItem('authElo');
+    updateAuthUI();
+    showMessage('Logged out', 'success');
+}
+
+async function openLeaderboard() {
+    const modal = document.getElementById('leaderboard-modal');
+    const list = document.getElementById('leaderboard-list');
+    list.innerHTML = 'Loading...';
+    modal.style.display = 'flex';
+    
+    try {
+        const res = await fetch('/api/leaderboard');
+        const data = await res.json();
+        
+        if (data.length === 0) {
+            list.innerHTML = '<p style="text-align:center;">No users registered yet.</p>';
+            return;
+        }
+        
+        let html = '<table style="width:100%; border-collapse: collapse;">';
+        html += '<tr style="border-bottom: 1px solid var(--border-color);"><th style="text-align:left; padding:5px;">Rank</th><th style="text-align:left; padding:5px;">Username</th><th style="text-align:right; padding:5px;">Elo</th></tr>';
+        
+        data.forEach((user, index) => {
+            const rowStyle = index % 2 === 0 ? 'background: rgba(0,0,0,0.1);' : '';
+            html += `<tr style="${rowStyle}">
+                <td style="padding:5px;">#${index + 1}</td>
+                <td style="padding:5px; font-weight:bold;">${user.username}</td>
+                <td style="padding:5px; text-align:right;">${Math.round(user.elo)}</td>
+            </tr>`;
+        });
+        html += '</table>';
+        list.innerHTML = html;
+        
+    } catch (e) {
+        console.error(e);
+        list.innerHTML = 'Error loading leaderboard.';
+    }
+}
+
+function closeLeaderboard() {
+    document.getElementById('leaderboard-modal').style.display = 'none';
+}
+
+// Call updateAuthUI on load
+updateAuthUI();

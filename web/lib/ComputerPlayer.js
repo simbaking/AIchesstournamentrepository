@@ -599,7 +599,8 @@ class ComputerPlayer {
      */
     getBestMove(fen, callback, remainingTimeMs = 60000, variant = 'standard') {
         // Switch worker dynamically if needed
-        const requiredWorker = variant === 'crazyhouse' ? 'crazyhouse' : 'standard';
+        const uciVariant = this.getUciVariant(variant);
+        const requiredWorker = ['chess', 'chess960'].includes(uciVariant) ? 'standard' : 'crazyhouse';
         if (this.level > 0 && this.currentWorkerVariant !== requiredWorker) {
             console.log(`[COMPUTER] Switching worker from ${this.currentWorkerVariant} to ${requiredWorker}`);
             this.init(requiredWorker);
@@ -748,7 +749,7 @@ class ComputerPlayer {
 
         // Set UCI_Variant for multi-variant stockfish (atomic, horde, etc.)
         // Must be set BEFORE sending the position
-        const uciVariant = this.getUciVariant(variant);
+        // Must be set BEFORE sending the position
         if (this.currentUciVariant !== uciVariant) {
             if (uciVariant !== 'chess') {
                 console.log(`[COMPUTER] Setting UCI_Variant to ${uciVariant}`);
