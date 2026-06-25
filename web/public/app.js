@@ -1213,13 +1213,15 @@ async function openLeaderboard() {
         }
         
         let html = '<table style="width:100%; border-collapse: collapse;">';
-        html += '<tr style="border-bottom: 1px solid var(--border-color);"><th style="text-align:left; padding:5px;">Rank</th><th style="text-align:left; padding:5px;">Username</th><th style="text-align:right; padding:5px;">Elo</th></tr>';
+        html += '<tr style="border-bottom: 1px solid var(--border-color);"><th style="text-align:left; padding:5px;">Rank</th><th style="text-align:left; padding:5px;">Username</th><th style="text-align:center; padding:5px;">Avg End Pos</th><th style="text-align:right; padding:5px;">Elo</th></tr>';
         
         data.forEach((user, index) => {
             const rowStyle = index % 2 === 0 ? 'background: rgba(0,0,0,0.1);' : '';
+            const avgPosText = user.avgEndingPosition !== null ? user.avgEndingPosition.toFixed(1) : '-';
             html += `<tr style="${rowStyle}">
                 <td style="padding:5px;">#${index + 1}</td>
                 <td style="padding:5px; font-weight:bold;">${user.username}</td>
+                <td style="padding:5px; text-align:center;">${avgPosText}</td>
                 <td style="padding:5px; text-align:right;">${Math.round(user.elo)}</td>
             </tr>`;
         });

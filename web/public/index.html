@@ -251,13 +251,16 @@
         }
 
         window.onclick = function(event) {
-            if (!event.target.closest('.report-dropdown') && !event.target.closest('.account-dropdown')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
+            if (!event.target.closest('.report-dropdown')) {
+                var reportMenu = document.getElementById('report-menu');
+                if (reportMenu && reportMenu.classList.contains('show')) {
+                    reportMenu.classList.remove('show');
+                }
+            }
+            if (!event.target.closest('.account-dropdown')) {
+                var accountMenu = document.getElementById('account-menu');
+                if (accountMenu && accountMenu.classList.contains('show')) {
+                    accountMenu.classList.remove('show');
                 }
             }
         }

@@ -396,6 +396,22 @@ function loadState() {
 // Load state on startup
 loadState();
 
+function recordTournamentResults() {
+    const sortedPlayers = tournament.getPlayers().sort((a, b) => b.getElo() - a.getElo());
+    let usersChanged = false;
+    sortedPlayers.forEach((p, index) => {
+        if (!p.isComputerPlayer()) {
+            const username = Object.keys(users).find(u => u.toLowerCase() === p.getName().toLowerCase());
+            if (username) {
+                users[username].totalTournaments = (users[username].totalTournaments || 0) + 1;
+                users[username].totalPosition = (users[username].totalPosition || 0) + (index + 1);
+                usersChanged = true;
+            }
+        }
+    });
+    if (usersChanged) saveUsers();
+}
+
 // If tournament was running when we loaded state, restart the monitor intervals
 if (tournament.checkIsRunning()) {
     console.log('[STARTUP] Tournament is running, starting monitor intervals...');
@@ -434,6 +450,7 @@ if (tournament.checkIsRunning()) {
                 // Clear all games immediately when tournament ends
                 activeGames.clear();
                 console.log('All active games cleared.');
+                recordTournamentResults();
             }
 
             clearInterval(tournamentMonitorInterval);
@@ -699,10 +716,15 @@ app.post('/api/logout', (req, res) => {
 });
 
 app.get('/api/leaderboard', (req, res) => {
-    const leaderboard = Object.keys(users).map(username => ({
-        username,
-        elo: users[username].elo
-    })).sort((a, b) => b.elo - a.elo);
+    const leaderboard = Object.keys(users).map(username => {
+        const u = users[username];
+        const avgPos = u.totalTournaments ? (u.totalPosition / u.totalTournaments) : null;
+        return {
+            username,
+            elo: u.elo,
+            avgEndingPosition: avgPos
+        };
+    }).sort((a, b) => b.elo - a.elo);
     res.json(leaderboard);
 });
 
@@ -912,6 +934,7 @@ app.post('/api/start', (req, res) => {
                 // Clear all games immediately when tournament ends
                 activeGames.clear();
                 console.log('All active games cleared.');
+                recordTournamentResults();
             }
 
             clearInterval(tournamentMonitorInterval);
