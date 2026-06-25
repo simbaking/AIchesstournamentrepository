@@ -6,3 +6,4 @@ java_runtime/
 .DS_Store
 out/
 /bin/
+web/tournament_state*.json
