@@ -1320,3 +1320,41 @@
 body.is-dragging .square:not(.dragging) .piece {
     pointer-events: none;
 }
+
+/* Report Issue Dropdown */
+.report-dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: var(--bg-card);
+    min-width: 250px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+    z-index: 1000;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+}
+
+.dropdown-content textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 4px;
+    padding: 8px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.dropdown-content button {
+    width: 100%;
+}
+
+.show {
+    display: block;
+}

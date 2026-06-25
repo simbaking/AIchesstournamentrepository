@@ -21,7 +21,7 @@
 
     <div class="container">
         <!-- Desktop Header (hidden on mobile) -->
-        <header class="desktop-header">
+        <header class="desktop-header info-card">
             <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <img src="assets/lion.png" class="logo" alt="Lion logo" />
@@ -236,7 +236,7 @@
         }
 
         window.onclick = function(event) {
-            if (!event.target.matches('.report-dropdown .btn') && !event.target.closest('#report-menu')) {
+            if (!event.target.closest('.report-dropdown')) {
                 var dropdowns = document.getElementsByClassName("dropdown-content");
                 for (var i = 0; i < dropdowns.length; i++) {
                     var openDropdown = dropdowns[i];

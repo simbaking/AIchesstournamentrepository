@@ -1,7 +1,7 @@
 // Get game ID from URL
 const urlParams = new URLSearchParams(window.location.search);
 const gameId = urlParams.get('gameId') || urlParams.get('id');
-const currentPlayerName = urlParams.get('player') || localStorage.getItem('chess_tournament_player_name');
+const currentPlayerName = urlParams.get('player') || localStorage.getItem('chess_tournament_player_name') || "";
 
 if (!gameId || !currentPlayerName) {
     console.error('Missing gameId or player name, redirecting to index');
@@ -197,8 +197,8 @@ async function updateGameState() {
 // Render the game
 function renderGame() {
     // Update player names
-    const p1You = gameState.player1.toLowerCase() === currentPlayerName.toLowerCase() ? ' (You)' : '';
-    const p2You = gameState.player2.toLowerCase() === currentPlayerName.toLowerCase() ? ' (You)' : '';
+    const p1You = (currentPlayerName && gameState.player1 && gameState.player1.toLowerCase() === currentPlayerName.toLowerCase()) ? ' (You)' : '';
+    const p2You = (currentPlayerName && gameState.player2 && gameState.player2.toLowerCase() === currentPlayerName.toLowerCase()) ? ' (You)' : '';
 
     whitePlayerName.textContent = gameState.player1 + (gameState.player1Elo ? ` (${Math.round(gameState.player1Elo)})` : '') + p1You;
     blackPlayerName.textContent = gameState.player2 + (gameState.player2Elo ? ` (${Math.round(gameState.player2Elo)})` : '') + p2You;
