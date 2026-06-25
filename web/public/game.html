@@ -22,10 +22,17 @@
     <div class="container">
         <!-- Desktop Header (hidden on mobile) -->
         <header class="desktop-header">
-            <h1>♟️ Chess Game <span class="beta-badge">BETA</span></h1>
-            <img src="assets/lion.png" class="logo" alt="Lion logo" />
-            <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
-                <a href="index.html" class="back-link">← Back to Tournament</a>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="assets/lion.png" class="logo" alt="Lion logo" />
+                    <h1>♟️ Chess Game <span class="beta-badge">BETA</span></h1>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; margin-left: 20px;">
+                        <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold;">Tournament Time</span>
+                        <div id="tournament-timer" class="game-timer" style="font-size: 1.2rem; margin: 0;">--:--</div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+                    <a href="index.html" class="back-link">← Back to Tournament</a>
                 <div class="report-dropdown" style="position: relative;">
                     <button class="btn" onclick="document.getElementById('report-menu').classList.toggle('show')">Report Issue</button>
                     <div id="report-menu" class="dropdown-content">
@@ -74,11 +81,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="info-card">
-                    <h2>Tournament Time</h2>
-                    <div id="tournament-timer" class="game-timer">--:--</div>
                 </div>
 
                 <div id="draw-offer-card" class="info-card"
