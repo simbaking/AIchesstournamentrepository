@@ -1240,3 +1240,40 @@ function closeLeaderboard() {
 
 // Call updateAuthUI on load
 updateAuthUI();
+
+// Theme Toggle Logic
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (themeBtn) {
+        // Remove old listeners to avoid duplicates if initTheme is called twice
+        const newBtn = themeBtn.cloneNode(true);
+        themeBtn.parentNode.replaceChild(newBtn, themeBtn);
+        
+        newBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            if (newTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    }
+}
+
+// Ensure it runs once the DOM is ready, and also now in case it's already loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTheme);
+} else {
+    initTheme();
+}
