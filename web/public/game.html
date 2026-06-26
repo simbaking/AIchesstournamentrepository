@@ -139,7 +139,8 @@
                         <div id="eval-bar-fill" class="eval-bar-fill"></div>
                         <span id="eval-bar-text" class="eval-bar-text">0.00</span>
                     </div>
-                    <div id="chessboard" class="chessboard"></div>
+                    <canvas id="chessboardCanvas" width="640" height="640" style="border: 2px solid #333; border-radius: 4px; touch-action: none; background-color: var(--bg);"></canvas>
+                    <div id="chessboard" class="chessboard" style="display: none;"></div>
                 </div>
 
                 <!-- Move History Navigation -->
@@ -213,7 +214,8 @@
         </div>
     </div>
 
-    <script src="game.js?v=3"></script>
+    <script src="canvasRenderer.js"></script>
+    <script src="game.js?v=2"></script>
     <script>
         async function submitIssue() {
             const issueText = document.getElementById('issue-text').value;

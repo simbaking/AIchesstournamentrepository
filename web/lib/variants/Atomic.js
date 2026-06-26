@@ -12,25 +12,23 @@ class Atomic extends BaseVariant {
         return Math.abs(endX - startX) === 2;
     }
 
-    canCastle(isWhite, isKingside) {
+    canCastle(color, isKingside) {
         const game = this.game;
-        if (isWhite && game.whiteKingMoved) return false;
-        if (!isWhite && game.blackKingMoved) return false;
+        if (game.kingMoved[color]) return false;
 
-        if (isWhite && isKingside && game.whiteKingsideRookMoved) return false;
-        if (isWhite && !isKingside && game.whiteQueensideRookMoved) return false;
-        if (!isWhite && isKingside && game.blackKingsideRookMoved) return false;
-        if (!isWhite && !isKingside && game.blackQueensideRookMoved) return false;
+        if (isKingside && game.kingsideRookMoved[color]) return false;
+        if (!isKingside && game.queensideRookMoved[color]) return false;
 
-        const rank = isWhite ? 7 : 0;
+        const rank = color === 'white' ? 7 : (color === 'black' ? 0 : null);
+        if (rank === null) return false;
         const kingX = 4;
         const rookX = isKingside ? 7 : 0;
 
         const king = game.board.getPiece(kingX, rank);
-        if (!king || king.type !== 'king' || king.isWhite !== isWhite) return false;
+        if (!king || king.type !== 'king' || king.color !== color) return false;
 
         const rook = game.board.getPiece(rookX, rank);
-        if (!rook || rook.type !== 'rook' || rook.isWhite !== isWhite) return false;
+        if (!rook || rook.type !== 'rook' || rook.color !== color) return false;
 
         const start = Math.min(kingX, rookX) + 1;
         const end = Math.max(kingX, rookX);
@@ -38,14 +36,14 @@ class Atomic extends BaseVariant {
             if (game.board.getPiece(x, rank)) return false;
         }
 
-        if (game.isKingInCheck(isWhite)) return false;
+        if (game.isKingInCheck(color)) return false;
 
         const direction = isKingside ? 1 : -1;
         for (let i = 1; i <= 2; i++) {
             const testX = kingX + (i * direction);
             game.board.setPiece(testX, rank, king);
             game.board.setPiece(kingX, rank, null);
-            const inCheck = game.isKingInCheck(isWhite);
+            const inCheck = game.isKingInCheck(color);
             game.board.setPiece(kingX, rank, king);
             game.board.setPiece(testX, rank, null);
             if (inCheck) return false;
@@ -54,7 +52,7 @@ class Atomic extends BaseVariant {
         return true;
     }
 
-    validateMove(fromFile, fromRank, toFile, toRank, isWhite) {
+    validateMove(fromFile, fromRank, toFile, toRank, color) {
         if (this.isAtomicKingCapture(fromFile, fromRank, toFile, toRank)) {
             return 'In Atomic Chess, kings cannot capture';
         }
@@ -81,32 +79,54 @@ class Atomic extends BaseVariant {
         return false;
     }
 
-    isKingInCheck(isWhite, kingX, kingY) {
-        // In Atomic chess, if the king is adjacent to the opponent's king, it cannot be in check
-        // because capturing the king would blow up the opponent's own king.
-        const adjacent = this.getAdjacentSquares(kingX, kingY);
-        for (const sq of adjacent) {
-            const piece = this.game.board.getPiece(sq.x, sq.y);
-            if (piece && piece.type === 'king' && piece.isWhite !== isWhite) {
-                return false;
+    isKingInCheck(color) {
+        const kings = [];
+        for (let y = 0; y < 8; y++) {
+            for (let x = 0; x < 8; x++) {
+                const piece = this.game.board.getPiece(x, y);
+                if (piece && piece.type === 'king' && piece.isWhite === color && !piece.frozen) {
+                    kings.push({x, y});
+                }
             }
         }
+        
+        let allAdjacent = true;
+        for (const king of kings) {
+            let adjacentToEnemyKing = false;
+            const adjacent = this.getAdjacentSquares(king.x, king.y);
+            for (const sq of adjacent) {
+                const piece = this.game.board.getPiece(sq.x, sq.y);
+                if (piece && piece.type === 'king' && piece.isWhite !== color) {
+                    adjacentToEnemyKing = true;
+                    break;
+                }
+            }
+            if (!adjacentToEnemyKing) {
+                allAdjacent = false;
+                break;
+            }
+        }
+        
+        if (kings.length > 0 && allAdjacent) {
+            return false;
+        }
+
         return null; // Fallback to standard logic
     }
 
-    wouldExplodeOpponentKing(startX, startY, endX, endY, isWhite) {
+    wouldExplodeOpponentKing(startX, startY, endX, endY, color) {
         const capturedPiece = this.game.board.getPiece(endX, endY);
         if (!capturedPiece) return false;
         
         const adjacent = this.getAdjacentSquares(endX, endY);
         for (const sq of adjacent) {
             const adjPiece = this.game.board.getPiece(sq.x, sq.y);
-            if (adjPiece && adjPiece.type === 'king' && adjPiece.isWhite !== isWhite) {
+            if (adjPiece && adjPiece.type === 'king' && adjPiece.color !== color) {
                 return true;
             }
         }
         // Direct capture of the king (not normally possible, but logically it's an explosion of the opponent's king)
-        if (capturedPiece.type === 'king' && capturedPiece.isWhite !== isWhite) {
+        if (capturedPiece.type === 'king' && capturedPiece.color !== color) {
             return true;
         }
         return false;
@@ -130,7 +150,7 @@ class Atomic extends BaseVariant {
             const adjacent = this.getAdjacentSquares(endX, endY);
             for (const sq of adjacent) {
                 const adjPiece = this.game.board.getPiece(sq.x, sq.y);
-                if (adjPiece && adjPiece.type === 'king' && adjPiece.isWhite === piece.isWhite) {
+                if (adjPiece && adjPiece.type === 'king' && adjPiece.color === piece.color) {
                     explodesKing = true;
                     break;
                 }
@@ -161,7 +181,7 @@ class Atomic extends BaseVariant {
         return adjacent;
     }
 
-    performExplosion(x, y, capturingPieceIsWhite) {
+    performExplosion(x, y, capturingPieceColor) {
         const explodedPieces = [];
         let kingExploded = null;
 
@@ -180,7 +200,7 @@ class Atomic extends BaseVariant {
                 explodedPieces.push({ ...piece, x: sq.x, y: sq.y, role: 'collateral' });
 
                 if (piece.type === 'king') {
-                    kingExploded = piece.isWhite ? 'white' : 'black';
+                    kingExploded = piece.color;
                 }
 
                 this.game.board.setPiece(sq.x, sq.y, null);
@@ -194,10 +214,10 @@ class Atomic extends BaseVariant {
     executeCapture(startX, startY, endX, endY, piece, capturedPiece) {
         if (!capturedPiece) return { handled: false };
 
-        const explosion = this.performExplosion(endX, endY, piece.isWhite);
+        const explosion = this.performExplosion(endX, endY, piece.color);
 
         for (const exploded of explosion.explodedPieces) {
-            if (exploded.isWhite !== piece.isWhite) {
+            if (exploded.color !== piece.color) {
                 if (piece.isWhite) {
                     this.game.capturedByWhite.push({ type: exploded.type, isWhite: false });
                 } else {

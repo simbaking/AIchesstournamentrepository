@@ -111,7 +111,7 @@ async function updateGameState() {
     if (isFetchingState) return;
     isFetchingState = true;
     try {
-        const response = await fetch(`/api/game/${gameId}`);
+        const response = await fetch(`/api/game/${gameId}?player=${encodeURIComponent(playerName)}`);
         if (!response.ok) {
             console.error('[GAME] Failed to fetch game state:', response.status);
             // Game was likely terminated server-side (tournament ended)
@@ -374,6 +374,12 @@ function renderEvalBar() {
 // Initialize the board DOM once (called only on first render)
 function initBoard() {
     console.log('[BOARD] initBoard called');
+
+    if (typeof updateBoardCanvas === 'function') {
+        updateBoardCanvas();
+        return;
+    }
+
     chessboard.innerHTML = '';
 
     // Respect current flip state when creating squares
@@ -543,6 +549,11 @@ function initBoard() {
 // Update board by diffing - only update squares that changed
 function updateBoard(forceRefresh = false) {
     if (!gameState || !gameState.board) return;
+
+    if (typeof updateBoardCanvas === 'function') {
+        updateBoardCanvas();
+        return;
+    }
 
     // Force full refresh if requested (e.g., returning from history view)
     if (forceRefresh) {
@@ -847,6 +858,41 @@ async function handleSquareClick(x, y) {
         return;
     }
 
+    // Secret setup phase intercept
+    if (gameState.secretSetupPhase && !gameState.setupComplete) {
+        const piece = gameState.board[x][y];
+        const amIWhite = (gameState.player1.toLowerCase() === currentPlayerName.toLowerCase());
+        // In team modes, color check might be different, but for now we check player color
+        // Wait, the client is 'white' or 'black' based on player1/player2 or we can just check if they own the piece.
+        // Actually, piece.color exists!
+        // We can just use the server's validation, but client-side it's good to prevent mis-clicks.
+        if (piece && piece.type === 'pawn') {
+            const role = prompt("Make this pawn a secret [Q]ueen or [K]ing? (Cancel to ignore)");
+            if (role) {
+                let secretType = null;
+                if (role.toLowerCase() === 'q') secretType = 'queen';
+                if (role.toLowerCase() === 'k') secretType = 'king';
+                
+                if (secretType) {
+                    await fetch(`/api/game/${gameId}/action`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            player: currentPlayerName,
+                            action: { type: 'secret_setup', secrets: [{ x, y, type: secretType }] }
+                        })
+                    });
+                    showMessage('Secret setup sent.', 'success');
+                } else {
+                    showMessage('Invalid secret type.', 'error');
+                }
+            }
+        } else if (piece) {
+            showMessage('You can only select pawns for secret setup.', 'info');
+        }
+        return;
+    }
+
     // Crazyhouse: If a pocket piece is selected, drop it
     if (selectedDropPiece && gameState.variant === 'crazyhouse') {
         const piece = gameState.board[x][y];
@@ -958,6 +1004,11 @@ async function handleSquareClick(x, y) {
 
 // Highlight selected square (visual only - does NOT clear state)
 function highlightSquare(x, y) {
+    if (typeof updateBoardCanvas === 'function') {
+        updateBoardCanvas();
+        return;
+    }
+
     // Remove selected class from all squares (visual only)
     document.querySelectorAll('.square.selected').forEach(sq => {
         sq.classList.remove('selected');
@@ -974,6 +1025,10 @@ function clearSelection() {
     selectedSquare = null;
     selectedDropPiece = null;
     validMoves = []; // Clear valid moves
+
+    if (typeof updateBoardCanvas === 'function') {
+        updateBoardCanvas();
+    }
 
     // Clear visual styles for selection only (not last-move - that's handled by updateBoard)
     document.querySelectorAll('.square.selected').forEach(sq => {
@@ -2265,7 +2320,12 @@ function renderHistoricalBoard(moveIndex) {
         console.log(`[NAV] No move to highlight (starting position)`);
     }
 
-    // Render the historical board
+    if (typeof updateBoardCanvas === 'function') {
+        updateBoardCanvas(board, lastMove);
+        return;
+    }
+
+    // Render the historical board (legacy DOM)
     for (let y = 0; y < 8; y++) {
         for (let x = 0; x < 8; x++) {
             const square = document.getElementById(`square-${x}-${y}`);

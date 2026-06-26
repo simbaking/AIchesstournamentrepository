@@ -11,8 +11,8 @@ class Chess960 extends BaseVariant {
     }
 
     findInitialRookPositions() {
-        const getRooks = (isWhite) => {
-            const row = isWhite ? 7 : 0;
+        const getRooks = (colorArg) => {
+            const row = colorArg === 'white' ? 7 : 0;
             let kingFile = -1;
             for (let i = 0; i < 8; i++) {
                 const p = this.game.board.getPiece(i, row);
@@ -24,7 +24,7 @@ class Chess960 extends BaseVariant {
 
             for (let i = 0; i < 8; i++) {
                 const p = this.game.board.getPiece(i, row);
-                if (p && p.type === 'rook' && p.isWhite === isWhite) {
+                if (p && p.type === 'rook' && p.color === color) {
                     if (i < kingFile) qsRookFile = i;
                     else if (i > kingFile) ksRookFile = i;
                 }
@@ -42,7 +42,7 @@ class Chess960 extends BaseVariant {
         if (startY !== endY) return false;
 
         const target = this.game.board.getPiece(endX, endY);
-        if (target && target.type === 'rook' && target.isWhite === piece.isWhite) {
+        if (target && target.type === 'rook' && target.color === piece.color) {
             return true;
         }
         const isKingsideDest = (endX === 6);
@@ -52,22 +52,19 @@ class Chess960 extends BaseVariant {
         return false;
     }
 
-    canCastle(isWhite, isKingside) {
+    canCastle(color, isKingside) {
         const game = this.game;
-        if (isWhite && game.whiteKingMoved) return false;
-        if (!isWhite && game.blackKingMoved) return false;
+        if (game.kingMoved[color]) return false;
 
-        const files = isWhite ? game.whiteRookFiles : game.blackRookFiles;
-        const rookFile = isKingside ? files.ks : files.qs;
-        if (rookFile === -1) return false;
+        const files = color === 'white' ? game.whiteRookFiles : game.blackRookFiles;
+        if (!files) return false;
 
-        if (isWhite && isKingside && game.whiteKingsideRookMoved) return false;
-        if (isWhite && !isKingside && game.whiteQueensideRookMoved) return false;
-        if (!isWhite && isKingside && game.blackKingsideRookMoved) return false;
-        if (!isWhite && !isKingside && game.blackQueensideRookMoved) return false;
+        if (isKingside && game.kingsideRookMoved[color]) return false;
+        if (!isKingside && game.queensideRookMoved[color]) return false;
 
-        const rank = isWhite ? 7 : 0;
-        const kingFile = game.getKingFile(isWhite, rank);
+        const rank = color === 'white' ? 7 : (color === 'black' ? 0 : null);
+        if (rank === null) return false;
+        const kingFile = game.getKingFile(color, rank);
 
         const destKingX = isKingside ? 6 : 2;
         const destRookX = isKingside ? 5 : 3;
@@ -97,13 +94,13 @@ class Chess960 extends BaseVariant {
         }, 300); // Wait for Stockfish to initialize
     }
 
-    getRookStartX(isWhite, isKingside) {
-        const files = isWhite ? this.game.whiteRookFiles : this.game.blackRookFiles;
+    getRookStartX(color, isKingside) {
+        const files = color === 'white' ? this.game.whiteRookFiles : this.game.blackRookFiles;
         return isKingside ? files.ks : files.qs;
     }
 
-    getAdditionalCastlingMoves(isWhite, isKingside, rank) {
-        const files = isWhite ? this.game.whiteRookFiles : this.game.blackRookFiles;
+    getAdditionalCastlingMoves(color, isKingside, rank) {
+        const files = color === 'white' ? this.game.whiteRookFiles : this.game.blackRookFiles;
         if (!files) return [];
         const file = isKingside ? files.ks : files.qs;
         if (file !== -1) {

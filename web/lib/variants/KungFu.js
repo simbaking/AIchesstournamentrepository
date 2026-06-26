@@ -5,7 +5,7 @@ class KungFu extends BaseVariant {
         this.game.board.setupBoard();
     }
 
-    validateMove(fromFile, fromRank, toFile, toRank, isWhite) {
+    validateMove(fromFile, fromRank, toFile, toRank, color) {
         const key = `${fromFile},${fromRank}`;
         const cooldown = this.game.cooldowns.get(key);
         if (cooldown && Date.now() < cooldown) {
@@ -14,15 +14,18 @@ class KungFu extends BaseVariant {
         return null;
     }
 
-    checkTurn(isWhite) {
+    checkTurn(color) {
         return null; // KungFu doesn't use turns
     }
 
-    handleKingCapture(fromFile, fromRank, toFile, toRank, targetPiece, isWhite) {
+    handleKingCapture(fromFile, fromRank, toFile, toRank, targetPiece, color) {
         if (targetPiece && targetPiece.type === 'king') {
             this.game.board.movePiece(fromFile, fromRank, toFile, toRank);
             this.game.isGameOver = true;
-            this.game.winner = isWhite ? this.game.player1 : this.game.player2;
+            
+            const playerObj = this.game.players.find(p => p.color === color);
+            this.game.winner = playerObj ? playerObj.name : color;
+            
             this.game.termination = 'king_capture';
             this.game.onGameOver({ winner: this.game.winner, reason: 'king_capture' });
             return true;
@@ -30,7 +33,7 @@ class KungFu extends BaseVariant {
         return false;
     }
 
-    onMoveSuccess(fromFile, fromRank, toFile, toRank, isWhite) {
+    onMoveSuccess(fromFile, fromRank, toFile, toRank, color) {
         const destKey = `${toFile},${toRank}`;
         this.game.cooldowns.set(destKey, Date.now() + this.game.cooldownMs);
     }

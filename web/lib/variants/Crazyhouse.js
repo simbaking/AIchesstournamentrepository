@@ -5,13 +5,9 @@ class Crazyhouse extends BaseVariant {
         this.game.board.setupBoard();
     }
 
-    onPieceCaptured(piece, capturedByWhite) {
+    onPieceCaptured(piece, capturedByColor) {
         const reserveType = piece.wasPromoted ? 'pawn' : piece.type;
-        if (capturedByWhite) {
-            this.game.whiteReserve.push(reserveType);
-        } else {
-            this.game.blackReserve.push(reserveType);
-        }
+        this.game.reserves[capturedByColor].push(reserveType);
     }
 
     supportsDrops() {
@@ -23,18 +19,20 @@ class Crazyhouse extends BaseVariant {
             return { success: false, message: 'Game is over' };
         }
 
-        const isWhite = playerName === this.game.player1;
-        const isBlack = playerName === this.game.player2;
-
-        if (!isWhite && !isBlack) {
+        const playerObj = this.game.players.find(p => p.name === playerName);
+        if (!playerObj) {
             return { success: false, message: 'Unknown player' };
         }
+        const color = playerObj.color;
 
-        if ((isWhite && !this.game.isWhiteTurn) || (isBlack && this.game.isWhiteTurn)) {
+        if (color !== this.game.getCurrentColor()) {
             return { success: false, message: 'Not your turn' };
         }
 
-        const reserve = isWhite ? this.game.whiteReserve : this.game.blackReserve;
+        const reserve = this.game.reserves[color];
+        if (!reserve) {
+            return { success: false, message: 'No reserve for this color' };
+        }
         const pieceIndex = reserve.indexOf(pieceType);
         if (pieceIndex === -1) {
             return { success: false, message: `No ${pieceType} in reserve` };
@@ -44,17 +42,17 @@ class Crazyhouse extends BaseVariant {
             return { success: false, message: 'Target square is not empty' };
         }
 
-        if (pieceType === 'pawn' && (y === 0 || y === 7)) {
-            return { success: false, message: 'Pawns cannot be dropped on the first or eighth rank' };
+        if (pieceType === 'pawn' && (y === 0 || y === this.game.board.height - 1)) {
+            return { success: false, message: 'Pawns cannot be dropped on the first or last rank' };
         }
 
         reserve.splice(pieceIndex, 1);
 
         const Piece = require('../core/Piece');
-        const newPiece = new Piece(isWhite, pieceType);
+        const newPiece = new Piece(color, pieceType);
         this.game.board.setPiece(x, y, newPiece);
 
-        if (this.game.isKingInCheck(isWhite)) {
+        if (this.game.isKingInCheck(color)) {
             this.game.board.setPiece(x, y, null);
             reserve.push(pieceType);
             return { success: false, message: 'Drop would leave king in check' };
@@ -70,14 +68,14 @@ class Crazyhouse extends BaseVariant {
             notation: dropNotation
         });
 
-        this.game.isWhiteTurn = !this.game.isWhiteTurn;
+        this.game.nextTurn();
         this.game.lastMoveTime = Date.now();
 
-        const nextPlayerIsWhite = this.game.isWhiteTurn;
+        const nextColor = this.game.getCurrentColor();
 
-        if (this.game.isCheckmate(nextPlayerIsWhite)) {
+        if (this.game.isCheckmate(nextColor)) {
             this.game.isGameOver = true;
-            this.game.winner = nextPlayerIsWhite ? this.game.player2 : this.game.player1;
+            this.game.winner = playerName;
             this.game.termination = 'checkmate';
             console.log(`Checkmate by drop! ${this.game.winner} wins!`);
             if (this.game.onGameOver) this.game.onGameOver({ winner: this.game.winner, reason: 'checkmate' });
@@ -85,7 +83,7 @@ class Crazyhouse extends BaseVariant {
             return { success: true, gameOver: true, winner: this.game.winner, reason: 'checkmate' };
         }
 
-        if (this.game.isStalemate(nextPlayerIsWhite)) {
+        if (this.game.isStalemate(nextColor)) {
             this.game.isGameOver = true;
             this.game.winner = null;
             this.game.termination = 'stalemate';

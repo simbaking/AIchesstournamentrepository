@@ -90,39 +90,37 @@ const tournamentAI = new TournamentAI(tournament);
 const HUMAN_PRIORITY_DELAY = 10000; // 10 seconds
 
 // Helper to create and start a game
-function createGame(player1Name, player2Name, timeControlMinutes, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random', cooldownSeconds = 10, gameId = null) {
+function createGame(playersArray, timeControlMinutes, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random', cooldownSeconds = 10, gameId = null) {
     // Check if tournament is running before creating game
     if (!tournament.checkIsRunning()) {
         console.warn(`Cannot create game: Tournament is not running`);
         return { success: false, error: 'Tournament is not running' };
     }
 
+    let gamePlayers = [...playersArray]; // Copy to avoid mutating original
+
     // Logic for New Game vs Restore
     if (!gameId) {
-        // NEW GAME: Randomize colors
-        const participants = [player1Name, player2Name];
-        const whiteIndex = Math.random() < 0.5 ? 0 : 1;
-        player1Name = participants[whiteIndex];
-        player2Name = participants[1 - whiteIndex];
+        // NEW GAME: Randomize player order (colors)
+        for (let i = gamePlayers.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [gamePlayers[i], gamePlayers[j]] = [gamePlayers[j], gamePlayers[i]];
+        }
 
         // Generate ID
         gameId = `game_${gameIdCounter++}`;
 
-        console.log(`[COLOR] Matchup: ${participants[0]} vs ${participants[1]} -> ${player1Name} (White), ${player2Name} (Black)`);
+        console.log(`[COLOR] Matchup: original ${playersArray.join(' vs ')} -> randomized ${gamePlayers.join(', ')}`);
     } else {
-        // RESTORE: Trust provided players order (White, Black)
-        // Ensure strictly unique ID if manually provided (or trust caller)
-        console.log(`[RESTORE] Game ${gameId}: ${player1Name} (White) vs ${player2Name} (Black)`);
+        // RESTORE: Trust provided players order
+        console.log(`[RESTORE] Game ${gameId}: ${gamePlayers.join(', ')}`);
     }
 
-    const p1 = tournament.getPlayerByName(player1Name);
-    const p2 = tournament.getPlayerByName(player2Name);
+    const tPlayers = gamePlayers.map(name => tournament.getPlayerByName(name));
+    if (tPlayers.some(p => !p)) return { success: false, error: 'One or more players not found' };
 
-    if (!p1 || !p2) return { success: false, error: 'Player not found' };
-
-    // Get ELO ratings for the players
-    const p1Elo = p1.getElo();
-    const p2Elo = p2.getElo();
+    // Get ELO ratings
+    const elos = tPlayers.map(p => p.getElo());
 
     // Strict Busy Check (skip if restoring?)
     // If restoring, players ARE busy probably.
@@ -161,7 +159,7 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
         try {
             if (p1End && p2End) {
                 const duration = game.getDuration();
-                tournament.recordGameResult(player1Name, player2Name, result.winner, duration, game.variant);
+                tournament.recordGameResult(game.players.map(p => p.name), result.winner, duration, game.variant);
             }
         } catch (e) {
             console.error(`Error recording game result for game ${gameId}:`, e);
@@ -191,36 +189,66 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
     // So `loadState` should use `ChessGame.fromJSON` and then wire up the handler.
 
     // BUT `createGame` logic for "New Game" needs to stay.
-    // So I should REVERT the signature change to `createGame` and leave it for NEW games.
-    // And implement `restoreGame` or duplicate the wiring logic in `loadState`.
+    // Assign colors based on position in randomized array
+    const colorNames = ['white', 'black', 'red', 'blue', 'green', 'yellow'];
+    const assignedPlayers = gamePlayers.map((name, index) => ({
+        name,
+        color: colorNames[index] || `color${index}`
+    }));
 
-    // Rewriting createGame to be creating NEW game.
-    // Saving state logic is added to handleGameEnd.
+    const playerElosMap = {};
+    tPlayers.forEach((p, idx) => {
+        playerElosMap[assignedPlayers[idx].color] = p.getElo();
+    });
 
-    const game = new ChessGame(player1Name, player2Name, gameId, timeControlMinutes, handleGameEnd, incrementSeconds, timeStages, variant, startPos, cooldownSeconds, p1.getElo(), p2.getElo());
+    const game = new ChessGame(
+        assignedPlayers,
+        gameId,
+        timeControlMinutes,
+        handleGameEnd, // timeControlOrGameOver
+        incrementSeconds,
+        timeStages,
+        variant,
+        startPos,
+        cooldownSeconds,
+        playerElosMap
+    );
+
+    // Set busy state for all human players
+    tPlayers.forEach(p => {
+        if (!p.isComputerPlayer()) {
+            p.setBusy(true);
+        }
+    });
 
     game.getTournamentTimeRemaining = () => tournament.getRemainingTime();
 
     // Use each player's persistent engine (already warm) instead of creating a
     // brand-new ComputerPlayer per game, which would trigger a Stockfish boot delay.
-    if (p1.isComputerPlayer()) game.setPlayerType('white', 'computer', p1.getLevel(), p1.getEngine());
-    if (p2.isComputerPlayer()) game.setPlayerType('black', 'computer', p2.getLevel(), p2.getEngine());
+    let hasComputer = false;
+    let isAllComputers = true;
+
+    assignedPlayers.forEach((assigned, idx) => {
+        const p = tPlayers[idx];
+        if (p.isComputerPlayer()) {
+            hasComputer = true;
+            game.setPlayerType(assigned.color, 'computer', p.getLevel(), p.getEngine());
+        } else {
+            isAllComputers = false;
+        }
+        p.setBusy(true, gameId);
+    });
 
     activeGames.set(gameId, game);
 
-    p1.setBusy(true, gameId);
-    p2.setBusy(true, gameId);
-
-    const hasComputer = p1.isComputerPlayer() || p2.isComputerPlayer();
     if (hasComputer) {
-        console.log(`Starting game ${gameId} (variant: ${variant}, computers: W=${p1.isComputerPlayer()}, B=${p2.isComputerPlayer()})`);
+        console.log(`Starting game ${gameId} (variant: ${variant}, players: ${assignedPlayers.map(p => p.name).join(', ')})`);
         game.startGame();
     }
 
     saveState(); // Save state after creation
 
-    const isComputerVsComputer = p1.isComputerPlayer() && p2.isComputerPlayer();
-    return { success: true, gameId, isComputerVsComputer, message: 'Game started' };
+    return { success: true, gameId, isComputerVsComputer: isAllComputers, message: 'Game started' };
 }
 
 // ================= Persistence Logic =================
@@ -327,7 +355,7 @@ function loadState() {
                     const p2End = tournament.getPlayerByName(gameData.player2);
                     try {
                         if (p1End && p2End) {
-                            tournament.recordGameResult(gameData.player1, gameData.player2, result.winner, game.getDuration(), game.variant);
+                            tournament.recordGameResult(game.players.map(p => p.name), result.winner, game.getDuration(), game.variant);
                         }
                     } catch (e) {
                         console.error(`Error recording game result for game ${gameData.gameId}:`, e);
@@ -421,6 +449,29 @@ if (tournament.checkIsRunning()) {
     tournamentMonitorInterval = setInterval(() => {
         const isRunning = tournament.checkIsRunning();
         const remaining = tournament.getRemainingTime();
+        
+        // Handle player eliminations in survival mode
+        if (tournament.mode === 'survival') {
+            const eliminatedNames = new Set(tournament.players.filter(p => p.eliminated).map(p => p.getName()));
+            if (eliminatedNames.size > 0) {
+                for (const [gameId, game] of activeGames.entries()) {
+                    if (!game.isGameOver) {
+                        const hasEliminated = game.players.some(p => eliminatedNames.has(p.name));
+                        if (hasEliminated) {
+                            console.log(`Ending game ${gameId} because a player was eliminated from survival tournament.`);
+                            game.isGameOver = true;
+                            // Find surviving players to assign win, or draw if all eliminated
+                            const surviving = game.players.filter(p => !eliminatedNames.has(p.name));
+                            let winner = null;
+                            if (surviving.length === 1) winner = surviving[0].name;
+                            if (game.onGameOver) game.onGameOver({ winner, reason: 'tournament_timeout' });
+                            if (game.cleanup) game.cleanup();
+                            activeGames.delete(gameId);
+                        }
+                    }
+                }
+            }
+        }
 
         if (Math.random() < 0.05) {
             console.log(`[MONITOR] Running: ${isRunning}, Remaining: ${(remaining / 60000).toFixed(1)}m, ActiveGames: ${activeGames.size}, Offers: ${gameOffers.length}`);
@@ -495,7 +546,7 @@ if (tournament.checkIsRunning()) {
             const idleComputers = players.filter(p =>
                 p.isComputerPlayer() &&
                 !p.isBusy() &&
-                !gameOffers.some(o => o.player === p.getName())
+                !gameOffers.some(o => o.acceptedBy && o.acceptedBy.includes(p.getName()))
             );
 
             const candidates = players.filter(p => !p.isBusy());
@@ -522,9 +573,15 @@ if (tournament.checkIsRunning()) {
                 const match = TournamentAI.findBestMatch(bot, candidates, remainingTime, tournament);
 
                 if (match) {
+                    let reqPlayers = 2;
+                    if (match.variant === '4player') reqPlayers = 4;
+                    else if (match.variant === '3player_hex') reqPlayers = 3;
+
                     const offer = {
                         id: offerIdCounter++,
-                        player: bot.getName(),
+                        creator: bot.getName(),
+                        acceptedBy: [bot.getName()],
+                        requiredPlayers: reqPlayers,
                         elo: bot.getElo(),
                         timeControl: match.timeControl,
                         increment: match.increment,
@@ -560,7 +617,7 @@ if (tournament.checkIsRunning()) {
                     continue;
                 }
 
-                const creator = tournament.getPlayerByName(offer.player);
+                const creator = tournament.getPlayerByName(offer.creator);
                 if (!creator || creator.isBusy()) {
                     console.log(`[MATCHMAKING] Removing offer ${offer.id}: creator busy`);
                     gameOffers = gameOffers.filter(o => o.id !== offer.id);
@@ -568,7 +625,7 @@ if (tournament.checkIsRunning()) {
                 }
 
                 const validBots = players.filter(p => {
-                    if (!p.isComputerPlayer() || p.isBusy() || p.getName() === offer.player) return false;
+                    if (!p.isComputerPlayer() || p.isBusy() || offer.acceptedBy.includes(p.getName())) return false;
                     if (offer.targets && offer.targets.length > 0 && !offer.targets.includes('Any')) {
                         return offer.targets.includes(p.getName());
                     }
@@ -587,13 +644,20 @@ if (tournament.checkIsRunning()) {
                         console.log(`[MATCHMAKING] ${bot.getName()} eval: shouldAccept=${evalResult.shouldAccept}, reason=${evalResult.reason}`);
 
                         if (evalResult.shouldAccept) {
-                            console.log(`Auto-accept: ${bot.getName()} accepting offer from ${offer.player}`);
-                            const result = createGame(offer.player, bot.getName(), offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
-                            if (!result.success) {
-                                console.error(`[MATCHMAKING ERROR] Failed: ${result.error}`);
-                                continue;
+                            console.log(`Auto-accept: ${bot.getName()} accepting offer from ${offer.creator}`);
+                            
+                            offer.acceptedBy.push(bot.getName());
+                            
+                            if (offer.acceptedBy.length >= offer.requiredPlayers) {
+                                const result = createGame(offer.acceptedBy, offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
+                                if (!result.success) {
+                                    console.error(`[MATCHMAKING ERROR] Failed: ${result.error}`);
+                                    gameOffers = gameOffers.filter(o => o.id !== offer.id); // clear broken offer
+                                    continue;
+                                }
+                                gameOffers = gameOffers.filter(o => o.id !== offer.id);
+                                gameOffers = gameOffers.filter(o => !o.acceptedBy.some(p => offer.acceptedBy.includes(p)));
                             }
-                            gameOffers = gameOffers.filter(o => o.player !== offer.player && o.player !== bot.getName());
                             break;
                         }
                     }
@@ -862,7 +926,7 @@ app.post('/api/clear-scores', (req, res) => {
 
 // Start tournament
 app.post('/api/start', (req, res) => {
-    const { durationMinutes, allowVariants, allowedVariants, hours, minutes, duration } = req.body;
+    const { durationMinutes, allowVariants, allowedVariants, hours, minutes, duration, mode } = req.body;
 
     // Normalize duration logic (handle hours/minutes/duration fields)
     let durationMs = 0;
@@ -890,7 +954,8 @@ app.post('/api/start', (req, res) => {
     // Pass allowVariants and specific allowedVariants
     const variantsAllowed = allowVariants !== undefined ? allowVariants : true;
     const specificVariants = allowedVariants || ['standard', 'freestyle', 'kungfu', 'crazyhouse', 'kingofthehill', 'atomic'];
-    tournament.startTournament(durationMs, variantsAllowed, specificVariants);
+    const tournamentMode = mode || 'survival';
+    tournament.startTournament(durationMs, variantsAllowed, specificVariants, tournamentMode);
 
     // Start tournament monitor to end games when tournament expires
     if (tournamentMonitorInterval) { clearInterval(tournamentMonitorInterval); tournamentMonitorInterval = null; }
@@ -1000,7 +1065,7 @@ app.post('/api/start', (req, res) => {
             const idleComputers = players.filter(p =>
                 p.isComputerPlayer() &&
                 !p.isBusy() &&
-                !gameOffers.some(o => o.player === p.getName())
+                !gameOffers.some(o => o.acceptedBy && o.acceptedBy.includes(p.getName()))
             );
 
             const candidates = players.filter(p => !p.isBusy());
@@ -1028,10 +1093,15 @@ app.post('/api/start', (req, res) => {
                 const match = TournamentAI.findBestMatch(bot, candidates, remainingTime, tournament);
 
                 if (match) {
-                    // Create offer with AI-selected variant for bonus points
+                    let reqPlayers = 2;
+                    if (match.variant === '4player') reqPlayers = 4;
+                    else if (match.variant === '3player_hex') reqPlayers = 3;
+
                     const offer = {
                         id: offerIdCounter++,
-                        player: bot.getName(),
+                        creator: bot.getName(),
+                        acceptedBy: [bot.getName()],
+                        requiredPlayers: reqPlayers,
                         elo: bot.getElo(),
                         timeControl: match.timeControl,
                         increment: match.increment,
@@ -1063,21 +1133,21 @@ app.post('/api/start', (req, res) => {
                 // Human Priority Delay: Computers wait before accepting to give humans a chance
                 const offerAge = now - offer.timestamp;
                 if (offerAge < HUMAN_PRIORITY_DELAY) {
-                    console.log(`[MATCHMAKING] Offer ${offer.id} from ${offer.player} waiting (${Math.round(offerAge / 1000)}s/${HUMAN_PRIORITY_DELAY / 1000}s)`);
+                    console.log(`[MATCHMAKING] Offer ${offer.id} from ${offer.creator} waiting (${Math.round(offerAge / 1000)}s/${HUMAN_PRIORITY_DELAY / 1000}s)`);
                     continue;
                 }
 
-                const creator = tournament.getPlayerByName(offer.player);
+                const creator = tournament.getPlayerByName(offer.creator);
                 if (!creator || creator.isBusy()) {
-                    console.log(`[MATCHMAKING] Removing offer ${offer.id}: creator ${offer.player} is busy or not found`);
+                    console.log(`[MATCHMAKING] Removing offer ${offer.id}: creator ${offer.creator} is busy or not found`);
                     gameOffers = gameOffers.filter(o => o.id !== offer.id);
                     continue;
                 }
 
                 // Find computers that can accept this offer
                 const validBots = players.filter(p => {
-                    // Must be a computer, not busy, and not the offer creator
-                    if (!p.isComputerPlayer() || p.isBusy() || p.getName() === offer.player) return false;
+                    // Must be a computer, not busy, and not already in the offer
+                    if (!p.isComputerPlayer() || p.isBusy() || offer.acceptedBy.includes(p.getName())) return false;
 
                     // If offer is targeted, must be the target
                     if (offer.targets && offer.targets.length > 0 && !offer.targets.includes('Any')) {
@@ -1088,7 +1158,7 @@ app.post('/api/start', (req, res) => {
                 });
 
                 if (Math.random() < 0.1) {
-                    console.log(`[MATCHMAKING] Offer ${offer.id} from ${offer.player}: ${validBots.length} valid bots`);
+                    console.log(`[MATCHMAKING] Offer ${offer.id} from ${offer.creator}: ${validBots.length} valid bots`);
                 }
 
                 if (validBots.length > 0) {
@@ -1104,16 +1174,24 @@ app.post('/api/start', (req, res) => {
                         // console.log(`[MATCHMAKING] Evaluating ${bot.getName()} for offer from ${offer.player}: shouldAccept=${evalResult.shouldAccept}, reason=${evalResult.reason}`);
 
                         if (evalResult.shouldAccept) {
-                            console.log(`Auto-accept: ${bot.getName()} accepting offer from ${offer.player} (Reason: ${evalResult.reason})`);
+                            console.log(`Auto-accept: ${bot.getName()} accepting offer from ${offer.creator} (Reason: ${evalResult.reason})`);
 
-                            const result = createGame(offer.player, bot.getName(), offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
-                            if (!result.success) {
-                                console.error(`[MATCHMAKING ERROR] Failed to create game: ${result.error}`);
-                                continue; // Try next bot if this failed
+                            offer.acceptedBy.push(bot.getName());
+                            
+                            if (offer.acceptedBy.length >= offer.requiredPlayers) {
+                                const result = createGame(offer.acceptedBy, offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
+                                if (!result.success) {
+                                    console.error(`[MATCHMAKING ERROR] Failed to create game: ${result.error}`);
+                                    gameOffers = gameOffers.filter(o => o.id !== offer.id); // clear broken offer
+                                    continue; // Try next bot if this failed
+                                }
+
+                                // Remove the accepted offer
+                                gameOffers = gameOffers.filter(o => o.id !== offer.id);
+
+                                // Remove all other pending offers that contain ANY of these users
+                                gameOffers = gameOffers.filter(o => !o.acceptedBy.some(p => offer.acceptedBy.includes(p)));
                             }
-
-                            // Remove other offers from these players
-                            gameOffers = gameOffers.filter(o => o.player !== offer.player && o.player !== bot.getName());
 
                             break; // Offer taken
                         }
@@ -1136,7 +1214,9 @@ app.get('/api/status', (req, res) => {
         score: p.getScore(),
         isComputer: p.isComputerPlayer(),
         level: p.getLevel(),
-        elo: p.getElo()  // All players now have ELO
+        elo: p.getElo(),  // All players now have ELO
+        eliminated: p.eliminated || false,
+        timeLeft: p.timeLeft || 0
     }));
 
     // Sort by score descending
@@ -1153,7 +1233,8 @@ app.get('/api/status', (req, res) => {
         config: {
             durationLimit: tournament.durationLimit,
             allowVariants: tournament.allowVariants,
-            allowedVariants: tournament.allowedVariants
+            allowedVariants: tournament.allowedVariants,
+            mode: tournament.mode
         }
     });
 });
@@ -1176,7 +1257,7 @@ app.post('/api/result', (req, res) => {
     const gameDuration = duration || 60000; // Default 1 minute
 
     // Use Tournament's recordGameResult for ELO and score multipliers
-    tournament.recordGameResult(player1, player2, winner || null, gameDuration, variant || 'standard');
+    tournament.recordGameResult([player1, player2], winner || null, gameDuration, variant || 'standard');
 
     res.json({ success: true, message: 'Result recorded' });
 });
@@ -1204,32 +1285,69 @@ app.post('/api/offers/create', (req, res) => {
     }
 
     if (player.isBusy()) {
-        return res.status(400).json({ error: 'Player is currently in a game' });
+        // Player is busy, but maybe they are just waiting in an N-player offer that has been pending for >30s?
+        // We will allow creating an offer only if they are not in an active game
+        // And if they are in an offer, it must be >30s old.
+        // Actually, busy means they are in a game or they just accepted something recently.
+        // The prompt says: "players who have accepted should be able to acept other offers and make other offers after they have been waiting for offer with more than two people for 30 sec"
+        // Let's implement this logic below.
     }
 
-    if (gameOffers.some(o => o.player === player1)) {
-        return res.status(400).json({ error: 'Player already has a pending offer' });
+    const now = Date.now();
+    
+    // Check if player is in any ACTIVE game (not just an offer)
+    let inActiveGame = false;
+    for (const game of activeGames.values()) {
+        if (!game.isGameOver && game.players.some(p => p.name === player1)) {
+            inActiveGame = true;
+            break;
+        }
+    }
+    
+    if (inActiveGame) {
+        return res.status(400).json({ error: 'Player is currently in an active game' });
     }
 
-    // enforce variant restrictions - check against specific allowed variants
+    // Check if player has pending offers
+    const playerOffers = gameOffers.filter(o => o.acceptedBy.includes(player1));
+    for (const o of playerOffers) {
+        // If they are in an offer that requires 2 players, they can't make new offers.
+        // If they are in an N-player offer (N>2) and it's less than 30 seconds old, they can't.
+        if (o.requiredPlayers <= 2) {
+            return res.status(400).json({ error: 'Player already has a pending 1v1 offer' });
+        } else if (now - o.timestamp < 30000) {
+            return res.status(400).json({ error: 'Please wait 30 seconds before making another offer while in an N-player lobby' });
+        }
+    }
+
+    // enforce variant restrictions
     const requestedVariant = variant || 'standard';
-    if (!tournament.allowedVariants.includes(requestedVariant)) {
-        return res.status(400).json({ error: `${requestedVariant} variant is not allowed in this tournament` });
+    const requestedVariantsList = requestedVariant.split(',');
+    for (const v of requestedVariantsList) {
+        if (!tournament.allowedVariants.includes(v.trim())) {
+            return res.status(400).json({ error: `${v} variant is not allowed in this tournament` });
+        }
     }
 
     // config parse
     const config = parseTimeControl(timeControl, increment);
 
+    let reqPlayers = 2;
+    if (requestedVariantsList.includes('4player')) reqPlayers = 4;
+    else if (requestedVariantsList.includes('3player_hex')) reqPlayers = 3;
+
     const offer = {
         id: offerIdCounter++,
-        player: player1,
+        creator: player1, // creator of the offer
+        acceptedBy: [player1], // array of players who have joined
+        requiredPlayers: reqPlayers,
         elo: player.getElo(),
         timeControl: config.minutes,
         increment: config.increment,
         timeStages: config.stages,
         targets: targets || ['Any'],
-        timestamp: Date.now(),
-        variant: variant || 'standard',
+        timestamp: now,
+        variant: requestedVariant,
         startPos: startPos || 'random',
         cooldown: cooldown || 10
     };
@@ -1254,8 +1372,8 @@ app.post('/api/offers/accept', (req, res) => {
 
     const offer = gameOffers[offerIndex];
 
-    if (offer.player === player2) { // Used offer.player to match existing structure
-        return res.status(400).json({ error: 'Cannot accept your own offer' });
+    if (offer.acceptedBy.includes(player2)) {
+        return res.status(400).json({ error: 'You have already accepted this offer' });
     }
 
     // Check if player2 is allowed
@@ -1263,31 +1381,60 @@ app.post('/api/offers/accept', (req, res) => {
         return res.status(403).json({ error: 'You are not eligible to accept this offer' });
     }
 
-    const creator = tournament.getPlayerByName(offer.player); // Used offer.player
-    const acceptor = tournament.getPlayerByName(player2); // Used player2
-
-    if (!creator || !acceptor) {
+    const acceptor = tournament.getPlayerByName(player2);
+    if (!acceptor) {
         return res.status(400).json({ error: 'Player not found' });
     }
 
-    if (creator.isBusy() || acceptor.isBusy()) {
-        return res.status(400).json({ error: 'One or both players are busy' });
+    const now = Date.now();
+    let inActiveGame = false;
+    for (const game of activeGames.values()) {
+        if (!game.isGameOver && game.players.some(p => p.name === player2)) {
+            inActiveGame = true;
+            break;
+        }
+    }
+    if (inActiveGame) {
+        return res.status(400).json({ error: 'You are currently in an active game' });
     }
 
-    // createGame handles color randomization internally
-    console.log(`Creating game: ${offer.player} vs ${player2} (colors randomized by createGame)`);
-    const result = createGame(offer.player, player2, offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
+    // Check if player2 has pending offers that block them
+    const playerOffers = gameOffers.filter(o => o.acceptedBy.includes(player2));
+    for (const o of playerOffers) {
+        if (o.requiredPlayers <= 2) {
+            return res.status(400).json({ error: 'You already have a pending 1v1 offer' });
+        } else if (now - o.timestamp < 30000) {
+            return res.status(400).json({ error: 'Please wait 30 seconds before accepting another offer while in an N-player lobby' });
+        }
+    }
 
-    // Remove offer
-    gameOffers.splice(offerIndex, 1);
+    // Add player to the offer
+    offer.acceptedBy.push(player2);
+    
+    // Check if we have enough players to start the game
+    if (offer.acceptedBy.length < offer.requiredPlayers) {
+        // Not enough players yet, just return success that they joined the lobby
+        return res.json({ success: true, gameStarted: false, message: `Joined lobby (${offer.acceptedBy.length}/${offer.requiredPlayers})` });
+    }
 
-    // Remove other offers from these players
-    gameOffers = gameOffers.filter(o => o.player !== offer.player && o.player !== player2);
+    // We have enough players! Start the game.
+    console.log(`Creating game: ${offer.acceptedBy.join(' vs ')} (colors randomized by createGame)`);
+    const result = createGame(offer.acceptedBy, offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
 
     if (!result.success) {
+        // If game creation failed, remove the last player so they can try again? Or remove the offer?
+        // Let's remove the offer if creation failed fundamentally, to avoid it being stuck.
+        gameOffers.splice(offerIndex, 1);
         return res.status(400).json(result);
     }
 
+    // Remove the offer that successfully started
+    gameOffers.splice(offerIndex, 1);
+
+    // Remove all other pending offers that contain ANY of these users
+    gameOffers = gameOffers.filter(o => !o.acceptedBy.some(p => offer.acceptedBy.includes(p)));
+
+    // Since the format changed, we return the game start payload
     res.json(result);
 });
 
@@ -1309,9 +1456,39 @@ app.post('/api/game/start', (req, res) => {
     res.json(result);
 });
 
+// Send custom action (e.g., Secret Chess setup)
+app.post('/api/game/:gameId/action', (req, res) => {
+    const { gameId } = req.params;
+    const { player, action } = req.body;
+    
+    const game = activeGames.get(gameId);
+    if (!game) return res.status(404).json({ error: 'Game not found' });
+    
+    const playerObj = game.players.find(p => p.name === player);
+    if (!playerObj) return res.status(400).json({ error: 'Player not in game' });
+
+    let handled = false;
+    for (const strategy of game.variantStrategies) {
+        if (strategy.handleAction && strategy.handleAction(action, playerObj.color)) {
+            handled = true;
+            break;
+        }
+    }
+    
+    if (handled) {
+        game.lastMoveTime = Date.now(); // Reset timeout
+        // Save state immediately
+        saveGameState(game);
+        return res.json({ success: true });
+    } else {
+        return res.status(400).json({ error: 'Action not handled by any variant' });
+    }
+});
+
 // Get game state
 app.get('/api/game/:gameId', (req, res) => {
     const { gameId } = req.params;
+    const { player } = req.query;
     const game = activeGames.get(gameId);
 
     if (!game) {
@@ -1323,7 +1500,7 @@ app.get('/api/game/:gameId', (req, res) => {
         game.checkTimeout();
     }
 
-    const gameState = game.getState();
+    const gameState = game.getState(player);
 
     // Inject ELOs
     const p1 = tournament.getPlayerByName(game.player1);
