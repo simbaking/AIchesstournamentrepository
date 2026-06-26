@@ -63,10 +63,15 @@ body {
 /* Lion logo */
 .logo {
     width: 80px;
-    height: auto;
+    height: 80px;
+    object-fit: contain;
     display: block;
     margin: 0 auto 1rem;
     filter: drop-shadow(4px 4px 0px var(--primary));
+    background-color: #f4f4f4;
+    padding: 10px;
+    border: 3px solid #111111;
+    border-radius: var(--brutal-radius);
 }
 
 .container {
@@ -161,10 +166,7 @@ h1 {
 
     /* Offer form styling */
     .offer-form {
-        display: grid;
-        grid-template-columns: 2fr 80px;
-        gap: 10px;
-        margin-bottom: 10px;
+        display: block;
         width: 100%;
         max-width: 100%;
     }
@@ -296,21 +298,27 @@ h1 {
         align-items: center;
         padding: 1rem;
         background: rgba(0, 0, 0, 0.2);
-        border-radius: 0.5rem;
-        border: 2px solid var(--border);
-        transition: all 0.3s ease;
+        border-radius: var(--brutal-radius);
+        border: var(--brutal-border);
+        box-shadow: var(--brutal-shadow);
+        transition: all 0.2s ease;
+        margin-bottom: 0.5rem;
+    }
+
+    [data-theme="dark"] .player-item {
+        background: rgba(255, 255, 255, 0.1);
     }
 
     .player-item:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: var(--brutal-shadow-hover);
         border-color: var(--primary);
-        transform: translateX(4px);
     }
 
     .player-item.highlight-me {
         background: rgba(249, 115, 22, 0.2);
-        /* Primary color with opacity */
         border-color: var(--primary);
-        box-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
+        box-shadow: 4px 4px 0px var(--primary);
     }
 
     .player-rank {

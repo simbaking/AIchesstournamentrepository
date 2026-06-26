@@ -88,55 +88,55 @@
             <section class="card">
                 <h2>Start Tournament</h2>
                 <form id="start-form">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <div style="display: flex; align-items: center; gap: 5px;">
-                            <input type="number" id="duration-hours" placeholder="0" min="0" max="24" value="0"
-                                style="flex: 1;">
-                            <span style="font-size: 0.9em; color: var(--text-color); opacity: 0.8;">Hours</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 5px;">
-                            <input type="number" id="duration-minutes" placeholder="5" min="0" max="59" value="5"
-                                required style="flex: 1;">
-                            <span style="font-size: 0.9em; color: var(--text-color); opacity: 0.8;">Minutes</span>
-                        </div>
-                    </div>
-                    <div style="margin: 10px 0; display: flex; align-items: center; gap: 10px;">
-                        <label for="tournament-mode">Mode:</label>
+                    <div class="offer-form">
                         <select id="tournament-mode" style="flex: 1;">
                             <option value="legacy">Legacy (Global Timer)</option>
                             <option value="survival" selected>Survival (Last Man Standing)</option>
                         </select>
+                        <div style="display: flex; align-items: center; gap: 3px;">
+                            <input type="number" id="duration-hours" placeholder="Hours" min="0" max="24" value="0"
+                                style="width: 80px;">
+                            <span style="font-size: 0.85em; color: var(--text-color); opacity: 0.8;">h</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 3px;">
+                            <input type="number" id="duration-minutes" placeholder="Minutes" min="0" max="59" value="5"
+                                required style="width: 80px;">
+                            <span style="font-size: 0.85em; color: var(--text-color); opacity: 0.8;">m</span>
+                        </div>
+
+                        <div style="margin-top: 10px; border: 1px solid var(--border-color); padding: 10px; border-radius: 5px;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 5px;">
+                                <input type="checkbox" id="allow-variants" checked style="width: auto; margin-right: 5px;">
+                                Allow Variants
+                            </label>
+                            
+                            <div id="variant-selection">
+                                <label style="font-weight: bold; display: block; margin-top: 10px; margin-bottom: 5px;">Board Geometry:</label>
+                                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                    <label><input type="checkbox" name="start-geometry" value="4player" checked> 4-Player (Cross)</label>
+                                    <label><input type="checkbox" name="start-geometry" value="3player_hex" checked> 3-Player Hex</label>
+                                    <label><input type="checkbox" name="start-geometry" value="2player_hex" checked> 2-Player Hex</label>
+                                    <label><input type="checkbox" name="start-geometry" value="6x6" checked> 6x6 Board</label>
+                                    <label><input type="checkbox" name="start-geometry" value="6x6_same_bishop" checked> 6x6 (Same Bishops)</label>
+                                    <label><input type="checkbox" name="start-geometry" value="4x4" checked> 4x4 Board</label>
+                                    <label><input type="checkbox" name="start-geometry" value="4x4_pawn_center" checked> 4x4 (Pawn Center)</label>
+                                </div>
+
+                                <label style="font-weight: bold; display: block; margin-top: 10px; margin-bottom: 5px;">Normal Variants:</label>
+                                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                    <label><input type="checkbox" name="start-variants" value="freestyle" checked> Freestyle</label>
+                                    <label><input type="checkbox" name="start-variants" value="kungfu" checked> Kung Fu</label>
+                                    <label><input type="checkbox" name="start-variants" value="crazyhouse" checked> Crazyhouse</label>
+                                    <label><input type="checkbox" name="start-variants" value="kingofthehill" checked> King of the Hill</label>
+                                    <label><input type="checkbox" name="start-variants" value="atomic" checked> Atomic</label>
+                                    <label><input type="checkbox" name="start-variants" value="secret" checked> Secret Chess</label>
+                                    <label><input type="checkbox" name="start-variants" value="fogofwar" checked> Fog of War</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div style="margin: 10px 0; display: flex; align-items: center;">
-                        <input type="checkbox" id="allow-variants" checked style="width: auto; margin-right: 5px;">
-                        <label for="allow-variants">Allow Variants</label>
-                    </div>
-                    <div id="variant-selection"
-                        style="margin-left: 20px; margin-bottom: 10px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px;">
-                        <div style="margin-bottom: 5px; display: flex; align-items: center;">
-                            <input type="checkbox" id="allow-freestyle" checked style="width: auto; margin-right: 5px;">
-                            <label for="allow-freestyle">♟️ Freestyle (Chess 960)</label>
-                        </div>
-                        <div style="margin-bottom: 5px; display: flex; align-items: center;">
-                            <input type="checkbox" id="allow-kungfu" checked style="width: auto; margin-right: 5px;">
-                            <label for="allow-kungfu">⚡ Kung Fu Chess (Real-time)</label>
-                        </div>
-                        <div style="margin-bottom: 5px; display: flex; align-items: center;">
-                            <input type="checkbox" id="allow-crazyhouse" checked
-                                style="width: auto; margin-right: 5px;">
-                            <label for="allow-crazyhouse">🏠 Crazyhouse (Drops)</label>
-                        </div>
-                        <div style="display: flex; align-items: center;">
-                            <input type="checkbox" id="allow-kingofthehill" checked
-                                style="width: auto; margin-right: 5px;">
-                            <label for="allow-kingofthehill">⛰️ King of the Hill</label>
-                        </div>
-                        <div style="margin-top: 5px; display: flex; align-items: center;">
-                            <input type="checkbox" id="allow-atomic" checked style="width: auto; margin-right: 5px;">
-                            <label for="allow-atomic">💥 Atomic Chess</label>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-success">Start Tournament</button>
+                    
+                    <button type="submit" class="btn btn-success" style="margin-top: 15px; width: 100%;">Start Tournament</button>
                 </form>
                 <div id="timer" class="timer"></div>
             </section>
