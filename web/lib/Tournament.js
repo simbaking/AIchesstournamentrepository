@@ -6,8 +6,9 @@ class Tournament {
         this.isRunning = false;
         this.startTime = null;
         this.durationLimit = 0;
+        this.mode = 'legacy';
         this.allowVariants = true;
-        this.allowedVariants = ['standard', 'freestyle', 'kungfu', 'crazyhouse', 'kingofthehill', 'atomic']; // Specific allowed variants
+        this.allowedVariants = ['standard', 'freestyle', 'kungfu', 'crazyhouse', 'kingofthehill', 'atomic', '4player', '3player_hex', '2player_hex', '6x6', '6x6_same_bishop', '4x4', '4x4_pawn_center', 'secret', 'fogofwar']; // Specific allowed variants
     }
 
     registerPlayer(name, isComputer = false, level = null, browserId = null, clientIP = null, initialElo = null) {
@@ -22,19 +23,24 @@ class Tournament {
         return this.players;
     }
 
-    startTournament(durationMillis, allowVariants = true, allowedVariants = ['standard', 'freestyle', 'kungfu', 'crazyhouse', 'kingofthehill', 'atomic']) {
+    startTournament(durationMillis, allowVariants = true, allowedVariants = ['standard', 'freestyle', 'kungfu', 'crazyhouse', 'kingofthehill', 'atomic', '4player', '3player_hex', '2player_hex', '6x6', '6x6_same_bishop', '4x4', '4x4_pawn_center', 'secret', 'fogofwar'], mode = 'legacy') {
         // Reset scores for all players
-        this.players.forEach(p => p.score = 0);
+        this.players.forEach(p => {
+            p.score = 0;
+            p.eliminated = false;
+            p.timeLeft = durationMillis;
+        });
 
         this.startTime = Date.now();
         this.durationLimit = durationMillis;
         this.allowVariants = allowVariants;
         this.allowedVariants = allowedVariants;
+        this.mode = mode;
         this.isRunning = true;
 
         // Verbose logging for timer debugging
         console.log(`[TOURNAMENT_START] StartTime: ${new Date(this.startTime).toISOString()}`);
-        console.log(`[TOURNAMENT_START] Duration: ${(durationMillis / 60000).toFixed(1)} minutes (${durationMillis}ms)`);
+        console.log(`[TOURNAMENT_START] Duration: ${(durationMillis / 60000).toFixed(1)} minutes (${durationMillis}ms), Mode: ${mode}`);
         console.log(`Tournament started! Duration: ${durationMillis}ms, Allow Variants: ${allowVariants}, Allowed: ${allowedVariants.join(', ')}`);
     }
 
@@ -49,10 +55,34 @@ class Tournament {
         }
 
         const elapsed = Date.now() - this.startTime;
-        if (elapsed >= this.durationLimit) {
-            this.isRunning = false;
-            console.log(`[TOURNAMENT_TIMER] Time expired! Elapsed: ${(elapsed / 60000).toFixed(1)}m, Limit: ${(this.durationLimit / 60000).toFixed(1)}m`);
-            console.log('Tournament time expired!');
+
+        if (this.mode === 'survival') {
+            let activePlayers = 0;
+            this.players.forEach(p => {
+                if (!p.eliminated) {
+                    p.timeLeft = this.durationLimit + p.score - elapsed;
+                    if (p.timeLeft <= 0) {
+                        p.timeLeft = 0;
+                        p.eliminated = true;
+                        console.log(`[TOURNAMENT_TIMER] ${p.getName()} eliminated!`);
+                    } else {
+                        activePlayers++;
+                    }
+                }
+            });
+
+            if (activePlayers <= 1 && this.players.length >= 2) {
+                this.isRunning = false;
+                console.log('Tournament survival mode finished! Last man standing.');
+            } else if (activePlayers === 0) {
+                this.isRunning = false;
+            }
+        } else {
+            if (elapsed >= this.durationLimit) {
+                this.isRunning = false;
+                console.log(`[TOURNAMENT_TIMER] Time expired! Elapsed: ${(elapsed / 60000).toFixed(1)}m, Limit: ${(this.durationLimit / 60000).toFixed(1)}m`);
+                console.log('Tournament time expired!');
+            }
         }
         return this.isRunning;
     }
@@ -150,88 +180,96 @@ class Tournament {
 
     /**
      * Record game result with ELO adjustments and score multipliers
-     * @param {string} player1Name - First player name
-     * @param {string} player2Name - Second player name
+     * @param {string[]} playerNames - Array of player names
      * @param {string|null} winnerName - Winner name, or null for draw
      * @param {number} duration - Game duration in milliseconds
      * @param {string} variant - Game variant (standard, freestyle, kungfu, etc.)
      */
-    recordGameResult(player1Name, player2Name, winnerName, duration, variant = 'standard') {
-        const p1 = this.getPlayerByName(player1Name);
-        const p2 = this.getPlayerByName(player2Name);
-
-        if (!p1 || !p2) {
-            console.error('One or both players not found');
+    recordGameResult(playerNames, winnerName, duration, variant = 'standard') {
+        const players = playerNames.map(name => this.getPlayerByName(name)).filter(p => p);
+        if (players.length < 2) {
+            console.error('Not enough valid players found for game result');
             return;
         }
 
         const isDraw = !winnerName;
+        const winner = winnerName ? this.getPlayerByName(winnerName) : null;
 
         // 1. Calculate Score Multipliers (BEFORE ELO updates)
         const durationMult = this.getDurationMultiplier(duration);
         const variantMult = this.getVariantMultiplier(duration, variant);
-        let p1Points = 0;
-        let p2Points = 0;
-        let p1Log = '';
-        let p2Log = '';
+
+        let baseWinMult = 3.0, baseTieMult = 1.0;
+        const numPlayers = players.length;
+
+        if (this.mode === 'survival') {
+            if (numPlayers === 2) { baseWinMult = 1.5; baseTieMult = 0.5; }
+            else if (numPlayers === 3) { baseWinMult = 2.25; baseTieMult = 0.5; }
+            else { baseWinMult = 3.0; baseTieMult = 0.5; }
+        } else {
+            if (numPlayers === 2) { baseWinMult = 3.0; baseTieMult = 1.0; }
+            else if (numPlayers === 3) { baseWinMult = 4.5; baseTieMult = 1.0; }
+            else { baseWinMult = 6.0; baseTieMult = 1.0; }
+        }
+
+        const pointsMap = new Map();
 
         if (isDraw) {
-            const p1RankMult = this.getRankMultiplier(p1);
-            const p2RankMult = this.getRankMultiplier(p2);
-
-            p1Points = Math.round(duration * p1RankMult * durationMult * variantMult);
-            p2Points = Math.round(duration * p2RankMult * durationMult * variantMult);
-
-            p1Log = `Draw! ${p1.getName()} gets ${p1Points} ms (×${p1RankMult} rank ×${durationMult.toFixed(2)} duration ×${variantMult.toFixed(2)} variant)`;
-            p2Log = `${p2.getName()} gets ${p2Points} ms (×${p2RankMult} rank ×${durationMult.toFixed(2)} duration ×${variantMult.toFixed(2)} variant)`;
-        } else {
-            const winner = this.getPlayerByName(winnerName);
-            const loser = winner === p1 ? p2 : p1;
-
-            const rankMult = this.getRankMultiplier(winner);
-            const opponentMult = this.getOpponentMultiplier(loser);
-            const totalMult = rankMult * opponentMult * durationMult * variantMult;
-
-            const points = Math.round(duration * 3 * totalMult);
-
-            if (winner === p1) {
-                p1Points = points;
-                p1Log = `${winner.getName()} wins! Gets ${points} ms (3× × ${rankMult.toFixed(2)} rank × ${opponentMult.toFixed(2)} opp × ${durationMult.toFixed(2)} dur × ${variantMult.toFixed(2)} var = ×${totalMult.toFixed(2)})`;
-            } else {
-                p2Points = points;
-                p2Log = `${winner.getName()} wins! Gets ${points} ms (3× × ${rankMult.toFixed(2)} rank × ${opponentMult.toFixed(2)} opp × ${durationMult.toFixed(2)} dur × ${variantMult.toFixed(2)} var = ×${totalMult.toFixed(2)})`;
+            players.forEach(p => {
+                const rankMult = this.getRankMultiplier(p);
+                const points = Math.round(duration * baseTieMult * rankMult * durationMult * variantMult);
+                pointsMap.set(p, points);
+                console.log(`Draw! ${p.getName()} gets ${points} ms (×${baseTieMult} base ×${rankMult} rank ×${durationMult.toFixed(2)} dur ×${variantMult.toFixed(2)} var)`);
+            });
+        } else if (winner) {
+            // Find average Elo of opponents to use for winner's opponent multiplier
+            // In 1v1, it's just the loser. Here it's an average of all losers.
+            const losers = players.filter(p => p !== winner);
+            if (losers.length > 0) {
+                // Actually the getOpponentMultiplier takes a player object. We can just use the highest Elo loser to be generous.
+                const bestLoser = losers.reduce((prev, curr) => (prev.getElo() > curr.getElo()) ? prev : curr);
+                
+                const rankMult = this.getRankMultiplier(winner);
+                const opponentMult = this.getOpponentMultiplier(bestLoser);
+                const totalMult = rankMult * opponentMult * durationMult * variantMult;
+                
+                const points = Math.round(duration * baseWinMult * totalMult);
+                pointsMap.set(winner, points);
+                console.log(`${winner.getName()} wins! Gets ${points} ms (${baseWinMult}× base × ${rankMult.toFixed(2)} rank × ${opponentMult.toFixed(2)} opp × ${durationMult.toFixed(2)} dur × ${variantMult.toFixed(2)} var = ×${totalMult.toFixed(2)})`);
             }
         }
 
         // 2. Calculate and Apply ELO adjustments
-        if (!p1.isComputerPlayer() || !p2.isComputerPlayer()) {
-            const p1Score = isDraw ? 0.5 : (winnerName === player1Name ? 1 : 0);
-            const p2Score = isDraw ? 0.5 : (winnerName === player2Name ? 1 : 0);
-
-            if (!p1.isComputerPlayer()) {
-                const eloChange = this.calculateEloChange(p1.getElo(), p2.getElo(), p1Score, duration);
-                p1.adjustElo(eloChange);
-                console.log(`${p1.getName()} ELO: ${p1.getElo() - eloChange} → ${p1.getElo()} (${eloChange >= 0 ? '+' : ''}${eloChange})`);
+        // To simplify multi-player ELO, treat it as a series of 1v1 matches vs average opponent ELO.
+        players.forEach(p => {
+            if (!p.isComputerPlayer()) {
+                const opponents = players.filter(opp => opp !== p);
+                const avgOpponentElo = opponents.reduce((sum, opp) => sum + opp.getElo(), 0) / opponents.length;
+                
+                let actualScore = 0;
+                if (isDraw) actualScore = 0.5;
+                else if (p === winner) actualScore = 1.0;
+                
+                const eloChange = this.calculateEloChange(p.getElo(), avgOpponentElo, actualScore, duration);
+                p.adjustElo(eloChange);
+                console.log(`${p.getName()} ELO: ${p.getElo() - eloChange} → ${p.getElo()} (${eloChange >= 0 ? '+' : ''}${eloChange})`);
             }
-
-            if (!p2.isComputerPlayer()) {
-                const eloChange = this.calculateEloChange(p2.getElo(), p1.getElo(), p2Score, duration);
-                p2.adjustElo(eloChange);
-                console.log(`${p2.getName()} ELO: ${p2.getElo() - eloChange} → ${p2.getElo()} (${eloChange >= 0 ? '+' : ''}${eloChange})`);
-            }
-        }
+        });
 
         // 3. Apply Score Points
-        if (p1Points > 0) p1.addScore(p1Points);
-        if (p2Points > 0) p2.addScore(p2Points);
-
-        if (p1Log) console.log(p1Log);
-        if (p2Log) console.log(p2Log);
+        pointsMap.forEach((points, player) => {
+            if (points > 0) {
+                player.addScore(points);
+            }
+        });
     }
 
     getRemainingTime() {
         if (!this.isRunning) return 0;
         const elapsed = Date.now() - this.startTime;
+        if (this.mode === 'survival') {
+            return Math.max(0, this.durationLimit - elapsed); // For UI timer we can show global survival time or hide it
+        }
         return Math.max(0, this.durationLimit - elapsed);
     }
 
@@ -242,8 +280,9 @@ class Tournament {
         this.isRunning = false;
         this.startTime = null;
         this.durationLimit = 0;
+        this.mode = 'legacy';
         this.allowVariants = true;
-        this.allowedVariants = ['standard', 'freestyle', 'kungfu', 'crazyhouse', 'kingofthehill', 'atomic'];
+        this.allowedVariants = ['standard', 'freestyle', 'kungfu', 'crazyhouse', 'kingofthehill', 'atomic', '4player', '3player_hex', '2player_hex', '6x6', '6x6_same_bishop', '4x4', '4x4_pawn_center', 'secret', 'fogofwar'];
         console.log('Tournament reset (scores cleared, players preserved).');
     }
     toJSON() {

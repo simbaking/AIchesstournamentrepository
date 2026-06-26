@@ -100,6 +100,13 @@
                             <span style="font-size: 0.9em; color: var(--text-color); opacity: 0.8;">Minutes</span>
                         </div>
                     </div>
+                    <div style="margin: 10px 0; display: flex; align-items: center; gap: 10px;">
+                        <label for="tournament-mode">Mode:</label>
+                        <select id="tournament-mode" style="flex: 1;">
+                            <option value="legacy">Legacy (Global Timer)</option>
+                            <option value="survival" selected>Survival (Last Man Standing)</option>
+                        </select>
+                    </div>
                     <div style="margin: 10px 0; display: flex; align-items: center;">
                         <input type="checkbox" id="allow-variants" checked style="width: auto; margin-right: 5px;">
                         <label for="allow-variants">Allow Variants</label>
@@ -176,18 +183,44 @@
                             <span style="font-size: 0.85em; color: var(--text-color); opacity: 0.8;">sec</span>
                         </div>
 
-                        <select id="offer-variant" style="width: auto;">
-                            <option value="standard" selected>Standard Chess</option>
-                            <option value="freestyle">Freestyle (Chess 960)</option>
-                            <option value="kungfu">Kung Fu (Real-time)</option>
-                            <option value="crazyhouse">Crazyhouse (Drops)</option>
-                            <option value="kingofthehill">King of the Hill</option>
-                            <option value="atomic">Atomic Chess</option>
-                        </select>
-                        <input type="text" id="offer-start-pos" placeholder="Pos ID (0-959) or Random"
-                            style="display:none;">
-                        <input type="number" id="offer-cooldown" placeholder="Cooldown (sec)" min="1" max="60"
-                            value="10" style="display:none; width: 120px;">
+                        <div style="margin-top: 10px; border: 1px solid var(--border-color); padding: 10px; border-radius: 5px;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Board Geometry:</label>
+                            <div id="offer-geometry" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                <label><input type="radio" name="geometry" value="standard" checked> Standard 8x8</label>
+                                <label><input type="radio" name="geometry" value="4player"> 4-Player (Cross)</label>
+                                <label><input type="radio" name="geometry" value="3player_hex"> 3-Player Hex</label>
+                                <label><input type="radio" name="geometry" value="2player_hex"> 2-Player Hex</label>
+                                <label><input type="radio" name="geometry" value="6x6"> 6x6 Board</label>
+                                <label><input type="radio" name="geometry" value="4x4"> 4x4 Board</label>
+                            </div>
+                            <!-- Geometry specific options -->
+                            <div id="geom-options-6x6" style="display:none; margin-top: 10px;">
+                                <label><input type="checkbox" id="offer-6x6-same-bishop"> Same color bishops</label>
+                            </div>
+                            <div id="geom-options-4x4" style="display:none; margin-top: 10px;">
+                                <label><input type="checkbox" id="offer-4x4-pawn-center"> Fill center with pawns</label>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 10px; border: 1px solid var(--border-color); padding: 10px; border-radius: 5px;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Normal Variants:</label>
+                            <div id="offer-normal-variants" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                <label><input type="checkbox" name="variants" value="freestyle"> Freestyle (Chess 960)</label>
+                                <label><input type="checkbox" name="variants" value="kungfu"> Kung Fu</label>
+                                <label><input type="checkbox" name="variants" value="crazyhouse"> Crazyhouse</label>
+                                <label><input type="checkbox" name="variants" value="kingofthehill"> King of the Hill</label>
+                                <label><input type="checkbox" name="variants" value="atomic"> Atomic</label>
+                                <label><input type="checkbox" name="variants" value="secret"> Secret Chess</label>
+                                <label><input type="checkbox" name="variants" value="fogofwar"> Fog of War</label>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 10px; display: flex; gap: 10px;">
+                            <input type="text" id="offer-start-pos" placeholder="Pos ID (0-959) or Random"
+                                style="display:none; width: auto;">
+                            <input type="number" id="offer-cooldown" placeholder="Cooldown (sec)" min="1" max="60"
+                                value="10" style="display:none; width: 120px;">
+                        </div>
                     </div>
                     <div style="margin-top: 10px;">
                         <label for="offer-targets" style="display: block; margin-bottom: 5px;">Target Players (Hold
@@ -228,6 +261,9 @@
     </div>
     <div id="confetti-container" class="confetti-container"></div>
 
+    <script src="ui.js"></script>
+    <script src="hexRenderer.js"></script>
+    <script src="canvasRenderer.js"></script>
     <script src="app.js"></script>
     <script>
         async function submitIssue() {

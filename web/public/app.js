@@ -294,17 +294,42 @@ async function updateStatus() {
         if (data.players.length === 0) {
             setHTML(leaderboard, '<p class="empty-state">No players registered yet</p>');
         } else {
-            const sortedPlayers = [...data.players].sort((a, b) => b.score - a.score);
+            const isSurvival = data.config && data.config.mode === 'survival';
+            let sortedPlayers = [...data.players];
+            
+            if (isSurvival) {
+                sortedPlayers.sort((a, b) => {
+                    if (a.eliminated && !b.eliminated) return 1;
+                    if (!a.eliminated && b.eliminated) return -1;
+                    return b.timeLeft - a.timeLeft;
+                });
+            } else {
+                sortedPlayers.sort((a, b) => b.score - a.score);
+            }
+
             setHTML(leaderboard, sortedPlayers.map((player, index) => {
                 const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
                 const playerType = player.isComputer ? `🤖 Level ${player.level} (${Math.round(player.elo)})` : `👤 (${Math.round(player.elo)})`;
                 const displayName = formatPlayerName(player.name);
                 const highlightClass = (player.name && myPlayerName && player.name.toLowerCase() === myPlayerName.toLowerCase()) ? 'highlight-me' : '';
+                
+                let scoreText = '';
+                let styleStr = '';
+                if (isSurvival) {
+                    if (player.eliminated) {
+                        scoreText = 'Eliminated';
+                        styleStr = 'text-decoration: line-through; opacity: 0.6;';
+                    } else {
+                        scoreText = formatTime(player.timeLeft);
+                    }
+                } else {
+                    scoreText = formatScore(player.score);
+                }
 
                 return `
-                    <div class="player-item ${highlightClass}">
+                    <div class="player-item ${highlightClass}" style="${styleStr}">
                         <span>${medal} ${displayName} ${playerType}</span>
-                        <span class="player-score">${formatScore(player.score)}</span>
+                        <span class="player-score">${scoreText}</span>
                     </div>
                 `;
             }).join(''));
@@ -404,7 +429,7 @@ function updateOpenOffers(offers) {
             targetText = offer.targets.map(t => formatPlayerName(t)).join(', ');
         }
 
-        const playerDisplay = formatPlayerName(offer.player);
+        const playerDisplay = formatPlayerName(offer.creator);
         const eloDisplay = offer.elo ? `(${Math.round(offer.elo)})` : '';
 
         // Variant badge
@@ -414,8 +439,8 @@ function updateOpenOffers(offers) {
         let actionHtml = '';
         if (!myPlayerName) {
             actionHtml = '<small style="color: var(--text-muted);">Register to accept</small>';
-        } else if (myPlayerName === offer.player) {
-            actionHtml = '<small style="color: var(--text-muted);">Your offer</small>';
+        } else if (offer.acceptedBy && offer.acceptedBy.includes(myPlayerName)) {
+            actionHtml = '<small style="color: var(--text-muted);">You accepted</small>';
         } else {
             // Check targets
             const isTargeted = !offer.targets ||
@@ -431,12 +456,15 @@ function updateOpenOffers(offers) {
             }
         }
 
+        const acceptedText = offer.requiredPlayers > 2 ? `<br><small style="color: #ff9800; font-weight: bold;">${offer.acceptedBy ? offer.acceptedBy.length : 1}/${offer.requiredPlayers} Accepted</small>` : '';
+
         return `
             <div class="player-item" style="flex-wrap: wrap; gap: 10px;">
                 <div style="flex: 1;">
                     <strong>${playerDisplay} ${eloDisplay}</strong> wants to play 
                     <span class="score">${timeText}</span>
                     ${variantBadge}
+                    ${acceptedText}
                     <br><small style="color: var(--text-muted);">Target: ${targetText}</small>
                 </div>
                 <div style="display: flex; gap: 5px; align-items: center;">
@@ -449,8 +477,8 @@ function updateOpenOffers(offers) {
 }
 
 // Get variant badge HTML
-function getVariantBadge(variant) {
-    if (!variant || variant === 'standard') {
+function getVariantBadge(variantString) {
+    if (!variantString || variantString === 'standard') {
         return '';
     }
 
@@ -459,11 +487,22 @@ function getVariantBadge(variant) {
         'kungfu': { text: '⚡ Kung Fu', color: '#ff4500' },
         'crazyhouse': { text: '🏠 Crazy', color: '#9333ea' },
         'kingofthehill': { text: '⛰️ KOTH', color: '#22c55e' },
-        'atomic': { text: '💥 Atomic', color: '#dc2626' }
+        'atomic': { text: '💥 Atomic', color: '#dc2626' },
+        '4player': { text: '👥 4-Player', color: '#eab308' },
+        '3player_hex': { text: '⬡ 3-Hex', color: '#f59e0b' },
+        '2player_hex': { text: '⬡ 2-Hex', color: '#f59e0b' },
+        '6x6': { text: '⬛ 6x6', color: '#14b8a6' },
+        '4x4': { text: '⬛ 4x4', color: '#0ea5e9' },
+        'secret': { text: '🕵️ Secret', color: '#8b5cf6' },
+        'fogofwar': { text: '🌫️ Fog', color: '#64748b' }
     };
 
-    const badge = badges[variant] || { text: variant, color: '#666' };
-    return `<span class="variant-badge" style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: ${badge.color}; color: white; margin-left: 5px;">${badge.text}</span>`;
+    const variants = variantString.split(',');
+    return variants.map(variant => {
+        if (variant === 'standard') return '';
+        const badge = badges[variant] || { text: variant, color: '#666' };
+        return `<span class="variant-badge" style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: ${badge.color}; color: white; margin-left: 5px;">${badge.text}</span>`;
+    }).join('');
 }
 
 // Accept offer handler (global scope for onclick)
@@ -670,6 +709,7 @@ if (startForm) {
             return;
         }
 
+        const mode = document.getElementById('tournament-mode').value || 'survival';
         const allowVariants = document.getElementById('allow-variants').checked;
 
         // Collect specific allowed variants
@@ -701,6 +741,7 @@ if (startForm) {
                     durationMinutes,
                     hours,
                     minutes,
+                    mode,
                     allowVariants,
                     allowedVariants // Send specific allowed variants
                 })
@@ -724,35 +765,43 @@ if (startForm) {
 }
 
 // Toggle Freestyle position ID input and Kung Fu cooldown input visibility
-const offerVariantSelect = document.getElementById('offer-variant');
+const offerGeometryRadios = document.querySelectorAll('input[name="geometry"]');
+const offerVariantCheckboxes = document.querySelectorAll('input[name="variants"]');
 const offerStartPosInput = document.getElementById('offer-start-pos');
 const offerCooldownInput = document.getElementById('offer-cooldown');
 const offerTimeControl = document.getElementById('offer-time-control');
 const offerIncrement = document.getElementById('offer-increment');
+const geomOptions6x6 = document.getElementById('geom-options-6x6');
+const geomOptions4x4 = document.getElementById('geom-options-4x4');
 
-if (offerVariantSelect) {
-    offerVariantSelect.addEventListener('change', (e) => {
-        const isKungFu = e.target.value === 'kungfu';
+const handleVariantUIChange = () => {
+    let hasKungFu = false;
+    let hasFreestyle = false;
 
-        // Show start position for freestyle
-        if (offerStartPosInput) {
-            offerStartPosInput.style.display = e.target.value === 'freestyle' ? 'block' : 'none';
-        }
-        // Show cooldown for kungfu
-        if (offerCooldownInput) {
-            offerCooldownInput.style.display = isKungFu ? 'block' : 'none';
-        }
-        // Grey out time controls for kungfu (not used)
-        if (offerTimeControl) {
-            offerTimeControl.disabled = isKungFu;
-            offerTimeControl.style.opacity = isKungFu ? '0.5' : '1';
-        }
-        if (offerIncrement) {
-            offerIncrement.disabled = isKungFu;
-            offerIncrement.style.opacity = isKungFu ? '0.5' : '1';
-        }
+    offerVariantCheckboxes.forEach(cb => {
+        if (cb.checked && cb.value === 'kungfu') hasKungFu = true;
+        if (cb.checked && cb.value === 'freestyle') hasFreestyle = true;
     });
-}
+
+    const geometry = document.querySelector('input[name="geometry"]:checked')?.value || 'standard';
+    if (geomOptions6x6) geomOptions6x6.style.display = geometry === '6x6' ? 'block' : 'none';
+    if (geomOptions4x4) geomOptions4x4.style.display = geometry === '4x4' ? 'block' : 'none';
+
+    if (offerStartPosInput) offerStartPosInput.style.display = hasFreestyle ? 'block' : 'none';
+    if (offerCooldownInput) offerCooldownInput.style.display = hasKungFu ? 'block' : 'none';
+    
+    if (offerTimeControl) {
+        offerTimeControl.disabled = hasKungFu;
+        offerTimeControl.style.opacity = hasKungFu ? '0.5' : '1';
+    }
+    if (offerIncrement) {
+        offerIncrement.disabled = hasKungFu;
+        offerIncrement.style.opacity = hasKungFu ? '0.5' : '1';
+    }
+};
+
+offerVariantCheckboxes.forEach(cb => cb.addEventListener('change', handleVariantUIChange));
+offerGeometryRadios.forEach(radio => radio.addEventListener('change', handleVariantUIChange));
 
 // Create Game Offer
 createOfferForm.addEventListener('submit', async (e) => {
@@ -760,22 +809,35 @@ createOfferForm.addEventListener('submit', async (e) => {
     const player1 = myPlayerName; // Use local player name
     const timeControl = document.getElementById('offer-time-control').value;
     const increment = document.getElementById('offer-increment').value;
-    const variantSelect = document.getElementById('offer-variant');
-    const startPosInput = document.getElementById('offer-start-pos');
-    const cooldownInput = document.getElementById('offer-cooldown');
+    const geometry = document.querySelector('input[name="geometry"]:checked')?.value || 'standard';
+    const checkedVariants = Array.from(document.querySelectorAll('input[name="variants"]:checked')).map(cb => cb.value);
+    
+    let variants = [];
+    if (geometry !== 'standard') variants.push(geometry);
+    
+    // Add sub-options
+    if (geometry === '6x6' && document.getElementById('offer-6x6-same-bishop')?.checked) {
+        variants.push('6x6_same_bishop');
+    }
+    if (geometry === '4x4' && document.getElementById('offer-4x4-pawn-center')?.checked) {
+        variants.push('4x4_pawn_center');
+    }
 
-    const variant = variantSelect ? variantSelect.value : 'standard';
+    variants = variants.concat(checkedVariants);
+    
+    let variant = variants.length > 0 ? variants.join(',') : 'standard';
+
     let startPos = 'random';
     let cooldown = 10; // Default 10 seconds
 
-    if (variant === 'freestyle' && startPosInput) {
+    if (checkedVariants.includes('freestyle') && startPosInput) {
         const val = startPosInput.value.trim();
         if (val && val.toLowerCase() !== 'random') {
             startPos = val;
         }
     }
 
-    if (variant === 'kungfu' && cooldownInput) {
+    if (checkedVariants.includes('kungfu') && cooldownInput) {
         cooldown = parseInt(cooldownInput.value) || 10;
     }
 

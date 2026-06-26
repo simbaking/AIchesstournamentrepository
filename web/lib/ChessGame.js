@@ -3,22 +3,63 @@ const Board = require('./core/Board');
 
 // Chess game manager
 class ChessGame {
-    constructor(player1Name, player2Name, gameId, timeControlMinutes = 10, onGameOver = null, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random', cooldownSeconds = 10, player1Elo = 1200, player2Elo = 1200) {
-        this.gameId = gameId;
-        this.player1 = player1Name; // White
-        this.player2 = player2Name; // Black
-        this.variant = variant;
+    constructor(player1OrPlayers, player2OrGameId, gameIdOrTime, timeControlOrGameOver = 10, onGameOverOrInc = null, incrementOrStages = 0, timeStagesOrVariant = [], variantOrPos = 'standard', startPosOrCooldown = 'random', cooldownOrElos = 10, player1Elo = 1200, player2Elo = 1200) {
+        
+        // Handle N-player or legacy 2-player signatures
+        if (Array.isArray(player1OrPlayers)) {
+            // N-player signature
+            this.players = player1OrPlayers; // e.g. [{name: 'Alice', color: 'white'}, {name: 'Bob', color: 'black'}, ...]
+            this.gameId = player2OrGameId;
+            this.timeControlMinutes = gameIdOrTime || 10;
+            this.onGameOver = timeControlOrGameOver;
+            this.incrementSeconds = onGameOverOrInc || 0;
+            this.timeStages = incrementOrStages || [];
+            this.variant = timeStagesOrVariant || 'standard';
+            this.startPos = variantOrPos || 'random';
+            this.cooldownSeconds = startPosOrCooldown || 10;
+            this.playerElos = cooldownOrElos || {};
+        } else {
+            // Legacy 2-player signature
+            this.players = [
+                {name: player1OrPlayers, color: 'white'},
+                {name: player2OrGameId, color: 'black'}
+            ];
+            this.gameId = gameIdOrTime;
+            this.timeControlMinutes = timeControlOrGameOver || 10;
+            this.onGameOver = onGameOverOrInc;
+            this.incrementSeconds = incrementOrStages || 0;
+            this.timeStages = timeStagesOrVariant || [];
+            this.variant = variantOrPos || 'standard';
+            this.startPos = startPosOrCooldown || 'random';
+            this.cooldownSeconds = cooldownOrElos || 10;
+            this.playerElos = {
+                'white': player1Elo,
+                'black': player2Elo
+            };
+        }
+
+        // Setup legacy getters for backward compatibility
+        this.player1 = this.players.find(p => p.color === 'white')?.name;
+        this.player2 = this.players.find(p => p.color === 'black')?.name;
+        
+        this.turnOrder = this.players.map(p => p.color);
+        this.currentTurnIndex = 0;
+
         this.startPosId = null; // Stores the specific 960 ID
-        this.startPos = startPos; // Store original argument
         this.cooldowns = new Map(); // Kung Fu Chess cooldowns: "x,y" -> timestamp
-        this.cooldownMs = cooldownSeconds * 1000; // Configurable cooldown duration
-        this.board = new Board();
+        this.cooldownMs = this.cooldownSeconds * 1000; // Configurable cooldown duration
+        
+        const variantList = Array.isArray(this.variant) ? this.variant : (typeof this.variant === 'string' ? this.variant.split(',') : ['standard']);
 
-        // ELO ratings for decision making
-        this.player1Elo = player1Elo;
-        this.player2Elo = player2Elo;
+        // Determine board dimensions based on variant
+        let boardWidth = 8, boardHeight = 8;
+        if (variantList.includes('4player')) { boardWidth = 14; boardHeight = 14; }
+        else if (variantList.includes('6x6')) { boardWidth = 6; boardHeight = 6; }
+        else if (variantList.includes('4x4')) { boardWidth = 4; boardHeight = 4; }
+        
+        this.board = new Board(boardWidth, boardHeight);
 
-        console.log(`[ChessGame] Constructor called with variant: "${variant}", startPos: "${startPos}", cooldown: ${cooldownSeconds}s`);
+        console.log(`[ChessGame] Constructor called with variant: "${variantOrPos}", startPos: "${startPosOrCooldown}", cooldown: ${cooldownOrElos}s`);
 
         const Standard = require('./variants/Standard');
         const Atomic = require('./variants/Atomic');
@@ -26,75 +67,118 @@ class ChessGame {
         const KungFu = require('./variants/KungFu');
         const KingOfTheHill = require('./variants/KingOfTheHill');
         const Chess960 = require('./variants/Chess960');
+        const FourPlayer = require('./variants/FourPlayer');
+        const SixBySix = require('./variants/SixBySix');
+        const FourByFour = require('./variants/FourByFour');
+        const HexChess = require('./variants/HexChess');
+        const SecretChess = require('./variants/SecretChess');
+        const FogOfWar = require('./variants/FogOfWar');
 
-        switch (this.variant) {
-            case 'atomic': this.variantStrategy = new Atomic(this); break;
-            case 'crazyhouse': this.variantStrategy = new Crazyhouse(this); break;
-            case 'kungfu': this.variantStrategy = new KungFu(this); break;
-            case 'kingofthehill': this.variantStrategy = new KingOfTheHill(this); break;
-            case 'freestyle': this.variantStrategy = new Chess960(this); break;
-            default: this.variantStrategy = new Standard(this); break;
+        this.variantStrategies = [];
+        for (const v of variantList) {
+            switch (v.trim()) {
+                case 'atomic': this.variantStrategies.push(new Atomic(this)); break;
+                case 'crazyhouse': this.variantStrategies.push(new Crazyhouse(this)); break;
+                case 'kungfu': this.variantStrategies.push(new KungFu(this)); break;
+                case 'kingofthehill': this.variantStrategies.push(new KingOfTheHill(this)); break;
+                case 'freestyle': this.variantStrategies.push(new Chess960(this)); break;
+                case '4player': this.variantStrategies.push(new FourPlayer(this)); break;
+                case '6x6': 
+                    if (!this.variantStrategies.some(s => s instanceof SixBySix)) {
+                        const sameBishop = variantList.includes('6x6_same_bishop');
+                        this.variantStrategies.push(new SixBySix(this, sameBishop));
+                    }
+                    break;
+                case '6x6_same_bishop':
+                    if (!this.variantStrategies.some(s => s instanceof SixBySix)) {
+                        this.variantStrategies.push(new SixBySix(this, true));
+                    }
+                    break;
+                case '4x4': 
+                    if (!this.variantStrategies.some(s => s instanceof FourByFour)) {
+                        const pawnCenter = variantList.includes('4x4_pawn_center');
+                        this.variantStrategies.push(new FourByFour(this, pawnCenter)); 
+                    }
+                    break;
+                case '4x4_pawn_center':
+                    if (!this.variantStrategies.some(s => s instanceof FourByFour)) {
+                        this.variantStrategies.push(new FourByFour(this, true)); 
+                    }
+                    break;
+                case '3player_hex': 
+                case '2player_hex': this.variantStrategies.push(new HexChess(this)); break;
+                case 'secret': this.variantStrategies.push(new SecretChess(this)); break;
+                case 'fogofwar': this.variantStrategies.push(new FogOfWar(this)); break;
+                case 'standard': this.variantStrategies.push(new Standard(this)); break;
+            }
+        }
+        if (this.variantStrategies.length === 0) {
+            this.variantStrategies.push(new Standard(this));
         }
 
-        this.variantStrategy.setupBoard();
+        for (const strategy of this.variantStrategies) {
+            if (strategy.setupBoard) strategy.setupBoard();
+        }
 
-        this.isWhiteTurn = true;
-        this.startTime = Date.now();
         this.isGameOver = false;
         this.winner = null;
         this.termination = null; // 'checkmate', 'stalemate', 'draw', 'resignation', 'timeout'
         this.moveHistory = [];
-        this.onGameOver = onGameOver;
 
         // Time control
-        this.timeControlMs = timeControlMinutes * 60 * 1000;
-        // Ensure increment is a valid number
-        const inc = Number(incrementSeconds);
+        this.timeControlMs = this.timeControlMinutes * 60 * 1000;
+        const inc = Number(this.incrementSeconds);
         this.incrementMs = (isNaN(inc) ? 0 : inc) * 1000;
-        this.timeStages = timeStages || [];
 
-        this.whiteTimeRemaining = this.timeControlMs;
-        this.blackTimeRemaining = this.timeControlMs;
+        // Initialize per-player state
+        this.timeRemaining = {};
+        this.playerTypes = {};
+        this.computerPlayers = {};
+        this.isComputerThinking = {};
+        this.kingMoved = {};
+        this.kingsideRookMoved = {};
+        this.queensideRookMoved = {};
+        this.capturedPieces = {};
+        this.reserves = {};
+
+        for (const p of this.players) {
+            this.timeRemaining[p.color] = this.timeControlMs;
+            this.playerTypes[p.color] = 'human';
+            this.computerPlayers[p.color] = null;
+            this.isComputerThinking[p.color] = false;
+            this.kingMoved[p.color] = false;
+            this.kingsideRookMoved[p.color] = false;
+            this.queensideRookMoved[p.color] = false;
+            this.capturedPieces[p.color] = [];
+            this.reserves[p.color] = [];
+        }
+
+        // Backward compatibility properties
+        Object.defineProperty(this, 'whiteTimeRemaining', { get: () => this.timeRemaining['white'], set: (v) => this.timeRemaining['white'] = v });
+        Object.defineProperty(this, 'blackTimeRemaining', { get: () => this.timeRemaining['black'], set: (v) => this.timeRemaining['black'] = v });
+        Object.defineProperty(this, 'isWhiteTurn', { get: () => this.turnOrder[this.currentTurnIndex] === 'white', set: (v) => this.currentTurnIndex = (v ? this.turnOrder.indexOf('white') : this.turnOrder.indexOf('black')) });
+        
+        this.whitePlayerType = 'human'; // legacy
+        this.blackPlayerType = 'human'; // legacy
+
         this.lastMoveTime = Date.now();
-
-        this.whitePlayerType = 'human';
-        this.blackPlayerType = 'human';
-        this.computerPlayers = {
-            white: null,
-            black: null
-        };
-        this.isComputerThinking = {
-            white: false,
-            black: false
-        };
-
-        // Draw offer state
-        this.drawOfferedBy = null; // 'white' or 'black' or null
-
-        // Tournament time getter (set by server.js if in tournament)
+        this.drawOfferedBy = null; // color string
         this.getTournamentTimeRemaining = null;
-
-        // Castling tracking
-        this.whiteKingMoved = false;
-        this.blackKingMoved = false;
-        // In 960, we track specific rooks by their starting file if possible,
-        // but simple boolean "has this rook moved" is often enough if we map them correctly.
-        // For simplicity, we'll track if the rook at the initial castling position has moved.
-        this.whiteKingsideRookMoved = false;
-        this.whiteQueensideRookMoved = false;
-        this.blackKingsideRookMoved = false;
-        this.blackQueensideRookMoved = false;
-
-        // En passant tracking
         this.lastMove = null; // Stores {startX, startY, endX, endY, piece}
+    }
 
-        // Captured pieces tracking
-        this.capturedByWhite = []; // Pieces captured by white
-        this.capturedByBlack = []; // Pieces captured by black
+    getCurrentColor() {
+        return this.turnOrder[this.currentTurnIndex];
+    }
 
-        // Crazyhouse reserves (pocket) - pieces that can be dropped
-        this.whiteReserve = []; // Pieces white can drop (captured from black)
-        this.blackReserve = []; // Pieces black can drop (captured from white)
+    getCurrentPlayerName() {
+        const color = this.getCurrentColor();
+        const p = this.players.find(p => p.color === color);
+        return p ? p.name : color;
+    }
+
+    nextTurn() {
+        this.currentTurnIndex = (this.currentTurnIndex + 1) % this.players.length;
     }
 
     get960Position(id) {
@@ -191,14 +275,17 @@ class ChessGame {
                     this.computerPlayers.white = new ComputerPlayer(level);
                     this.computerPlayers.whiteIsShared = false;
                 }
-                if (this.variantStrategy.setupComputerPlayer) {
-                    this.variantStrategy.setupComputerPlayer(this.computerPlayers.white);
+                const colorToSetup = pColor;
+                for (const strategy of this.variantStrategies) {
+                    if (strategy.setupComputerPlayer) {
+                        strategy.setupComputerPlayer(this.computerPlayers[colorToSetup]);
+                    }
                 }
             } else {
                 this.computerPlayers.white = null;
                 this.computerPlayers.whiteIsShared = false;
             }
-        } else if (color === 'black') {
+        } else if (pColor === 'black') {
             this.blackPlayerType = type;
             if (type === 'computer') {
                 const ComputerPlayer = require('./ComputerPlayer');
@@ -211,8 +298,12 @@ class ChessGame {
                     this.computerPlayers.black = new ComputerPlayer(level);
                     this.computerPlayers.blackIsShared = false;
                 }
-                if (this.variantStrategy.setupComputerPlayer) {
-                    this.variantStrategy.setupComputerPlayer(this.computerPlayers.black);
+                if (this.computerPlayers.black) {
+                    for (const strategy of this.variantStrategies) {
+                        if (strategy.setupComputerPlayer) {
+                            strategy.setupComputerPlayer(this.computerPlayers.black);
+                        }
+                    }
                 }
             } else {
                 this.computerPlayers.black = null;
@@ -224,9 +315,11 @@ class ChessGame {
     startGame() {
         console.log(`startGame called. White: ${this.whitePlayerType}, Black: ${this.blackPlayerType}, Variant: ${this.variant}`);
 
-        if (this.variantStrategy.startGameHook) {
-            const handled = this.variantStrategy.startGameHook();
-            if (handled) return;
+        for (const strategy of this.variantStrategies) {
+            if (strategy.startGameHook) {
+                const handled = strategy.startGameHook();
+                if (handled) return;
+            }
         }
 
         // Standard chess: Wait for all Stockfish workers to be ready before scheduling
@@ -333,8 +426,11 @@ class ChessGame {
     }
 
     isCastlingMove(startX, startY, endX, endY) {
-        if (this.variantStrategy.isCastlingMove) {
-            return this.variantStrategy.isCastlingMove(startX, startY, endX, endY);
+        for (const strategy of this.variantStrategies) {
+            if (strategy.isCastlingMove) {
+                const isCastling = strategy.isCastlingMove(startX, startY, endX, endY);
+                if (isCastling) return true;
+            }
         }
         // Default fallback (Standard)
         const piece = this.board.getPiece(startX, startY);
@@ -344,8 +440,12 @@ class ChessGame {
     }
 
     canCastle(isWhite, isKingside) {
-        if (this.variantStrategy.canCastle) {
-            return this.variantStrategy.canCastle(isWhite, isKingside);
+        const color = isWhite ? 'white' : 'black';
+        for (const strategy of this.variantStrategies) {
+            if (strategy.canCastle) {
+                const canCastleResult = strategy.canCastle(color, isKingside);
+                if (canCastleResult) return true;
+            }
         }
         return false;
     }
@@ -512,7 +612,13 @@ class ChessGame {
             return { success: false, error: `Player ${player} is not in this game (players: ${this.player1}, ${this.player2})` };
         }
 
-        const turnError = this.variantStrategy.checkTurn(isWhite);
+        let turnError = null;
+        for (const strategy of this.variantStrategies) {
+            if (strategy.checkTurn) {
+                turnError = strategy.checkTurn(color);
+                if (turnError) break;
+            }
+        }
         if (turnError) {
             return { success: false, error: turnError };
         }
@@ -527,9 +633,11 @@ class ChessGame {
         }
 
         // 2. Custom validation hook for variants (Atomic, KungFu cooldowns, etc.)
-        if (this.variantStrategy.validateMove) {
-            const error = this.variantStrategy.validateMove(fromFile, fromRank, toFile, toRank, isWhite);
-            if (error) return { success: false, error };
+        for (const strategy of this.variantStrategies) {
+            if (strategy.validateMove) {
+                const error = strategy.validateMove(fromFile, fromRank, toFile, toRank, color);
+                if (error) return { success: false, message: error };
+            }
         }
 
         // 3. Move Legality
@@ -557,9 +665,11 @@ class ChessGame {
         const targetPiece = this.board.getPiece(toFile, toRank);
 
         // Handle special King Capture (Kung Fu Win Condition)
-        if (this.variantStrategy.handleKingCapture) {
-            if (this.variantStrategy.handleKingCapture(fromFile, fromRank, toFile, toRank, targetPiece, isWhite)) {
-                return { success: true, isGameOver: true, winner: this.winner };
+        for (const strategy of this.variantStrategies) {
+            if (strategy.handleKingCapture) {
+                if (strategy.handleKingCapture(fromFile, fromRank, toFile, toRank, targetPiece, color)) {
+                    return { success: true, isGameOver: true, winner: this.winner };
+                }
             }
         }
 
@@ -573,8 +683,10 @@ class ChessGame {
         }
 
         // 5. Post-Move Updates
-        if (this.variantStrategy.onMoveSuccess) {
-            this.variantStrategy.onMoveSuccess(fromFile, fromRank, toFile, toRank, isWhite);
+        for (const strategy of this.variantStrategies) {
+            if (strategy.onMoveSuccess) {
+                strategy.onMoveSuccess(fromFile, fromRank, toFile, toRank, color);
+            }
         }
         // Note: Turn toggle is handled in executeMove(), not here
 
@@ -591,12 +703,15 @@ class ChessGame {
      * @returns {object} Result with success flag and message
      */
     dropPiece(pieceType, x, y, playerName) {
-        if (!this.variantStrategy.supportsDrops()) {
+        const supportsDrops = this.variantStrategies.some(s => s.supportsDrops && s.supportsDrops());
+        if (!supportsDrops) {
             return { success: false, message: 'Drop moves not supported in this variant' };
         }
 
-        if (this.variantStrategy.dropPiece) {
-            return this.variantStrategy.dropPiece(pieceType, x, y, playerName);
+        for (const strategy of this.variantStrategies) {
+            if (strategy.dropPiece) {
+                return strategy.dropPiece(pieceType, x, y, playerName);
+            }
         }
 
         return { success: false, message: 'Drop logic not implemented for this variant' };
@@ -613,8 +728,11 @@ class ChessGame {
     isSquareAttacked(x, y, byIsWhite) {
         // Simple iteration of all opponent pieces to see if any attack (x,y)
         // This is expensive but necessary for 960 validation
-        for (let ry = 0; ry < 8; ry++) {
-            for (let rx = 0; rx < 8; rx++) {
+        const width = this.board.width || 8;
+        const height = this.board.height || 8;
+        
+        for (let ry = 0; ry < height; ry++) {
+            for (let rx = 0; rx < width; rx++) {
                 const p = this.board.getPiece(rx, ry);
                 if (p && p.isWhite === byIsWhite) {
                     // Temporarily remove the piece at (x,y) if it's the king of the current player
@@ -725,12 +843,12 @@ class ChessGame {
         if (castlingSide) {
             const isCastlingKingside = castlingSide === 'kingside';
 
-            if (this.variantStrategy.getRookStartX) {
-                rookStartX = this.variantStrategy.getRookStartX(piece.isWhite, isCastlingKingside);
-            } else {
-                rookStartX = isCastlingKingside ? 7 : 0;
+            rookStartX = isCastlingKingside ? 7 : 0;
+            for (const strategy of this.variantStrategies) {
+                if (strategy.getRookStartX) {
+                    rookStartX = strategy.getRookStartX(piece.color, isCastlingKingside);
+                }
             }
-
             // Define Standard 960 Castling Targets
             // King -> G (6) / C (2)
             // Rook -> F (5) / D (3)
@@ -801,21 +919,27 @@ class ChessGame {
                 if (capturedPawnForEnPassant) {
                     if (piece.isWhite) {
                         this.capturedByWhite.push({ type: 'pawn', isWhite: false });
-                        if (this.variantStrategy.onPieceCaptured) {
-                            this.variantStrategy.onPieceCaptured(capturedPawnForEnPassant, true);
+                        for (const strategy of this.variantStrategies) {
+                            if (strategy.onPieceCaptured) strategy.onPieceCaptured(capturedPawnForEnPassant, 'white');
                         }
                     } else {
                         this.capturedByBlack.push({ type: 'pawn', isWhite: true });
-                        if (this.variantStrategy.onPieceCaptured) {
-                            this.variantStrategy.onPieceCaptured(capturedPawnForEnPassant, false);
+                        for (const strategy of this.variantStrategies) {
+                            if (strategy.onPieceCaptured) strategy.onPieceCaptured(capturedPawnForEnPassant, 'black');
                         }
                     }
                 }
 
-                if (this.variantStrategy.executeCapture) {
-                    const captureResult = this.variantStrategy.executeCapture(startX, startY, endX, endY, piece, capturedPawnForEnPassant);
-                    if (captureResult.handled && captureResult.gameOver) {
-                        return captureResult;
+                let handledCapture = false;
+                for (const strategy of this.variantStrategies) {
+                    if (strategy.executeCapture) {
+                        const captureResult = strategy.executeCapture(startX, startY, endX, endY, piece, capturedPawnForEnPassant);
+                        if (captureResult.handled) {
+                            handledCapture = true;
+                            if (captureResult.gameOver) {
+                                return { success: true, isGameOver: true, winner: this.winner };
+                            }
+                        }
                     }
                 }
 
@@ -838,20 +962,24 @@ class ChessGame {
                 }
 
                 // Handle capture extensions (like atomic explosions)
-                let handledByVariant = false;
-                if (capturedPiece && this.variantStrategy.executeCapture) {
-                    const captureResult = this.variantStrategy.executeCapture(startX, startY, endX, endY, piece, capturedPiece);
-                    if (captureResult.handled) {
-                        handledByVariant = true;
-                        if (captureResult.gameOver) {
-                            return captureResult;
+                let handledCapture = false;
+                if (capturedPiece) {
+                    for (const strategy of this.variantStrategies) {
+                        if (strategy.executeCapture) {
+                            const captureResult = strategy.executeCapture(startX, startY, endX, endY, piece, capturedPiece);
+                            if (captureResult.handled) {
+                                handledCapture = true;
+                                if (captureResult.gameOver) {
+                                    return { success: true, isGameOver: true, winner: this.winner };
+                                }
+                            }
                         }
                     }
                 }
 
-                if (!handledByVariant) {
+                if (!handledCapture) {
                     // Non-atomic or non-capture: standard check handling
-                    if (this.variantStrategy.isKingSafetyEnforced() && this.isKingInCheck(piece.isWhite)) {
+                    if (this.variantStrategies.every(s => !s.isKingSafetyEnforced || s.isKingSafetyEnforced()) && this.isKingInCheck(piece.isWhite)) {
                         // Undo move
                         this.board.setPiece(startX, startY, piece);
                         this.board.setPiece(endX, endY, capturedPiece);
@@ -862,13 +990,13 @@ class ChessGame {
                     if (capturedPiece) {
                         if (piece.isWhite) {
                             this.capturedByWhite.push({ type: capturedPiece.type, isWhite: false });
-                            if (this.variantStrategy.onPieceCaptured) {
-                                this.variantStrategy.onPieceCaptured(capturedPiece, true); // true means captured by White
+                            for (const strategy of this.variantStrategies) {
+                                if (strategy.onPieceCaptured) strategy.onPieceCaptured(capturedPiece, 'white');
                             }
                         } else {
                             this.capturedByBlack.push({ type: capturedPiece.type, isWhite: true });
-                            if (this.variantStrategy.onPieceCaptured) {
-                                this.variantStrategy.onPieceCaptured(capturedPiece, false); // false means captured by Black
+                            for (const strategy of this.variantStrategies) {
+                                if (strategy.onPieceCaptured) strategy.onPieceCaptured(capturedPiece, 'black');
                             }
                         }
                     }
@@ -940,16 +1068,22 @@ class ChessGame {
             }
         }
 
-        if (this.variantStrategy.shouldToggleTurn && !this.variantStrategy.shouldToggleTurn()) {
+        if (this.variantStrategies.some(s => s.shouldToggleTurn && !s.shouldToggleTurn())) {
             this.lastMoveTime = Date.now();
-            return { success: true, gameOver: false };
+            return { success: true, isGameOver: false };
         }
 
-        this.isWhiteTurn = !this.isWhiteTurn;
+        const colorWhoMoved = this.getCurrentColor();
+        this.nextTurn();
         this.lastMoveTime = Date.now(); // Reset timer for next player
 
-        const playerWhoMoved = !this.isWhiteTurn; // The player who just moved
-        const victoryReason = this.variantStrategy.checkVictoryCondition ? this.variantStrategy.checkVictoryCondition(playerWhoMoved) : null;
+        let victoryReason = null;
+        for (const strategy of this.variantStrategies) {
+            if (strategy.checkVictoryCondition) {
+                victoryReason = strategy.checkVictoryCondition(colorWhoMoved === 'white');
+                if (victoryReason) break;
+            }
+        }
         if (victoryReason) {
             this.isGameOver = true;
             this.winner = playerWhoMoved ? this.player1 : this.player2;
@@ -961,27 +1095,45 @@ class ChessGame {
         }
 
         // Check for checkmate or stalemate for the next player
-        if (!this.variantStrategy.shouldCheckGameEnd || this.variantStrategy.shouldCheckGameEnd()) {
-            const nextPlayerIsWhite = this.isWhiteTurn;
-
-            if (this.isCheckmate(nextPlayerIsWhite)) {
-                this.isGameOver = true;
-                this.winner = nextPlayerIsWhite ? this.player2 : this.player1;
-                this.termination = 'checkmate';
-                console.log(`Checkmate! ${this.winner} wins!`);
-                if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'checkmate' });
-                this.cleanup();
-                return { success: true, gameOver: true, winner: this.winner, reason: 'checkmate' };
+        if (this.variantStrategies.every(s => !s.shouldCheckGameEnd || s.shouldCheckGameEnd())) {
+            const nextPlayerColor = this.getCurrentColor();
+            // isCheckmate takes isWhite boolean? We'll pass the color string if it supports it, or boolean.
+            // Wait, our variant isKingInCheck and isCheckmate expect a color string if we changed it?
+            // Actually, `isKingInCheck` uses `isWhite` as the parameter name, but compares `piece.isWhite === isWhite` OR `piece.color === color`.
+            // Wait, I should just pass `nextPlayerColor` to `isCheckmate` and ensure it handles it.
+            // For now, I'll pass the color string. Wait! `isCheckmate` expects boolean `isWhite`!
+            // I should change `isCheckmate` parameter name to `color` and pass `nextPlayerColor`.
+            
+            if (this.isCheckmate(nextPlayerColor)) {
+                let handled = false;
+                for (const strategy of this.variantStrategies) {
+                    if (strategy.onCheckmate && strategy.onCheckmate(nextPlayerColor)) {
+                        handled = true;
+                        break;
+                    }
+                }
+                
+                if (!handled) {
+                    this.isGameOver = true;
+                    this.winner = colorWhoMoved; // The player who just moved wins
+                    this.termination = 'checkmate';
+                    console.log(`Checkmate! ${this.winner} wins!`);
+                    if (this.onGameOver) this.onGameOver({ winner: this.winner, reason: 'checkmate' });
+                    this.cleanup();
+                    return { success: true, gameOver: true, winner: this.winner, reason: 'checkmate' };
+                } else {
+                    console.log('Checkmate handled by variant.');
+                }
             }
 
-            if (this.isStalemate(nextPlayerIsWhite)) {
+            if (this.isStalemate(nextPlayerColor)) {
                 this.isGameOver = true;
-                this.winner = null; // Draw
+                this.winner = 'draw';
                 this.termination = 'stalemate';
                 console.log('Stalemate! Game is a draw.');
-                if (this.onGameOver) this.onGameOver({ winner: null, reason: 'stalemate' });
+                if (this.onGameOver) this.onGameOver({ winner: 'draw', reason: 'stalemate' });
                 this.cleanup();
-                return { success: true, gameOver: true, winner: null, reason: 'stalemate' };
+                return { success: true, gameOver: true, winner: 'draw', reason: 'stalemate' };
             }
         }
 
@@ -1031,7 +1183,7 @@ class ChessGame {
             let fen = this.board.toFEN(this.isWhiteTurn);
             
             // Add pocket to FEN for Fairy-Stockfish if Crazyhouse
-            if (this.variantStrategy && this.variantStrategy.supportsDrops()) {
+            if (this.variantStrategies.some(s => s.supportsDrops && s.supportsDrops())) {
                 const charMap = { 'pawn': 'P', 'knight': 'N', 'bishop': 'B', 'rook': 'R', 'queen': 'Q' };
                 let pocket = '';
                 if (this.whiteReserve) {
@@ -1088,8 +1240,9 @@ class ChessGame {
                     // For level -1 and 0, use the game's getLegalMoves directly instead of SimpleEngine
                     // This ensures consistent move validation with the actual game state
                     // EXCEPTION: Crazyhouse needs to use getCrazyhouseMove for drops!
-                    const isLowLevel = computer.level === -1 || computer.level === 0;
-                    const isCrazyhouseLowLevel = isLowLevel && this.variantStrategy.supportsDrops();
+                    const isUnsupportedEngineGeometry = this.board.width !== 8 || this.board.height !== 8 || this.board.isHex || this.players.length > 2;
+                    const isLowLevel = computer.level === -1 || computer.level === 0 || isUnsupportedEngineGeometry;
+                    const isCrazyhouseLowLevel = isLowLevel && this.variantStrategies.some(s => s.supportsDrops && s.supportsDrops());
 
                     if (isLowLevel && !isCrazyhouseLowLevel) {
                         const legalMoves = this.getLegalMoves();
@@ -1117,10 +1270,10 @@ class ChessGame {
                         // Level 0: proportional to remaining time to simulate a "slow" player.
                         let thinkDelay;
                         if (computer.level === -1) {
-                            const divisor = this.variantStrategy.hasCooldowns() ? 1000 : 250;
+                            const divisor = this.variantStrategies.some(s => s.hasCooldowns && s.hasCooldowns()) ? 1000 : 250;
                             thinkDelay = Math.max(100, Math.floor(currentTimeRemaining / divisor) * 2) + 1000;
                         } else {
-                            const divisor = this.variantStrategy.hasCooldowns() ? 1000 : 250;
+                            const divisor = this.variantStrategies.some(s => s.hasCooldowns && s.hasCooldowns()) ? 1000 : 250;
                             const consistencyTime = Math.max(50, Math.floor(currentTimeRemaining / divisor));
                             thinkDelay = consistencyTime * 5;
                         }
@@ -1156,7 +1309,7 @@ class ChessGame {
 
                     // For other levels, use the standard computer.getBestMove flow
                     // OR for Crazyhouse, use getCrazyhouseMove which understands drops
-                    const isCrazyhouse = this.variantStrategy.supportsDrops();
+                    const isCrazyhouse = this.variantStrategies.some(s => s.supportsDrops && s.supportsDrops());
                     const reserve = isCrazyhouse ?
                         (this.isWhiteTurn ? this.whiteReserve : this.blackReserve) : [];
 
@@ -1411,13 +1564,6 @@ class ChessGame {
             // Find king's actual position for freestyle
             const kingFile = this.getKingFile(isWhite, kingRank);
             const fromActual = String.fromCharCode(97 + kingFile) + (8 - kingRank);
-            const toActual = String.fromCharCode(97 + 6) + (8 - kingRank);
-            moves.push({ from: fromActual, to: toActual, move: fromActual + toActual });
-        }
-        // Queenside
-        if (this.canCastle(isWhite, false)) {
-            const kingFile = this.getKingFile(isWhite, kingRank);
-            const fromActual = String.fromCharCode(97 + kingFile) + (8 - kingRank);
             const toActual = String.fromCharCode(97 + 2) + (8 - kingRank);
             moves.push({ from: fromActual, to: toActual, move: fromActual + toActual });
         }
@@ -1425,60 +1571,67 @@ class ChessGame {
         return moves;
     }
 
-    // Check if a king of the given color is in check
-    isKingInCheck(isWhite) {
-        // Find the king's position
-        let kingX = -1, kingY = -1;
-        for (let y = 0; y < 8; y++) {
-            for (let x = 0; x < 8; x++) {
-                const piece = this.board.getPiece(x, y);
-                if (piece && piece.type === 'king' && piece.isWhite === isWhite) {
-                    kingX = x;
-                    kingY = y;
-                    break;
-                }
+    isKingInCheck(colorOrIsWhite) {
+        const targetColor = typeof colorOrIsWhite === 'boolean' ? (colorOrIsWhite ? 'white' : 'black') : colorOrIsWhite;
+
+        // Variants: some variants redefine check completely (e.g. adjacent kings in Atomic are not in check)
+        for (const strategy of this.variantStrategies) {
+            if (strategy.isKingInCheck) {
+                const variantCheck = strategy.isKingInCheck(targetColor);
+                if (variantCheck !== null) return variantCheck;
             }
-            if (kingX !== -1) break;
         }
 
-        if (kingX === -1) {
-            // King not found (shouldn't happen in a valid game)
+        // Find all active kings' positions
+        const kings = [];
+        const width = this.board.width || 8;
+        const height = this.board.height || 8;
+        
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                const piece = this.board.getPiece(x, y);
+                // In SecretChess, checkmated kings are marked as frozen
+                if (piece && piece.type === 'king' && piece.color === targetColor && !piece.frozen) {
+                    kings.push({x, y});
+                }
+            }
+        }
+
+        if (kings.length === 0) {
+            // No active kings (maybe captured in KungFu/Atomic, or all frozen)
             return false;
         }
 
-        // Variants: some variants redefine check completely (e.g. adjacent kings in Atomic are not in check)
-        if (this.variantStrategy.isKingInCheck) {
-            const variantCheck = this.variantStrategy.isKingInCheck(isWhite, kingX, kingY);
-            if (variantCheck !== null) return variantCheck;
-        }
-
-        // Check if any opponent piece can attack the king
-        for (let y = 0; y < 8; y++) {
-            for (let x = 0; x < 8; x++) {
+        // Check if any opponent piece can attack ANY of the active kings
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
                 const piece = this.board.getPiece(x, y);
-                if (piece && piece.isWhite !== isWhite) {
-                    if (piece.isValidMove(this.board, x, y, kingX, kingY)) {
-                        return true;
+                if (piece && piece !== 'invalid' && piece.color !== targetColor) {
+                    for (const king of kings) {
+                        if (piece.isValidMove(this.board, x, y, king.x, king.y)) {
+                            return true;
+                        }
                     }
                 }
             }
         }
-
         return false;
     }
 
-
-
     // Get all legal moves for a player (simplified - doesn't check for moving into check)
-    hasLegalMoves(isWhite) {
-        for (let startY = 0; startY < 8; startY++) {
-            for (let startX = 0; startX < 8; startX++) {
+    hasLegalMoves(colorOrIsWhite) {
+        const targetColor = typeof colorOrIsWhite === 'boolean' ? (colorOrIsWhite ? 'white' : 'black') : colorOrIsWhite;
+        const width = this.board.width || 8;
+        const height = this.board.height || 8;
+        
+        for (let startY = 0; startY < height; startY++) {
+            for (let startX = 0; startX < width; startX++) {
                 const piece = this.board.getPiece(startX, startY);
-                if (!piece || piece.isWhite !== isWhite) continue;
+                if (!piece || piece === 'invalid' || piece.color !== targetColor || piece.frozen) continue;
 
                 // Try all possible destination squares
-                for (let endY = 0; endY < 8; endY++) {
-                    for (let endX = 0; endX < 8; endX++) {
+                for (let endY = 0; endY < height; endY++) {
+                    for (let endX = 0; endX < width; endX++) {
                         if (startX === endX && startY === endY) continue;
 
                         // Check if this move is valid
@@ -1489,14 +1642,13 @@ class ChessGame {
                             this.board.grid[startX][startY] = null;
 
                             let isLegal = true;
-                            if (this.variantStrategy.isKingSafetyEnforced()) {
-                                if (this.isKingInCheck(isWhite)) {
-                                    isLegal = false;
-                                }
+                            if (this.variantStrategies.every(s => !s.isKingSafetyEnforced || s.isKingSafetyEnforced())) {
+                                isLegal = !this.isKingInCheck(targetColor);
                             }
                             
-                            // Variants: Some moves override king safety (e.g. exploding opponent's king in Atomic)
-                            if (!isLegal && this.variantStrategy.overridesKingSafety && this.variantStrategy.overridesKingSafety(startX, startY, endX, endY, piece, capturedPiece)) {
+                            // 5. Some variants allow moving into check under certain conditions
+                            // e.g. Atomic: Moving into check is fine if it blows up the opponent's king.
+                            if (!isLegal && this.variantStrategies.some(s => s.overridesKingSafety && s.overridesKingSafety(startX, startY, endX, endY, piece, capturedPiece))) {
                                 isLegal = true;
                             }
 
@@ -1504,11 +1656,7 @@ class ChessGame {
                             this.board.grid[startX][startY] = piece;
                             this.board.grid[endX][endY] = capturedPiece;
 
-                            if (isLegal && this.variantStrategy.filterLegalMove) {
-                                isLegal = this.variantStrategy.filterLegalMove(startX, startY, endX, endY, piece, capturedPiece);
-                            }
-
-                            if (isLegal) {
+                            if (isLegal && this.variantStrategies.every(s => !s.filterLegalMove || s.filterLegalMove(startX, startY, endX, endY, piece, capturedPiece))) {
                                 return true; // Found a legal move
                             }
                         }
@@ -1533,11 +1681,14 @@ class ChessGame {
     // Get all legal moves for a specific piece at (x, y)
     getLegalMovesForPiece(x, y) {
         const piece = this.board.getPiece(x, y);
-        if (!piece) return [];
+        if (!piece || piece === 'invalid' || piece.frozen) return [];
 
         const moves = [];
-        for (let endY = 0; endY < 8; endY++) {
-            for (let endX = 0; endX < 8; endX++) {
+        const width = this.board.width || 8;
+        const height = this.board.height || 8;
+        
+        for (let endY = 0; endY < height; endY++) {
+            for (let endX = 0; endX < width; endX++) {
                 if (x === endX && y === endY) continue;
 
                 if (piece.isValidMove(this.board, x, y, endX, endY)) {
@@ -1549,14 +1700,12 @@ class ChessGame {
                     let isLegal = true;
 
                     // Standard check: would move leave king in check?
-                    if (this.variantStrategy.isKingSafetyEnforced()) {
-                        if (this.isKingInCheck(piece.isWhite)) {
-                            isLegal = false;
-                        }
+                    if (this.variantStrategies.every(s => !s.isKingSafetyEnforced || s.isKingSafetyEnforced())) {
+                        isLegal = !this.isKingInCheck(piece.isWhite);
                     }
 
-                    // Variants: Some moves override king safety (e.g. exploding opponent's king in Atomic)
-                    if (!isLegal && this.variantStrategy.overridesKingSafety && this.variantStrategy.overridesKingSafety(x, y, endX, endY, piece, capturedPiece)) {
+                    // 5. Check if variant overrides king safety
+                    if (!isLegal && this.variantStrategies.some(s => s.overridesKingSafety && s.overridesKingSafety(x, y, endX, endY, piece, capturedPiece))) {
                         isLegal = true;
                     }
 
@@ -1565,11 +1714,7 @@ class ChessGame {
                     this.board.grid[endX][endY] = capturedPiece;
 
                     // Variants: Additional filters
-                    if (isLegal && this.variantStrategy.filterLegalMove) {
-                        isLegal = this.variantStrategy.filterLegalMove(x, y, endX, endY, piece, capturedPiece);
-                    }
-
-                    if (isLegal) {
+                    if (isLegal && this.variantStrategies.every(s => !s.filterLegalMove || s.filterLegalMove(x, y, endX, endY, piece, capturedPiece))) {
                         moves.push({ x: endX, y: endY });
                     }
                 }
@@ -1584,15 +1729,19 @@ class ChessGame {
                 // Kingside castling (target: g-file = x:6)
                 if (this.canCastle(piece.isWhite, true)) {
                     moves.push({ x: 6, y: rank });
-                    if (this.variantStrategy.getAdditionalCastlingMoves) {
-                        moves.push(...this.variantStrategy.getAdditionalCastlingMoves(piece.isWhite, true, rank));
+                    for (const strategy of this.variantStrategies) {
+                        if (strategy.getAdditionalCastlingMoves) {
+                            moves.push(...strategy.getAdditionalCastlingMoves(piece.isWhite, true, rank));
+                        }
                     }
                 }
                 // Queenside castling (target: c-file = x:2)
                 if (this.canCastle(piece.isWhite, false)) {
                     moves.push({ x: 2, y: rank });
-                    if (this.variantStrategy.getAdditionalCastlingMoves) {
-                        moves.push(...this.variantStrategy.getAdditionalCastlingMoves(piece.isWhite, false, rank));
+                    for (const strategy of this.variantStrategies) {
+                        if (strategy.getAdditionalCastlingMoves) {
+                            moves.push(...strategy.getAdditionalCastlingMoves(piece.isWhite, false, rank));
+                        }
                     }
                 }
             }
@@ -1622,22 +1771,17 @@ class ChessGame {
                             this.board.grid[targetX][y] = null;
 
                             let isLegal = true;
-                            if (this.variantStrategy.isKingSafetyEnforced()) {
-                                if (this.isKingInCheck(piece.isWhite)) {
-                                    isLegal = false;
-                                }
+                            if (this.variantStrategies.every(s => !s.isKingSafetyEnforced || s.isKingSafetyEnforced())) {
+                                isLegal = !this.isKingInCheck(piece.isWhite);
                             }
 
-                            // Undo simulation
-                            this.board.grid[x][y] = piece;
-                            this.board.grid[targetX][enPassantY] = null;
-                            this.board.grid[targetX][y] = capturedPawn;
+                            // 5. Restore board state
+                            this.board.setPiece(x, y, piece);
+                            this.board.setPiece(targetX, targetY, null); // En passant move is empty originally
+                            this.board.setPiece(targetX, enPassantY, capturedPawn);
 
-                            if (isLegal && this.variantStrategy.filterLegalMove) {
-                                isLegal = this.variantStrategy.filterLegalMove(x, y, targetX, enPassantY, piece, capturedPawn);
-                            }
-
-                            if (isLegal) {
+                            // 6. Additional variant filters
+                            if (isLegal && this.variantStrategies.every(s => !s.filterLegalMove || s.filterLegalMove(x, y, targetX, enPassantY, piece, capturedPawn))) {
                                 moves.push({ x: targetX, y: enPassantY });
                             }
                         }
@@ -1657,7 +1801,7 @@ class ChessGame {
         return this.getLegalMovesForPiece(startX, startY);
     }
 
-    getState() {
+    getState(playerName = null) {
         // Update time for current player to be accurate for client
         let currentWhiteTime = this.whiteTimeRemaining;
         let currentBlackTime = this.blackTimeRemaining;
@@ -1671,10 +1815,11 @@ class ChessGame {
             }
         }
 
-        return {
+        let payload = {
             gameId: this.gameId,
             player1: this.player1,
             player2: this.player2,
+            players: this.players,
             board: this.board.toJSON(),
             isWhiteTurn: this.isWhiteTurn,
             currentPlayer: this.getCurrentPlayer(),
@@ -1703,6 +1848,20 @@ class ChessGame {
             player2Elo: this.player2Elo,
             evaluation: this.evaluation || 0
         };
+
+        let playerColor = null;
+        if (playerName) {
+            const playerObj = this.players.find(p => p.name === playerName);
+            if (playerObj) playerColor = playerObj.color;
+        }
+
+        for (const strategy of this.variantStrategies) {
+            if (strategy.modifyGameStatePayload) {
+                payload = strategy.modifyGameStatePayload(payload, playerColor);
+            }
+        }
+
+        return payload;
     }
 
     offerDraw(color) {

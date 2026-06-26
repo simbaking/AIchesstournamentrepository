@@ -12,24 +12,24 @@ class BaseVariant {
     }
 
     // Hook for custom move validation before execution
-    validateMove(fromFile, fromRank, toFile, toRank, isWhite) {
+    validateMove(fromFile, fromRank, toFile, toRank, color) {
         return null; // Return error string if invalid
     }
 
-    checkTurn(isWhite) {
-        if (isWhite !== this.game.isWhiteTurn) {
+    checkTurn(color) {
+        if (color !== this.game.getCurrentColor()) {
             return 'Not your turn';
         }
         return null;
     }
 
     // Hook for handling special winning conditions like King Capture in KungFu
-    handleKingCapture(fromFile, fromRank, toFile, toRank, targetPiece, isWhite) {
+    handleKingCapture(fromFile, fromRank, toFile, toRank, targetPiece, color) {
         return false; // Return true if handled
     }
 
     // Hook to run after a successful move
-    onMoveSuccess(fromFile, fromRank, toFile, toRank, isWhite) {}
+    onMoveSuccess(fromFile, fromRank, toFile, toRank, color) {}
 
     // Method to check special victory conditions
     checkVictoryCondition(playerWhoMoved) {
@@ -37,7 +37,7 @@ class BaseVariant {
     }
 
     // Default castling validation fallback (variants can override)
-    canCastle(isWhite, isKingside) {
+    canCastle(color, isKingside) {
         return false;
     }
 
@@ -56,7 +56,7 @@ class BaseVariant {
     }
 
     // Hook to override standard check detection
-    isKingInCheck(isWhite, kingX, kingY) {
+    isKingInCheck(color) {
         return null; // Return boolean to override, null to use standard logic
     }
 
@@ -89,11 +89,11 @@ class BaseVariant {
         return false;
     }
 
-    getRookStartX(isWhite, isKingside) {
+    getRookStartX(color, isKingside) {
         return isKingside ? 7 : 0;
     }
 
-    getAdditionalCastlingMoves(isWhite, isKingside, rank) {
+    getAdditionalCastlingMoves(color, isKingside, rank) {
         return [];
     }
 
