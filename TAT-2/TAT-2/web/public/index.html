@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Tournament System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top Bar for Actions -->
+        <div class="top-bar card" style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 2rem; padding: 1rem 1.5rem;">
+            <button id="reset-btn" class="btn btn-danger">Reset Tournament</button>
+            <button id="clear-scores-btn" class="btn btn-warning">Clear Scores</button>
+            <div class="report-dropdown" style="position: relative;">
+                <button class="btn" onclick="document.getElementById('report-menu').classList.toggle('show')">Report Issue</button>
+                <div id="report-menu" class="dropdown-content">
+                    <textarea id="issue-text" placeholder="Type any issues you experience..." rows="4"></textarea>
+                    <button class="btn btn-success" onclick="submitIssue()">Submit</button>
+                </div>
+            </div>
+            
+            <button class="btn btn-info" onclick="openLeaderboard()">TAT Leaderboard</button>
+
+            <div class="account-dropdown" style="position: relative;">
+                <button class="btn" id="account-btn" onclick="document.getElementById('account-menu').classList.toggle('show')">Account 👤</button>
+                <div id="account-menu" class="dropdown-content">
+                    <div id="login-form-container">
+                        <input type="text" id="auth-username" placeholder="Username" style="margin-bottom: 5px; width: 100%; box-sizing: border-box;">
+                        <input type="password" id="auth-password" placeholder="Password" style="margin-bottom: 5px; width: 100%; box-sizing: border-box;">
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn btn-success" style="flex: 1;" onclick="handleLogin()">Log In</button>
+                            <button class="btn btn-primary" style="flex: 1;" onclick="handleSignup()">Sign Up</button>
+                        </div>
+                    </div>
+                    <div id="logged-in-container" style="display: none; text-align: center;">
+                        <p style="margin-bottom: 5px;">Logged in as: <strong id="logged-in-username"></strong></p>
+                        <p style="margin-bottom: 10px;">Elo: <strong id="logged-in-elo"></strong></p>
+                        <button class="btn btn-danger" style="width: 100%;" onclick="handleLogout()">Log Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <header>
+            <h1>♟️ Chess Time Attack Tournament (T.A.T.) <span class="beta-badge">BETA</span></h1>
+            <img src="assets/lion.png" class="logo" alt="Lion logo" />
+            <div class="header-actions" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                <div id="tournament-status" class="status-badge">Not Started</div>
+                <div id="timer" class="timer" style="margin-top: 0;"></div>
+            </div>
+        </header>
+
+        <!-- Leaderboard Modal -->
+        <div id="leaderboard-modal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 400px;">
+                <h2>TAT Leaderboard 🏆</h2>
+                <div id="leaderboard-list" style="max-height: 300px; overflow-y: auto; margin-top: 10px;">
+                    <!-- Leaderboard populated here -->
+                </div>
+                <button class="btn" style="margin-top: 15px; width: 100%;" onclick="closeLeaderboard()">Close</button>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Player Registration Section -->
+            <section class="card">
+                <h2>Register Player</h2>
+                <form id="register-form">
+                    <input type="text" id="player-name" placeholder="Player Name" required>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <label style="display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" id="is-computer" style="width: auto;">
+                            Computer Player
+                        </label>
+                        <select id="computer-level" style="flex: 1;" disabled>
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Register</button>
+                </form>
+                <div id="players-list"></div>
+            </section>
+
+            <section class="card">
+                <h2>Start Tournament</h2>
+                <form id="start-form">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <input type="number" id="duration-hours" placeholder="0" min="0" max="24" value="0"
+                                style="flex: 1;">
+                            <span style="font-size: 0.9em; color: var(--text-color); opacity: 0.8;">Hours</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <input type="number" id="duration-minutes" placeholder="5" min="0" max="59" value="5"
+                                required style="flex: 1;">
+                            <span style="font-size: 0.9em; color: var(--text-color); opacity: 0.8;">Minutes</span>
+                        </div>
+                    </div>
+                    <div style="margin: 10px 0; display: flex; align-items: center;">
+                        <input type="checkbox" id="allow-variants" checked style="width: auto; margin-right: 5px;">
+                        <label for="allow-variants">Allow Variants</label>
+                    </div>
+                    <div id="variant-selection"
+                        style="margin-left: 20px; margin-bottom: 10px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                        <div style="margin-bottom: 5px; display: flex; align-items: center;">
+                            <input type="checkbox" id="allow-freestyle" checked style="width: auto; margin-right: 5px;">
+                            <label for="allow-freestyle">♟️ Freestyle (Chess 960)</label>
+                        </div>
+                        <div style="margin-bottom: 5px; display: flex; align-items: center;">
+                            <input type="checkbox" id="allow-kungfu" checked style="width: auto; margin-right: 5px;">
+                            <label for="allow-kungfu">⚡ Kung Fu Chess (Real-time)</label>
+                        </div>
+                        <div style="margin-bottom: 5px; display: flex; align-items: center;">
+                            <input type="checkbox" id="allow-crazyhouse" checked
+                                style="width: auto; margin-right: 5px;">
+                            <label for="allow-crazyhouse">🏠 Crazyhouse (Drops)</label>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox" id="allow-kingofthehill" checked
+                                style="width: auto; margin-right: 5px;">
+                            <label for="allow-kingofthehill">⛰️ King of the Hill</label>
+                        </div>
+                        <div style="margin-top: 5px; display: flex; align-items: center;">
+                            <input type="checkbox" id="allow-atomic" checked style="width: auto; margin-right: 5px;">
+                            <label for="allow-atomic">💥 Atomic Chess</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Start Tournament</button>
+                </form>
+                <div id="timer" class="timer"></div>
+            </section>
+
+            <!-- Leaderboard Section -->
+            <section class="card leaderboard-card">
+                <h2>🏆 Leaderboard</h2>
+                <div id="leaderboard"></div>
+            </section>
+
+            <!-- Start Game Section -->
+            <!-- Start Game Section (Disabled) -->
+            <!-- Hidden dropdowns needed by app.js -->
+            <select id="game-player1" style="display:none;">
+                <option value="">Select Player 1 (White)</option>
+            </select>
+            <select id="game-player2" style="display:none;">
+                <option value="">Select Player 2 (Black)</option>
+            </select>
+            <!-- Start Direct Game Section Removed -->
+
+            <!-- Create Game Offer Section -->
+            <section class="card">
+                <h2>Create Game Offer</h2>
+                <form id="create-offer-form">
+                    <div class="offer-form">
+                        <select id="offer-time-control" required>
+                            <option value="1">1 Minute</option>
+                            <option value="2">2 Minutes</option>
+                            <option value="3">3 Minutes</option>
+                            <option value="5">5 Minutes</option>
+                            <option value="10" selected>10 Minutes</option>
+                            <option value="15">15 Minutes</option>
+                            <option value="30">30 Minutes</option>
+                            <option value="45">45 Minutes</option>
+                            <option value="60">60 Minutes (G/60)</option>
+                            <option value="90">90 Minutes (G/90)</option>
+                            <option value="classical">Classical (120/40, 60/20, 15+30)</option>
+                            <option value="uscf">USCF (90/40, 30+30)</option>
+                        </select>
+                        <div style="display: flex; align-items: center; gap: 3px;">
+                            <input type="number" id="offer-increment" placeholder="Increment" min="0" value="0"
+                                style="width: 80px;">
+                            <span style="font-size: 0.85em; color: var(--text-color); opacity: 0.8;">sec</span>
+                        </div>
+
+                        <select id="offer-variant" style="width: auto;">
+                            <option value="standard" selected>Standard Chess</option>
+                            <option value="freestyle">Freestyle (Chess 960)</option>
+                            <option value="kungfu">Kung Fu (Real-time)</option>
+                            <option value="crazyhouse">Crazyhouse (Drops)</option>
+                            <option value="kingofthehill">King of the Hill</option>
+                            <option value="atomic">Atomic Chess</option>
+                        </select>
+                        <input type="text" id="offer-start-pos" placeholder="Pos ID (0-959) or Random"
+                            style="display:none;">
+                        <input type="number" id="offer-cooldown" placeholder="Cooldown (sec)" min="1" max="60"
+                            value="10" style="display:none; width: 120px;">
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <label for="offer-targets" style="display: block; margin-bottom: 5px;">Target Players (Hold
+                            Cmd/Ctrl to select multiple):</label>
+                        <select id="offer-targets" multiple style="width: 100%; height: 100px;">
+                            <option value="Any" selected>Any / Open to All</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Post Offer</button>
+                </form>
+            </section>
+
+            <!-- Open Offers Section -->
+            <section class="card">
+                <h2>📢 Open Offers</h2>
+                <div id="open-offers"></div>
+            </section>
+
+            <!-- Games in Progress Section -->
+            <section class="card">
+                <h2>♟️ Games in Progress</h2>
+                <div id="active-games"></div>
+            </section>
+        </div>
+
+        <div id="message" class="message"></div>
+    </div>
+
+    <!-- Tournament End Celebration Modal -->
+    <div id="celebration-modal" class="celebration-modal">
+        <div class="celebration-content">
+            <h2 class="celebration-title">🎉 Tournament Complete! 🎉</h2>
+            <div id="celebration-results" class="celebration-results">
+                <!-- Dynamically populated by JS -->
+            </div>
+            <button id="celebration-close" class="celebration-close">Continue</button>
+        </div>
+    </div>
+    <div id="confetti-container" class="confetti-container"></div>
+
+    <script src="app.js"></script>
+    <script>
+        async function submitIssue() {
+            const issueText = document.getElementById('issue-text').value;
+            if (!issueText) return alert('Please enter an issue description.');
+            try {
+                const res = await fetch('/api/report-issue', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ issue: issueText })
+                });
+                if (res.ok) {
+                    alert('Issue reported successfully!');
+                    document.getElementById('issue-text').value = '';
+                    document.getElementById('report-menu').classList.remove('show');
+                } else {
+                    alert('Failed to report issue. Please try again.');
+                }
+            } catch(e) {
+                alert('Error sending issue.');
+            }
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.report-dropdown')) {
+                var reportMenu = document.getElementById('report-menu');
+                if (reportMenu && reportMenu.classList.contains('show')) {
+                    reportMenu.classList.remove('show');
+                }
+            }
+            if (!event.target.closest('.account-dropdown')) {
+                var accountMenu = document.getElementById('account-menu');
+                if (accountMenu && accountMenu.classList.contains('show')) {
+                    accountMenu.classList.remove('show');
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

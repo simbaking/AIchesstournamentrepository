@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <link rel="stylesheet" href="game.css?v=3">
+</head>
+
+<body>
+    <!-- Mobile Header (visible only on mobile) -->
+    <div class="mobile-header">
+        <a href="index.html" class="mobile-back">←</a>
+        <span class="mobile-title">♟️ Chess T.A.T. <span class="beta-badge" style="font-size: 0.5em; padding: 2px 4px;">BETA</span></span>
+        <span id="mobile-variant-badge" class="mobile-variant"></span>
+    </div>
+
+    <!-- Message container (in flow) -->
+    <div id="message" class="message"></div>
+
+    <div class="container">
+        <!-- Desktop Header (hidden on mobile) -->
+        <header class="desktop-header info-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="assets/lion.png" class="logo" alt="Lion logo" />
+                    <h1>♟️ Chess Game <span class="beta-badge">BETA</span></h1>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; margin-left: 20px;">
+                        <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold;">Tournament Time</span>
+                        <div id="tournament-timer" class="game-timer" style="font-size: 1.2rem; margin: 0;">--:--</div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+                    <a href="index.html" class="back-link">← Back to Tournament</a>
+                    <div class="report-dropdown" style="position: relative;">
+                        <button class="btn" onclick="document.getElementById('report-menu').classList.toggle('show')">Report Issue</button>
+                        <div id="report-menu" class="dropdown-content">
+                            <textarea id="issue-text" placeholder="Type any issues you experience..." rows="4"></textarea>
+                            <button class="btn btn-success" onclick="submitIssue()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-layout">
+            <!-- Desktop Sidebar (hidden on mobile) -->
+            <aside class="game-info desktop-sidebar">
+                <div class="info-card">
+                    <h2>Players <span id="game-variant-badge"></span></h2>
+                    <div class="game-info">
+                        <div class="player black-player">
+                            <div class="player-details">
+                                <span id="black-player-name">Player 2</span>
+                                <span class="timer-display"><strong>Black:</strong> <span
+                                        id="black-timer">10:00</span></span>
+                            </div>
+                            <div id="black-captured" class="captured-pieces"></div>
+                            <div id="black-pocket" class="pocket-pieces" style="display: none;">
+                                <span class="pocket-label">🏠 Drop:</span>
+                                <span id="black-pocket-pieces"></span>
+                            </div>
+                        </div>
+
+                        <div class="game-status">
+                            <div id="turn-indicator">White's Turn</div>
+                            <div id="material-advantage" class="material-advantage"></div>
+                            <div id="game-timer" style="display: none;">00:00</div>
+                        </div>
+
+                        <div class="player white-player">
+                            <div class="player-details">
+                                <span id="white-player-name">Player 1</span>
+                                <span class="timer-display"><strong>White:</strong> <span
+                                        id="white-timer">10:00</span></span>
+                            </div>
+                            <div id="white-captured" class="captured-pieces"></div>
+                            <div id="white-pocket" class="pocket-pieces" style="display: none;">
+                                <span class="pocket-label">🏠 Drop:</span>
+                                <span id="white-pocket-pieces"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="draw-offer-card" class="info-card"
+                    style="display: none; background-color: var(--warning); color: white;">
+                    <h2>Draw Offered!</h2>
+                    <p id="draw-offer-text"></p>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                        <button id="accept-draw-btn" class="btn btn-primary">Accept</button>
+                        <button id="decline-draw-btn" class="btn btn-danger">Decline</button>
+                    </div>
+                </div>
+
+                <div class="info-card actions-card">
+                    <h2>Actions</h2>
+                    <button id="resign-btn" class="btn btn-danger">Resign</button>
+                    <button id="draw-btn" class="btn btn-warning">Offer Draw</button>
+                    <button id="flip-btn" class="btn btn-secondary"
+                        style="margin-top: 0.5rem; background: var(--secondary); color: white;">Flip Board</button>
+                    <button id="actions-return-btn" class="btn btn-primary"
+                        style="margin-top: 0.5rem;">Return to Tournament</button>
+                </div>
+
+                <div id="game-over-card" class="info-card game-over-card" style="display: none;">
+                    <h2>Game Over!</h2>
+                    <div id="game-result"></div>
+                    <button id="return-btn" class="btn btn-primary">Return to Tournament</button>
+                </div>
+            </aside>
+
+            <main class="board-area">
+                <!-- Mobile: Opponent Player Bar (above board) -->
+                <div class="mobile-player-bar opponent-bar">
+                    <img src="pieces/black-pawn.png" class="player-avatar" alt="Black pawn">
+                    <div class="player-info-mobile">
+                        <span id="mobile-opponent-name" class="player-name-mobile">Opponent</span>
+                        <span id="mobile-opponent-color" class="player-color-mobile">(Black)</span>
+                        <span id="mobile-opponent-elo" class="player-elo-mobile">(400)</span>
+                    </div>
+                    <div id="mobile-opponent-captured" class="captured-mobile"></div>
+                    <div id="mobile-opponent-material" class="material-mobile"></div>
+                    <div id="mobile-opponent-timer" class="timer-mobile">10:00</div>
+                </div>
+
+                <!-- Mobile: Tournament Time & Material (above board) -->
+                <div class="mobile-tournament-time">
+                    <span>Tournament:</span>
+                    <span id="mobile-tournament-timer">--:--</span>
+                    <span class="material-divider">|</span>
+                    <span id="mobile-material-advantage" class="material-advantage">Equal</span>
+                </div>
+
+                <!-- The Chessboard -->
+                <div class="board-container" style="display: flex; flex-direction: row; align-items: stretch; gap: 10px;">
+                    <div id="eval-bar-container" class="eval-bar-container">
+                        <div id="eval-bar-fill" class="eval-bar-fill"></div>
+                        <span id="eval-bar-text" class="eval-bar-text">0.00</span>
+                    </div>
+                    <div id="chessboard" class="chessboard"></div>
+                </div>
+
+                <!-- Move History Navigation -->
+                <div class="move-navigation">
+                    <button id="nav-start" class="nav-btn" title="Go to start">⏮</button>
+                    <button id="nav-back" class="nav-btn" title="Previous move">◀</button>
+                    <span id="move-counter" class="move-counter">0/0</span>
+                    <button id="nav-forward" class="nav-btn" title="Next move">▶</button>
+                    <button id="nav-end" class="nav-btn" title="Go to current">⏭</button>
+                </div>
+
+                <!-- Mobile: Current Player Bar (below board) -->
+                <div class="mobile-player-bar player-bar">
+                    <img src="pieces/white-pawn.png" class="player-avatar" alt="White pawn">
+                    <div class="player-info-mobile">
+                        <span id="mobile-player-name" class="player-name-mobile">You</span>
+                        <span id="mobile-player-color" class="player-color-mobile">(White)</span>
+                        <span id="mobile-player-elo" class="player-elo-mobile">(400)</span>
+                    </div>
+                    <div id="mobile-player-captured" class="captured-mobile"></div>
+                    <div id="mobile-player-material" class="material-mobile"></div>
+                    <div id="mobile-player-timer" class="timer-mobile">10:00</div>
+                </div>
+            </main>
+        </div>
+
+    </div>
+
+    <!-- Mobile Bottom Action Bar -->
+    <div class="mobile-action-bar">
+        <button id="mobile-flip-btn" class="action-btn" title="Flip Board">🔄</button>
+        <button id="mobile-draw-btn" class="action-btn" title="Offer Draw">🤝</button>
+        <button id="mobile-resign-btn" class="action-btn" title="Resign">🏳️</button>
+        <a href="index.html" class="action-btn" title="Back">🏠</a>
+    </div>
+
+    <div id="promotion-dialog" class="modal">
+        <div class="modal-content">
+            <h3>Choose Promotion Piece</h3>
+            <div class="promotion-choices">
+                <button class="promo-btn" data-piece="queen">♕ Queen</button>
+                <button class="promo-btn" data-piece="rook">♖ Rook</button>
+                <button class="promo-btn" data-piece="bishop">♗ Bishop</button>
+                <button class="promo-btn" data-piece="knight">♘ Knight</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="confirmation-modal">
+        <div class="confirmation-content">
+            <h3>Confirm Move</h3>
+            <p>Are you sure you want to move to <span id="confirm-move-target"></span>?</p>
+            <div class="confirmation-actions">
+                <button id="confirm-move-btn" class="btn btn-success">Confirm</button>
+                <button id="cancel-move-btn" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Celebration Modal -->
+    <div id="celebration-modal" class="celebration-modal">
+        <div class="confetti-container" id="confetti-container"></div>
+        <div class="celebration-content">
+            <h2 id="celebration-title" class="celebration-title">Victory!</h2>
+            <div id="celebration-details" class="celebration-results">
+                <!-- Winner info will be injected here -->
+            </div>
+            <button id="celebration-close-btn" class="celebration-close">Return to Tournament</button>
+        </div>
+    </div>
+
+    <script src="game.js?v=3"></script>
+    <script>
+        async function submitIssue() {
+            const issueText = document.getElementById('issue-text').value;
+            if (!issueText) return alert('Please enter an issue description.');
+            try {
+                const res = await fetch('/api/report-issue', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ issue: issueText })
+                });
+                if (res.ok) {
+                    alert('Issue reported successfully!');
+                    document.getElementById('issue-text').value = '';
+                    document.getElementById('report-menu').classList.remove('show');
+                } else {
+                    alert('Failed to report issue. Please try again.');
+                }
+            } catch(e) {
+                alert('Error sending issue.');
+            }
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.report-dropdown')) {
+                var reportMenu = document.getElementById('report-menu');
+                if (reportMenu && reportMenu.classList.contains('show')) {
+                    reportMenu.classList.remove('show');
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
