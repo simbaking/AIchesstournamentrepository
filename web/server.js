@@ -1,3 +1,4 @@
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 const express = require('express');
 const nodemailer = require('nodemailer');
 const path = require('path');
@@ -169,8 +170,11 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
             if (p2End) p2End.setBusy(false);
             if (game.cleanup) game.cleanup();
 
-            activeGames.delete(gameId);
-            console.log(`Game ${gameId} removed from active games immediately`);
+            // Delay game deletion to give clients time to see the final game state
+            setTimeout(() => {
+                activeGames.delete(gameId);
+                console.log(`Game ${gameId} removed from active games after delay`);
+            }, 30000);
 
             // Save state immediately after game end
             saveState();
@@ -247,6 +251,21 @@ function saveState() {
             gameOffers: gameOffers
         };
         fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+
+        // Persist Elos of human players back to users.json
+        let usersChanged = false;
+        tournament.getPlayers().forEach(p => {
+            if (!p.isComputerPlayer()) {
+                const username = Object.keys(users).find(u => u.toLowerCase() === p.getName().toLowerCase());
+                if (username) {
+                    if (users[username].elo !== p.getElo()) {
+                        users[username].elo = p.getElo();
+                        usersChanged = true;
+                    }
+                }
+            }
+        });
+        if (usersChanged) saveUsers();
     } catch (err) {
         console.error('Failed to save state:', err);
     }
@@ -378,6 +397,22 @@ function loadState() {
 // Load state on startup
 loadState();
 
+function recordTournamentResults() {
+    const sortedPlayers = tournament.getPlayers().sort((a, b) => b.getElo() - a.getElo());
+    let usersChanged = false;
+    sortedPlayers.forEach((p, index) => {
+        if (!p.isComputerPlayer()) {
+            const username = Object.keys(users).find(u => u.toLowerCase() === p.getName().toLowerCase());
+            if (username) {
+                users[username].totalTournaments = (users[username].totalTournaments || 0) + 1;
+                users[username].totalPosition = (users[username].totalPosition || 0) + (index + 1);
+                usersChanged = true;
+            }
+        }
+    });
+    if (usersChanged) saveUsers();
+}
+
 // If tournament was running when we loaded state, restart the monitor intervals
 if (tournament.checkIsRunning()) {
     console.log('[STARTUP] Tournament is running, starting monitor intervals...');
@@ -416,6 +451,7 @@ if (tournament.checkIsRunning()) {
                 // Clear all games immediately when tournament ends
                 activeGames.clear();
                 console.log('All active games cleared.');
+                recordTournamentResults();
             }
 
             clearInterval(tournamentMonitorInterval);
@@ -577,16 +613,167 @@ process.on('SIGINT', () => { console.log('Saving state...'); saveState(); proces
 process.on('SIGTERM', () => { console.log('Saving state...'); saveState(); process.exit(); });
 
 
+// ================= User Authentication & Management =================
+const crypto = require('crypto');
+const USERS_FILE = path.join(__dirname, 'users.json');
+let users = {};
+let activeSessions = {}; // token -> username
+
+// Load users
+function loadUsers() {
+    try {
+        if (fs.existsSync(USERS_FILE)) {
+            const data = fs.readFileSync(USERS_FILE, 'utf8');
+            users = JSON.parse(data);
+            
+            // Clean up old accounts (not logged in for 90 days)
+            let changed = false;
+            const now = Date.now();
+            const NINETY_DAYS = 90 * 24 * 60 * 60 * 1000;
+            
+            for (const username in users) {
+                const user = users[username];
+                if (now - (user.lastLogin || 0) > NINETY_DAYS) {
+                    delete users[username];
+                    changed = true;
+                }
+            }
+            if (changed) saveUsers();
+        }
+    } catch (err) {
+        console.error('Error loading users:', err);
+    }
+}
+function saveUsers() {
+    try {
+        fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+    } catch (err) {
+        console.error('Error saving users:', err);
+    }
+}
+loadUsers();
+
+app.post('/api/signup', (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password || username.trim() === '') {
+        return res.status(400).json({ error: 'Username and password required' });
+    }
+    const lowerUser = username.trim().toLowerCase();
+    
+    // Case-insensitive username check
+    const existing = Object.keys(users).find(u => u.toLowerCase() === lowerUser);
+    if (existing) {
+        return res.status(400).json({ error: 'Username already taken' });
+    }
+    
+    const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
+    const actualUsername = username.trim();
+    users[actualUsername] = {
+        passwordHash,
+        elo: 400,
+        lastLogin: Date.now()
+    };
+    saveUsers();
+    
+    // Auto-login
+    const token = crypto.randomBytes(32).toString('hex');
+    activeSessions[token] = actualUsername;
+    
+    res.json({ success: true, token, username: actualUsername, elo: 400 });
+});
+
+app.post('/api/login', (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) return res.status(400).json({ error: 'Missing credentials' });
+    
+    const lowerUser = username.trim().toLowerCase();
+    const actualUsername = Object.keys(users).find(u => u.toLowerCase() === lowerUser);
+    
+    if (!actualUsername) return res.status(401).json({ error: 'Invalid username or password' });
+    
+    const user = users[actualUsername];
+    const hash = crypto.createHash('sha256').update(password).digest('hex');
+    
+    if (user.passwordHash !== hash) {
+        return res.status(401).json({ error: 'Invalid username or password' });
+    }
+    
+    user.lastLogin = Date.now();
+    saveUsers();
+    
+    const token = crypto.randomBytes(32).toString('hex');
+    activeSessions[token] = actualUsername;
+    
+    res.json({ success: true, token, username: actualUsername, elo: user.elo });
+});
+
+app.post('/api/logout', (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.split(' ')[1];
+        delete activeSessions[token];
+    }
+    res.json({ success: true });
+});
+
+app.get('/api/leaderboard', (req, res) => {
+    const leaderboard = Object.keys(users).map(username => {
+        const u = users[username];
+        const avgPos = u.totalTournaments ? (u.totalPosition / u.totalTournaments) : null;
+        return {
+            username,
+            elo: u.elo,
+            avgEndingPosition: avgPos
+        };
+    }).sort((a, b) => b.elo - a.elo);
+    res.json(leaderboard);
+});
+
 // API Routes
 
 // Register a player
 app.post('/api/register', (req, res) => {
-    const { name, isComputer, level, browserId } = req.body;
+    let { name, isComputer, level, browserId } = req.body;
     const clientIP = req.ip || req.connection.remoteAddress || 'unknown';
     console.log(`Register request: ${name}, isComputer: ${isComputer}, level: ${level}, IP: ${clientIP}`);
 
-    if (!name || name.trim() === '') {
-        return res.status(400).json({ error: 'Player name is required' });
+    let initialElo = null;
+
+    if (!isComputer) {
+        const authHeader = req.headers.authorization;
+        let authUsername = null;
+        
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            const token = authHeader.split(' ')[1];
+            authUsername = activeSessions[token];
+        }
+        
+        if (authUsername) {
+            // Logged in: Ensure they register with their authenticated name
+            if (name && name.toLowerCase() !== authUsername.toLowerCase()) {
+                return res.status(400).json({ error: 'You can only register as your logged-in username' });
+            }
+            name = authUsername; // Force the exact case of the registered user
+            
+            if (users[name]) {
+                initialElo = users[name].elo;
+            }
+        } else {
+            // Not logged in: Guest player
+            if (!name || name.trim() === '') {
+                return res.status(400).json({ error: 'Player name is required' });
+            }
+            // Block if the name belongs to a registered user
+            const lowerName = name.trim().toLowerCase();
+            const existingUser = Object.keys(users).find(u => u.toLowerCase() === lowerName);
+            if (existingUser) {
+                return res.status(401).json({ error: 'This name belongs to a registered user. Please log in to use it.' });
+            }
+        }
+    } else {
+        if (!name || name.trim() === '') {
+            return res.status(400).json({ error: 'Player name is required' });
+        }
     }
 
     const existing = tournament.getPlayerByName(name);
@@ -607,10 +794,10 @@ app.post('/api/register', (req, res) => {
     }
 
     if (!isComputer) {
-        console.log(`[REGISTER] Human player "${name}" registering from IP: ${clientIP}, browserId: ${browserId}`);
+        console.log(`[REGISTER] Human player "${name}" registering from IP: ${clientIP}, browserId: ${browserId} with Elo ${initialElo}`);
     }
 
-    tournament.registerPlayer(name, isComputer || false, level !== undefined ? level : null, browserId || null, clientIP);
+    tournament.registerPlayer(name, isComputer || false, level !== undefined ? level : null, browserId || null, clientIP, initialElo);
     console.log(`Player registered: ${name} from IP: ${clientIP}`);
     res.json({ success: true, message: 'Player registered' });
 });
@@ -748,6 +935,7 @@ app.post('/api/start', (req, res) => {
                 // Clear all games immediately when tournament ends
                 activeGames.clear();
                 console.log('All active games cleared.');
+                recordTournamentResults();
             }
 
             clearInterval(tournamentMonitorInterval);
@@ -1252,13 +1440,6 @@ app.post('/api/game/:gameId/resign', (req, res) => {
         return res.status(400).json({ error: result.error });
     }
 
-    // Record result
-    const duration = game.getDuration();
-    // Use Tournament's recordGameResult for ELO and score multipliers
-    tournament.recordGameResult(game.player1, game.player2, game.winner, duration, game.variant);
-
-    activeGames.delete(gameId);
-
     res.json({ success: true, winner: game.winner });
 });
 
@@ -1297,12 +1478,6 @@ app.post('/api/game/:gameId/accept-draw', (req, res) => {
     if (!result.success) {
         return res.status(400).json({ error: result.error });
     }
-
-    // Record result (draw)
-    const duration = game.getDuration();
-    tournament.recordGameResult(game.player1, game.player2, null, duration, game.variant);
-
-    activeGames.delete(gameId);
 
     res.json({ success: true, message: 'Draw accepted' });
 });

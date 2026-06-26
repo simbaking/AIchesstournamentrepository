@@ -10,24 +10,59 @@
 
 <body>
     <div class="container">
-        <header>
-            <h1>♟️ Chess Time Attack Tournament (T.A.T.) <span class="beta-badge">BETA</span></h1>
-            <img src="assets/lion.png" class="logo" alt="Lion logo" />
-            <div class="header-actions">
-                <div id="tournament-status" class="status-badge">Not Started</div>
-                <div id="timer" class="timer"></div>
-                <button id="reset-btn" class="btn btn-danger" style="margin-left: 10px;">Reset
-                    Tournament</button>
-                <button id="clear-scores-btn" class="btn btn-warning" style="margin-left: 10px;">Clear Scores</button>
-                <div class="report-dropdown" style="position: relative; margin-left: 10px;">
-                    <button class="btn" onclick="document.getElementById('report-menu').classList.toggle('show')">Report Issue</button>
-                    <div id="report-menu" class="dropdown-content">
-                        <textarea id="issue-text" placeholder="Type any issues you experience..." rows="4"></textarea>
-                        <button class="btn btn-success" onclick="submitIssue()">Submit</button>
+        <!-- Top Bar for Actions -->
+        <div class="top-bar card" style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 2rem; padding: 1rem 1.5rem;">
+            <button id="reset-btn" class="btn btn-danger">Reset Tournament</button>
+            <button id="clear-scores-btn" class="btn btn-warning">Clear Scores</button>
+            <div class="report-dropdown" style="position: relative;">
+                <button class="btn" onclick="document.getElementById('report-menu').classList.toggle('show')">Report Issue</button>
+                <div id="report-menu" class="dropdown-content">
+                    <textarea id="issue-text" placeholder="Type any issues you experience..." rows="4"></textarea>
+                    <button class="btn btn-success" onclick="submitIssue()">Submit</button>
+                </div>
+            </div>
+            
+            <button class="btn btn-info" onclick="openLeaderboard()">TAT Leaderboard</button>
+
+            <div class="account-dropdown" style="position: relative;">
+                <button class="btn" id="account-btn" onclick="document.getElementById('account-menu').classList.toggle('show')">Account 👤</button>
+                <div id="account-menu" class="dropdown-content">
+                    <div id="login-form-container">
+                        <input type="text" id="auth-username" placeholder="Username" style="margin-bottom: 5px; width: 100%; box-sizing: border-box;">
+                        <input type="password" id="auth-password" placeholder="Password" style="margin-bottom: 5px; width: 100%; box-sizing: border-box;">
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn btn-success" style="flex: 1;" onclick="handleLogin()">Log In</button>
+                            <button class="btn btn-primary" style="flex: 1;" onclick="handleSignup()">Sign Up</button>
+                        </div>
+                    </div>
+                    <div id="logged-in-container" style="display: none; text-align: center;">
+                        <p style="margin-bottom: 5px;">Logged in as: <strong id="logged-in-username"></strong></p>
+                        <p style="margin-bottom: 10px;">Elo: <strong id="logged-in-elo"></strong></p>
+                        <button class="btn btn-danger" style="width: 100%;" onclick="handleLogout()">Log Out</button>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <header>
+            <h1>♟️ Chess Time Attack Tournament (T.A.T.) <span class="beta-badge">BETA</span></h1>
+            <img src="assets/lion.png" class="logo" alt="Lion logo" />
+            <div class="header-actions" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                <div id="tournament-status" class="status-badge">Not Started</div>
+                <div id="timer" class="timer" style="margin-top: 0;"></div>
+            </div>
         </header>
+
+        <!-- Leaderboard Modal -->
+        <div id="leaderboard-modal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 400px;">
+                <h2>TAT Leaderboard 🏆</h2>
+                <div id="leaderboard-list" style="max-height: 300px; overflow-y: auto; margin-top: 10px;">
+                    <!-- Leaderboard populated here -->
+                </div>
+                <button class="btn" style="margin-top: 15px; width: 100%;" onclick="closeLeaderboard()">Close</button>
+            </div>
+        </div>
 
         <div class="grid">
             <!-- Player Registration Section -->
@@ -216,13 +251,16 @@
         }
 
         window.onclick = function(event) {
-            if (!event.target.matches('.report-dropdown .btn') && !event.target.closest('#report-menu')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
+            if (!event.target.closest('.report-dropdown')) {
+                var reportMenu = document.getElementById('report-menu');
+                if (reportMenu && reportMenu.classList.contains('show')) {
+                    reportMenu.classList.remove('show');
+                }
+            }
+            if (!event.target.closest('.account-dropdown')) {
+                var accountMenu = document.getElementById('account-menu');
+                if (accountMenu && accountMenu.classList.contains('show')) {
+                    accountMenu.classList.remove('show');
                 }
             }
         }

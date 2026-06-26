@@ -179,40 +179,10 @@ class GlobalAnalyzer {
                 if (this.pendingEvals.has(gameId)) continue; // Throttle per game
 
                 try {
-                    let fen = game.board.toFEN(game.isWhiteTurn);
-                    
-                    // Add pocket to FEN for Crazyhouse
-                    if (game.variantStrategy && game.variantStrategy.supportsDrops()) {
-                        const charMap = { 'pawn': 'P', 'knight': 'N', 'bishop': 'B', 'rook': 'R', 'queen': 'Q' };
-                        let pocket = '';
-                        if (game.whiteReserve) {
-                            for (const p of game.whiteReserve) pocket += charMap[p] || '';
-                        }
-                        if (game.blackReserve) {
-                            for (const p of game.blackReserve) pocket += (charMap[p] || '').toLowerCase();
-                        }
-                        const parts = fen.split(' ');
-                        parts[0] += `[${pocket}]`;
-                        fen = parts.join(' ');
-                    }
-
-                    this.pendingEvals.add(gameId);
-                    
-                    this.enginePool.evaluate(fen, game.variant)
-                        .then(score => {
-                            // Stockfish 'score cp' is from the side-to-move's perspective!
-                            // The Eval Bar expects White's perspective (+ means White is winning).
-                            const whiteScore = game.isWhiteTurn ? score : -score;
-                            game.evaluation = whiteScore;
-                        })
-                        .catch(err => {
-                            // Silently ignore timeout/queue drops
-                        })
-                        .finally(() => {
-                            this.pendingEvals.delete(gameId);
-                        });
+                    const whiteScore = evaluateBoard(game.board, game.variant);
+                    game.evaluation = whiteScore;
                 } catch (e) {
-                    this.pendingEvals.delete(gameId);
+                    // Silently ignore errors
                 }
             }
         }, 500);

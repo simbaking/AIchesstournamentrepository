@@ -137,7 +137,7 @@ class EnginePool {
     evaluate(fen, variant) {
         return new Promise((resolve, reject) => {
             const uciVariant = this.getUciVariant(variant);
-            const poolType = uciVariant === 'crazyhouse' ? 'crazyhouse' : 'standard';
+            const poolType = ['chess', 'chess960'].includes(uciVariant) ? 'standard' : 'crazyhouse';
             const queue = this.queues[poolType];
 
             queue.push({ fen, uciVariant, resolve, reject });

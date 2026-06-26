@@ -413,9 +413,10 @@ public class ServerRestarter {
         }
         
         if (nodeModules.exists() && nodeModules.isDirectory()) {
-            // Check if express exists (main dependency)
+            // Check if key dependencies exist
             File express = new File(nodeModules, "express");
-            if (express.exists()) {
+            File nodemailer = new File(nodeModules, "nodemailer");
+            if (express.exists() && nodemailer.exists()) {
                 System.out.println("  ✓ Dependencies already installed");
                 return true;
             }

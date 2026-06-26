@@ -1,5 +1,5 @@
 class Player {
-    constructor(name, isComputer = false, level = null, browserId = null, clientIP = null) {
+    constructor(name, isComputer = false, level = null, browserId = null, clientIP = null, initialElo = null) {
         this.name = name;
         this.score = 0;
         this.isComputer = isComputer;
@@ -9,7 +9,7 @@ class Player {
         this.browserId = browserId;  // Persistent browser association for humans
         this.clientIP = clientIP;    // IP address for LAN multiplayer
 
-        // ELO rating: humans start at 400, computers get ELO based on level
+        // ELO rating: humans start at initialElo or 400, computers get ELO based on level
         if (isComputer) {
             const ComputerPlayer = require('./ComputerPlayer');
             this.elo = ComputerPlayer.getElo(level);
@@ -18,7 +18,7 @@ class Player {
             this._engine = new ComputerPlayer(level);
             console.log(`[PLAYER] Persistent engine created for ${name} (level ${level})`);
         } else {
-            this.elo = 400; // Human players start at 400 ELO
+            this.elo = initialElo !== null ? initialElo : 400; // Human players use provided Elo or 400
             this._engine = null;
         }
     }

@@ -1,0 +1,12 @@
+{
+  "testuser": {
+    "passwordHash": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+    "elo": 400,
+    "lastLogin": 1782392437492
+  },
+  "hwan": {
+    "passwordHash": "eb88940d31ceaaa05a95bb4f3b0e5c786ca4fac4efd0fafd4a9b4a3e38b411d7",
+    "elo": 421.3501514762065,
+    "lastLogin": 1782420366089
+  }
+}
