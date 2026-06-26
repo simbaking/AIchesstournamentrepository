@@ -1,34 +1,45 @@
 :root {
-    /* 60% Orange - Primary & Backgrounds */
-    --primary: #f97316;
-    --primary-dark: #ea580c;
-    --bg: #2c1003;
-    --bg-card: #431407;
-    --bg-card-hover: #5f1c09;
-    --border: #f97316;
+    /* Brutalist Color Palette - Light Mode Default */
+    --primary: #F26522; /* Orange */
+    --primary-dark: #d95316;
+    --bg: #FFF2CC; /* Light Beige */
+    --bg-card: #ffffff;
+    --bg-card-hover: #fff8e6;
+    --border: #111111; /* Sharp Black */
 
-    /* 25% Gold - Secondary & Highlights */
-    --secondary: #eab308;
-    --secondary-dark: #ca8a04;
-    --gold: #ffd700;
-    --gold-dark: #b8860b;
-    --warning: #eab308;
-    --warning-dark: #ca8a04;
+    --secondary: #F7941D; /* Yellow */
+    --secondary-dark: #d98216;
+    --gold: #F7941D;
+    --warning: #F7941D;
+    --warning-dark: #d98216;
 
-    /* 15% Blue - Accents */
-    --accent: #3b82f6;
-    --accent-dark: #2563eb;
-    --info: #3b82f6;
+    --accent: #F26522;
+    --info: #F7941D;
 
-    /* Status Colors */
     --success: #22c55e;
     --success-dark: #16a34a;
-    --danger: #ef4444;
+    --danger: #ED1C24; /* Red */
 
-    /* Text */
-    --text: #fff7ed;
-    --text-muted: #fdba74;
-    --shadow: rgba(0, 0, 0, 0.4);
+    --text: #111111;
+    --text-muted: #555555;
+    --shadow: #111111;
+
+    /* Brutalist properties */
+    --brutal-shadow: 4px 4px 0px var(--shadow);
+    --brutal-shadow-hover: 6px 6px 0px var(--shadow);
+    --brutal-radius: 0px;
+    --brutal-border: 3px solid var(--border);
+}
+
+[data-theme="dark"] {
+    --bg: #111111; /* Dark/Black */
+    --bg-card: #1a1a1a;
+    --bg-card-hover: #2a2a2a;
+    --border: #FFF2CC; /* Light Beige */
+    --text: #FFF2CC;
+    --text-muted: #aaaaaa;
+    --shadow: #F26522; /* Orange shadows */
+    --brutal-border: 3px solid var(--border);
 }
 
 * {
@@ -39,15 +50,14 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    /* 60% orange, 25% blue, 15% gold */
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary) 60%, var(--accent) 60%, var(--accent) 85%, var(--gold) 85%, var(--gold) 100%);
+    background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     min-height: 100svh;
     padding: 2rem;
-    /* Prevent browser overscroll bounce from compounding visual flicker */
     overscroll-behavior: none;
     overflow-anchor: none;
+    transition: background 0.3s, color 0.3s;
 }
 
 /* Lion logo */
@@ -56,7 +66,7 @@ body {
     height: auto;
     display: block;
     margin: 0 auto 1rem;
-    filter: drop-shadow(0 0 5px var(--gold));
+    filter: drop-shadow(4px 4px 0px var(--shadow));
 }
 
 .container {
@@ -72,41 +82,37 @@ header {
 
 h1 {
     font-size: 3rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--gold) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-weight: 900;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: -1px;
     margin-bottom: 1rem;
+    text-shadow: 4px 4px 0px var(--primary);
 }
 
 .status-badge {
     display: inline-block;
     padding: 0.5rem 1.5rem;
-    border-radius: 2rem;
-    font-weight: 600;
+    border-radius: var(--brutal-radius);
+    font-weight: 800;
     font-size: 0.875rem;
     background: var(--bg-card);
-    border: 2px solid var(--border);
-    transition: all 0.3s ease;
+    border: var(--brutal-border);
+    box-shadow: var(--brutal-shadow);
+    text-transform: uppercase;
+    transition: all 0.2s ease;
 }
 
 .status-badge.running {
-    background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
-    border-color: var(--success);
-    animation: pulse 2s infinite;
+    background: var(--success);
+    color: #111;
+    border-color: var(--border);
+    animation: pulse-brutal 1s infinite alternate;
 }
 
-@keyframes pulse {
-
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.7;
-    }
+@keyframes pulse-brutal {
+    0% { transform: scale(1); box-shadow: var(--brutal-shadow); }
+    100% { transform: scale(1.05); box-shadow: 6px 6px 0px var(--shadow); }
 }
 
 .grid {
@@ -130,11 +136,12 @@ h1 {
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
+    background: var(--bg-card);
+    border-radius: var(--brutal-radius);
     padding: 1.5rem;
-    border: 1px solid var(--border);
-    transition: all 0.3s ease;
+    border: var(--brutal-border);
+    box-shadow: var(--brutal-shadow);
+    transition: all 0.2s ease;
     min-width: 0;
 
     /* Offer form adjustments */
@@ -147,9 +154,9 @@ h1 {
 
 
     .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 24px var(--shadow);
-        border-color: var(--primary);
+        transform: translate(-2px, -2px);
+        box-shadow: var(--brutal-shadow-hover);
+        background: var(--bg-card-hover);
     }
 
     /* Offer form styling */
@@ -197,12 +204,13 @@ h1 {
     input,
     select {
         padding: 0.75rem;
-        border-radius: 0.5rem;
-        border: 2px solid var(--border);
-        background: #2a1205;
+        border-radius: var(--brutal-radius);
+        border: var(--brutal-border);
+        background: var(--bg);
         color: var(--text);
         font-size: 1rem;
-        transition: all 0.3s ease;
+        font-weight: 600;
+        transition: all 0.2s ease;
     }
 
     /* Ensure offer increment input fits within card */
@@ -218,49 +226,53 @@ h1 {
     input:focus,
     select:focus {
         outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        background: var(--bg-card);
+        box-shadow: 4px 4px 0px var(--primary);
     }
 
     .btn {
         padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        border: none;
-        font-weight: 600;
+        border-radius: var(--brutal-radius);
+        border: var(--brutal-border);
+        font-weight: 800;
         font-size: 1rem;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        box-shadow: var(--brutal-shadow);
+        background: var(--bg-card);
+        color: var(--text);
     }
 
     .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px var(--shadow);
+        transform: translate(-2px, -2px);
+        box-shadow: var(--brutal-shadow-hover);
     }
 
     .btn:active {
-        transform: translateY(0);
+        transform: translate(2px, 2px);
+        box-shadow: 0px 0px 0px var(--shadow);
     }
 
     .btn-primary {
-        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-        color: white;
+        background: var(--primary);
+        color: #111;
     }
 
     .btn-success {
-        background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
-        color: white;
+        background: var(--success);
+        color: #111;
     }
 
     .btn-warning {
-        background: linear-gradient(135deg, var(--warning) 0%, var(--warning-dark) 100%);
-        color: white;
+        background: var(--warning);
+        color: #111;
     }
 
     .btn-danger {
-        background: linear-gradient(135deg, var(--danger) 0%, #b91c1c 100%);
-        color: white;
+        background: var(--danger);
+        color: #FFF2CC;
     }
 
     .timer {
