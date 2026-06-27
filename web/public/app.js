@@ -715,21 +715,10 @@ if (startForm) {
         // Collect specific allowed variants
         const allowedVariants = ['standard']; // Standard is always allowed
         if (allowVariants) {
-            if (document.getElementById('allow-freestyle')?.checked) {
-                allowedVariants.push('freestyle');
-            }
-            if (document.getElementById('allow-kungfu')?.checked) {
-                allowedVariants.push('kungfu');
-            }
-            if (document.getElementById('allow-crazyhouse')?.checked) {
-                allowedVariants.push('crazyhouse');
-            }
-            if (document.getElementById('allow-kingofthehill')?.checked) {
-                allowedVariants.push('kingofthehill');
-            }
-            if (document.getElementById('allow-atomic')?.checked) {
-                allowedVariants.push('atomic');
-            }
+            const geometries = Array.from(document.querySelectorAll('input[name="start-geometry"]:checked')).map(cb => cb.value);
+            const normalVariants = Array.from(document.querySelectorAll('input[name="start-variants"]:checked')).map(cb => cb.value);
+            allowedVariants.push(...geometries);
+            allowedVariants.push(...normalVariants);
         }
 
         try {

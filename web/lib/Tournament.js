@@ -275,7 +275,11 @@ class Tournament {
 
     reset() {
         // Clear scores but preserve players and their ELOs
-        this.players.forEach(p => p.score = 0);
+        this.players.forEach(p => {
+            p.score = 0;
+            p.eliminated = false;
+            p.timeLeft = 0;
+        });
         
         this.isRunning = false;
         this.startTime = null;
