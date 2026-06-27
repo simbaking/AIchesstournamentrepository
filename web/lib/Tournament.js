@@ -57,6 +57,7 @@ class Tournament {
         const elapsed = Date.now() - this.startTime;
 
         if (this.mode === 'survival') {
+            let activePlayersBefore = this.players.filter(p => !p.eliminated).length;
             let activePlayers = 0;
             this.players.forEach(p => {
                 if (!p.eliminated) {
@@ -64,7 +65,8 @@ class Tournament {
                     if (p.timeLeft <= 0) {
                         p.timeLeft = 0;
                         p.eliminated = true;
-                        console.log(`[TOURNAMENT_TIMER] ${p.getName()} eliminated!`);
+                        p.eliminationPosition = activePlayersBefore;
+                        console.log(`[TOURNAMENT_TIMER] ${p.getName()} eliminated! Position: ${p.eliminationPosition}`);
                     } else {
                         activePlayers++;
                     }
@@ -274,12 +276,13 @@ class Tournament {
     }
 
     reset() {
-        // Clear scores but preserve players and their ELOs
+        // Stop all engines for computer players and clear players
         this.players.forEach(p => {
-            p.score = 0;
-            p.eliminated = false;
-            p.timeLeft = 0;
+            if (typeof p.destroyEngine === 'function') {
+                p.destroyEngine();
+            }
         });
+        this.players = [];
         
         this.isRunning = false;
         this.startTime = null;

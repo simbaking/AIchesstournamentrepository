@@ -136,6 +136,7 @@ class Piece {
                 return dx * dy === 2;
 
             case 'pawn':
+            case 'queen_elizabeth':
                 let direction = this.isWhite ? -1 : 1;
                 let startRankForDouble = this.isWhite ? 6 : 1;
                 
@@ -196,7 +197,7 @@ class Piece {
         if (this.type === 'king') {
             return (isOrthogonal || isDiagonal) && dist === 1;
         }
-        if (this.type === 'pawn') {
+        if (this.type === 'pawn' || this.type === 'queen_elizabeth') {
             // Forward vectors
             let fwd_dq = 0, fwd_dr = -1; // White
             if (this.color === 'black') {

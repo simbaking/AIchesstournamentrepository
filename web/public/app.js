@@ -322,7 +322,7 @@ async function updateStatus() {
                 let styleStr = '';
                 if (isSurvival) {
                     if (player.eliminated) {
-                        scoreText = 'Eliminated';
+                        scoreText = player.eliminationPosition ? `Eliminated (#${player.eliminationPosition})` : 'Eliminated';
                         styleStr = 'text-decoration: line-through; opacity: 0.6;';
                     } else {
                         scoreText = formatTime(player.timeLeft);
@@ -615,6 +615,10 @@ async function updateActiveGames() {
                         </div>
                         <div style="font-size: 0.9rem; color: var(--text-muted); width: 100%; display: flex; justify-content: space-between;">
                             <span>Duration: <span class="active-game-duration" id="game-duration-${game.gameId}"></span></span>
+                            <span>${data.mode === 'survival' 
+                                ? `${formatPlayerName(game.player1)}: ${formatTime(game.player1TimeLeft)} | ${formatPlayerName(game.player2)}: ${formatTime(game.player2TimeLeft)}`
+                                : `Tournament Time: ${formatTime(game.tournamentTimeRemaining)}`
+                            }</span>
                         </div>
                     </div>
                 `;
@@ -674,8 +678,9 @@ registerForm.addEventListener('submit', async (e) => {
 
             // Save to local storage if human
             if (!isComputer) {
-                localStorage.setItem(STORAGE_KEY, name);
-                myPlayerName = name;
+                const finalName = data.name || name;
+                localStorage.setItem(STORAGE_KEY, finalName);
+                myPlayerName = finalName;
             }
 
             playerNameInput.value = '';
@@ -719,11 +724,24 @@ if (startForm) {
 
         // Collect specific allowed variants
         const allowedVariants = ['standard']; // Standard is always allowed
+        let secretOptions = null;
         if (allowVariants) {
             const geometries = Array.from(document.querySelectorAll('input[name="start-geometry"]:checked')).map(cb => cb.value);
             const normalVariants = Array.from(document.querySelectorAll('input[name="start-variants"]:checked')).map(cb => cb.value);
             allowedVariants.push(...geometries);
             allowedVariants.push(...normalVariants);
+
+            if (normalVariants.includes('secret')) {
+                const queens = parseInt(document.getElementById('start-secret-queens').value) || 0;
+                const kings = parseInt(document.getElementById('start-secret-kings').value) || 0;
+                const elizabeths = parseInt(document.getElementById('start-secret-elizabeths').value) || 0;
+
+                if (queens + kings + elizabeths === 0) {
+                    showMessage('You must configure at least 1 secret piece when playing Secret Chess.', 'error');
+                    return;
+                }
+                secretOptions = { queens, kings, elizabeths };
+            }
         }
 
         try {
@@ -737,7 +755,8 @@ if (startForm) {
                     minutes,
                     mode,
                     allowVariants,
-                    allowedVariants // Send specific allowed variants
+                    allowedVariants, // Send specific allowed variants
+                    secretOptions
                 })
             });
             const data = await response.json();
@@ -792,10 +811,21 @@ const handleVariantUIChange = () => {
         offerIncrement.disabled = hasKungFu;
         offerIncrement.style.opacity = hasKungFu ? '0.5' : '1';
     }
+
+    const offerSecretOptions = document.getElementById('offer-secret-options');
+    if (offerSecretOptions) offerSecretOptions.style.display = hasSecret ? 'flex' : 'none';
 };
 
 offerVariantCheckboxes.forEach(cb => cb.addEventListener('change', handleVariantUIChange));
 offerGeometryRadios.forEach(radio => radio.addEventListener('change', handleVariantUIChange));
+
+const startSecretCheckbox = document.getElementById('start-secret-checkbox');
+const startSecretOptions = document.getElementById('start-secret-options');
+if (startSecretCheckbox && startSecretOptions) {
+    startSecretCheckbox.addEventListener('change', () => {
+        startSecretOptions.style.display = startSecretCheckbox.checked ? 'flex' : 'none';
+    });
+}
 
 // Create Game Offer
 createOfferForm.addEventListener('submit', async (e) => {
@@ -849,6 +879,19 @@ createOfferForm.addEventListener('submit', async (e) => {
         return;
     }
 
+    let secretOptions = null;
+    if (checkedVariants.includes('secret')) {
+        const queens = parseInt(document.getElementById('offer-secret-queens').value) || 0;
+        const kings = parseInt(document.getElementById('offer-secret-kings').value) || 0;
+        const elizabeths = parseInt(document.getElementById('offer-secret-elizabeths').value) || 0;
+
+        if (queens + kings + elizabeths === 0) {
+            showMessage('You must configure at least 1 secret piece when playing Secret Chess.', 'error');
+            return;
+        }
+        secretOptions = { queens, kings, elizabeths };
+    }
+
     try {
         const response = await fetch(`${API_URL}/api/offers/create`, {
             method: 'POST',
@@ -860,7 +903,8 @@ createOfferForm.addEventListener('submit', async (e) => {
                 targets,
                 variant,
                 startPos,
-                cooldown
+                cooldown,
+                secretOptions
             })
         });
 
@@ -943,7 +987,7 @@ window.addEventListener('load', () => {
 if (resetBtn) {
     resetBtn.addEventListener('click', async () => {
         // Confirmation dialog to prevent accidental resets
-        if (!confirm('Reset tournament? This will clear all games and reset scores, but keep registered players.')) {
+        if (!confirm('Reset tournament? This will clear all games, reset scores, AND remove all registered players.')) {
             return;
         }
 

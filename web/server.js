@@ -90,7 +90,7 @@ const tournamentAI = new TournamentAI(tournament);
 const HUMAN_PRIORITY_DELAY = 10000; // 10 seconds
 
 // Helper to create and start a game
-function createGame(playersArray, timeControlMinutes, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random', cooldownSeconds = 10, gameId = null) {
+function createGame(playersArray, timeControlMinutes, incrementSeconds = 0, timeStages = [], variant = 'standard', startPos = 'random', cooldownSeconds = 10, gameId = null, secretOptions = null) {
     // Check if tournament is running before creating game
     if (!tournament.checkIsRunning()) {
         console.warn(`Cannot create game: Tournament is not running`);
@@ -210,6 +210,9 @@ function createGame(playersArray, timeControlMinutes, incrementSeconds = 0, time
         cooldownSeconds,
         playerElosMap
     );
+    if (secretOptions) {
+        game.secretOptions = secretOptions;
+    }
 
     // Set busy state for all human players
     tPlayers.forEach(p => {
@@ -798,6 +801,10 @@ app.post('/api/register', (req, res) => {
     const clientIP = req.ip || req.connection.remoteAddress || 'unknown';
     console.log(`Register request: ${name}, isComputer: ${isComputer}, level: ${level}, IP: ${clientIP}`);
 
+    if (tournament.checkIsRunning() && tournament.mode === 'survival') {
+        return res.status(400).json({ error: 'Cannot join a survival tournament that has already started.' });
+    }
+
     let initialElo = null;
 
     if (!isComputer) {
@@ -860,7 +867,7 @@ app.post('/api/register', (req, res) => {
 
     tournament.registerPlayer(name, isComputer || false, level !== undefined ? level : null, browserId || null, clientIP, initialElo);
     console.log(`Player registered: ${name} from IP: ${clientIP}`);
-    res.json({ success: true, message: 'Player registered' });
+    res.json({ success: true, message: 'Player registered', name: name });
 });
 
 // Reset tournament
@@ -877,6 +884,7 @@ app.post('/api/reset', (req, res) => {
     if (autoMatchmakingInterval) { clearInterval(autoMatchmakingInterval); autoMatchmakingInterval = null; }
     if (timeoutMonitorInterval) { clearInterval(timeoutMonitorInterval); timeoutMonitorInterval = null; }
 
+    saveState();
     console.log('Tournament reset via API');
     res.json({ success: true, message: 'Tournament reset successfully' });
 });
@@ -908,6 +916,9 @@ app.post('/api/clear-scores', (req, res) => {
     const players = tournament.getPlayers();
     players.forEach(player => {
         player.score = 0;
+        player.eliminated = false;
+        player.timeLeft = tournament.durationLimit;
+        player.eliminationPosition = null;
     });
 
     // Stop running tournament but keep players
@@ -916,14 +927,20 @@ app.post('/api/clear-scores', (req, res) => {
 
     if (tournamentMonitorInterval) { clearInterval(tournamentMonitorInterval); tournamentMonitorInterval = null; }
     if (autoMatchmakingInterval) { clearInterval(autoMatchmakingInterval); autoMatchmakingInterval = null; }
+    if (timeoutMonitorInterval) { clearInterval(timeoutMonitorInterval); timeoutMonitorInterval = null; }
 
+    saveState();
     console.log('Scores cleared via API, players kept');
     res.json({ success: true, message: 'Scores cleared successfully' });
 });
 
 // Start tournament
 app.post('/api/start', (req, res) => {
-    const { durationMinutes, allowVariants, allowedVariants, hours, minutes, duration, mode } = req.body;
+    const { durationMinutes, allowVariants, allowedVariants, hours, minutes, duration, mode, secretOptions } = req.body;
+
+    if (secretOptions) {
+        tournament.secretOptions = secretOptions;
+    }
 
     // Normalize duration logic (handle hours/minutes/duration fields)
     let durationMs = 0;
@@ -1104,7 +1121,8 @@ app.post('/api/start', (req, res) => {
                         increment: match.increment,
                         variant: match.variant || 'standard', // AI strategically selects variant
                         targets: ['Any'], // Open to all, but AI targeted specific opponent in mind
-                        timestamp: Date.now()
+                        timestamp: Date.now(),
+                        secretOptions: tournament.secretOptions || { queens: 2, kings: 1, elizabeths: 0 }
                     };
 
                     console.log(`Auto-offer: ${bot.getName()} offering ${offer.timeControl}m+${offer.increment}s [${offer.variant}]`);
@@ -1176,7 +1194,7 @@ app.post('/api/start', (req, res) => {
                             offer.acceptedBy.push(bot.getName());
                             
                             if (offer.acceptedBy.length >= offer.requiredPlayers) {
-                                const result = createGame(offer.acceptedBy, offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
+                                const result = createGame(offer.acceptedBy, offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown, null, offer.secretOptions);
                                 if (!result.success) {
                                     console.error(`[MATCHMAKING ERROR] Failed to create game: ${result.error}`);
                                     gameOffers = gameOffers.filter(o => o.id !== offer.id); // clear broken offer
@@ -1213,7 +1231,8 @@ app.get('/api/status', (req, res) => {
         level: p.getLevel(),
         elo: p.getElo(),  // All players now have ELO
         eliminated: p.eliminated || false,
-        timeLeft: p.timeLeft || 0
+        timeLeft: p.timeLeft || 0,
+        eliminationPosition: p.eliminationPosition || null
     }));
 
     // Sort by score descending
@@ -1263,7 +1282,7 @@ app.post('/api/result', (req, res) => {
 
 // Create a new game offer
 app.post('/api/offers/create', (req, res) => {
-    const { player1, timeControl, increment, targets, variant, startPos, cooldown } = req.body;
+    const { player1, timeControl, increment, targets, variant, startPos, cooldown, secretOptions } = req.body;
 
     console.log(`[OFFER_CREATE] Received: player1=${player1}, variant=${variant}, startPos=${startPos}`);
 
@@ -1346,7 +1365,8 @@ app.post('/api/offers/create', (req, res) => {
         timestamp: now,
         variant: requestedVariant,
         startPos: startPos || 'random',
-        cooldown: cooldown || 10
+        cooldown: cooldown || 10,
+        secretOptions
     };
 
     gameOffers.push(offer);
@@ -1416,7 +1436,7 @@ app.post('/api/offers/accept', (req, res) => {
 
     // We have enough players! Start the game.
     console.log(`Creating game: ${offer.acceptedBy.join(' vs ')} (colors randomized by createGame)`);
-    const result = createGame(offer.acceptedBy, offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown);
+    const result = createGame(offer.acceptedBy, offer.timeControl, offer.increment, offer.timeStages, offer.variant, offer.startPos, offer.cooldown, null, offer.secretOptions);
 
     if (!result.success) {
         // If game creation failed, remove the last player so they can try again? Or remove the offer?
@@ -1702,10 +1722,13 @@ app.get('/api/games', (req, res) => {
             duration: state.duration,
             variant: state.variant,
             player1Elo: state.player1Elo,
-            player2Elo: state.player2Elo
+            player2Elo: state.player2Elo,
+            tournamentTimeRemaining: tournament.getRemainingTime(),
+            player1TimeLeft: tournament.getPlayerByName(state.player1)?.timeLeft || 0,
+            player2TimeLeft: tournament.getPlayerByName(state.player2)?.timeLeft || 0
         };
     });
-    res.json({ games });
+    res.json({ games, mode: tournament.mode });
 });
 
 // Global Error Handlers to prevent server crash

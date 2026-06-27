@@ -234,6 +234,11 @@ class Board {
                 piece.type = promotionPiece;
                 piece.wasPromoted = true; // Track for Crazyhouse (reverts to pawn when captured)
             }
+        } else if (piece.type === 'queen_elizabeth') {
+            if ((piece.isWhite && endY === 0) || (!piece.isWhite && endY === 7)) {
+                piece.type = 'king';
+                piece.wasPromoted = true;
+            }
         }
 
         return {

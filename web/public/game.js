@@ -382,13 +382,18 @@ function initBoard() {
 
     chessboard.innerHTML = '';
 
-    // Respect current flip state when creating squares
-    const startY = isFlipped ? 7 : 0;
-    const endY = isFlipped ? -1 : 8;
+    const boardWidth = gameState.board.length;
+    const boardHeight = gameState.board[0].length;
+    
+    chessboard.style.setProperty('--board-cols', boardWidth);
+    chessboard.style.setProperty('--board-rows', boardHeight);
+
+    const startY = isFlipped ? boardHeight - 1 : 0;
+    const endY = isFlipped ? -1 : boardHeight;
     const stepY = isFlipped ? -1 : 1;
 
-    const startX = isFlipped ? 7 : 0;
-    const endX = isFlipped ? -1 : 8;
+    const startX = isFlipped ? boardWidth - 1 : 0;
+    const endX = isFlipped ? -1 : boardWidth;
     const stepX = isFlipped ? -1 : 1;
 
     for (let y = startY; y !== endY; y += stepY) {
@@ -574,9 +579,12 @@ function updateBoard(forceRefresh = false) {
     const lastMoveHash = lastMove ? `${lastMove.startX},${lastMove.startY},${lastMove.endX},${lastMove.endY}` : null;
     const validMovesHash = validMoves.map(m => `${m.x},${m.y}`).join(';');
 
+    const boardWidth = gameState.board.length;
+    const boardHeight = gameState.board[0].length;
+
     // Iterate through all squares and update only what changed
-    for (let y = 0; y < 8; y++) {
-        for (let x = 0; x < 8; x++) {
+    for (let y = 0; y < boardHeight; y++) {
+        for (let x = 0; x < boardWidth; x++) {
             const square = document.getElementById(`square-${x}-${y}`);
             if (!square) continue;
 

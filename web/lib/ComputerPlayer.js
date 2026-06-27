@@ -113,7 +113,7 @@ class ComputerPlayer {
         if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
         this.heartbeatInterval = setInterval(() => {
             const elapsed = Date.now() - this.lastHeartbeat;
-            if (elapsed > 30000 && !this.isTerminating) {
+            if (elapsed > 30000 && !this.isTerminating && (this.pendingCallback || this.isPondering)) {
                 console.error('[COMPUTER] Worker stuck, restarting...');
                 this.terminateWorker(); // Bug 3 fix: terminateWorker now fires pendingCallback
                 setTimeout(() => this.init(this.currentWorkerVariant), 1000);
