@@ -46,8 +46,8 @@ class ComputerPlayer {
         if (level === -0.5) return 300;
         if (level === 0) return 400;
         if (level === 0.5) return 600;
-        // Stockfish levels 1-20 -> ELO 800-3080
-        return 800 + (Math.max(1, Math.min(20, level)) - 1) * 120;
+        // Stockfish levels 1-25 -> ELO 800-3680
+        return 800 + (Math.max(1, Math.min(25, level)) - 1) * 120;
     }
 
     getElo() {

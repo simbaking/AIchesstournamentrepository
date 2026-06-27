@@ -94,7 +94,7 @@ function getElo(level) {
     if (level === -0.5) return 300;
     if (level === 0) return 400;   // Simple minimax
     if (level === 0.5) return 600;
-    return 800 + (Math.max(1, Math.min(20, level)) - 1) * 120;
+    return 800 + (Math.max(1, Math.min(25, level)) - 1) * 120;
 }
 
 // Populate computer levels
@@ -122,8 +122,8 @@ function populateComputerLevels() {
     halfOption.textContent = 'Level 0.5 (600) - Two Move Stockfish';
     computerLevelSelect.appendChild(halfOption);
 
-    // Add Levels 1-20
-    for (let i = 1; i <= 20; i++) {
+    // Add Levels 1-25
+    for (let i = 1; i <= 25; i++) {
         const elo = getElo(i);
         const option = document.createElement('option');
         option.value = i;
@@ -230,7 +230,12 @@ async function updateStatus() {
             statusBadge.classList.remove('status-badge');
             statusBadge.classList.add('status-badge', 'running');
             statusBadge.style.backgroundColor = ''; // Reset inline style
-            timerDisplay.textContent = formatTime(data.remainingTime);
+            let displayTime = data.remainingTime;
+            if (data.config && data.config.mode === 'survival' && myPlayerName) {
+                const me = data.players.find(p => p.name.toLowerCase() === myPlayerName.toLowerCase());
+                if (me) displayTime = me.timeLeft;
+            }
+            timerDisplay.textContent = formatTime(displayTime);
             wasTournamentRunning = true;
             celebrationShown = false;
 

@@ -15,7 +15,7 @@ class TournamentAI {
      * @returns {Object} - {shouldAccept: boolean, reason: string, expectedPoints: number}
      */
     evaluateOffer(offer, player) {
-        const opponent = this.tournament.getPlayerByName(offer.player);
+        const opponent = this.tournament.getPlayerByName(offer.creator);
         if (!opponent) {
             return { shouldAccept: false, reason: 'Opponent not found' };
         }

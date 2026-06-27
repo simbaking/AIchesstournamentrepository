@@ -275,10 +275,9 @@ class ChessGame {
                     this.computerPlayers.white = new ComputerPlayer(level);
                     this.computerPlayers.whiteIsShared = false;
                 }
-                const colorToSetup = pColor;
                 for (const strategy of this.variantStrategies) {
                     if (strategy.setupComputerPlayer) {
-                        strategy.setupComputerPlayer(this.computerPlayers[colorToSetup]);
+                        strategy.setupComputerPlayer(this.computerPlayers.white);
                     }
                 }
             } else {

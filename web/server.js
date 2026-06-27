@@ -141,31 +141,28 @@ function createGame(playersArray, timeControlMinutes, incrementSeconds = 0, time
 
     // Actually, if loaded from JSON, they might be marked busy=true.
     // We should allow busy players if `gameId` matches their `activeGameId`.
-    if (p1.isBusy() && p1.getActiveGameId() !== gameId) {
-        console.warn(`Cannot create game: ${p1.getName()} is busy in ${p1.getActiveGameId()}`);
-        return { success: false, error: 'Player 1 is busy' };
-    }
-    if (p2.isBusy() && p2.getActiveGameId() !== gameId) {
-        console.warn(`Cannot create game: ${p2.getName()} is busy in ${p2.getActiveGameId()}`);
-        return { success: false, error: 'Player 2 is busy' };
+    // Check busy status
+    for (const p of tPlayers) {
+        if (p.isBusy() && p.getActiveGameId() !== gameId) {
+            console.warn(`Cannot create game: ${p.getName()} is busy in ${p.getActiveGameId()}`);
+            return { success: false, error: `${p.getName()} is busy` };
+        }
     }
 
     const handleGameEnd = (result) => {
         console.log(`Game ${gameId} ended. Winner: ${result.winner}, Reason: ${result.reason}`);
 
-        const p1End = tournament.getPlayerByName(player1Name);
-        const p2End = tournament.getPlayerByName(player2Name);
+        const endedPlayers = gamePlayers.map(name => tournament.getPlayerByName(name));
 
         try {
-            if (p1End && p2End) {
+            if (endedPlayers.every(p => p)) {
                 const duration = game.getDuration();
                 tournament.recordGameResult(game.players.map(p => p.name), result.winner, duration, game.variant);
             }
         } catch (e) {
             console.error(`Error recording game result for game ${gameId}:`, e);
         } finally {
-            if (p1End) p1End.setBusy(false);
-            if (p2End) p2End.setBusy(false);
+            endedPlayers.forEach(p => { if (p) p.setBusy(false); });
             if (game.cleanup) game.cleanup();
 
             // Delay game deletion to give clients time to see the final game state
@@ -1447,7 +1444,7 @@ app.post('/api/game/start', (req, res) => {
     // Config parse
     const config = parseTimeControl(timeControl, increment);
 
-    const result = createGame(player1, player2, config.minutes, config.increment, config.stages, variant || 'standard');
+    const result = createGame([player1, player2], config.minutes, config.increment, config.stages, variant || 'standard');
 
     if (!result.success) {
         return res.status(400).json(result);
@@ -1510,7 +1507,17 @@ app.get('/api/game/:gameId', (req, res) => {
     gameState.player2Elo = p2 ? p2.getElo() : null;
 
     // Add tournament time remaining
-    gameState.tournamentTimeRemaining = tournament.getRemainingTime();
+    if (tournament.mode === 'survival' && player) {
+        const playerObj = tournament.getPlayerByName(player);
+        if (playerObj) {
+            const elapsed = Date.now() - tournament.startTime;
+            gameState.tournamentTimeRemaining = Math.max(0, tournament.durationLimit + playerObj.score - elapsed);
+        } else {
+            gameState.tournamentTimeRemaining = tournament.getRemainingTime();
+        }
+    } else {
+        gameState.tournamentTimeRemaining = tournament.getRemainingTime();
+    }
     gameState.tournamentIsRunning = tournament.isRunning;
 
     res.json(gameState);
