@@ -118,7 +118,10 @@ class Player {
             activeGameId: this.activeGameId,
             browserId: this.browserId,
             clientIP: this.clientIP,
-            elo: this.elo
+            elo: this.elo,
+            eliminated: this.eliminated,
+            timeLeft: this.timeLeft,
+            eliminationPosition: this.eliminationPosition
         };
     }
 
@@ -128,6 +131,9 @@ class Player {
         player.busy = data.busy;
         player.activeGameId = data.activeGameId;
         player.elo = data.elo;
+        player.eliminated = data.eliminated;
+        player.timeLeft = data.timeLeft;
+        player.eliminationPosition = data.eliminationPosition;
         return player;
     }
 }

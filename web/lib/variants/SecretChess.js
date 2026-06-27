@@ -49,7 +49,20 @@ class SecretChess extends BaseVariant {
 
     handleAction(action, playerColor) {
         if (action.type === 'secret_setup' && this.game.secretSetupPhase) {
-            // action.secrets = [{x, y, type: 'queen'}, {x, y, type: 'king'}]
+            const secretOptions = this.game.secretOptions || { queens: 2, kings: 1, elizabeths: 0 };
+            
+            // Count requested pieces
+            let qCount = 0, kCount = 0, qeCount = 0;
+            for (const secret of action.secrets) {
+                if (secret.type === 'queen') qCount++;
+                if (secret.type === 'king') kCount++;
+                if (secret.type === 'queen_elizabeth') qeCount++;
+            }
+
+            if (qCount > secretOptions.queens || kCount > secretOptions.kings || qeCount > secretOptions.elizabeths) {
+                return false; // Exceeded limits
+            }
+
             const board = this.game.board;
             for (const secret of action.secrets) {
                 const piece = board.getPiece(secret.x, secret.y);
