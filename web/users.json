@@ -8,5 +8,10 @@
     "passwordHash": "eb88940d31ceaaa05a95bb4f3b0e5c786ca4fac4efd0fafd4a9b4a3e38b411d7",
     "elo": 421.3501514762065,
     "lastLogin": 1782420366089
+  },
+  "scar": {
+    "passwordHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+    "elo": 400,
+    "lastLogin": 1782514302132
   }
 }
