@@ -89,19 +89,21 @@
                 <h2>Start Tournament</h2>
                 <form id="start-form">
                     <div class="offer-form">
-                        <select id="tournament-mode" style="flex: 1;">
-                            <option value="legacy">Legacy (Global Timer)</option>
-                            <option value="survival" selected>Survival (Last Man Standing)</option>
-                        </select>
-                        <div style="display: flex; align-items: center; gap: 3px;">
-                            <input type="number" id="duration-hours" placeholder="Hours" min="0" max="24" value="0"
-                                style="width: 80px;">
-                            <span style="font-size: 0.85em; color: var(--text-color); opacity: 0.8;">h</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 3px;">
-                            <input type="number" id="duration-minutes" placeholder="Minutes" min="0" max="59" value="5"
-                                required style="width: 80px;">
-                            <span style="font-size: 0.85em; color: var(--text-color); opacity: 0.8;">m</span>
+                        <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+                            <select id="tournament-mode" style="flex: 1;">
+                                <option value="legacy">Legacy (Global Timer)</option>
+                                <option value="survival" selected>Survival (Last Man Standing)</option>
+                            </select>
+                            <div style="display: flex; align-items: center; gap: 3px;">
+                                <input type="number" id="duration-hours" placeholder="Hours" min="0" max="24" value="0"
+                                    style="width: 70px;">
+                                <span style="font-size: 0.85em; color: var(--text-color); opacity: 0.8;">h</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 3px;">
+                                <input type="number" id="duration-minutes" placeholder="Minutes" min="0" max="59" value="5"
+                                    required style="width: 70px;">
+                                <span style="font-size: 0.85em; color: var(--text-color); opacity: 0.8;">m</span>
+                            </div>
                         </div>
 
                         <div style="margin-top: 10px; border: 1px solid var(--border-color); padding: 10px; border-radius: 5px;">
@@ -110,27 +112,31 @@
                                 Allow Variants
                             </label>
                             
-                            <div id="variant-selection">
-                                <label style="font-weight: bold; display: block; margin-top: 10px; margin-bottom: 5px;">Board Geometry:</label>
-                                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                                    <label><input type="checkbox" name="start-geometry" value="4player" checked> 4-Player (Cross)</label>
-                                    <label><input type="checkbox" name="start-geometry" value="3player_hex" checked> 3-Player Hex</label>
-                                    <label><input type="checkbox" name="start-geometry" value="2player_hex" checked> 2-Player Hex</label>
-                                    <label><input type="checkbox" name="start-geometry" value="6x6" checked> 6x6 Board</label>
-                                    <label><input type="checkbox" name="start-geometry" value="6x6_same_bishop" checked> 6x6 (Same Bishops)</label>
-                                    <label><input type="checkbox" name="start-geometry" value="4x4" checked> 4x4 Board</label>
-                                    <label><input type="checkbox" name="start-geometry" value="4x4_pawn_center" checked> 4x4 (Pawn Center)</label>
+                            <div id="variant-selection" style="display: flex; gap: 20px; margin-top: 10px;">
+                                <div style="flex: 1;">
+                                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">Board Geometry:</label>
+                                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>4-Player (Cross)</span> <input type="checkbox" name="start-geometry" value="4player" checked></label>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>3-Player Hex</span> <input type="checkbox" name="start-geometry" value="3player_hex" checked></label>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>2-Player Hex</span> <input type="checkbox" name="start-geometry" value="2player_hex" checked></label>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>6x6 Board</span> <input type="checkbox" name="start-geometry" value="6x6" checked></label>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>6x6 (Same Bishops)</span> <input type="checkbox" name="start-geometry" value="6x6_same_bishop" checked></label>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>4x4 Board</span> <input type="checkbox" name="start-geometry" value="4x4" checked></label>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>4x4 (Pawn Center)</span> <input type="checkbox" name="start-geometry" value="4x4_pawn_center" checked></label>
+                                    </div>
                                 </div>
 
-                                <label style="font-weight: bold; display: block; margin-top: 10px; margin-bottom: 5px;">Normal Variants:</label>
-                                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                                    <label><input type="checkbox" name="start-variants" value="freestyle" checked> Freestyle</label>
-                                    <label><input type="checkbox" name="start-variants" value="kungfu" checked> Kung Fu</label>
-                                    <label><input type="checkbox" name="start-variants" value="crazyhouse" checked> Crazyhouse</label>
-                                    <label><input type="checkbox" name="start-variants" value="kingofthehill" checked> King of the Hill</label>
-                                    <label><input type="checkbox" name="start-variants" value="atomic" checked> Atomic</label>
-                                    <label><input type="checkbox" name="start-variants" value="secret" checked> Secret Chess</label>
-                                    <label><input type="checkbox" name="start-variants" value="fogofwar" checked> Fog of War</label>
+                                <div style="flex: 1;">
+                                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">Normal Variants:</label>
+                                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Freestyle</span> <input type="checkbox" name="start-variants" value="freestyle" checked></label>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Kung Fu</span> <input type="checkbox" name="start-variants" value="kungfu" checked></label>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Crazyhouse</span> <input type="checkbox" name="start-variants" value="crazyhouse" checked></label>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>King of the Hill</span> <input type="checkbox" name="start-variants" value="kingofthehill" checked></label>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Atomic</span> <input type="checkbox" name="start-variants" value="atomic" checked></label>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Secret Chess</span> <input type="checkbox" name="start-variants" value="secret" checked></label>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Fog of War</span> <input type="checkbox" name="start-variants" value="fogofwar" checked></label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -183,35 +189,37 @@
                             <span style="font-size: 0.85em; color: var(--text-color); opacity: 0.8;">sec</span>
                         </div>
 
-                        <div style="margin-top: 10px; border: 1px solid var(--border-color); padding: 10px; border-radius: 5px;">
-                            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Board Geometry:</label>
-                            <div id="offer-geometry" style="display: flex; gap: 15px; flex-wrap: wrap;">
-                                <label><input type="radio" name="geometry" value="standard" checked> Standard 8x8</label>
-                                <label><input type="radio" name="geometry" value="4player"> 4-Player (Cross)</label>
-                                <label><input type="radio" name="geometry" value="3player_hex"> 3-Player Hex</label>
-                                <label><input type="radio" name="geometry" value="2player_hex"> 2-Player Hex</label>
-                                <label><input type="radio" name="geometry" value="6x6"> 6x6 Board</label>
-                                <label><input type="radio" name="geometry" value="4x4"> 4x4 Board</label>
+                        <div style="margin-top: 10px; border: 1px solid var(--border-color); padding: 10px; border-radius: 5px; display: flex; gap: 20px;">
+                            <div style="flex: 1;">
+                                <label style="font-weight: bold; display: block; margin-bottom: 5px;">Board Geometry:</label>
+                                <div id="offer-geometry" style="display: flex; flex-direction: column; gap: 5px;">
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Standard 8x8</span> <input type="radio" name="geometry" value="standard" checked></label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>4-Player (Cross)</span> <input type="radio" name="geometry" value="4player"></label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>3-Player Hex</span> <input type="radio" name="geometry" value="3player_hex"></label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>2-Player Hex</span> <input type="radio" name="geometry" value="2player_hex"></label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>6x6 Board</span> <input type="radio" name="geometry" value="6x6"></label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>4x4 Board</span> <input type="radio" name="geometry" value="4x4"></label>
+                                </div>
+                                <!-- Geometry specific options -->
+                                <div id="geom-options-6x6" style="display:none; margin-top: 10px;">
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Same color bishops</span> <input type="checkbox" id="offer-6x6-same-bishop"></label>
+                                </div>
+                                <div id="geom-options-4x4" style="display:none; margin-top: 10px;">
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Fill center with pawns</span> <input type="checkbox" id="offer-4x4-pawn-center"></label>
+                                </div>
                             </div>
-                            <!-- Geometry specific options -->
-                            <div id="geom-options-6x6" style="display:none; margin-top: 10px;">
-                                <label><input type="checkbox" id="offer-6x6-same-bishop"> Same color bishops</label>
-                            </div>
-                            <div id="geom-options-4x4" style="display:none; margin-top: 10px;">
-                                <label><input type="checkbox" id="offer-4x4-pawn-center"> Fill center with pawns</label>
-                            </div>
-                        </div>
 
-                        <div style="margin-top: 10px; border: 1px solid var(--border-color); padding: 10px; border-radius: 5px;">
-                            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Normal Variants:</label>
-                            <div id="offer-normal-variants" style="display: flex; gap: 15px; flex-wrap: wrap;">
-                                <label><input type="checkbox" name="variants" value="freestyle"> Freestyle (Chess 960)</label>
-                                <label><input type="checkbox" name="variants" value="kungfu"> Kung Fu</label>
-                                <label><input type="checkbox" name="variants" value="crazyhouse"> Crazyhouse</label>
-                                <label><input type="checkbox" name="variants" value="kingofthehill"> King of the Hill</label>
-                                <label><input type="checkbox" name="variants" value="atomic"> Atomic</label>
-                                <label><input type="checkbox" name="variants" value="secret"> Secret Chess</label>
-                                <label><input type="checkbox" name="variants" value="fogofwar"> Fog of War</label>
+                            <div style="flex: 1;">
+                                <label style="font-weight: bold; display: block; margin-bottom: 5px;">Normal Variants:</label>
+                                <div id="offer-normal-variants" style="display: flex; flex-direction: column; gap: 5px;">
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Freestyle (Chess 960)</span> <input type="checkbox" name="variants" value="freestyle"></label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Kung Fu</span> <input type="checkbox" name="variants" value="kungfu"></label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Crazyhouse</span> <input type="checkbox" name="variants" value="crazyhouse"></label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>King of the Hill</span> <input type="checkbox" name="variants" value="kingofthehill"></label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Atomic</span> <input type="checkbox" name="variants" value="atomic"></label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Secret Chess</span> <input type="checkbox" name="variants" value="secret"></label>
+                                    <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;"><span>Fog of War</span> <input type="checkbox" name="variants" value="fogofwar"></label>
+                                </div>
                             </div>
                         </div>
 
