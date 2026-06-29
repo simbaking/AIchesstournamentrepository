@@ -11,8 +11,8 @@
   },
   "scar": {
     "passwordHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
-    "elo": null,
-    "lastLogin": 1782744602299,
+    "elo": 400,
+    "lastLogin": 1782747454207,
     "totalTournaments": 1,
     "totalPosition": 1
   }
