@@ -659,12 +659,6 @@ registerForm.addEventListener('submit', async (e) => {
     const isComputer = isComputerCheckbox.checked;
     const level = isComputer ? parseFloat(computerLevelSelect.value) : null;
 
-    // Client-side check for existing human registration on this device
-    if (!isComputer && myPlayerName) {
-        showMessage(`You are already registered as <strong>${myPlayerName}</strong>. Only one human player per device is allowed.`, 'error');
-        return;
-    }
-
     try {
         const headers = { 'Content-Type': 'application/json' };
         if (typeof authToken !== 'undefined' && authToken) {
@@ -1015,7 +1009,7 @@ function formatTime(ms) {
 const clearScoresBtn = document.getElementById('clear-scores-btn');
 if (clearScoresBtn) {
     clearScoresBtn.addEventListener('click', async () => {
-        if (!confirm('Clear all scores? This will stop the tournament but keep players registered.')) {
+        if (!confirm('Clear all scores to zero? This will keep players registered and the tournament running.')) {
             return;
         }
 
@@ -1173,6 +1167,7 @@ if (celebrationModal) {
 let authToken = localStorage.getItem('authToken');
 let authUsername = localStorage.getItem('authUsername');
 let authElo = localStorage.getItem('authElo');
+if (authElo === 'null' || authElo === 'undefined') authElo = null;
 
 function updateAuthUI() {
     const loginContainer = document.getElementById('login-form-container');
@@ -1371,15 +1366,6 @@ if (document.readyState === 'loading') {
 }
 
 function initSecretCheckboxes() {
-    const startSecretCheckbox = document.getElementById('start-secret-checkbox');
-    const startSecretOptions = document.getElementById('start-secret-options');
-    if (startSecretCheckbox && startSecretOptions) {
-        startSecretCheckbox.addEventListener('change', (e) => {
-            startSecretOptions.style.display = e.target.checked ? 'flex' : 'none';
-        });
-        startSecretOptions.style.display = startSecretCheckbox.checked ? 'flex' : 'none';
-    }
-
     const offerSecretCheckbox = document.getElementById('offer-secret-checkbox');
     const offerSecretOptions = document.getElementById('offer-secret-options');
     if (offerSecretCheckbox && offerSecretOptions) {
