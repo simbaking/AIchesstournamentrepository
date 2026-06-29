@@ -846,11 +846,10 @@ app.post('/api/register', (req, res) => {
     }
 
     let initialElo = null;
+    const authHeader = req.headers.authorization;
+    let authUsername = null;
 
     if (!isComputer) {
-        const authHeader = req.headers.authorization;
-        let authUsername = null;
-        
         if (authHeader && authHeader.startsWith('Bearer ')) {
             const token = authHeader.split(' ')[1];
             authUsername = activeSessions[token];
@@ -880,6 +879,16 @@ app.post('/api/register', (req, res) => {
             if (existingUser) {
                 return res.status(401).json({ error: 'This name belongs to a registered user. Please log in to use it.' });
             }
+            // Prevent multiple guest registrations from the same browser
+            if (browserId) {
+                const existingByBrowserId = tournament.getPlayerByBrowserId(browserId);
+                if (existingByBrowserId && !existingByBrowserId.isComputerPlayer()) {
+                    return res.status(400).json({ 
+                        error: `This device is already registered as ${existingByBrowserId.getName()}`,
+                        existingPlayer: existingByBrowserId.getName()
+                    });
+                }
+            }
         }
     } else {
         if (!name || name.trim() === '') {
@@ -896,17 +905,7 @@ app.post('/api/register', (req, res) => {
         return res.status(400).json({ error: 'Player already exists' });
     }
 
-    // Server-side check: One human player per browser ID (only for guests)
-    if (!isComputer && browserId && !authUsername) {
-        const existingByBrowserId = tournament.getPlayerByBrowserId(browserId);
-        if (existingByBrowserId && !existingByBrowserId.isComputerPlayer()) {
-            console.log(`[REGISTER] Rejected: browserId ${browserId} already has human player ${existingByBrowserId.getName()}`);
-            return res.status(400).json({
-                error: `This device is already registered as ${existingByBrowserId.getName()}`,
-                existingPlayer: existingByBrowserId.getName()
-            });
-        }
-    }
+
 
     if (!isComputer) {
         console.log(`[REGISTER] Human player "${name}" registering from IP: ${clientIP}, browserId: ${browserId} with Elo ${initialElo}`);
