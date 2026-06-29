@@ -731,17 +731,7 @@ if (startForm) {
             allowedVariants.push(...geometries);
             allowedVariants.push(...normalVariants);
 
-            if (normalVariants.includes('secret')) {
-                const queens = parseInt(document.getElementById('start-secret-queens').value) || 0;
-                const kings = parseInt(document.getElementById('start-secret-kings').value) || 0;
-                const elizabeths = parseInt(document.getElementById('start-secret-elizabeths').value) || 0;
 
-                if (queens + kings + elizabeths === 0) {
-                    showMessage('You must configure at least 1 secret piece when playing Secret Chess.', 'error');
-                    return;
-                }
-                secretOptions = { queens, kings, elizabeths };
-            }
         }
 
         try {
@@ -819,13 +809,7 @@ const handleVariantUIChange = () => {
 offerVariantCheckboxes.forEach(cb => cb.addEventListener('change', handleVariantUIChange));
 offerGeometryRadios.forEach(radio => radio.addEventListener('change', handleVariantUIChange));
 
-const startSecretCheckbox = document.getElementById('start-secret-checkbox');
-const startSecretOptions = document.getElementById('start-secret-options');
-if (startSecretCheckbox && startSecretOptions) {
-    startSecretCheckbox.addEventListener('change', () => {
-        startSecretOptions.style.display = startSecretCheckbox.checked ? 'flex' : 'none';
-    });
-}
+
 
 // Create Game Offer
 createOfferForm.addEventListener('submit', async (e) => {
@@ -1254,10 +1238,11 @@ async function handleLogin() {
     const password = passwordInput.value;
     
     try {
+        const browserId = getBrowserId();
         const res = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ username, password, browserId })
         });
         const data = await res.json();
         if (data.success) {
