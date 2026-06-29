@@ -833,7 +833,7 @@ app.post('/api/register', (req, res) => {
             name = authUsername; // Force the exact case of the registered user
             
             if (users[name]) {
-                initialElo = users[name].elo;
+                initialElo = users[name].elo !== null && users[name].elo !== undefined ? users[name].elo : 400;
             }
         } else {
             // Not logged in: Guest player
@@ -932,7 +932,10 @@ app.post('/api/clear-scores', (req, res) => {
 
     // Stop running tournament but keep players
     tournament.isRunning = false;
+    tournament.startTime = null;
+    tournament.durationLimit = 0;
     activeGames.clear();
+    gameOffers.length = 0;
 
     if (tournamentMonitorInterval) { clearInterval(tournamentMonitorInterval); tournamentMonitorInterval = null; }
     if (autoMatchmakingInterval) { clearInterval(autoMatchmakingInterval); autoMatchmakingInterval = null; }
