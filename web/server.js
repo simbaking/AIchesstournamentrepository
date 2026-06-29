@@ -898,6 +898,24 @@ app.post('/api/reset', (req, res) => {
     res.json({ success: true, message: 'Tournament reset successfully' });
 });
 
+// Clear tournament scores without stopping the tournament
+app.post('/api/clear-scores', (req, res) => {
+    console.log(`[CLEAR-SCORES] Request from IP: ${req.ip}`);
+    
+    tournament.players.forEach(p => {
+        p.score = 0;
+        p.eliminated = false;
+        // Optionally reset timeLeft to full duration limit if running
+        if (p.timeLeft !== undefined && tournament.isRunning && tournament.durationLimit > 0) {
+            p.timeLeft = tournament.durationLimit;
+        }
+    });
+    
+    saveState();
+    console.log('Tournament scores cleared via API');
+    res.json({ success: true, message: 'Tournament scores cleared successfully' });
+});
+
 // Get server info (LAN IPs for sharing)
 app.get('/api/server-info', (req, res) => {
     const os = require('os');

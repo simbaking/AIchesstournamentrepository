@@ -112,8 +112,8 @@
                                 Allow Variants
                             </label>
                             
-                            <div id="variant-selection" style="display: flex; gap: 20px; margin-top: 10px;">
-                                <div style="flex: 1;">
+                            <div id="variant-selection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px;">
+                                <div>
                                     <label style="font-weight: bold; display: block; margin-bottom: 5px;">Board Geometry:</label>
                                     <div style="display: flex; flex-direction: column; gap: 5px;">
                                         <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; "><span>4-Player (Cross)</span> <input type="checkbox" name="start-geometry" value="4player" checked></label>
@@ -126,7 +126,7 @@
                                     </div>
                                 </div>
 
-                                <div style="flex: 1;">
+                                <div>
                                     <label style="font-weight: bold; display: block; margin-bottom: 5px;">Normal Variants:</label>
                                     <div style="display: flex; flex-direction: column; gap: 5px;">
                                         <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; "><span>Freestyle</span> <input type="checkbox" name="start-variants" value="freestyle" checked></label>
@@ -134,12 +134,7 @@
                                         <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; "><span>Crazyhouse</span> <input type="checkbox" name="start-variants" value="crazyhouse" checked></label>
                                         <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; "><span>King of the Hill</span> <input type="checkbox" name="start-variants" value="kingofthehill" checked></label>
                                         <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; "><span>Atomic</span> <input type="checkbox" name="start-variants" value="atomic" checked></label>
-                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; "><span>Secret Chess</span> <input type="checkbox" id="start-secret-checkbox" name="start-variants" value="secret" checked></label>
-                                        <div id="start-secret-options" style="display: flex; flex-direction: column; gap: 5px; margin-left: 10px; margin-top: 2px;">
-                                            <label style="display: flex; justify-content: space-between; align-items: center;"><span style="font-size: 0.9em; color: var(--text-muted);">Secret Queens</span><select id="start-secret-queens" style="width: 50px; padding: 2px;"><option value="0" selected>0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select></label>
-                                            <label style="display: flex; justify-content: space-between; align-items: center;"><span style="font-size: 0.9em; color: var(--text-muted);">Secret Kings</span><select id="start-secret-kings" style="width: 50px; padding: 2px;"><option value="0" selected>0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select></label>
-                                            <label style="display: flex; justify-content: space-between; align-items: center;"><span style="font-size: 0.9em; color: var(--text-muted);">Queen Elizabeth Kings</span><select id="start-secret-elizabeths" style="width: 50px; padding: 2px;"><option value="0" selected>0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select></label>
-                                        </div>
+                                        <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; "><span>Secret Chess</span> <input type="checkbox" name="start-variants" value="secret" checked></label>
                                         <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; "><span>Fog of War</span> <input type="checkbox" name="start-variants" value="fogofwar" checked></label>
                                     </div>
                                 </div>
