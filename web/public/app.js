@@ -313,8 +313,15 @@ async function updateStatus() {
             }
 
             setHTML(leaderboard, sortedPlayers.map((player, index) => {
+                const pos = index + 1;
+                const getOrdinal = (n) => {
+                    const s = ["th", "st", "nd", "rd"];
+                    const v = n % 100;
+                    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+                };
+                const ordinal = getOrdinal(pos);
                 const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
-                const playerType = player.isComputer ? `🤖 Level ${player.level} (${Math.round(player.elo)})` : `👤 (${Math.round(player.elo)})`;
+                const playerType = player.isComputer ? `🤖 Level ${player.level} (${Math.round(player.elo || 0)})` : `👤 (${Math.round(player.elo || 0)})`;
                 const displayName = formatPlayerName(player.name);
                 const highlightClass = (player.name && myPlayerName && player.name.toLowerCase() === myPlayerName.toLowerCase()) ? 'highlight-me' : '';
                 
@@ -333,7 +340,7 @@ async function updateStatus() {
 
                 return `
                     <div class="player-item ${highlightClass}" style="${styleStr}">
-                        <span>${medal} ${displayName} ${playerType}</span>
+                        <span>${ordinal} ${medal} ${displayName} ${playerType}</span>
                         <span class="player-score">${scoreText}</span>
                     </div>
                 `;
@@ -1361,4 +1368,29 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initTheme);
 } else {
     initTheme();
+}
+
+function initSecretCheckboxes() {
+    const startSecretCheckbox = document.getElementById('start-secret-checkbox');
+    const startSecretOptions = document.getElementById('start-secret-options');
+    if (startSecretCheckbox && startSecretOptions) {
+        startSecretCheckbox.addEventListener('change', (e) => {
+            startSecretOptions.style.display = e.target.checked ? 'flex' : 'none';
+        });
+        startSecretOptions.style.display = startSecretCheckbox.checked ? 'flex' : 'none';
+    }
+
+    const offerSecretCheckbox = document.getElementById('offer-secret-checkbox');
+    const offerSecretOptions = document.getElementById('offer-secret-options');
+    if (offerSecretCheckbox && offerSecretOptions) {
+        offerSecretCheckbox.addEventListener('change', (e) => {
+            offerSecretOptions.style.display = e.target.checked ? 'flex' : 'none';
+        });
+        offerSecretOptions.style.display = offerSecretCheckbox.checked ? 'flex' : 'none';
+    }
+}
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSecretCheckboxes);
+} else {
+    initSecretCheckboxes();
 }

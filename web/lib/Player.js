@@ -130,7 +130,7 @@ class Player {
         player.score = data.score;
         player.busy = data.busy;
         player.activeGameId = data.activeGameId;
-        player.elo = data.elo;
+        player.elo = data.elo !== null && data.elo !== undefined ? data.elo : 400;
         player.eliminated = data.eliminated;
         player.timeLeft = data.timeLeft;
         player.eliminationPosition = data.eliminationPosition;
