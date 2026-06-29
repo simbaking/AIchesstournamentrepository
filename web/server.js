@@ -854,6 +854,9 @@ app.post('/api/register', (req, res) => {
         if (authHeader && authHeader.startsWith('Bearer ')) {
             const token = authHeader.split(' ')[1];
             authUsername = activeSessions[token];
+            if (!authUsername) {
+                return res.status(401).json({ error: 'Session expired or invalid. Please log out and log in again.' });
+            }
         }
         
         if (authUsername) {
@@ -886,6 +889,10 @@ app.post('/api/register', (req, res) => {
 
     const existing = tournament.getPlayerByName(name);
     if (existing) {
+        // If the user is logged in and they are already in the tournament, just sync their client
+        if (authUsername && existing.getName().toLowerCase() === authUsername.toLowerCase()) {
+            return res.json({ success: true, message: 'Re-synced with existing tournament registration', name: existing.getName() });
+        }
         return res.status(400).json({ error: 'Player already exists' });
     }
 
