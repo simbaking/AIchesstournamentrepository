@@ -682,6 +682,26 @@ const crypto = require('crypto');
 const USERS_FILE = path.join(__dirname, 'users.json');
 let users = {};
 let activeSessions = {}; // token -> username
+const SESSIONS_FILE = path.join(__dirname, 'sessions.json');
+
+function loadSessions() {
+    try {
+        if (fs.existsSync(SESSIONS_FILE)) {
+            const data = fs.readFileSync(SESSIONS_FILE, 'utf8');
+            activeSessions = JSON.parse(data);
+        }
+    } catch (err) {
+        console.error('Error loading sessions:', err);
+    }
+}
+
+function saveSessions() {
+    try {
+        fs.writeFileSync(SESSIONS_FILE, JSON.stringify(activeSessions, null, 2), 'utf8');
+    } catch (err) {
+        console.error('Error saving sessions:', err);
+    }
+}
 
 // Load users
 function loadUsers() {
@@ -716,6 +736,14 @@ function saveUsers() {
     }
 }
 loadUsers();
+loadSessions();
+
+// Clean up old sessions daily
+setInterval(() => {
+    let changed = false;
+    // We don't have expiry on sessions yet, but we could add it.
+    // For now, this is just a placeholder or we can implement real cleanup.
+}, 86400000);
 
 app.post('/api/signup', (req, res) => {
     const { username, password } = req.body;
@@ -742,6 +770,7 @@ app.post('/api/signup', (req, res) => {
     // Auto-login
     const token = crypto.randomBytes(32).toString('hex');
     activeSessions[token] = actualUsername;
+    saveSessions();
     
     res.json({ success: true, token, username: actualUsername, elo: 400 });
 });
@@ -776,6 +805,7 @@ app.post('/api/login', (req, res) => {
     
     const token = crypto.randomBytes(32).toString('hex');
     activeSessions[token] = actualUsername;
+    saveSessions();
     
     res.json({ success: true, token, username: actualUsername, elo: user.elo });
 });
@@ -785,6 +815,7 @@ app.post('/api/logout', (req, res) => {
     if (authHeader && authHeader.startsWith('Bearer ')) {
         const token = authHeader.split(' ')[1];
         delete activeSessions[token];
+        saveSessions();
     }
     res.json({ success: true });
 });
