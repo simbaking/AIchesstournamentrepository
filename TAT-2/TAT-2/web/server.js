@@ -808,6 +808,7 @@ app.post('/api/reset', (req, res) => {
     console.log(`[RESET] Request from IP: ${req.ip}, User-Agent: ${req.get('User-Agent')}`);
 
     tournament.reset();
+    activeGames.forEach(game => game.cleanup());
     activeGames.clear();
     gameOffers.length = 0;
 
@@ -851,10 +852,13 @@ app.post('/api/clear-scores', (req, res) => {
 
     // Stop running tournament but keep players
     tournament.isRunning = false;
+    activeGames.forEach(game => game.cleanup());
     activeGames.clear();
+    gameOffers.length = 0;
 
     if (tournamentMonitorInterval) { clearInterval(tournamentMonitorInterval); tournamentMonitorInterval = null; }
     if (autoMatchmakingInterval) { clearInterval(autoMatchmakingInterval); autoMatchmakingInterval = null; }
+    if (timeoutMonitorInterval) { clearInterval(timeoutMonitorInterval); timeoutMonitorInterval = null; }
 
     console.log('Scores cleared via API, players kept');
     res.json({ success: true, message: 'Scores cleared successfully' });
