@@ -213,6 +213,11 @@ h1 {
         font-size: 1rem;
         font-weight: 600;
         transition: all 0.2s ease;
+        max-width: 100%;
+        min-width: 0;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     /* Ensure offer increment input fits within card */

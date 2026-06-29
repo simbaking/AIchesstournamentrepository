@@ -858,8 +858,8 @@ app.post('/api/register', (req, res) => {
         return res.status(400).json({ error: 'Player already exists' });
     }
 
-    // Server-side check: One human player per browser ID
-    if (!isComputer && browserId) {
+    // Server-side check: One human player per browser ID (only for guests)
+    if (!isComputer && browserId && !authUsername) {
         const existingByBrowserId = tournament.getPlayerByBrowserId(browserId);
         if (existingByBrowserId && !existingByBrowserId.isComputerPlayer()) {
             console.log(`[REGISTER] Rejected: browserId ${browserId} already has human player ${existingByBrowserId.getName()}`);
@@ -1427,15 +1427,7 @@ app.post('/api/offers/accept', (req, res) => {
         return res.status(400).json({ error: 'You are currently in an active game' });
     }
 
-    // Check if player2 has pending offers that block them
-    const playerOffers = gameOffers.filter(o => o.acceptedBy.includes(player2));
-    for (const o of playerOffers) {
-        if (o.requiredPlayers <= 2) {
-            return res.status(400).json({ error: 'You already have a pending 1v1 offer' });
-        } else if (now - o.timestamp < 30000) {
-            return res.status(400).json({ error: 'Please wait 30 seconds before accepting another offer while in an N-player lobby' });
-        }
-    }
+    // We no longer block accepting if they have pending offers, as starting a game cleans them up.
 
     // Add player to the offer
     offer.acceptedBy.push(player2);
