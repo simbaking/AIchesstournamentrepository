@@ -747,7 +747,7 @@ app.post('/api/signup', (req, res) => {
 });
 
 app.post('/api/login', (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, browserId } = req.body;
     if (!username || !password) return res.status(400).json({ error: 'Missing credentials' });
     
     const lowerUser = username.trim().toLowerCase();
@@ -764,6 +764,15 @@ app.post('/api/login', (req, res) => {
     
     user.lastLogin = Date.now();
     saveUsers();
+    
+    // Remove previous human player from this browser if any
+    if (browserId) {
+        const existingPlayer = tournament.getPlayerByBrowserId(browserId);
+        if (existingPlayer && !existingPlayer.isComputerPlayer()) {
+            tournament.players = tournament.players.filter(p => p !== existingPlayer);
+            console.log(`[LOGIN] Removed previous player ${existingPlayer.getName()} for browserId ${browserId}`);
+        }
+    }
     
     const token = crypto.randomBytes(32).toString('hex');
     activeSessions[token] = actualUsername;
