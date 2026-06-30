@@ -922,7 +922,10 @@ app.post('/api/reset', (req, res) => {
     console.log(`[RESET] Request from IP: ${req.ip}, User-Agent: ${req.get('User-Agent')}`);
 
     tournament.reset();
-    activeGames.forEach(game => game.cleanup());
+    activeGames.forEach(game => {
+        game.isGameOver = true;
+        game.cleanup();
+    });
     activeGames.clear();
     gameOffers.length = 0;
 
@@ -974,7 +977,10 @@ app.post('/api/clear-scores', (req, res) => {
     tournament.isRunning = false;
     tournament.startTime = null;
     tournament.durationLimit = 0;
-    activeGames.forEach(game => game.cleanup());
+    activeGames.forEach(game => {
+        game.isGameOver = true;
+        game.cleanup();
+    });
     activeGames.clear();
     gameOffers.length = 0;
 
