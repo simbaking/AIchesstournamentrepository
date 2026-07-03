@@ -45,11 +45,17 @@ app.post('/api/report-issue', async (req, res) => {
 
     try {
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false, // upgrade later with STARTTLS
+            requireTLS: true,
             auth: {
                 user: 'changfourafrica@gmail.com',
                 pass: process.env.EMAIL_PASSWORD || 'zbenvnfttszofycj'
-            }
+            },
+            connectionTimeout: 10000, // 10 seconds timeout instead of 60s
+            greetingTimeout: 10000,
+            socketTimeout: 10000
         });
 
         const mailOptions = {

@@ -245,6 +245,12 @@
         async function submitIssue() {
             const issueText = document.getElementById('issue-text').value;
             if (!issueText) return alert('Please enter an issue description.');
+            
+            const submitBtn = document.querySelector('#report-menu .btn-success');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = 'Sending...';
+            submitBtn.disabled = true;
+
             try {
                 const url = (typeof API_URL !== 'undefined' ? API_URL : '') + '/api/report-issue';
                 const res = await fetch(url, {
@@ -261,6 +267,9 @@
                 }
             } catch(e) {
                 alert('Error sending issue.');
+            } finally {
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
             }
         }
 
