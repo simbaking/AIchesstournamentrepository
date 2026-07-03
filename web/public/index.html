@@ -15,17 +15,17 @@
             <button id="reset-btn" class="btn btn-danger">Reset Tournament</button>
             <button id="clear-scores-btn" class="btn btn-warning">Clear Scores</button>
             <div class="report-dropdown" style="position: relative;">
-                <button class="btn" onclick="document.getElementById('report-menu').classList.toggle('show')">Report Issue</button>
+                <button class="btn" onclick="event.stopPropagation(); document.getElementById('report-menu').classList.toggle('show'); var am = document.getElementById('account-menu'); if(am) am.classList.remove('show');">Report Issue</button>
                 <div id="report-menu" class="dropdown-content">
                     <textarea id="issue-text" placeholder="Type any issues you experience..." rows="4"></textarea>
-                    <button class="btn btn-success" onclick="submitIssue()">Submit</button>
+                    <button type="button" class="btn btn-success" onclick="submitIssue()">Submit</button>
                 </div>
             </div>
             
             <button class="btn btn-info" onclick="openLeaderboard()">TAT Leaderboard</button>
 
             <div class="account-dropdown" style="position: relative;">
-                <button class="btn" id="account-btn" onclick="document.getElementById('account-menu').classList.toggle('show')">Account 👤</button>
+                <button class="btn" id="account-btn" onclick="event.stopPropagation(); document.getElementById('account-menu').classList.toggle('show'); var rm = document.getElementById('report-menu'); if(rm) rm.classList.remove('show');">Account 👤</button>
                 <div id="account-menu" class="dropdown-content">
                     <div id="login-form-container">
                         <input type="text" id="auth-username" placeholder="Username" style="margin-bottom: 5px; width: 100%; box-sizing: border-box;">

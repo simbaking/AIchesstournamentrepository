@@ -34,10 +34,10 @@
                 <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
                     <a href="index.html" class="back-link">← Back to Tournament</a>
                     <div class="report-dropdown" style="position: relative;">
-                        <button class="btn" onclick="document.getElementById('report-menu').classList.toggle('show')">Report Issue</button>
+                        <button class="btn" onclick="event.stopPropagation(); document.getElementById('report-menu').classList.toggle('show');">Report Issue</button>
                         <div id="report-menu" class="dropdown-content">
                             <textarea id="issue-text" placeholder="Type any issues you experience..." rows="4"></textarea>
-                            <button class="btn btn-success" onclick="submitIssue()">Submit</button>
+                            <button type="button" class="btn btn-success" onclick="submitIssue()">Submit</button>
                         </div>
                     </div>
                 </div>
