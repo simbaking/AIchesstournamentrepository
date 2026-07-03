@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess Game</title>
-    <link rel="stylesheet" href="game.css?v=3">
+    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="game.css?v=4">
 </head>
 
 <body>
@@ -34,7 +35,7 @@
                 <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
                     <a href="index.html" class="back-link">← Back to Tournament</a>
                     <div class="report-dropdown" style="position: relative;">
-                        <button class="btn" onclick="event.stopPropagation(); document.getElementById('report-menu').classList.toggle('show');">Report Issue</button>
+                        <button class="btn" onclick="toggleReportMenu(event)">Report Issue</button>
                         <div id="report-menu" class="dropdown-content">
                             <textarea id="issue-text" placeholder="Type any issues you experience..." rows="4"></textarea>
                             <button type="button" class="btn btn-success" onclick="submitIssue()">Submit</button>
@@ -213,13 +214,19 @@
         </div>
     </div>
 
-    <script src="game.js?v=3"></script>
+    <script src="game.js?v=4"></script>
     <script>
+        function toggleReportMenu(e) {
+            if (e) e.stopPropagation();
+            document.getElementById('report-menu').classList.toggle('show');
+        }
+
         async function submitIssue() {
             const issueText = document.getElementById('issue-text').value;
             if (!issueText) return alert('Please enter an issue description.');
             try {
-                const res = await fetch('/api/report-issue', {
+                const url = (typeof API_URL !== 'undefined' ? API_URL : '') + '/api/report-issue';
+                const res = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ issue: issueText })

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess Tournament System</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=4">
 </head>
 
 <body>
@@ -15,7 +15,7 @@
             <button id="reset-btn" class="btn btn-danger">Reset Tournament</button>
             <button id="clear-scores-btn" class="btn btn-warning">Clear Scores</button>
             <div class="report-dropdown" style="position: relative;">
-                <button class="btn" onclick="event.stopPropagation(); document.getElementById('report-menu').classList.toggle('show'); var am = document.getElementById('account-menu'); if(am) am.classList.remove('show');">Report Issue</button>
+                <button class="btn" onclick="toggleReportMenu(event)">Report Issue</button>
                 <div id="report-menu" class="dropdown-content">
                     <textarea id="issue-text" placeholder="Type any issues you experience..." rows="4"></textarea>
                     <button type="button" class="btn btn-success" onclick="submitIssue()">Submit</button>
@@ -25,7 +25,7 @@
             <button class="btn btn-info" onclick="openLeaderboard()">TAT Leaderboard</button>
 
             <div class="account-dropdown" style="position: relative;">
-                <button class="btn" id="account-btn" onclick="event.stopPropagation(); document.getElementById('account-menu').classList.toggle('show'); var rm = document.getElementById('report-menu'); if(rm) rm.classList.remove('show');">Account 👤</button>
+                <button class="btn" id="account-btn" onclick="toggleAccountMenu(event)">Account 👤</button>
                 <div id="account-menu" class="dropdown-content">
                     <div id="login-form-container">
                         <input type="text" id="auth-username" placeholder="Username" style="margin-bottom: 5px; width: 100%; box-sizing: border-box;">
@@ -227,13 +227,27 @@
     </div>
     <div id="confetti-container" class="confetti-container"></div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=4"></script>
     <script>
+        function toggleReportMenu(e) {
+            if (e) e.stopPropagation();
+            document.getElementById('report-menu').classList.toggle('show');
+            var am = document.getElementById('account-menu');
+            if (am) am.classList.remove('show');
+        }
+        function toggleAccountMenu(e) {
+            if (e) e.stopPropagation();
+            document.getElementById('account-menu').classList.toggle('show');
+            var rm = document.getElementById('report-menu');
+            if (rm) rm.classList.remove('show');
+        }
+
         async function submitIssue() {
             const issueText = document.getElementById('issue-text').value;
             if (!issueText) return alert('Please enter an issue description.');
             try {
-                const res = await fetch('/api/report-issue', {
+                const url = (typeof API_URL !== 'undefined' ? API_URL : '') + '/api/report-issue';
+                const res = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ issue: issueText })
