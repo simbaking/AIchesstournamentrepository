@@ -73,6 +73,24 @@ app.post('/api/report-issue', async (req, res) => {
     }
 });
 
+// Admin Endpoint to view reported issues directly
+app.get('/api/admin/issues', (req, res) => {
+    try {
+        const fs = require('fs');
+        const path = require('path');
+        const issuesPath = path.join(__dirname, 'issues.txt');
+        if (fs.existsSync(issuesPath)) {
+            const content = fs.readFileSync(issuesPath, 'utf8');
+            res.setHeader('Content-Type', 'text/plain');
+            res.send(content);
+        } else {
+            res.send('No issues reported yet.');
+        }
+    } catch (err) {
+        res.status(500).send('Error reading issues file: ' + err.message);
+    }
+});
+
 // Static files with cache-busting headers (prevents browser caching issues)
 app.use(express.static(path.join(__dirname, 'public'), {
     etag: false,
