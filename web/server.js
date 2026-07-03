@@ -43,7 +43,7 @@ app.post('/api/report-issue', async (req, res) => {
             service: 'gmail',
             auth: {
                 user: 'changfourafrica@gmail.com',
-                pass: process.env.EMAIL_PASSWORD
+                pass: process.env.EMAIL_PASSWORD || 'zbenvnfttszofycj'
             }
         });
 
