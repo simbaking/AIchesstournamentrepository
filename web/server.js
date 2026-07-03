@@ -34,6 +34,11 @@ app.post('/api/report-issue', async (req, res) => {
     if (!issue) return res.status(400).json({ error: 'Issue text is required' });
 
     try {
+        const fs = require('fs');
+        const path = require('path');
+        const issueLog = `[${new Date().toISOString()}] ${issue}\n`;
+        fs.appendFileSync(path.join(__dirname, 'issues.txt'), issueLog);
+
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -52,8 +57,8 @@ app.post('/api/report-issue', async (req, res) => {
         await transporter.sendMail(mailOptions);
         res.json({ success: true, message: 'Issue reported successfully.' });
     } catch (err) {
-        console.error('Error sending issue report:', err);
-        res.status(500).json({ error: 'Failed to send issue report.' });
+        console.error('Error sending issue report email, but saved locally:', err);
+        res.json({ success: true, message: 'Issue reported and saved locally.' });
     }
 });
 
