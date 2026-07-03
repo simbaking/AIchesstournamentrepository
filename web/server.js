@@ -28,20 +28,16 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 
+// Store issues in memory as a foolproof fallback
+const globalIssues = [];
+
 // Issue Reporting Endpoint
 app.post('/api/report-issue', async (req, res) => {
     const { issue } = req.body;
     if (!issue) return res.status(400).json({ error: 'Issue text is required' });
 
-    // Try to save locally first, but catch errors so it doesn't block email
-    try {
-        const fs = require('fs');
-        const path = require('path');
-        const issueLog = `[${new Date().toISOString()}] ${issue}\n`;
-        fs.appendFileSync(path.join(__dirname, 'issues.txt'), issueLog);
-    } catch (fsErr) {
-        console.error('Could not save issue locally (might be read-only file system):', fsErr);
-    }
+    // Save to memory
+    globalIssues.push(`[${new Date().toISOString()}] ${issue}`);
 
     try {
         const transporter = nodemailer.createTransport({
@@ -75,19 +71,11 @@ app.post('/api/report-issue', async (req, res) => {
 
 // Admin Endpoint to view reported issues directly
 app.get('/api/admin/issues', (req, res) => {
-    try {
-        const fs = require('fs');
-        const path = require('path');
-        const issuesPath = path.join(__dirname, 'issues.txt');
-        if (fs.existsSync(issuesPath)) {
-            const content = fs.readFileSync(issuesPath, 'utf8');
-            res.setHeader('Content-Type', 'text/plain');
-            res.send(content);
-        } else {
-            res.send('No issues reported yet.');
-        }
-    } catch (err) {
-        res.status(500).send('Error reading issues file: ' + err.message);
+    res.setHeader('Content-Type', 'text/plain');
+    if (globalIssues.length > 0) {
+        res.send(globalIssues.join('\n\n'));
+    } else {
+        res.send('No issues reported yet. Submit a new issue on the website and refresh this page!');
     }
 });
 
