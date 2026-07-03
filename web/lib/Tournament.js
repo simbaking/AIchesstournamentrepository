@@ -14,6 +14,15 @@ class Tournament {
         this.players.push(new Player(name, isComputer, level, browserId, clientIP, initialElo));
     }
 
+    unregisterPlayer(name) {
+        const index = this.players.findIndex(p => p.getName().toLowerCase() === name.toLowerCase());
+        if (index !== -1) {
+            this.players.splice(index, 1);
+            return true;
+        }
+        return false;
+    }
+
     getPlayerByBrowserId(browserId) {
         return this.players.find(p => p.browserId === browserId);
     }

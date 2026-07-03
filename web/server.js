@@ -711,6 +711,11 @@ app.post('/api/logout', (req, res) => {
     const authHeader = req.headers.authorization;
     if (authHeader && authHeader.startsWith('Bearer ')) {
         const token = authHeader.split(' ')[1];
+        const username = activeSessions[token];
+        if (username) {
+            tournament.unregisterPlayer(username);
+            console.log(`[LOGOUT] Unregistered player ${username} from tournament`);
+        }
         delete activeSessions[token];
     }
     res.json({ success: true });
