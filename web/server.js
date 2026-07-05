@@ -79,15 +79,9 @@ app.get('/api/admin/issues', (req, res) => {
     }
 });
 
-// Static files with cache-busting headers (prevents browser caching issues)
+// Serve static files with standard browser caching
 app.use(express.static(path.join(__dirname, 'public'), {
-    etag: false,
-    maxAge: 0,
-    setHeaders: (res, filePath) => {
-        res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-        res.set('Pragma', 'no-cache');
-        res.set('Expires', '0');
-    }
+    maxAge: '1d' // Cache files for 1 day to improve load times
 }));
 
 // Global tournament instance
