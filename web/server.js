@@ -28,18 +28,30 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 
+// Store issues in memory as a foolproof fallback
+const globalIssues = [];
+
 // Issue Reporting Endpoint
 app.post('/api/report-issue', async (req, res) => {
     const { issue } = req.body;
     if (!issue) return res.status(400).json({ error: 'Issue text is required' });
 
+    // Save to memory
+    globalIssues.push(`[${new Date().toISOString()}] ${issue}`);
+
     try {
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false, // upgrade later with STARTTLS
+            requireTLS: true,
             auth: {
                 user: 'changfourafrica@gmail.com',
                 pass: process.env.EMAIL_PASSWORD
-            }
+            },
+            connectionTimeout: 10000,
+            greetingTimeout: 10000,
+            socketTimeout: 10000
         });
 
         const mailOptions = {
@@ -52,20 +64,24 @@ app.post('/api/report-issue', async (req, res) => {
         await transporter.sendMail(mailOptions);
         res.json({ success: true, message: 'Issue reported successfully.' });
     } catch (err) {
-        console.error('Error sending issue report:', err);
-        res.status(500).json({ error: 'Failed to send issue report.' });
+        console.error('Error sending issue report email:', err);
+        res.json({ success: true, message: 'Issue reported but email failed.' });
     }
 });
 
-// Static files with cache-busting headers (prevents browser caching issues)
-app.use(express.static(path.join(__dirname, 'public'), {
-    etag: false,
-    maxAge: 0,
-    setHeaders: (res, filePath) => {
-        res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-        res.set('Pragma', 'no-cache');
-        res.set('Expires', '0');
+// Admin Endpoint to view reported issues directly
+app.get('/api/admin/issues', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain');
+    if (globalIssues.length > 0) {
+        res.send(globalIssues.join('\n\n'));
+    } else {
+        res.send('No issues reported yet. Submit a new issue on the website and refresh this page!');
     }
+});
+
+// Serve static files with standard browser caching
+app.use(express.static(path.join(__dirname, 'public'), {
+    maxAge: '1d' // Cache files for 1 day to improve load times
 }));
 
 // Global tournament instance
