@@ -171,7 +171,7 @@ const allowVariantsCheckbox = document.getElementById('allow-variants');
 const variantSelectionPanel = document.getElementById('variant-selection');
 if (allowVariantsCheckbox && variantSelectionPanel) {
     allowVariantsCheckbox.addEventListener('change', () => {
-        variantSelectionPanel.style.display = allowVariantsCheckbox.checked ? 'flex' : 'none';
+        variantSelectionPanel.classList.toggle('hidden-panel', !allowVariantsCheckbox.checked);
     });
 }
 
@@ -253,7 +253,7 @@ async function updateStatus() {
                         if (allowVariantsCheckbox) allowVariantsCheckbox.checked = data.config.allowVariants;
 
                         const variantPanel = document.getElementById('variant-selection');
-                        if (variantPanel) variantPanel.style.display = data.config.allowVariants ? 'flex' : 'none';
+                        if (variantPanel) variantPanel.classList.toggle('hidden-panel', !data.config.allowVariants);
 
                         if (data.config.allowedVariants) {
                             ['freestyle', 'kungfu', 'crazyhouse', 'kingofthehill', 'atomic'].forEach(v => {

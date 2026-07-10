@@ -1000,3 +1000,16 @@ h1 {
     width: 90%;
     max-width: 500px;
 }
+
+/* Variant Panel Grid Layout */
+.variant-panel-layout {
+    display: flex !important;
+    gap: 20px !important;
+    margin-top: 10px !important;
+}
+.variant-panel-layout > div {
+    flex: 1 !important;
+}
+.hidden-panel {
+    display: none !important;
+}
