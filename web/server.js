@@ -36,21 +36,20 @@ app.post('/api/report-issue', async (req, res) => {
     // Report to Google Sheets Webhook if configured
     const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
     if (webhookUrl) {
-        try {
-            // Using dynamically imported fetch or axios if preferred, but fetch is standard in Node 18+
-            await fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'report',
-                    id: Date.now(),
-                    date: new Date().toISOString(),
-                    issue: issue
-                })
-            });
-        } catch (err) {
+        // Using dynamically imported fetch or axios if preferred, but fetch is standard in Node 18+
+        // Fire-and-forget: do not await this fetch so it doesn't slow down the response
+        fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'report',
+                id: Date.now(),
+                date: new Date().toISOString(),
+                issue: issue
+            })
+        }).catch(err => {
             console.error('Error sending issue to Google Sheets webhook:', err);
-        }
+        });
     } else {
         console.warn('GOOGLE_SHEETS_WEBHOOK_URL is not set. Issue not saved to Google Sheets.');
     }
