@@ -985,7 +985,7 @@ app.post('/api/clear-scores', (req, res) => {
     players.forEach(player => {
         player.score = 0;
         player.eliminated = false;
-        player.timeLeft = tournament.durationLimit;
+        player.timeLeft = 0;
         player.eliminationPosition = null;
     });
 
