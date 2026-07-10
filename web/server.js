@@ -28,16 +28,32 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 
-// Store issues in memory as a foolproof fallback
-const globalIssues = [];
-
 // Issue Reporting Endpoint
 app.post('/api/report-issue', async (req, res) => {
     const { issue } = req.body;
     if (!issue) return res.status(400).json({ error: 'Issue text is required' });
 
-    // Save to memory
-    globalIssues.push(`[${new Date().toISOString()}] ${issue}`);
+    // Report to Google Sheets Webhook if configured
+    const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+    if (webhookUrl) {
+        try {
+            // Using dynamically imported fetch or axios if preferred, but fetch is standard in Node 18+
+            await fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'report',
+                    id: Date.now(),
+                    date: new Date().toISOString(),
+                    issue: issue
+                })
+            });
+        } catch (err) {
+            console.error('Error sending issue to Google Sheets webhook:', err);
+        }
+    } else {
+        console.warn('GOOGLE_SHEETS_WEBHOOK_URL is not set. Issue not saved to Google Sheets.');
+    }
 
     try {
         const transporter = nodemailer.createTransport({
@@ -71,12 +87,28 @@ app.post('/api/report-issue', async (req, res) => {
 
 // Admin Endpoint to view reported issues directly
 app.get('/api/admin/issues', (req, res) => {
-    res.setHeader('Content-Type', 'text/plain');
-    if (globalIssues.length > 0) {
-        res.send(globalIssues.join('\n\n'));
-    } else {
-        res.send('No issues reported yet. Submit a new issue on the website and refresh this page!');
-    }
+    res.setHeader('Content-Type', 'text/html');
+    const sheetUrl = process.env.GOOGLE_SHEET_UI_URL || '#';
+    res.send(`
+        <html>
+            <head>
+                <title>Admin - Issues</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 40px; text-align: center; }
+                    .btn { display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; }
+                    .btn:hover { background-color: #45a049; }
+                    p { font-size: 1.2em; color: #555; }
+                </style>
+            </head>
+            <body>
+                <h2>Tournament Issues Admin</h2>
+                <p>Issues are now tracked permanently in Google Sheets!</p>
+                <p>You can view them, sort them, and mark them as "Dealt With" directly in the spreadsheet.</p>
+                <br/>
+                <a href="${sheetUrl}" class="btn" target="_blank">Open Google Sheets Dashboard</a>
+            </body>
+        </html>
+    `);
 });
 
 // Serve static files with standard browser caching
