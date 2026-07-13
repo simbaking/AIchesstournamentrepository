@@ -30,5 +30,10 @@
     "passwordHash": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
     "elo": 400,
     "lastLogin": 1782768855200
+  },
+  "test_user": {
+    "passwordHash": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+    "elo": 400,
+    "lastLogin": 1783722744347
   }
 }
