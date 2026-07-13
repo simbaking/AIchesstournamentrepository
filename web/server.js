@@ -687,6 +687,10 @@ function loadUsers() {
             }
             if (changed) saveUsers();
         }
+        if (fs.existsSync(path.join(__dirname, 'sessions.json'))) {
+            const data = fs.readFileSync(path.join(__dirname, 'sessions.json'), 'utf8');
+            activeSessions = JSON.parse(data);
+        }
     } catch (err) {
         console.error('Error loading users:', err);
     }
@@ -694,6 +698,7 @@ function loadUsers() {
 function saveUsers() {
     try {
         fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+        fs.writeFileSync(path.join(__dirname, 'sessions.json'), JSON.stringify(activeSessions, null, 2));
     } catch (err) {
         console.error('Error saving users:', err);
     }
@@ -720,11 +725,11 @@ app.post('/api/signup', (req, res) => {
         elo: 400,
         lastLogin: Date.now()
     };
-    saveUsers();
     
     // Auto-login
     const token = crypto.randomBytes(32).toString('hex');
     activeSessions[token] = actualUsername;
+    saveUsers();
     
     res.json({ success: true, token, username: actualUsername, elo: 400 });
 });
@@ -746,10 +751,10 @@ app.post('/api/login', (req, res) => {
     }
     
     user.lastLogin = Date.now();
-    saveUsers();
     
     const token = crypto.randomBytes(32).toString('hex');
     activeSessions[token] = actualUsername;
+    saveUsers();
     
     res.json({ success: true, token, username: actualUsername, elo: user.elo });
 });
@@ -761,9 +766,11 @@ app.post('/api/logout', (req, res) => {
         const username = activeSessions[token];
         if (username) {
             tournament.unregisterPlayer(username);
-            console.log(`[LOGOUT] Unregistered player ${username} from tournament`);
+            gameOffers = gameOffers.filter(o => o.player !== username);
+            console.log(`[LOGOUT] Unregistered player ${username} from tournament and removed their game offers`);
         }
         delete activeSessions[token];
+        saveUsers();
     }
     res.json({ success: true });
 });
