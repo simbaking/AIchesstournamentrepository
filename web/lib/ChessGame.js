@@ -450,7 +450,7 @@ class ChessGame {
 
         // Restore any running computers
         if (!game.isGameOver) {
-            game.scheduleNextComputerMove();
+            game.scheduleComputerMove();
         }
 
         return game;
@@ -684,6 +684,8 @@ class ChessGame {
         const now = Date.now();
         const timeSpent = now - this.lastMoveTime;
 
+        
+        
         if (this.isWhiteTurn) {
             if (this.whiteTimeRemaining - timeSpent <= 0) {
                 this.whiteTimeRemaining = 0;
@@ -908,6 +910,8 @@ class ChessGame {
         // Fix: Subtract time spent during the turn first
         const timeSpent = Date.now() - this.lastMoveTime;
 
+        
+        
         if (this.isWhiteTurn) {
             this.whiteTimeRemaining = Math.max(0, this.whiteTimeRemaining - timeSpent);
             this.whiteTimeRemaining += this.incrementMs;
@@ -1664,7 +1668,9 @@ class ChessGame {
 
         if (!this.isGameOver) {
             const timeSpent = Date.now() - this.lastMoveTime;
-            if (this.isWhiteTurn) {
+            
+        
+        if (this.isWhiteTurn) {
                 currentWhiteTime -= timeSpent;
             } else {
                 currentBlackTime -= timeSpent;

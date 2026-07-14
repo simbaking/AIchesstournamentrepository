@@ -143,56 +143,6 @@ app.get('/api/admin/issues', (req, res) => {
         </html>
     `);
 });
-// Report to Google Sheets Webhook if configured
-    const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
-    if (webhookUrl) {
-        // Using dynamically imported fetch or axios if preferred, but fetch is standard in Node 18+
-        // Fire-and-forget: do not await this fetch so it doesn't slow down the response
-        fetch(webhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: 'report',
-                id: Date.now(),
-                date: new Date().toISOString(),
-                issue: issue
-            })
-        }).catch(err => {
-            console.error('Error sending issue to Google Sheets webhook:', err);
-        });
-    } else {
-        console.warn('GOOGLE_SHEETS_WEBHOOK_URL is not set. Issue not saved to Google Sheets.');
-    }
-
-    try {
-        const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 587,
-            secure: false, // upgrade later with STARTTLS
-            requireTLS: true,
-            auth: {
-                user: 'changfourafrica@gmail.com',
-                pass: process.env.EMAIL_PASSWORD || 'zbenvnfttszofycj'
-            },
-            connectionTimeout: 10000, // 10 seconds timeout instead of 60s
-            greetingTimeout: 10000,
-            socketTimeout: 10000
-        });
-
-        const mailOptions = {
-            from: 'changfourafrica@gmail.com',
-            to: 'changfourafrica@gmail.com',
-            subject: 'chess tournament issue',
-            text: `a user of the chess tournament app has had this issue : ${issue}`
-        };
-
-        await transporter.sendMail(mailOptions);
-        res.json({ success: true, message: 'Issue reported successfully.' });
-    } catch (err) {
-        console.error('Error sending issue report email:', err);
-        res.json({ success: true, message: 'Issue reported but email failed.' });
-    }
-});
 
 // Admin Endpoint to view reported issues directly
 app.get('/api/admin/issues', (req, res) => {
@@ -263,7 +213,7 @@ function createGame(player1Name, player2Name, timeControlMinutes, incrementSecon
         player2Name = participants[1 - whiteIndex];
 
         // Generate ID
-        gameId = `game_${gameIdCounter++}`;
+        gameId = `game_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
 
         console.log(`[COLOR] Matchup: ${participants[0]} vs ${participants[1]} -> ${player1Name} (White), ${player2Name} (Black)`);
     } else {
@@ -433,8 +383,6 @@ function saveState() {
 }
 
 async function loadState() {
-    if (!fs.existsSync(STATE_FILE)) return;
-
     try {
     let data;
     if (typeof tournamentStateCollection !== 'undefined' && tournamentStateCollection) {
