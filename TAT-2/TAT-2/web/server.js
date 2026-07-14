@@ -1,4 +1,29 @@
 require('dotenv').config({ path: require('path').join(__dirname, '.env') });
+const { MongoClient } = require('mongodb');
+
+let dbClient;
+let db;
+let issuesCollection;
+const mongoUri = process.env.MONGODB_URI;
+
+async function connectDB() {
+    if (!mongoUri) {
+        console.error('[DB] No MONGODB_URI found.');
+        return false;
+    }
+    try {
+        dbClient = new MongoClient(mongoUri);
+        await dbClient.connect();
+        db = dbClient.db('chessDB');
+        issuesCollection = db.collection('issues_tat2');
+        console.log('[DB] Connected to MongoDB');
+        return true;
+    } catch (err) {
+        console.error('[DB] Failed to connect to MongoDB', err);
+        return false;
+    }
+}
+
 const express = require('express');
 const nodemailer = require('nodemailer');
 const path = require('path');
@@ -33,6 +58,29 @@ app.post('/api/report-issue', async (req, res) => {
     const { issue } = req.body;
     if (!issue) return res.status(400).json({ error: 'Issue text is required' });
 
+    const issueDoc = {
+        action: 'report',
+        id: Date.now(),
+        date: new Date().toISOString(),
+        issue: issue,
+        sheet: 'tat2'
+    };
+
+    if (typeof issuesCollection !== 'undefined' && issuesCollection) {
+        issuesCollection.insertOne(issueDoc).catch(e => console.error('Error saving issue to DB', e));
+    }
+
+    const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+    if (webhookUrl) {
+        fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(issueDoc)
+        }).catch(err => console.error('Error sending issue to Google Sheets webhook:', err));
+    } else {
+        console.warn('GOOGLE_SHEETS_WEBHOOK_URL is not set. Issue not saved to Google Sheets.');
+    }
+
     try {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -52,9 +100,35 @@ app.post('/api/report-issue', async (req, res) => {
         await transporter.sendMail(mailOptions);
         res.json({ success: true, message: 'Issue reported successfully.' });
     } catch (err) {
-        console.error('Error sending issue report:', err);
-        res.status(500).json({ error: 'Failed to send issue report.' });
+        console.error('Error sending issue report email:', err);
+        res.json({ success: true, message: 'Issue reported but email failed.' });
     }
+});
+
+// Admin Endpoint to view reported issues directly
+app.get('/api/admin/issues', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    const sheetUrl = process.env.GOOGLE_SHEET_UI_URL || '#';
+    res.send(`
+        <html>
+            <head>
+                <title>Admin - Issues</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 40px; text-align: center; }
+                    .btn { display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; }
+                    .btn:hover { background-color: #45a049; }
+                    p { font-size: 1.2em; color: #555; }
+                </style>
+            </head>
+            <body>
+                <h2>Tournament Issues Admin (TAT2)</h2>
+                <p>Issues are tracked in MongoDB and synced to Google Sheets!</p>
+                <p>You can view them, sort them, and mark them as "Dealt With" directly in the spreadsheet.</p>
+                <br/>
+                <a href="${sheetUrl}" class="btn" target="_blank">Open Google Sheets Dashboard</a>
+            </body>
+        </html>
+    `);
 });
 
 // Static files with cache-busting headers (prevents browser caching issues)
@@ -1575,36 +1649,41 @@ function parseTimeControl(input, inputIncrement = 0) {
 
 
 // Start server on 0.0.0.0 for LAN access
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`\n╔══════════════════════════════════════════════════════════════╗`);
-    console.log(`║           Chess Tournament Server Started!                   ║`);
-    console.log(`╚══════════════════════════════════════════════════════════════╝`);
-    console.log(`\nLocal:    http://localhost:${PORT}`);
+async function startServer() {
+    if (typeof connectDB === 'function') await connectDB();
 
-    // Get and display LAN IP addresses
-    const os = require('os');
-    const networkInterfaces = os.networkInterfaces();
-    const lanIPs = [];
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`\n╔══════════════════════════════════════════════════════════════╗`);
+        console.log(`║           Chess Tournament Server Started!                   ║`);
+        console.log(`╚══════════════════════════════════════════════════════════════╝`);
+        console.log(`\nLocal:    http://localhost:${PORT}`);
 
-    for (const interfaceName in networkInterfaces) {
-        for (const iface of networkInterfaces[interfaceName]) {
-            // Skip internal (loopback) and non-IPv4 addresses
-            if (iface.family === 'IPv4' && !iface.internal) {
-                lanIPs.push(iface.address);
+        // Get and display LAN IP addresses
+        const os = require('os');
+        const networkInterfaces = os.networkInterfaces();
+        const lanIPs = [];
+
+        for (const interfaceName in networkInterfaces) {
+            for (const iface of networkInterfaces[interfaceName]) {
+                // Skip internal (loopback) and non-IPv4 addresses
+                if (iface.family === 'IPv4' && !iface.internal) {
+                    lanIPs.push(iface.address);
+                }
             }
         }
-    }
 
-    if (lanIPs.length > 0) {
-        console.log(`\nLAN Access (for other devices on same WiFi):`);
-        lanIPs.forEach(ip => {
-            console.log(`          http://${ip}:${PORT}`);
-        });
-        console.log(`\nShare these URLs with other players!`);
-    }
+        if (lanIPs.length > 0) {
+            console.log(`\nLAN Access (for other devices on same WiFi):`);
+            lanIPs.forEach(ip => {
+                console.log(`          http://${ip}:${PORT}`);
+            });
+            console.log(`\nShare these URLs with other players!`);
+        }
 
-    console.log(`\n────────────────────────────────────────────────────────────────`);
-});
+        console.log(`\n────────────────────────────────────────────────────────────────`);
+    });
+}
+startServer();
 
 // Prevent event loop from emptying (Keep-Alive)
 setInterval(() => { }, 1000 * 60 * 60); // 1 hour

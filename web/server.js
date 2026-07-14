@@ -21,7 +21,7 @@ async function connectDB() {
         usersCollection = db.collection('users');
         sessionsCollection = db.collection('sessions');
         tournamentStateCollection = db.collection('tournament_state');
-        issuesCollection = db.collection('issues');
+        issuesCollection = db.collection('issues_tat');
         console.log('[DB] Connected to MongoDB');
         return true;
     } catch (err) {
@@ -79,7 +79,8 @@ app.post('/api/report-issue', async (req, res) => {
         action: 'report',
         id: Date.now(),
         date: new Date().toISOString(),
-        issue: issue
+        issue: issue,
+        sheet: 'tat'
     };
 
     if (typeof issuesCollection !== 'undefined' && issuesCollection) {
@@ -153,16 +154,6 @@ app.get('/api/admin/issues', (req, res) => {
             </body>
         </html>
     `);
-});
-
-// Admin Endpoint to view reported issues directly
-app.get('/api/admin/issues', (req, res) => {
-    res.setHeader('Content-Type', 'text/plain');
-    if (globalIssues.length > 0) {
-        res.send(globalIssues.join('\n\n'));
-    } else {
-        res.send('No issues reported yet. Submit a new issue on the website and refresh this page!');
-    }
 });
 
 // Serve static files with standard browser caching
