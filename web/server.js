@@ -530,6 +530,7 @@ function recordTournamentResults() {
     if (usersChanged) saveUsers();
 }
 
+function restartMonitorsOnLoad() {
 // If tournament was running when we loaded state, restart the monitor intervals
 if (tournament.checkIsRunning()) {
     console.log('[STARTUP] Tournament is running, starting monitor intervals...');
@@ -720,6 +721,27 @@ if (tournament.checkIsRunning()) {
             console.error('[MATCHMAKING ERROR]', err);
         }
     }, 1000);
+
+    // Timeout Monitor: Check for flagged games every second
+    if (timeoutMonitorInterval) clearInterval(timeoutMonitorInterval);
+    timeoutMonitorInterval = setInterval(() => {
+        try {
+            if (activeGames.size > 0) {
+                for (const [gameId, game] of activeGames.entries()) {
+                    if (!game.isGameOver) {
+                        try {
+                            game.checkTimeout();
+                        } catch (err) {
+                            console.error(`[TIMEOUT MONITOR] Error checking timeout for game ${gameId}:`, err);
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            console.error('[TIMEOUT MONITOR] Global error:', e);
+        }
+    }, 1000);
+}
 }
 
 // Save state on interval
@@ -1715,6 +1737,7 @@ async function startServer() {
     if (typeof connectDB === 'function') await connectDB();
     if (typeof loadUsers === 'function') await loadUsers();
     if (typeof loadState === 'function') await loadState();
+    restartMonitorsOnLoad();
 
     app.listen(PORT, '0.0.0.0', () => {
     console.log(`\n╔══════════════════════════════════════════════════════════════╗`);
